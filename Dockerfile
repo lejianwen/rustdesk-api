@@ -15,6 +15,8 @@ RUN set -eux; \
         cd rustdesk-api; \
         go mod tidy; \
         go install github.com/swaggo/swag/cmd/swag@latest; \
+    swag init -g cmd/apimain.go --output docs/api --instanceName api --exclude http/controller/admin; \
+    swag init -g cmd/apimain.go --output docs/admin --instanceName admin --exclude http/controller/api; \
     go env -w GO111MODULE=on;\
     go env -w CGO_ENABLED=1;\
     go env -w GOOS=linux;\
