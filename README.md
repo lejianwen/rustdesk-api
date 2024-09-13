@@ -2,9 +2,16 @@
 
 本项目使用 Go 实现了 RustDesk 的 API，并包含了 Web UI 和 Web 客户端。RustDesk 是一个远程桌面软件，提供了自托管的解决方案。
 
+ <div align=center>
+<img src="https://img.shields.io/badge/golang-1.22-blue"/>
+<img src="https://img.shields.io/badge/gin-v1.9.0-lightBlue"/>
+<img src="https://img.shields.io/badge/gorm-v1.25.7-green"/>
+<img src="https://img.shields.io/badge/swag-v1.16.3-yellow"/>
+</div>
+
 ## 使用前准备
 
-### Rustdesk
+### [Rustdesk](https://github.com/rustdesk/rustdesk)
 
 1. PC客户端使用的是 ***1.3.0***，经测试 ***1.2.6+*** 都可以
 2. server端必须指定key，不能用自带的生成的key,否则可能链接不上或者超时
@@ -33,9 +40,10 @@ hbbr -k 123456789
    ![web_user](docs/web_user.png)
 3. 更改密码在右上角
 
-![web_resetpwd](docs/web_resetpwd.png)
+   ![web_resetpwd](docs/web_resetpwd.png)
 
 4. 分组可以自定义，方便管理，暂时支持两种类型: `共享组` 和 `普通组`
+
    ![web_admin_gr](docs/web_admin_gr.png)
 
 ### **Web 客户端**:
@@ -81,11 +89,15 @@ rustdesk:
 ### 安装步骤
 
 #### docker运行
+
 1. 直接docker运行
+
 ```bash
 docker run -d --name rustdesk-api -p 21114:21114 -v /data/rustdesk/api:/app/data lejianwen/rustdesk-api
 ```
+
 2. 使用`docker compose`,根据rustdesk提供的示例加上自己的rustdesk-api
+
 ```docker-compose
 networks:
   rustdesk-net:
@@ -151,12 +163,15 @@ services:
    git clone https://github.com/lejianwen/rustdesk-api.git
    cd rustdesk-api
    ```
+   
 2. 安装依赖
+
     ```bash
     go mod tidy
     #安装swag，如果不需要生成文档，可以不安装
     go install github.com/swaggo/swag/cmd/swag@latest
     ```
+   
 3. 编译后台前端，前端代码在[rustdesk-api-web](https://github.com/lejianwen/rustdesk-api-web)中
    ```bash
    cd resources
@@ -178,3 +193,8 @@ services:
    目录下生成对应的可执行文件。直接运行编译后的可执行文件即可。
 
 6. 打开浏览器访问`http://<your server>:21114/_admin/`，默认用户名密码为`admin`，请及时更改密码。
+
+## 其他
+
+- [修改客户端ID](https://github.com/abdullah-erturk/RustDesk-ID-Changer)
+- [webclient](https://hub.docker.com/r/keyurbhole/flutter_web_desk)
