@@ -1,0 +1,513 @@
+basePath: /api
+definitions:
+  api.AddressBookForm:
+    properties:
+      data:
+        example: '{"tags":["tag1","tag2","tag3"],"peers":[{"id":"abc","username":"abv-l","hostname":"","platform":"Windows","alias":"","tags":["tag1","tag2"],"hash":"hash"}],"tag_colors":"{\"tag1\":4288585374,\"tag2\":4278238420,\"tag3\":4291681337}"}'
+        type: string
+    type: object
+  api.LoginForm:
+    properties:
+      password:
+        maxLength: 20
+        minLength: 4
+        type: string
+      username:
+        maxLength: 10
+        minLength: 4
+        type: string
+    required:
+    - username
+    type: object
+  api.LoginRes:
+    properties:
+      access_token:
+        type: string
+      secret:
+        type: string
+      tfa_type:
+        type: string
+      type:
+        type: string
+      user:
+        $ref: '#/definitions/api.UserPayload'
+    type: object
+  api.PeerForm:
+    properties:
+      cpu:
+        type: string
+      hostname:
+        type: string
+      id:
+        type: string
+      memory:
+        type: string
+      os:
+        type: string
+      username:
+        type: string
+      uuid:
+        type: string
+      version:
+        type: string
+    type: object
+  api.UserPayload:
+    properties:
+      email:
+        type: string
+      is_admin:
+        type: boolean
+      name:
+        type: string
+      note:
+        type: string
+      status:
+        type: integer
+    type: object
+  model.Tag:
+    properties:
+      color:
+        description: color 是flutter的颜色值,从0x00000000 到 0xFFFFFFFF; 前两位表示透明度，后面6位表示颜色,
+          可以转成rgba
+        type: integer
+      created_at:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      updated_at:
+        type: string
+      user_id:
+        type: integer
+    type: object
+  response.DataResponse:
+    properties:
+      data: {}
+      total:
+        type: integer
+    type: object
+  response.ErrorResponse:
+    properties:
+      error:
+        type: string
+    type: object
+  response.Response:
+    properties:
+      code:
+        type: integer
+      data: {}
+      message:
+        type: string
+    type: object
+info:
+  contact: {}
+  description: 接口
+  title: 管理系统API
+  version: "1.0"
+paths:
+  /:
+    get:
+      consumes:
+      - application/json
+      description: 首页
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: 首页
+      tags:
+      - 首页
+  /ab:
+    get:
+      consumes:
+      - application/json
+      description: 地址列表
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: 地址列表
+      tags:
+      - 地址
+    post:
+      consumes:
+      - application/json
+      description: 地址更新
+      parameters:
+      - description: 地址表单
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/api.AddressBookForm'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: "null"
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: 地址更新
+      tags:
+      - 地址
+  /ab/add:
+    post:
+      consumes:
+      - application/json
+      description: 标签
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: 标签添加
+      tags:
+      - 地址
+  /ab/personal:
+    post:
+      consumes:
+      - application/json
+      description: 个人信息
+      parameters:
+      - description: string valid
+        in: body
+        name: string
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - BearerAuth: []
+      summary: 个人信息
+      tags:
+      - 用户
+  /api:
+    get:
+      consumes:
+      - application/json
+      description: 用户信息
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/api.UserPayload'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - token: []
+      summary: 用户信息
+      tags:
+      - 用户
+  /currentUser:
+    get:
+      consumes:
+      - application/json
+      description: 用户信息
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/api.UserPayload'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - token: []
+      summary: 用户信息
+      tags:
+      - 用户
+  /heartbeat:
+    post:
+      consumes:
+      - application/json
+      description: 心跳
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: 心跳
+      tags:
+      - 首页
+  /login:
+    post:
+      consumes:
+      - application/json
+      description: 登录
+      parameters:
+      - description: 登录表单
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/api.LoginForm'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/api.LoginRes'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      summary: 登录
+      tags:
+      - 登录
+  /login-options:
+    post:
+      consumes:
+      - application/json
+      description: 登录选项
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              type: string
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      summary: 登录选项
+      tags:
+      - 登录
+  /logout:
+    post:
+      consumes:
+      - application/json
+      description: 登出
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      summary: 登出
+      tags:
+      - 登录
+  /peers:
+    get:
+      consumes:
+      - application/json
+      description: 机器
+      parameters:
+      - description: 页码
+        in: query
+        name: page
+        type: integer
+      - description: 每页数量
+        in: query
+        name: pageSize
+        type: integer
+      - description: 状态
+        in: query
+        name: status
+        type: integer
+      - description: accessible
+        in: query
+        name: accessible
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.DataResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - BearerAuth: []
+      summary: 机器
+      tags:
+      - 群组
+  /server-config:
+    get:
+      consumes:
+      - application/json
+      description: 服务配置,给webclient提供api-server
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - token: []
+      summary: 服务配置
+      tags:
+      - WEBCLIENT
+  /sysinfo:
+    post:
+      consumes:
+      - application/json
+      description: 提交系统信息
+      parameters:
+      - description: 系统信息表单
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/api.PeerForm'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: SYSINFO_UPDATED,ID_NOT_FOUND
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: 提交系统信息
+      tags:
+      - 地址
+  /tags:
+    post:
+      consumes:
+      - application/json
+      description: 标签
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/model.Tag'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: 标签
+      tags:
+      - 地址
+  /users:
+    get:
+      consumes:
+      - application/json
+      description: 用户列表
+      parameters:
+      - description: 页码
+        in: query
+        name: page
+        type: integer
+      - description: 每页数量
+        in: query
+        name: pageSize
+        type: integer
+      - description: 状态
+        in: query
+        name: status
+        type: integer
+      - description: accessible
+        in: query
+        name: accessible
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.DataResponse'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/api.UserPayload'
+                  type: array
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: 用户列表
+      tags:
+      - 群组
+securityDefinitions:
+  BearerAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+  token:
+    in: header
+    name: api-token
+    type: apiKey
+swagger: "2.0"

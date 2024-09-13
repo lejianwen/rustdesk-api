@@ -1,0 +1,42 @@
+gin:
+  api-addr: "0.0.0.0:21114"
+  mode: "release" #release,debug,test
+  resources-path: 'resources'  #对外静态文件目录
+gorm:
+  type: "sqlite"
+  max-idle-conns: 10
+  max-open-conns: 100
+mysql:
+  username: "root"
+  password: "111111"
+  addr: "192.168.1.66:3308"
+  dbname: "rustdesk2"
+rustdesk:
+  id-server: "124.220.134.240:21116"
+  relay-server: "124.220.134.240:21117"
+  api-server: "http://127.0.0.1:21114"
+  key: "ljw19891989"
+redis:
+  addr: "127.0.0.1:6379"
+  password: ""
+  db: 0
+logger:
+  path: "./runtime/log.txt"
+  level: "error" #trace,debug,info,warn,error,fatal
+  report-caller: true
+cache:
+  type: "file"
+  file-dir: "./runtime/cache"
+  redis-addr: "127.0.0.1:6379"
+  redis-pwd: "ljw19891989"
+  redis-db: 0
+oss:
+  access-key-id: ""
+  access-key-secret: ""
+  host: ""
+  callback-url: ""
+  expire-time: 30
+  max-byte: 10240
+jwt:
+  private-key: "./conf/jwt_pri.pem"
+  expire-duration: 360000

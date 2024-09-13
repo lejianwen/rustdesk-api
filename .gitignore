@@ -1,0 +1,9 @@
+.idea
+runtime
+!runtime/cache/.gitignore
+go.sum
+resources
+!resources/public/upload/.gitignore
+!resources/public/web
+release
+data
