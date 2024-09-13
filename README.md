@@ -23,6 +23,8 @@ hbbr -k 123456789
 
 ### **Web UI**: 使用前后端分离，提供用户友好的管理界面，主要用来管理和展示。
 
+***前端代码在[rustdesk-api-web](https://github.com/lejianwen/rustdesk-api-web)***
+
 ***初次安装管理员为用户名密码为admin admin，请即时更改密码***
 
 1. 管理员界面
@@ -95,13 +97,22 @@ rustdesk:
     #安装swag，如果不需要生成文档，可以不安装
     go install github.com/swaggo/swag/cmd/swag@latest
     ```
-3. 运行
+3. 编译后台前端，前端代码在[rustdesk-api-web](https://github.com/lejianwen/rustdesk-api-web)中
+   ```bash
+   cd resources
+   git clone https://github.com/lejianwen/rustdesk-api-web
+   cd rustdesk-api-web
+   npm install
+   npm run build
+   cp -ar dist/* ../admin/
+   ```
+4. 运行
     ```bash
+    #直接运行
     go run cmd/apimain.go
-    #或者直接Build
-    ./build.sh
-    #或者使用generate_api.go生成api
+    #或者使用generate_api.go生成api并运行
     go generate generate_api.go
     ```
-4. 编译，如果想自己编译,先cd到项目根目录，然后windows下直接运行`build.bat`,linux下运行`build.sh`,编译后会在`release`
+5. 编译，如果想自己编译,先cd到项目根目录，然后windows下直接运行`build.bat`,linux下运行`build.sh`,编译后会在`release`
    目录下生成对应的可执行文件。
+
