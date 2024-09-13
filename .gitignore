@@ -4,6 +4,6 @@ runtime
 go.sum
 resources
 !resources/public/upload/.gitignore
-!resources/public/web
+!resources/web
 release
 data

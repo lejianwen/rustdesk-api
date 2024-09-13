@@ -92,6 +92,8 @@ rustdesk:
 2. 安装依赖
     ```bash
     go mod tidy
+    #安装swag，如果不需要生成文档，可以不安装
+    go install github.com/swaggo/swag/cmd/swag@latest
     ```
 3. 运行
     ```bash
