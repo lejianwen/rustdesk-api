@@ -9,6 +9,6 @@ swag init -g cmd/apimain.go --output docs/admin --instanceName admin --exclude h
 go build -o release/apimain.exe cmd/apimain.go
 xcopy resources release\resources /E /I /Y
 xcopy docs release\docs /E /I /Y
-xcopy data release\data /E /I /Y
 xcopy conf release\conf /E /I /Y
-xcopy runtime release\runtime /E /I /Y
+mkdir release\runtime
+mkdir release\data

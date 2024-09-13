@@ -10,6 +10,6 @@ swag init -g cmd/apimain.go --output docs/admin --instanceName admin --exclude h
 go build -o release/apimain cmd/apimain.go
 cp -ar resources release/
 cp -ar docs release/
-cp -ar data release/
 cp -ar conf release/
-cp -ar runtime release/
+mkdir release/data
+mkdir release/runtime

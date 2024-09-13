@@ -1,8 +1,8 @@
 .idea
-runtime
+runtime/*
 !runtime/cache/.gitignore
 go.sum
-resources
+resources/*
 !resources/public/upload/.gitignore
 !resources/web
 release
