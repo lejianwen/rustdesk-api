@@ -36,7 +36,7 @@ func Init(rowVal interface{}) *viper.Viper {
 	}
 	v := viper.New()
 	v.AutomaticEnv()
-	v.SetEnvKeyReplacer(strings.NewReplacer(".", "_"))
+	v.SetEnvKeyReplacer(strings.NewReplacer(".", "_", "-", "_"))
 	v.SetEnvPrefix("RUSTDESK_API")
 	v.SetConfigFile(config)
 	v.SetConfigType("yaml")
