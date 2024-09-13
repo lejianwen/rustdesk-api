@@ -7,15 +7,15 @@ gorm:
   max-idle-conns: 10
   max-open-conns: 100
 mysql:
-  username: "root"
-  password: "111111"
-  addr: "192.168.1.66:3308"
-  dbname: "rustdesk2"
+  username: ""
+  password: ""
+  addr: ""
+  dbname: ""
 rustdesk:
-  id-server: "124.220.134.240:21116"
-  relay-server: "124.220.134.240:21117"
-  api-server: "http://127.0.0.1:21114"
-  key: "ljw19891989"
+  id-server: "192.168.1.66:21116"
+  relay-server: "192.168.1.66:21117"
+  api-server: "http://192.168.1.66:21114"
+  key: "123456789"
 redis:
   addr: "127.0.0.1:6379"
   password: ""
@@ -28,7 +28,7 @@ cache:
   type: "file"
   file-dir: "./runtime/cache"
   redis-addr: "127.0.0.1:6379"
-  redis-pwd: "ljw19891989"
+  redis-pwd: ""
   redis-db: 0
 oss:
   access-key-id: ""

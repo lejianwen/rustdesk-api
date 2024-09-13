@@ -33,9 +33,7 @@ import (
 // @name Authorization
 func main() {
 	//配置解析
-	global.Viper = config.Init(&global.Config, func() {
-		fmt.Println(global.Config)
-	})
+	global.Viper = config.Init(&global.Config)
 
 	//日志
 	global.Logger = logger.New(&logger.Config{

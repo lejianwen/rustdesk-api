@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/fsnotify/fsnotify"
 	"github.com/spf13/viper"
+	"strings"
 )
 
 const (
@@ -26,7 +27,7 @@ type Config struct {
 }
 
 // Init 初始化配置
-func Init(rowVal interface{}, cb func()) *viper.Viper {
+func Init(rowVal interface{}) *viper.Viper {
 	var config string
 	flag.StringVar(&config, "c", "", "choose config file.")
 	flag.Parse()
@@ -34,6 +35,9 @@ func Init(rowVal interface{}, cb func()) *viper.Viper {
 		config = DefaultConfig
 	}
 	v := viper.New()
+	v.AutomaticEnv()
+	v.SetEnvKeyReplacer(strings.NewReplacer(".", "_"))
+	v.SetEnvPrefix("RUSTDESK_API")
 	v.SetConfigFile(config)
 	v.SetConfigType("yaml")
 	err := v.ReadInConfig()
@@ -47,8 +51,17 @@ func Init(rowVal interface{}, cb func()) *viper.Viper {
 		if err2 := v.Unmarshal(rowVal); err2 != nil {
 			fmt.Println(err2)
 		}
-		cb()
 	})
+	if err := v.Unmarshal(rowVal); err != nil {
+		fmt.Println(err)
+	}
+	return v
+}
+
+// ReadEnv 读取环境变量
+func ReadEnv(rowVal interface{}) *viper.Viper {
+	v := viper.New()
+	v.AutomaticEnv()
 	if err := v.Unmarshal(rowVal); err != nil {
 		fmt.Println(err)
 	}
