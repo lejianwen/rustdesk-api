@@ -98,19 +98,22 @@ docker run -d --name rustdesk-api -p 21114:21114 -v /data/rustdesk/api:/app/data
 
 - 环境变量，变量名前缀是RUSTDESK_API
 
-| 变量名                                | 说明                  | 默认值    | 示例                        | 必填                    |
-|------------------------------------|---------------------|--------|---------------------------|-----------------------|
-| RUSTDESK_API_GORM_TYPE             | 数据库类型sqlite或者mysql  | sqlite | sqlite                    | 是                     |
-| RUSTDESK_API_GORM_MAX_IDLE_CONNS   | 数据库最大空闲连接数          | 10     | 10                        | 否                     |
-| RUSTDESK_API_GORM_MAX_OPEN_CONNS   | 数据库最大打开连接数          | 100    | 100                       | 否                     |
-| RUSTDESK_API_MYSQL_USERNAME        | mysql用户名            | -      | root                      | 否 当GORM_TYPE=mysql时 是 |
-| RUSTDESK_API_MYSQL_PASSWORD        | mysql密码             | -      | 111111                    | 否 当GORM_TYPE=mysql时 是 |
-| RUSTDESK_API_MYSQL_ADDR            | mysql地址             | -      | 192.168.1.66:3306         | 否 当GORM_TYPE=mysql时 是 |
-| RUSTDESK_API_MYSQL_DBNAME          | mysql数据库名           | -      | rustdesk                  | 否 当GORM_TYPE=mysql时 是 |
-| RUSTDESK_API_RUSTDESK_ID_SERVER    | Rustdesk的id服务器地址    | -      | 192.168.1.66:21116        | 是                     |
-| RUSTDESK_API_RUSTDESK_RELAY_SERVER | Rustdesk的relay服务器地址 | -      | 192.168.1.66:21117        | 是                     |
-| RUSTDESK_API_RUSTDESK_API_SERVER   | Rustdesk的api服务器地址   | -      | http://192.168.1.66:21114 | 是                     |
-| RUSTDESK_API_RUSTDESK_KEY          | Rustdesk的key        | -      | 123456789                 | 是                     |
+| 变量名                                 | 说明                                            | 示例                          |
+|:------------------------------------|:----------------------------------------------|-----------------------------|
+| -----------GORM配置------------------ | --------------------------------------------- | --------------------------- |
+| RUSTDESK_API_GORM_TYPE              | 数据库类型sqlite或者mysql，默认sqlite                   | sqlite                      |
+| RUSTDESK_API_GORM_MAX_IDLE_CONNS    | 数据库最大空闲连接数                                    | 10                          |
+| RUSTDESK_API_GORM_MAX_OPEN_CONNS    | 数据库最大打开连接数                                    | 100                         |
+| -----------MYSQL配置----------------- | -------------数据库类型为sqlite时不用填--------------   | ----------                  |
+| RUSTDESK_API_MYSQL_USERNAME         | mysql用户名                                      | root                        |
+| RUSTDESK_API_MYSQL_PASSWORD         | mysql密码                                       | 111111                      |
+| RUSTDESK_API_MYSQL_ADDR             | mysql地址                                       | 192.168.1.66:3306           |
+| RUSTDESK_API_MYSQL_DBNAME           | mysql数据库名                                     | rustdesk                    |
+| -----------RUSTDESK配置-------------- | -------------------------------------------   | ----------                  |
+| RUSTDESK_API_RUSTDESK_ID_SERVER     | Rustdesk的id服务器地址                              | 192.168.1.66:21116          |
+| RUSTDESK_API_RUSTDESK_RELAY_SERVER  | Rustdesk的relay服务器地址                           | 192.168.1.66:21117          |
+| RUSTDESK_API_RUSTDESK_API_SERVER    | Rustdesk的api服务器地址                             | http://192.168.1.66:21114   |
+| RUSTDESK_API_RUSTDESK_KEY           | Rustdesk的key                                  | 123456789                   |
 
 2. 使用`docker compose`,根据rustdesk提供的示例加上自己的rustdesk-api
 
