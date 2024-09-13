@@ -1,4 +1,5 @@
 @echo off
+rmdir /s /q release
 go env -w GO111MODULE=on
 go env -w GOPROXY=https://goproxy.cn,direct
 go env -w CGO_ENABLED=1

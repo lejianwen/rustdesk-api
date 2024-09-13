@@ -25,7 +25,7 @@ hbbr -k 123456789
 
 ***前端代码在[rustdesk-api-web](https://github.com/lejianwen/rustdesk-api-web)***
 
-***初次安装管理员为用户名密码为admin admin，请即时更改密码***
+***后台访问地址是`http://<your server>:21114/_admin/`初次安装管理员为用户名密码为`admin admin`，请即时更改密码***
 
 1. 管理员界面
    ![web_admin](docs/web_admin.png)
@@ -81,8 +81,68 @@ rustdesk:
 ### 安装步骤
 
 #### docker运行
+1. 直接docker运行
+```bash
+docker run -d --name rustdesk-api -p 21114:21114 -v /data/rustdesk/api:/app/data lejianwen/rustdesk-api
+```
+2. 使用`docker compose`,根据rustdesk提供的示例加上自己的rustdesk-api
+```docker-compose
+networks:
+  rustdesk-net:
+    external: false
+services:
+  hbbs:
+    container_name: hbbs
+    ports:
+      - 21115:21115
+      - 21116:21116 # 自定义 hbbs 映射端口
+      - 21116:21116/udp # 自定义 hbbs 映射端口
+      - 21118:21118 # web client 需要
+    image: rustdesk/rustdesk-server
+    command: hbbs -r <relay-server-ip[:port]> -k 123456789 # 填入个人域名或 IP + hbbr 暴露端口
+    volumes:
+      - /data/rustdesk/hbbs:/root # 自定义挂载目录
+    networks:
+      - rustdesk-net
+    depends_on:
+      - hbbr
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 64M
+  hbbr:
+    container_name: hbbr
+    ports:
+      - 21117:21117 # 自定义 hbbr 映射端口
+    image: rustdesk/rustdesk-server
+    command: hbbr -k 123456789
+    #command: hbbr
+    volumes:
+      - /data/rustdesk/hbbr:/root # 自定义挂载目录
+    networks:
+      - rustdesk-net
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 64M
+  rustdesk-api:
+    container_name: rustdesk-api
+    ports:
+      - 21114:21114
+    image: lejianwen/rustdesk-api
+    volumes:
+      - /data/rustdesk/api:/app/data #将数据库挂载出来方便备份
+    networks:
+      - rustdesk-net
+    restart: unless-stopped
+
+```
 
 #### 下载release直接运行
+
+下载地址[release](https://github.com/lejianwen/rustdesk-api/releases)
 
 #### 源码安装
 
@@ -100,6 +160,7 @@ rustdesk:
 3. 编译后台前端，前端代码在[rustdesk-api-web](https://github.com/lejianwen/rustdesk-api-web)中
    ```bash
    cd resources
+   mkdir -p admin
    git clone https://github.com/lejianwen/rustdesk-api-web
    cd rustdesk-api-web
    npm install
@@ -114,5 +175,6 @@ rustdesk:
     go generate generate_api.go
     ```
 5. 编译，如果想自己编译,先cd到项目根目录，然后windows下直接运行`build.bat`,linux下运行`build.sh`,编译后会在`release`
-   目录下生成对应的可执行文件。
+   目录下生成对应的可执行文件。直接运行编译后的可执行文件即可。
 
+6. 打开浏览器访问`http://<your server>:21114/_admin/`，默认用户名密码为`admin`，请及时更改密码。

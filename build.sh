@@ -1,5 +1,6 @@
 #!/bin/sh
 
+rm release -rf
 go env -w GO111MODULE=on
 go env -w GOPROXY=https://goproxy.cn,direct
 go env -w CGO_ENABLED=1
@@ -11,5 +12,5 @@ go build -o release/apimain cmd/apimain.go
 cp -ar resources release/
 cp -ar docs release/
 cp -ar conf release/
-mkdir release/data
-mkdir release/runtime
+mkdir -p release/data
+mkdir -p release/runtime

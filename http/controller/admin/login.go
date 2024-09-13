@@ -6,7 +6,6 @@ import (
 	"Gwen/http/response"
 	adResp "Gwen/http/response/admin"
 	"Gwen/service"
-	"fmt"
 	"github.com/gin-gonic/gin"
 )
 
@@ -25,7 +24,6 @@ type Login struct {
 // @Router /admin/login [post]
 // @Security token
 func (ct *Login) Login(c *gin.Context) {
-	fmt.Println("login")
 	f := &admin.Login{}
 	err := c.ShouldBindJSON(f)
 	if err != nil {
