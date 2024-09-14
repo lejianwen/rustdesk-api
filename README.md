@@ -1,4 +1,5 @@
 # RustDesk API
+[English Doc](README_EN.md)
 
 本项目使用 Go 实现了 RustDesk 的 API，并包含了 Web UI 和 Web 客户端。RustDesk 是一个远程桌面软件，提供了自托管的解决方案。
 
