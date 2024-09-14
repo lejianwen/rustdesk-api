@@ -1,2 +1,1 @@
-resources/web/*.js linguist-vendored
-resources/web/*.ts linguist-vendored
+resources/web/**/* linguist-vendored
