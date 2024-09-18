@@ -2,6 +2,11 @@ services:
   rustdesk-api:
     image: lejianwen/rustdesk-api
     container_name: rustdesk-api
+    environment:
+      - RUSTDESK_API_RUSTDESK_ID_SERVER=192.168.1.66:21116
+      - RUSTDESK_API_RUSTDESK_RELAY_SERVER=192.168.1.66:21117
+      - RUSTDESK_API_RUSTDESK_API_SERVER=http://192.168.1.66:21114
+      - RUSTDESK_API_RUSTDESK_KEY=123456789
     ports:
       - 21114:21114
     volumes:

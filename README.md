@@ -1,4 +1,5 @@
 # RustDesk API
+
 [English Doc](README_EN.md)
 
 本项目使用 Go 实现了 RustDesk 的 API，并包含了 Web UI 和 Web 客户端。RustDesk 是一个远程桌面软件，提供了自托管的解决方案。
@@ -99,22 +100,22 @@ docker run -d --name rustdesk-api -p 21114:21114 -v /data/rustdesk/api:/app/data
 
 - 环境变量，变量名前缀是RUSTDESK_API
 
-| 变量名                                 | 说明                                            | 示例                          |
-|:------------------------------------|:----------------------------------------------|-----------------------------|
-| -----------GORM配置------------------ | --------------------------------------------- | --------------------------- |
-| RUSTDESK_API_GORM_TYPE              | 数据库类型sqlite或者mysql，默认sqlite                   | sqlite                      |
-| RUSTDESK_API_GORM_MAX_IDLE_CONNS    | 数据库最大空闲连接数                                    | 10                          |
-| RUSTDESK_API_GORM_MAX_OPEN_CONNS    | 数据库最大打开连接数                                    | 100                         |
-| -----------MYSQL配置----------------- | -------------数据库类型为sqlite时不用填--------------   | ----------                  |
-| RUSTDESK_API_MYSQL_USERNAME         | mysql用户名                                      | root                        |
-| RUSTDESK_API_MYSQL_PASSWORD         | mysql密码                                       | 111111                      |
-| RUSTDESK_API_MYSQL_ADDR             | mysql地址                                       | 192.168.1.66:3306           |
-| RUSTDESK_API_MYSQL_DBNAME           | mysql数据库名                                     | rustdesk                    |
-| -----------RUSTDESK配置-------------- | -------------------------------------------   | ----------                  |
-| RUSTDESK_API_RUSTDESK_ID_SERVER     | Rustdesk的id服务器地址                              | 192.168.1.66:21116          |
-| RUSTDESK_API_RUSTDESK_RELAY_SERVER  | Rustdesk的relay服务器地址                           | 192.168.1.66:21117          |
-| RUSTDESK_API_RUSTDESK_API_SERVER    | Rustdesk的api服务器地址                             | http://192.168.1.66:21114   |
-| RUSTDESK_API_RUSTDESK_KEY           | Rustdesk的key                                  | 123456789                   |
+| 变量名                                 | 说明                                   | 示例                          |
+|:------------------------------------|:-------------------------------------|-----------------------------|
+| -----------GORM配置------------------ | ------------------------------------ | --------------------------- |
+| RUSTDESK_API_GORM_TYPE              | 数据库类型sqlite或者mysql，默认sqlite          | sqlite                      |
+| RUSTDESK_API_GORM_MAX_IDLE_CONNS    | 数据库最大空闲连接数                           | 10                          |
+| RUSTDESK_API_GORM_MAX_OPEN_CONNS    | 数据库最大打开连接数                           | 100                         |
+| -----------MYSQL配置----------------- | --------数据库类型为sqlite时不用填-------      | ----------                  |
+| RUSTDESK_API_MYSQL_USERNAME         | mysql用户名                             | root                        |
+| RUSTDESK_API_MYSQL_PASSWORD         | mysql密码                              | 111111                      |
+| RUSTDESK_API_MYSQL_ADDR             | mysql地址                              | 192.168.1.66:3306           |
+| RUSTDESK_API_MYSQL_DBNAME           | mysql数据库名                            | rustdesk                    |
+| -----------RUSTDESK配置-------------- | -----------------------------------  | ----------                  |
+| RUSTDESK_API_RUSTDESK_ID_SERVER     | Rustdesk的id服务器地址                     | 192.168.1.66:21116          |
+| RUSTDESK_API_RUSTDESK_RELAY_SERVER  | Rustdesk的relay服务器地址                  | 192.168.1.66:21117          |
+| RUSTDESK_API_RUSTDESK_API_SERVER    | Rustdesk的api服务器地址                    | http://192.168.1.66:21114   |
+| RUSTDESK_API_RUSTDESK_KEY           | Rustdesk的key                         | 123456789                   |
 
 2. 使用`docker compose`,根据rustdesk提供的示例加上自己的rustdesk-api
 
@@ -161,6 +162,11 @@ services:
           memory: 64M
   rustdesk-api:
     container_name: rustdesk-api
+    environment:
+      - RUSTDESK_API_RUSTDESK_ID_SERVER=192.168.1.66:21116
+      - RUSTDESK_API_RUSTDESK_RELAY_SERVER=192.168.1.66:21117
+      - RUSTDESK_API_RUSTDESK_API_SERVER=http://192.168.1.66:21114
+      - RUSTDESK_API_RUSTDESK_KEY=123456789
     ports:
       - 21114:21114
     image: lejianwen/rustdesk-api
