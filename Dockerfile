@@ -1,17 +1,16 @@
-FROM golang:1.22 as builder
+FROM golang:1.22-alpine as builder
 
 RUN set -eux; \
-    apt update; \
-    apt install nodejs npm -y; \
-    git clone https://github.com/lejianwen/rustdesk-api; \
+    apk add --no-cache git gcc  build-base sqlite-dev npm nodejs; \
+        git clone https://github.com/lejianwen/rustdesk-api-web; \
+        git clone https://github.com/lejianwen/rustdesk-api; \
     #先编译后台
-    git clone https://github.com/lejianwen/rustdesk-api-web; \
-    cd rustdesk-api-web; \
-    npm install; \
-    npm run build; \
+        cd rustdesk-api-web; \
+        npm install; \
+        npm run build; \
     cd ..; \
-    mkdir -p rustdesk-api/resources/admin; \
-    cp -ar rustdesk-api-web/dist/* rustdesk-api/resources/admin; \
+        mkdir -p rustdesk-api/resources/admin; \
+        cp -ar rustdesk-api-web/dist/* rustdesk-api/resources/admin; \
         cd rustdesk-api; \
         go mod tidy; \
         go install github.com/swaggo/swag/cmd/swag@latest; \
@@ -30,7 +29,7 @@ RUN set -eux; \
     mkdir -p release/data; \
     mkdir -p release/runtime;
 
-
+VOLUME /app/data
 FROM alpine
 WORKDIR /app
 COPY --from=builder /go/rustdesk-api/release /app/
