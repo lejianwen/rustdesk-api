@@ -53,7 +53,7 @@
 
 ***前端代码在[rustdesk-api-web](https://github.com/lejianwen/rustdesk-api-web)***
 
-***后台访问地址是`http://<your server>:21114/_admin/`初次安装管理员为用户名密码为`admin` `admin`，请即时更改密码***
+***后台访问地址是`http://<your server>[:port]/_admin/`初次安装管理员为用户名密码为`admin` `admin`，请即时更改密码***
 
 1. 管理员界面
    ![web_admin](docs/web_admin.png)
@@ -68,8 +68,9 @@
    ![web_webclient](docs/admin_webclient.png)
 6. Oauth,暂时只支持了`Github`, 需要创建一个`OAuth App`，然后配置到后台
    ![web_admin_oauth](docs/web_admin_oauth.png)
-    - github在`Settings`->`Developer settings`->`OAuth Apps`->`New OAuth App`
-      中创建,地址`https://github.com/settings/developers`
+    - `github oauth app`在`Settings`->`Developer settings`->`OAuth Apps`->`New OAuth App`
+      中创建,地址 [https://github.com/settings/developers](https://github.com/settings/developers)
+    - `Authorization callback URL`填写`http://<your server[:port]>/api/oauth/callback`，比如`http://127.0.0.1:21114/api/oauth/callback`
 
 ### **Web Client**:
 
