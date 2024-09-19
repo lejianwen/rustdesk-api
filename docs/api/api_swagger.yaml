@@ -6,15 +6,34 @@ definitions:
         example: '{"tags":["tag1","tag2","tag3"],"peers":[{"id":"abc","username":"abv-l","hostname":"","platform":"Windows","alias":"","tags":["tag1","tag2"],"hash":"hash"}],"tag_colors":"{\"tag1\":4288585374,\"tag2\":4278238420,\"tag3\":4291681337}"}'
         type: string
     type: object
+  api.DeviceInfoInLogin:
+    properties:
+      name:
+        type: string
+      os:
+        type: string
+      type:
+        type: string
+    type: object
   api.LoginForm:
     properties:
+      autoLogin:
+        type: boolean
+      deviceInfo:
+        $ref: '#/definitions/api.DeviceInfoInLogin'
+      id:
+        type: string
       password:
         maxLength: 20
         minLength: 4
         type: string
+      type:
+        type: string
       username:
         maxLength: 10
         minLength: 4
+        type: string
+      uuid:
         type: string
     required:
     - username
@@ -55,6 +74,9 @@ definitions:
     properties:
       email:
         type: string
+      info:
+        additionalProperties: true
+        type: object
       is_admin:
         type: boolean
       name:
@@ -242,27 +264,6 @@ paths:
       summary: 用户信息
       tags:
       - 用户
-  /currentUser:
-    get:
-      consumes:
-      - application/json
-      description: 用户信息
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/api.UserPayload'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/response.Response'
-      security:
-      - token: []
-      summary: 用户信息
-      tags:
-      - 用户
   /heartbeat:
     post:
       consumes:
@@ -346,6 +347,82 @@ paths:
       summary: 登出
       tags:
       - 登录
+  /oauth/callback:
+    get:
+      consumes:
+      - application/json
+      description: OauthCallback
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/api.LoginRes'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      summary: OauthCallback
+      tags:
+      - Oauth
+  /oauth/login:
+    get:
+      consumes:
+      - application/json
+      description: WebOauthLogin
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: WebOauthLogin
+      tags:
+      - Oauth
+  /oidc/auth:
+    post:
+      consumes:
+      - application/json
+      description: OidcAuth
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/api.LoginRes'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      summary: OidcAuth
+      tags:
+      - Oauth
+  /oidc/auth-query:
+    get:
+      consumes:
+      - application/json
+      description: OidcAuthQuery
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/api.LoginRes'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      summary: OidcAuthQuery
+      tags:
+      - Oauth
   /peers:
     get:
       consumes:

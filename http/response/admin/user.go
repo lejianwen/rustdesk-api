@@ -8,6 +8,11 @@ type LoginPayload struct {
 }
 
 var UserRouteNames = []string{
-	"MyTagList", "MyAddressBookList",
+	"MyTagList", "MyAddressBookList", "MyInfo",
 }
 var AdminRouteNames = []string{"*"}
+
+type UserOauthItem struct {
+	ThirdType string `json:"third_type"`
+	Status    int    `json:"status"`
+}

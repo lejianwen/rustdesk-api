@@ -36,7 +36,7 @@ func (i *WebClient) ServerConfig(c *gin.Context) {
 		gin.H{
 			"id_server": global.Config.Rustdesk.IdServer,
 			"key":       global.Config.Rustdesk.Key,
-			//"peers":     peers,
+			"peers":     peers,
 		},
 	)
 }

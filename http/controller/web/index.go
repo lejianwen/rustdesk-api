@@ -53,7 +53,13 @@ const autoWriteServer = () => {
 							}	
                          
 						  if (res.data.peers) {
-							  localStorage.setItem('peers', JSON.stringify(res.data.peers))
+								oldPeers = JSON.parse(localStorage.getItem('peers')) || {}
+							  Object.keys(res.data.peers).forEach(k => {
+								if(!oldPeers[k]) {
+									oldPeers[k] = res.data.peers[k]
+								}
+                              })
+							  localStorage.setItem('peers', JSON.stringify(oldPeers))
 					      }
                       }
                   })

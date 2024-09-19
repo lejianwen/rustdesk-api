@@ -19,46 +19,66 @@
 2. server端必须指定key，不能用自带的生成的key,否则可能链接不上或者超时
 
 ```bash
-hbbs -r <relay-server-ip[:port]> -k 123456789
-hbbr -k 123456789
+hbbs -r <relay-server-ip[:port]> -k <key>
+hbbr -k <key>
+```
+
+比如
+
+```bash
+hbbs -r <relay-server-ip[:port]> -k abc1234567
+hbbr -k abc1234567
 ```
 
 ## 功能
 
-### **API 服务**: 基本实现了PC端基础的接口。
+### API 服务: 基本实现了PC端基础的接口。
+
+#### 登录
+
+- 添加了`github`登录，需要在后台配置好就可以用了，具体可看后台OAuth配置
+- 添加了web后台授权登录
+
+![pc_login](docs/pc_login.png)
+
+#### 地址簿
 
 ![pc_ab](docs/pc_ab.png)
+
+#### 群组,群组分为`共享组`和`普通组`，共享组中所有人都能看到小组成员的地址，普通组只有管理员能看到所有小组成员的地址
+
 ![pc_gr](docs/pc_gr.png)
 
 ### **Web UI**: 使用前后端分离，提供用户友好的管理界面，主要用来管理和展示。
 
 ***前端代码在[rustdesk-api-web](https://github.com/lejianwen/rustdesk-api-web)***
 
-***后台访问地址是`http://<your server>:21114/_admin/`初次安装管理员为用户名密码为`admin admin`，请即时更改密码***
+***后台访问地址是`http://<your server>:21114/_admin/`初次安装管理员为用户名密码为`admin` `admin`，请即时更改密码***
 
 1. 管理员界面
    ![web_admin](docs/web_admin.png)
 2. 普通用户界面
-   ![web_user](docs/web_user.png)
-3. 更改密码在右上角
-
+   ![web_user](docs/web_admin_user.png)
+3. 右上角也可以更改密码
    ![web_resetpwd](docs/web_resetpwd.png)
 
 4. 分组可以自定义，方便管理，暂时支持两种类型: `共享组` 和 `普通组`
-
    ![web_admin_gr](docs/web_admin_gr.png)
+5. 可以直接打开webclient，方便使用
+   ![web_webclient](docs/admin_webclient.png)
 
-### **Web 客户端**:
+### **Web Client**:
 
 1. 如果已经登录了后台，web client将自动直接登录
 2. 如果没登录后台，点击右上角登录即可，api server已经自动配置好了
-3. 登录后台后，会将地址簿自动保存到web client中，方便使用
    ![webclient_conf](docs/webclient_conf.png)
+3. 登录后，会自动同步ID服务器和KEY
+4. 登录后，会将地址簿自动保存到web client中，方便使用
 
 ### **自动化文档**: 使用 Swag 生成 API 文档，方便开发者理解和使用 API。
 
-1. 后台文档 <youer server>/admin/swagger/index.html
-2. PC端文档 <youer server>/swagger/index.html
+1. 后台文档 `<youer server>/admin/swagger/index.html`
+2. PC端文档 `<youer server>/swagger/index.html`
    ![api_swag](docs/api_swag.png)
 
 ## 安装与运行
@@ -72,6 +92,7 @@ gin:
   api-addr: "0.0.0.0:21114"
   mode: "release"
   resources-path: 'resources'
+  trust-proxy: ""
 gorm:
   type: "sqlite"
   max-idle-conns: 10
@@ -88,36 +109,67 @@ rustdesk:
   key: "123456789"
 ```
 
-### 安装步骤
-
-#### docker运行
-
-1. 直接docker运行
-
-```bash
-docker run -d --name rustdesk-api -p 21114:21114 -v /data/rustdesk/api:/app/data lejianwen/rustdesk-api
-```
-
-- 环境变量，变量名前缀是RUSTDESK_API
+* 环境变量,变量名前缀是RUSTDESK_API，环境变量如果存在将覆盖配置文件中的配置
 
 | 变量名                                 | 说明                                   | 示例                          |
 |:------------------------------------|:-------------------------------------|-----------------------------|
+| -----GIN配置-----                     | ----------                           | ----------                  |
+| RUSTDESK_API_GIN_TRUST_PROXY        | 信任的代理IP列表，以`,`分割，默认信任所有              | 192.168.1.2,192.168.1.3     |
 | -----------GORM配置------------------ | ------------------------------------ | --------------------------- |
 | RUSTDESK_API_GORM_TYPE              | 数据库类型sqlite或者mysql，默认sqlite          | sqlite                      |
 | RUSTDESK_API_GORM_MAX_IDLE_CONNS    | 数据库最大空闲连接数                           | 10                          |
 | RUSTDESK_API_GORM_MAX_OPEN_CONNS    | 数据库最大打开连接数                           | 100                         |
-| -----------MYSQL配置----------------- | --------数据库类型为sqlite时不用填-------      | ----------                  |
+| -----MYSQL配置-----                   | -----数据库类型为sqlite时不用填-----           | ----------                  |
 | RUSTDESK_API_MYSQL_USERNAME         | mysql用户名                             | root                        |
 | RUSTDESK_API_MYSQL_PASSWORD         | mysql密码                              | 111111                      |
 | RUSTDESK_API_MYSQL_ADDR             | mysql地址                              | 192.168.1.66:3306           |
 | RUSTDESK_API_MYSQL_DBNAME           | mysql数据库名                            | rustdesk                    |
-| -----------RUSTDESK配置-------------- | -----------------------------------  | ----------                  |
+| -----RUSTDESK配置-----                | ---------------                      | ----------                  |
 | RUSTDESK_API_RUSTDESK_ID_SERVER     | Rustdesk的id服务器地址                     | 192.168.1.66:21116          |
 | RUSTDESK_API_RUSTDESK_RELAY_SERVER  | Rustdesk的relay服务器地址                  | 192.168.1.66:21117          |
 | RUSTDESK_API_RUSTDESK_API_SERVER    | Rustdesk的api服务器地址                    | http://192.168.1.66:21114   |
 | RUSTDESK_API_RUSTDESK_KEY           | Rustdesk的key                         | 123456789                   |
 
-2. 使用`docker compose`,根据rustdesk提供的示例加上自己的rustdesk-api
+### 安装步骤
+
+#### docker运行
+
+1. 直接docker运行,配置可以通过挂载配置文件`/app/conf/config.yaml`来修改,或者通过环境变量覆盖配置文件中的配置
+
+```bash
+docker run -d --name rustdesk-api -p 21114:21114 \
+-v /data/rustdesk/api:/app/data \
+-e RUSTDESK_API_RUSTDESK_ID_SERVER=192.168.1.66:21116 \
+-e RUSTDESK_API_RUSTDESK_RELAY_SERVER=192.168.1.66:21117 \
+-e RUSTDESK_API_RUSTDESK_API_SERVER=http://192.168.1.66:21114 \
+-e RUSTDESK_API_RUSTDESK_KEY=123456789 \
+lejianwen/rustdesk-api
+```
+
+2. 使用`docker compose`
+
+- 简单示例
+
+```docker-compose
+services:
+   rustdesk-api:
+    container_name: rustdesk-api
+    environment:
+      - RUSTDESK_API_RUSTDESK_ID_SERVER=192.168.1.66:21116
+      - RUSTDESK_API_RUSTDESK_RELAY_SERVER=192.168.1.66:21117
+      - RUSTDESK_API_RUSTDESK_API_SERVER=http://192.168.1.66:21114
+      - RUSTDESK_API_RUSTDESK_KEY=123456789
+    ports:
+      - 21114:21114
+    image: lejianwen/rustdesk-api
+    volumes:
+      - /data/rustdesk/api:/app/data #将数据库挂载出来方便备份
+    networks:
+      - rustdesk-net
+    restart: unless-stopped
+```
+
+- 根据rustdesk提供的示例加上自己的rustdesk-api
 
 ```docker-compose
 networks:

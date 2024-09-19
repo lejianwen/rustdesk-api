@@ -19,7 +19,7 @@ func ApiInit(g *gin.Engine) {
 
 	frg := g.Group("/api")
 
-	frg.Use(middleware.Cors())
+	//frg.Use(middleware.Cors())
 	frg.OPTIONS("/*any", nil)
 
 	i := &api.Index{}
@@ -33,6 +33,16 @@ func ApiInit(g *gin.Engine) {
 		frg.GET("/login-options", l.LoginOptions)
 		frg.POST("/login", l.Login)
 
+	}
+	{
+		o := &api.Oauth{}
+		// [method:POST] [uri:/api/oidc/auth]
+		frg.POST("/oidc/auth", o.OidcAuth)
+		// [method:GET] [uri:/api/oidc/auth-query?code=abc&id=xxxxx&uuid=xxxxx]
+		frg.GET("/oidc/auth-query", o.OidcAuthQuery)
+		//api/oauth/callback
+		frg.GET("/oauth/callback", o.OauthCallback)
+		frg.GET("/oauth/login", o.OauthCallback)
 	}
 	{
 		pe := &api.Peer{}

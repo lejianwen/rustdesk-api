@@ -5,7 +5,9 @@ import (
 	"Gwen/http/request/api"
 	"Gwen/http/response"
 	apiResp "Gwen/http/response/api"
+	"Gwen/model"
 	"Gwen/service"
+	"encoding/json"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
@@ -26,8 +28,9 @@ type Login struct {
 func (l *Login) Login(c *gin.Context) {
 	f := &api.LoginForm{}
 	err := c.ShouldBindJSON(f)
+	//fmt.Println(f)
 	if err != nil {
-		response.Error(c, "系统错误")
+		response.Error(c, "参数错误")
 		return
 	}
 
@@ -44,7 +47,20 @@ func (l *Login) Login(c *gin.Context) {
 		return
 	}
 
-	ut := service.AllService.UserService.Login(u)
+	//根据refer判断是webclient还是app
+	ref := c.GetHeader("referer")
+	if ref != "" {
+		f.DeviceInfo.Type = "webclient"
+	}
+
+	ut := service.AllService.UserService.Login(u, &model.LoginLog{
+		UserId:   u.Id,
+		Client:   f.DeviceInfo.Type,
+		Uuid:     f.Uuid,
+		Ip:       c.ClientIP(),
+		Type:     model.LoginLogTypeAccount,
+		Platform: f.DeviceInfo.Os,
+	})
 
 	c.JSON(http.StatusOK, apiResp.LoginRes{
 		AccessToken: ut.Token,
@@ -63,11 +79,31 @@ func (l *Login) Login(c *gin.Context) {
 // @Failure 500 {object} response.ErrorResponse
 // @Router /login-options [post]
 func (l *Login) LoginOptions(c *gin.Context) {
-	test := []string{
-		//"common-oidc/[{\"name\":\"google\"},{\"name\":\"github\"},{\"name\":\"facebook\"},{\"name\":\"网页授权登录\",\"icon\":\"\"}]",
-		//"oidc/myapp",
+	oauthOks := []string{}
+	err, _ := service.AllService.OauthService.GetOauthConfig(model.OauthTypeGithub)
+	if err == nil {
+		oauthOks = append(oauthOks, model.OauthTypeGithub)
 	}
-	c.JSON(http.StatusOK, test)
+	err, _ = service.AllService.OauthService.GetOauthConfig(model.OauthTypeGoogle)
+	if err == nil {
+		oauthOks = append(oauthOks, model.OauthTypeGoogle)
+	}
+	oauthOks = append(oauthOks, model.OauthTypeWebauth)
+	var oidcItems []map[string]string
+	for _, v := range oauthOks {
+		oidcItems = append(oidcItems, map[string]string{"name": v})
+	}
+	common, err := json.Marshal(oidcItems)
+	if err != nil {
+		response.Error(c, "参数错误")
+		return
+	}
+	var res []string
+	res = append(res, "common-oidc/"+string(common))
+	for _, v := range oauthOks {
+		res = append(res, "oidc/"+v)
+	}
+	c.JSON(http.StatusOK, res)
 }
 
 // Logout

@@ -17,6 +17,13 @@ func RustAuth() gin.HandlerFunc {
 			c.Abort()
 			return
 		}
+		if len(token) <= 7 {
+			c.JSON(401, gin.H{
+				"error": "Unauthorized",
+			})
+			c.Abort()
+			return
+		}
 		//提取token，格式是Bearer {token}
 		//这里只是简单的提取
 		token = token[7:]

@@ -2,6 +2,7 @@ gin:
   api-addr: "0.0.0.0:21114"
   mode: "release" #release,debug,test
   resources-path: 'resources'  #对外静态文件目录
+  trust-proxy: ""
 gorm:
   type: "sqlite"
   max-idle-conns: 10
@@ -16,14 +17,14 @@ rustdesk:
   relay-server: "192.168.1.66:21117"
   api-server: "http://192.168.1.66:21114"
   key: "123456789"
-redis:
-  addr: "127.0.0.1:6379"
-  password: ""
-  db: 0
 logger:
   path: "./runtime/log.txt"
   level: "error" #trace,debug,info,warn,error,fatal
   report-caller: true
+redis:
+  addr: "127.0.0.1:6379"
+  password: ""
+  db: 0
 cache:
   type: "file"
   file-dir: "./runtime/cache"

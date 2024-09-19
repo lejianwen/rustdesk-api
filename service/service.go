@@ -13,6 +13,8 @@ type Service struct {
 	*TagService
 	*PeerService
 	*GroupService
+	*OauthService
+	*LoginLogService
 }
 
 func New() *Service {

@@ -7,7 +7,6 @@ import (
 	"Gwen/model"
 	"Gwen/service"
 	"encoding/json"
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
@@ -66,7 +65,6 @@ func (a *Ab) UpAb(c *gin.Context) {
 	abf := &requstform.AddressBookForm{}
 	err := c.ShouldBindJSON(&abf)
 	if err != nil {
-		fmt.Println(err)
 		response.Error(c, "参数错误")
 		return
 	}
@@ -93,7 +91,6 @@ func (a *Ab) UpAb(c *gin.Context) {
 	tc := map[string]uint{}
 	err = json.Unmarshal([]byte(abd.TagColors), &tc)
 	if err != nil {
-		fmt.Println(err)
 		response.Error(c, "系统错误")
 		return
 	} else {
@@ -134,7 +131,6 @@ func (a *Ab) TagAdd(c *gin.Context) {
 	t := &model.Tag{}
 	err := c.ShouldBindJSON(t)
 	if err != nil {
-		fmt.Println(err)
 		response.Error(c, "参数错误")
 		return
 

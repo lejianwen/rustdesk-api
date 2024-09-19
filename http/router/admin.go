@@ -25,6 +25,8 @@ func Init(g *gin.Engine) {
 	TagBind(adg)
 	AddressBookBind(adg)
 	PeerBind(adg)
+	OauthBind(adg)
+	LoginLogBind(adg)
 
 	rs := &admin.Rustdesk{}
 	adg.GET("/server-config", rs.ServerConfig)
@@ -44,6 +46,7 @@ func UserBind(rg *gin.RouterGroup) {
 		cont := &admin.User{}
 		aR.GET("/current", cont.Current)
 		aR.POST("/changeCurPwd", cont.ChangeCurPwd)
+		aR.POST("/myOauth", cont.MyOauth)
 	}
 	aRP := rg.Group("/user").Use(middleware.AdminPrivilege())
 	{
@@ -102,6 +105,35 @@ func PeerBind(rg *gin.RouterGroup) {
 		aR.POST("/update", cont.Update)
 		aR.POST("/delete", cont.Delete)
 	}
+}
+
+func OauthBind(rg *gin.RouterGroup) {
+	aR := rg.Group("/oauth")
+	{
+		cont := &admin.Oauth{}
+		aR.POST("/confirm", cont.Confirm)
+		aR.POST("/bind", cont.ToBind)
+		aR.POST("/bindConfirm", cont.BindConfirm)
+		aR.POST("/unbind", cont.Unbind)
+		aR.GET("/info", cont.Info)
+	}
+	arp := aR.Use(middleware.AdminPrivilege())
+	{
+		cont := &admin.Oauth{}
+		arp.GET("/list", cont.List)
+		arp.GET("/detail/:id", cont.Detail)
+		arp.POST("/create", cont.Create)
+		arp.POST("/update", cont.Update)
+		arp.POST("/delete", cont.Delete)
+
+	}
+
+}
+func LoginLogBind(rg *gin.RouterGroup) {
+	aR := rg.Group("/login_log")
+	cont := &admin.LoginLog{}
+	aR.GET("/list", cont.List)
+	aR.POST("/delete", cont.Delete)
 }
 
 /*

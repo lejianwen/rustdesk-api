@@ -21,9 +21,21 @@ package api
 	  bytes hwid = 14;
 	}
 */
+
+type DeviceInfoInLogin struct {
+	Name string `json:"name" label:"name"`
+	Os   string `json:"os" label:"os"`
+	Type string `json:"type" label:"type"`
+}
+
 type LoginForm struct {
-	Username string `json:"username" validate:"required,gte=4,lte=10" label:"用户名"`
-	Password string `json:"password,omitempty" validate:"gte=4,lte=20" label:"密码"`
+	AutoLogin  bool              `json:"autoLogin" label:"自动登录"`
+	DeviceInfo DeviceInfoInLogin `json:"deviceInfo" label:"设备信息"`
+	Id         string            `json:"id"  label:"id"`
+	Type       string            `json:"type"  label:"type"`
+	Uuid       string            `json:"uuid"  label:"uuid"`
+	Username   string            `json:"username" validate:"required,gte=4,lte=10" label:"用户名"`
+	Password   string            `json:"password,omitempty" validate:"gte=4,lte=20" label:"密码"`
 }
 
 type UserListQuery struct {

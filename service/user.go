@@ -7,6 +7,8 @@ import (
 	"Gwen/utils"
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
+	"math/rand"
+	"strconv"
 	"time"
 )
 
@@ -51,11 +53,11 @@ func (us *UserService) InfoByAccessToken(token string) *model.User {
 
 // GenerateToken 生成token
 func (us *UserService) GenerateToken(u *model.User) string {
-	return utils.Md5(u.Username + u.Password + time.Now().String())
+	return utils.Md5(u.Username + time.Now().String())
 }
 
 // Login 登录
-func (us *UserService) Login(u *model.User) *model.UserToken {
+func (us *UserService) Login(u *model.User, llog *model.LoginLog) *model.UserToken {
 	token := us.GenerateToken(u)
 	ut := &model.UserToken{
 		UserId:    u.Id,
@@ -63,6 +65,7 @@ func (us *UserService) Login(u *model.User) *model.UserToken {
 		ExpiredAt: time.Now().Add(time.Hour * 24 * 7).Unix(),
 	}
 	global.DB.Create(ut)
+	global.DB.Create(llog)
 	return ut
 }
 
@@ -168,4 +171,71 @@ func (us *UserService) RouteNames(u *model.User) []string {
 		return adResp.AdminRouteNames
 	}
 	return adResp.UserRouteNames
+}
+
+// InfoByGithubId 根据githubid取用户信息
+func (us *UserService) InfoByGithubId(githubId string) *model.User {
+	ut := AllService.OauthService.UserThirdInfo(model.OauthTypeGithub, githubId)
+	if ut.Id == 0 {
+		return nil
+	}
+	u := us.InfoById(ut.UserId)
+	if u.Id == 0 {
+		return nil
+	}
+	return u
+}
+
+// RegisterByGithub 注册
+func (us *UserService) RegisterByGithub(githubName string, githubId int64) *model.User {
+	tx := global.DB.Begin()
+	ut := &model.UserThird{
+		OpenId:    strconv.FormatInt(githubId, 10),
+		ThirdName: githubName,
+		ThirdType: model.OauthTypeGithub,
+	}
+	//global.DB.Where("open_id = ?", githubId).First(ut)
+	//这种情况不应该出现，如果出现说明有bug
+	//if ut.Id != 0 {
+	//	u := &model.User{}
+	//	global.DB.Where("id = ?", ut.UserId).First(u)
+	//	tx.Commit()
+	//	return u
+	//}
+
+	username := us.GenerateUsernameByOauth(githubName)
+	u := &model.User{
+		Username: username,
+		GroupId:  1,
+	}
+	global.DB.Create(u)
+
+	ut.UserId = u.Id
+	global.DB.Create(ut)
+
+	tx.Commit()
+	return u
+}
+
+// GenerateUsernameByOauth 生成用户名
+func (us *UserService) GenerateUsernameByOauth(name string) string {
+	u := &model.User{}
+	global.DB.Where("username = ?", name).First(u)
+	if u.Id == 0 {
+		return name
+	}
+	name = name + strconv.FormatInt(rand.Int63n(10), 10)
+	return us.GenerateUsernameByOauth(name)
+}
+
+// UserThirdsByUserId
+func (us *UserService) UserThirdsByUserId(userId uint) (res []*model.UserThird) {
+	global.DB.Where("user_id = ?", userId).Find(&res)
+	return res
+}
+
+func (us *UserService) UserThirdInfo(userId uint, op string) *model.UserThird {
+	ut := &model.UserThird{}
+	global.DB.Where("user_id = ? and third_type = ?", userId, op).First(ut)
+	return ut
 }

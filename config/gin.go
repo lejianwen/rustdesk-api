@@ -5,4 +5,5 @@ type Gin struct {
 	AdminAddr     string `mapstructure:"admin-addr"`
 	Mode          string
 	ResourcesPath string `mapstructure:"resources-path"`
+	TrustProxy    string `mapstructure:"trust-proxy"`
 }

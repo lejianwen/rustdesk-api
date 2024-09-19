@@ -233,40 +233,6 @@ const docTemplateapi = `{
                 }
             }
         },
-        "/currentUser": {
-            "get": {
-                "security": [
-                    {
-                        "token": []
-                    }
-                ],
-                "description": "用户信息",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "用户"
-                ],
-                "summary": "用户信息",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/api.UserPayload"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/response.Response"
-                        }
-                    }
-                }
-            }
-        },
         "/heartbeat": {
             "post": {
                 "description": "心跳",
@@ -383,6 +349,122 @@ const docTemplateapi = `{
                         "description": "OK",
                         "schema": {
                             "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/oauth/callback": {
+            "get": {
+                "description": "OauthCallback",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Oauth"
+                ],
+                "summary": "OauthCallback",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/api.LoginRes"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/oauth/login": {
+            "get": {
+                "description": "WebOauthLogin",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Oauth"
+                ],
+                "summary": "WebOauthLogin",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/oidc/auth": {
+            "post": {
+                "description": "OidcAuth",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Oauth"
+                ],
+                "summary": "OidcAuth",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/api.LoginRes"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/oidc/auth-query": {
+            "get": {
+                "description": "OidcAuthQuery",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Oauth"
+                ],
+                "summary": "OidcAuthQuery",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/api.LoginRes"
                         }
                     },
                     "500": {
@@ -656,21 +738,50 @@ const docTemplateapi = `{
                 }
             }
         },
+        "api.DeviceInfoInLogin": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "os": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "string"
+                }
+            }
+        },
         "api.LoginForm": {
             "type": "object",
             "required": [
                 "username"
             ],
             "properties": {
+                "autoLogin": {
+                    "type": "boolean"
+                },
+                "deviceInfo": {
+                    "$ref": "#/definitions/api.DeviceInfoInLogin"
+                },
+                "id": {
+                    "type": "string"
+                },
                 "password": {
                     "type": "string",
                     "maxLength": 20,
                     "minLength": 4
                 },
+                "type": {
+                    "type": "string"
+                },
                 "username": {
                     "type": "string",
                     "maxLength": 10,
                     "minLength": 4
+                },
+                "uuid": {
+                    "type": "string"
                 }
             }
         },
@@ -728,6 +839,10 @@ const docTemplateapi = `{
             "properties": {
                 "email": {
                     "type": "string"
+                },
+                "info": {
+                    "type": "object",
+                    "additionalProperties": true
                 },
                 "is_admin": {
                     "type": "boolean"

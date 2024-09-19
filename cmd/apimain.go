@@ -157,7 +157,7 @@ func ApiInitValidator() {
 }
 
 func DatabaseAutoUpdate() {
-	version := 100
+	version := 103
 
 	db := global.DB
 
@@ -215,6 +215,9 @@ func Migrate(version uint) {
 		&model.AddressBook{},
 		&model.Peer{},
 		&model.Group{},
+		&model.UserThird{},
+		&model.Oauth{},
+		&model.LoginLog{},
 	)
 	if err != nil {
 		fmt.Println("migrate err :=>", err)

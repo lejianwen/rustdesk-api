@@ -21,11 +21,11 @@ type User struct {
 // @Failure 500 {object} response.Response
 // @Router /currentUser [get]
 // @Security token
-func (u *User) currentUser(c *gin.Context) {
-	user := service.AllService.UserService.CurUser(c)
-	up := (&apiResp.UserPayload{}).FromUser(user)
-	c.JSON(http.StatusOK, up)
-}
+//func (u *User) currentUser(c *gin.Context) {
+//	user := service.AllService.UserService.CurUser(c)
+//	up := (&apiResp.UserPayload{}).FromUser(user)
+//	c.JSON(http.StatusOK, up)
+//}
 
 // Info 用户信息
 // @Tags 用户

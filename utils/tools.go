@@ -4,6 +4,7 @@ import (
 	"crypto/md5"
 	"encoding/json"
 	"fmt"
+	"math/rand"
 	"reflect"
 	"runtime/debug"
 )
@@ -60,4 +61,15 @@ func SafeGo(f interface{}, params ...interface{}) {
 		// Call the function f with params
 		funcValue.Call(paramsValue)
 	}()
+}
+
+// RandomString 生成随机字符串
+func RandomString(n int) string {
+	const letterBytes = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+	length := len(letterBytes)
+	b := make([]byte, n)
+	for i := range b {
+		b[i] = letterBytes[rand.Intn(length)]
+	}
+	return string(b)
 }

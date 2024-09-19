@@ -4,6 +4,8 @@ definitions:
     properties:
       password:
         type: string
+      platform:
+        type: string
       username:
         type: string
     required:
@@ -85,6 +87,26 @@ definitions:
       username:
         type: string
     type: object
+  admin.OauthForm:
+    properties:
+      auto_register:
+        type: boolean
+      client_id:
+        type: string
+      client_secret:
+        type: string
+      id:
+        type: integer
+      op:
+        type: string
+      redirect_url:
+        type: string
+    required:
+    - client_id
+    - client_secret
+    - op
+    - redirect_url
+    type: object
   admin.PeerForm:
     properties:
       cpu:
@@ -147,6 +169,13 @@ definitions:
     - nickname
     - status
     - username
+    type: object
+  admin.UserOauthItem:
+    properties:
+      status:
+        type: integer
+      third_type:
+        type: string
     type: object
   admin.UserPasswordForm:
     properties:
@@ -232,6 +261,75 @@ definitions:
       list:
         items:
           $ref: '#/definitions/model.Group'
+        type: array
+      page:
+        type: integer
+      page_size:
+        type: integer
+      total:
+        type: integer
+    type: object
+  model.LoginLog:
+    properties:
+      client:
+        description: webadmin,webclient,app,
+        type: string
+      created_at:
+        type: string
+      id:
+        type: integer
+      ip:
+        type: string
+      platform:
+        description: windows,linux,mac,android,ios
+        type: string
+      type:
+        description: account,oauth
+        type: string
+      updated_at:
+        type: string
+      user_id:
+        type: integer
+      uuid:
+        type: string
+    type: object
+  model.LoginLogList:
+    properties:
+      list:
+        items:
+          $ref: '#/definitions/model.LoginLog'
+        type: array
+      page:
+        type: integer
+      page_size:
+        type: integer
+      total:
+        type: integer
+    type: object
+  model.Oauth:
+    properties:
+      auto_register:
+        type: boolean
+      client_id:
+        type: string
+      client_secret:
+        type: string
+      created_at:
+        type: string
+      id:
+        type: integer
+      op:
+        type: string
+      redirect_url:
+        type: string
+      updated_at:
+        type: string
+    type: object
+  model.OauthList:
+    properties:
+      list:
+        items:
+          $ref: '#/definitions/model.Oauth'
         type: array
       page:
         type: integer
@@ -782,6 +880,105 @@ paths:
       summary: 登录
       tags:
       - 登录
+  /admin/loginLog/delete:
+    post:
+      consumes:
+      - application/json
+      description: 登录日志删除
+      parameters:
+      - description: 登录日志信息
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/model.LoginLog'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - token: []
+      summary: 登录日志删除
+      tags:
+      - 登录日志
+  /admin/loginLog/detail/{id}:
+    get:
+      consumes:
+      - application/json
+      description: 登录日志详情
+      parameters:
+      - description: ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.LoginLog'
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - token: []
+      summary: 登录日志详情
+      tags:
+      - 登录日志
+  /admin/loginLog/list:
+    get:
+      consumes:
+      - application/json
+      description: 登录日志列表
+      parameters:
+      - description: 页码
+        in: query
+        name: page
+        type: integer
+      - description: 页大小
+        in: query
+        name: page_size
+        type: integer
+      - description: 用户ID
+        in: query
+        name: user_id
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.LoginLogList'
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - token: []
+      summary: 登录日志列表
+      tags:
+      - 登录日志
   /admin/logout:
     post:
       consumes:
@@ -801,6 +998,167 @@ paths:
       summary: 登出
       tags:
       - 登录
+  /admin/oauth/create:
+    post:
+      consumes:
+      - application/json
+      description: 创建Oauth
+      parameters:
+      - description: Oauth信息
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/admin.OauthForm'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.Oauth'
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - token: []
+      summary: 创建Oauth
+      tags:
+      - Oauth
+  /admin/oauth/delete:
+    post:
+      consumes:
+      - application/json
+      description: Oauth删除
+      parameters:
+      - description: Oauth信息
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/admin.OauthForm'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - token: []
+      summary: Oauth删除
+      tags:
+      - Oauth
+  /admin/oauth/detail/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Oauth详情
+      parameters:
+      - description: ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.Oauth'
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - token: []
+      summary: Oauth详情
+      tags:
+      - Oauth
+  /admin/oauth/list:
+    get:
+      consumes:
+      - application/json
+      description: Oauth列表
+      parameters:
+      - description: 页码
+        in: query
+        name: page
+        type: integer
+      - description: 页大小
+        in: query
+        name: page_size
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.OauthList'
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - token: []
+      summary: Oauth列表
+      tags:
+      - Oauth
+  /admin/oauth/update:
+    post:
+      consumes:
+      - application/json
+      description: Oauth编辑
+      parameters:
+      - description: Oauth信息
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/admin.OauthForm'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.OauthList'
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - token: []
+      summary: Oauth编辑
+      tags:
+      - Oauth
   /admin/peer/create:
     post:
       consumes:
@@ -1336,6 +1694,34 @@ paths:
       security:
       - token: []
       summary: 管理员列表
+      tags:
+      - 用户
+  /admin/user/myOauth:
+    get:
+      consumes:
+      - application/json
+      description: 我的授权
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/admin.UserOauthItem'
+                  type: array
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - token: []
+      summary: 我的授权
       tags:
       - 用户
   /admin/user/update:

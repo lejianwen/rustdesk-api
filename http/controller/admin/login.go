@@ -5,6 +5,7 @@ import (
 	"Gwen/http/request/admin"
 	"Gwen/http/response"
 	adResp "Gwen/http/response/admin"
+	"Gwen/model"
 	"Gwen/service"
 	"github.com/gin-gonic/gin"
 )
@@ -43,7 +44,14 @@ func (ct *Login) Login(c *gin.Context) {
 		return
 	}
 
-	ut := service.AllService.UserService.Login(u)
+	ut := service.AllService.UserService.Login(u, &model.LoginLog{
+		UserId:   u.Id,
+		Client:   "webadmin",
+		Uuid:     "",
+		Ip:       c.ClientIP(),
+		Type:     "account",
+		Platform: f.Platform,
+	})
 
 	response.Success(c, &adResp.LoginPayload{
 		Token:      ut.Token,

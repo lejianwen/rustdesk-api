@@ -19,17 +19,19 @@ UserStatus status;
 bool isAdmin = false;
 */
 type UserPayload struct {
-	Name    string `json:"name"`
-	Email   string `json:"email"`
-	Note    string `json:"note"`
-	IsAdmin *bool  `json:"is_admin"`
-	Status  int    `json:"status"`
+	Name    string                 `json:"name"`
+	Email   string                 `json:"email"`
+	Note    string                 `json:"note"`
+	IsAdmin *bool                  `json:"is_admin"`
+	Status  int                    `json:"status"`
+	Info    map[string]interface{} `json:"info"`
 }
 
 func (up *UserPayload) FromUser(user *model.User) *UserPayload {
 	up.Name = user.Username
 	up.IsAdmin = user.IsAdmin
 	up.Status = int(user.Status)
+	up.Info = map[string]interface{}{}
 	return up
 }
 
@@ -50,6 +52,6 @@ type LoginRes struct {
 	Type        string      `json:"type"`
 	AccessToken string      `json:"access_token"`
 	User        UserPayload `json:"user"`
-	Secret      string      `json:"secret"`
-	TfaType     string      `json:"tfa_type"`
+	Secret      string      `json:"secret,omitempty"`
+	TfaType     string      `json:"tfa_type,omitempty"`
 }

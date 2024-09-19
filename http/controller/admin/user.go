@@ -259,3 +259,37 @@ func (ct *User) ChangeCurPwd(c *gin.Context) {
 	}
 	response.Success(c, nil)
 }
+
+// MyOauth
+// @Tags 用户
+// @Summary 我的授权
+// @Description 我的授权
+// @Accept  json
+// @Produce  json
+// @Success 200 {object} response.Response{data=[]adResp.UserOauthItem}
+// @Failure 500 {object} response.Response
+// @Router /admin/user/myOauth [get]
+// @Security token
+func (ct *User) MyOauth(c *gin.Context) {
+	u := service.AllService.UserService.CurUser(c)
+	oal := service.AllService.OauthService.List(1, 100, nil)
+	ops := make([]string, 0)
+	for _, oa := range oal.Oauths {
+		ops = append(ops, oa.Op)
+	}
+	uts := service.AllService.UserService.UserThirdsByUserId(u.Id)
+	var res []*adResp.UserOauthItem
+	for _, oa := range oal.Oauths {
+		item := &adResp.UserOauthItem{
+			ThirdType: oa.Op,
+		}
+		for _, ut := range uts {
+			if ut.ThirdType == oa.Op {
+				item.Status = 1
+				break
+			}
+		}
+		res = append(res, item)
+	}
+	response.Success(c, res)
+}
