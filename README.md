@@ -17,18 +17,18 @@
 
 1. PC客户端使用的是 ***1.3.0***，经测试 ***1.2.6+*** 都可以
 2. server端必须指定key，不能用自带的生成的key,否则可能链接不上或者超时
-
-```bash
-hbbs -r <relay-server-ip[:port]> -k <key>
-hbbr -k <key>
-```
-
-比如
-
-```bash
-hbbs -r <relay-server-ip[:port]> -k abc1234567
-hbbr -k abc1234567
-```
+   
+   ```bash
+   hbbs -r <relay-server-ip[:port]> -k <key>
+   hbbr -k <key>
+   ```
+   
+   比如
+   
+   ```bash
+   hbbs -r <relay-server-ip[:port]> -k abc1234567
+   hbbr -k abc1234567
+   ```
 
 ## 功能
 
@@ -66,6 +66,10 @@ hbbr -k abc1234567
    ![web_admin_gr](docs/web_admin_gr.png)
 5. 可以直接打开webclient，方便使用
    ![web_webclient](docs/admin_webclient.png)
+6. Oauth,暂时只支持了`Github`, 需要创建一个`OAuth App`，然后配置到后台
+   ![web_admin_oauth](docs/web_admin_oauth.png)
+    - github在`Settings`->`Developer settings`->`OAuth Apps`->`New OAuth App`
+      中创建,地址`https://github.com/settings/developers`
 
 ### **Web Client**:
 
@@ -148,87 +152,87 @@ lejianwen/rustdesk-api
 
 2. 使用`docker compose`
 
-- 简单示例
+    - 简单示例
 
-```docker-compose
-services:
-   rustdesk-api:
-    container_name: rustdesk-api
-    environment:
-      - RUSTDESK_API_RUSTDESK_ID_SERVER=192.168.1.66:21116
-      - RUSTDESK_API_RUSTDESK_RELAY_SERVER=192.168.1.66:21117
-      - RUSTDESK_API_RUSTDESK_API_SERVER=http://192.168.1.66:21114
-      - RUSTDESK_API_RUSTDESK_KEY=123456789
-    ports:
-      - 21114:21114
-    image: lejianwen/rustdesk-api
-    volumes:
-      - /data/rustdesk/api:/app/data #将数据库挂载出来方便备份
-    networks:
-      - rustdesk-net
-    restart: unless-stopped
-```
+   ```docker-compose
+   services:
+      rustdesk-api:
+       container_name: rustdesk-api
+       environment:
+         - RUSTDESK_API_RUSTDESK_ID_SERVER=192.168.1.66:21116
+         - RUSTDESK_API_RUSTDESK_RELAY_SERVER=192.168.1.66:21117
+         - RUSTDESK_API_RUSTDESK_API_SERVER=http://192.168.1.66:21114
+         - RUSTDESK_API_RUSTDESK_KEY=123456789
+       ports:
+         - 21114:21114
+       image: lejianwen/rustdesk-api
+       volumes:
+         - /data/rustdesk/api:/app/data #将数据库挂载出来方便备份
+       networks:
+         - rustdesk-net
+       restart: unless-stopped
+   ```
 
-- 根据rustdesk提供的示例加上自己的rustdesk-api
+    - 根据rustdesk提供的示例加上自己的rustdesk-api
 
-```docker-compose
-networks:
-  rustdesk-net:
-    external: false
-services:
-  hbbs:
-    container_name: hbbs
-    ports:
-      - 21115:21115
-      - 21116:21116 # 自定义 hbbs 映射端口
-      - 21116:21116/udp # 自定义 hbbs 映射端口
-      - 21118:21118 # web client 需要
-    image: rustdesk/rustdesk-server
-    command: hbbs -r <relay-server-ip[:port]> -k 123456789 # 填入个人域名或 IP + hbbr 暴露端口
-    volumes:
-      - /data/rustdesk/hbbs:/root # 自定义挂载目录
-    networks:
-      - rustdesk-net
-    depends_on:
-      - hbbr
-    restart: unless-stopped
-    deploy:
-      resources:
-        limits:
-          memory: 64M
-  hbbr:
-    container_name: hbbr
-    ports:
-      - 21117:21117 # 自定义 hbbr 映射端口
-    image: rustdesk/rustdesk-server
-    command: hbbr -k 123456789
-    #command: hbbr
-    volumes:
-      - /data/rustdesk/hbbr:/root # 自定义挂载目录
-    networks:
-      - rustdesk-net
-    restart: unless-stopped
-    deploy:
-      resources:
-        limits:
-          memory: 64M
-  rustdesk-api:
-    container_name: rustdesk-api
-    environment:
-      - RUSTDESK_API_RUSTDESK_ID_SERVER=192.168.1.66:21116
-      - RUSTDESK_API_RUSTDESK_RELAY_SERVER=192.168.1.66:21117
-      - RUSTDESK_API_RUSTDESK_API_SERVER=http://192.168.1.66:21114
-      - RUSTDESK_API_RUSTDESK_KEY=123456789
-    ports:
-      - 21114:21114
-    image: lejianwen/rustdesk-api
-    volumes:
-      - /data/rustdesk/api:/app/data #将数据库挂载出来方便备份
-    networks:
-      - rustdesk-net
-    restart: unless-stopped
-
-```
+   ```docker-compose
+   networks:
+     rustdesk-net:
+       external: false
+   services:
+     hbbs:
+       container_name: hbbs
+       ports:
+         - 21115:21115
+         - 21116:21116 # 自定义 hbbs 映射端口
+         - 21116:21116/udp # 自定义 hbbs 映射端口
+         - 21118:21118 # web client 需要
+       image: rustdesk/rustdesk-server
+       command: hbbs -r <relay-server-ip[:port]> -k 123456789 # 填入个人域名或 IP + hbbr 暴露端口
+       volumes:
+         - /data/rustdesk/hbbs:/root # 自定义挂载目录
+       networks:
+         - rustdesk-net
+       depends_on:
+         - hbbr
+       restart: unless-stopped
+       deploy:
+         resources:
+           limits:
+             memory: 64M
+     hbbr:
+       container_name: hbbr
+       ports:
+         - 21117:21117 # 自定义 hbbr 映射端口
+       image: rustdesk/rustdesk-server
+       command: hbbr -k 123456789
+       #command: hbbr
+       volumes:
+         - /data/rustdesk/hbbr:/root # 自定义挂载目录
+       networks:
+         - rustdesk-net
+       restart: unless-stopped
+       deploy:
+         resources:
+           limits:
+             memory: 64M
+     rustdesk-api:
+       container_name: rustdesk-api
+       environment:
+         - RUSTDESK_API_RUSTDESK_ID_SERVER=192.168.1.66:21116
+         - RUSTDESK_API_RUSTDESK_RELAY_SERVER=192.168.1.66:21117
+         - RUSTDESK_API_RUSTDESK_API_SERVER=http://192.168.1.66:21114
+         - RUSTDESK_API_RUSTDESK_KEY=123456789
+       ports:
+         - 21114:21114
+       image: lejianwen/rustdesk-api
+       volumes:
+         - /data/rustdesk/api:/app/data #将数据库挂载出来方便备份
+       networks:
+         - rustdesk-net
+       restart: unless-stopped
+   
+   ```
 
 #### 下载release直接运行
 
