@@ -50,10 +50,7 @@ desktop software that provides self-hosted solutions.
 
 ![pc_gr](docs/pc_gr.png)
 
-### **Web UI
-
-**: The frontend and backend are separated to provide a user-friendly management interface, primarily for managing and
-displaying data.
+### **Web UI**: The frontend and backend are separated to provide a user-friendly management interface, primarily for managing and displaying data.
 
 ***Frontend code is available at [rustdesk-api-web](https://github.com/lejianwen/rustdesk-api-web)***
 
@@ -87,9 +84,7 @@ installation are `admin` `admin`, please change the password immediately.***
 3. After logging in, the ID server and key will be automatically synced.
 4. The address book will also be automatically saved to the web client for convenient use.
 
-### **Automated Documentation
-
-**: API documentation is generated using Swag, making it easier for developers to understand and use the API.
+### **Automated Documentation** : API documentation is generated using Swag, making it easier for developers to understand and use the API.
 
 1. Admin panel docs: `<your server>/admin/swagger/index.html`
 2. PC client docs: `<your server>/swagger/index.html`
