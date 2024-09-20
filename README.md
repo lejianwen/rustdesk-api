@@ -17,14 +17,14 @@
 
 1. PC客户端使用的是 ***1.3.0***，经测试 ***1.2.6+*** 都可以
 2. server端必须指定key，不能用自带的生成的key,否则可能链接不上或者超时
-   
+
    ```bash
    hbbs -r <relay-server-ip[:port]> -k <key>
    hbbr -k <key>
    ```
-   
+
    比如
-   
+
    ```bash
    hbbs -r <relay-server-ip[:port]> -k abc1234567
    hbbr -k abc1234567
@@ -70,7 +70,8 @@
    ![web_admin_oauth](docs/web_admin_oauth.png)
     - `github oauth app`在`Settings`->`Developer settings`->`OAuth Apps`->`New OAuth App`
       中创建,地址 [https://github.com/settings/developers](https://github.com/settings/developers)
-    - `Authorization callback URL`填写`http://<your server[:port]>/api/oauth/callback`，比如`http://127.0.0.1:21114/api/oauth/callback`
+    - `Authorization callback URL`填写`http://<your server[:port]>/api/oauth/callback`
+      ，比如`http://127.0.0.1:21114/api/oauth/callback`
 
 ### **Web Client**:
 
@@ -118,6 +119,7 @@ rustdesk:
 
 | 变量名                                 | 说明                                   | 示例                          |
 |:------------------------------------|:-------------------------------------|-----------------------------|
+| TZ                                  | 时区                                   | Asia/Shanghai               |
 | -----GIN配置-----                     | ----------                           | ----------                  |
 | RUSTDESK_API_GIN_TRUST_PROXY        | 信任的代理IP列表，以`,`分割，默认信任所有              | 192.168.1.2,192.168.1.3     |
 | -----------GORM配置------------------ | ------------------------------------ | --------------------------- |

@@ -32,6 +32,7 @@ RUN set -eux; \
 VOLUME /app/data
 FROM alpine
 WORKDIR /app
+RUN apk add --no-cache tzdata
 COPY --from=builder /go/rustdesk-api/release /app/
 
 EXPOSE 21114
