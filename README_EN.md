@@ -36,7 +36,7 @@ desktop software that provides self-hosted solutions.
 
 #### Login
 
-- Added `GitHub` login, which can be used after configuration in the admin panel. See the OAuth configuration section
+- Added `GitHub` and `Google` login, which can be used after configuration in the admin panel. See the OAuth configuration section
   for details.
 - Added authorization login for the web admin panel.
 
@@ -67,7 +67,7 @@ installation are `admin` `admin`, please change the password immediately.***
    ![web_admin_gr](docs/web_admin_gr.png)
 5. You can open the web client directly for convenience:
    ![web_webclient](docs/admin_webclient.png)
-6. OAuth support: Currently, only `GitHub` is supported. You need to create an `OAuth App` and configure it in the admin
+6. OAuth support: Currently, `GitHub` and `Google`  is supported. You need to create an `OAuth App` and configure it in the admin
    panel.
    ![web_admin_oauth](docs/web_admin_oauth.png)
     - Create a `GitHub OAuth App`

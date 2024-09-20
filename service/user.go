@@ -175,7 +175,17 @@ func (us *UserService) RouteNames(u *model.User) []string {
 
 // InfoByGithubId 根据githubid取用户信息
 func (us *UserService) InfoByGithubId(githubId string) *model.User {
-	ut := AllService.OauthService.UserThirdInfo(model.OauthTypeGithub, githubId)
+	return us.InfoByOauthId(model.OauthTypeGithub, githubId)
+}
+
+// InfoByGoogleEmail 根据googleid取用户信息
+func (us *UserService) InfoByGoogleEmail(email string) *model.User {
+	return us.InfoByOauthId(model.OauthTypeGithub, email)
+}
+
+// InfoByOauthId 根据oauth取用户信息
+func (us *UserService) InfoByOauthId(thirdType, uid string) *model.User {
+	ut := AllService.OauthService.UserThirdInfo(thirdType, uid)
 	if ut.Id == 0 {
 		return nil
 	}
@@ -187,12 +197,22 @@ func (us *UserService) InfoByGithubId(githubId string) *model.User {
 }
 
 // RegisterByGithub 注册
-func (us *UserService) RegisterByGithub(githubName string, githubId int64) *model.User {
+func (us *UserService) RegisterByGithub(githubName string, githubId string) *model.User {
+	return us.RegisterByOauth(model.OauthTypeGithub, githubName, githubId)
+}
+
+// RegisterByGoogle 注册
+func (us *UserService) RegisterByGoogle(name string, email string) *model.User {
+	return us.RegisterByOauth(model.OauthTypeGoogle, name, email)
+}
+
+// RegisterByOauth 注册
+func (us *UserService) RegisterByOauth(thirdType, thirdName, uid string) *model.User {
 	tx := global.DB.Begin()
 	ut := &model.UserThird{
-		OpenId:    strconv.FormatInt(githubId, 10),
-		ThirdName: githubName,
-		ThirdType: model.OauthTypeGithub,
+		OpenId:    uid,
+		ThirdName: thirdName,
+		ThirdType: thirdType,
 	}
 	//global.DB.Where("open_id = ?", githubId).First(ut)
 	//这种情况不应该出现，如果出现说明有bug
@@ -203,7 +223,7 @@ func (us *UserService) RegisterByGithub(githubName string, githubId int64) *mode
 	//	return u
 	//}
 
-	username := us.GenerateUsernameByOauth(githubName)
+	username := us.GenerateUsernameByOauth(thirdName)
 	u := &model.User{
 		Username: username,
 		GroupId:  1,

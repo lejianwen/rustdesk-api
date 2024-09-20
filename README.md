@@ -36,8 +36,8 @@
 
 #### 登录
 
-- 添加了`github`登录，需要在后台配置好就可以用了，具体可看后台OAuth配置
-- 添加了web后台授权登录
+- 添加了`github`和`google`授权登录，需要在后台配置好就可以用了，具体可看后台OAuth配置
+- 添加了web后台授权登录,点击后直接登录后台就自动登录客户端了
 
 ![pc_login](docs/pc_login.png)
 
@@ -66,7 +66,7 @@
    ![web_admin_gr](docs/web_admin_gr.png)
 5. 可以直接打开webclient，方便使用
    ![web_webclient](docs/admin_webclient.png)
-6. Oauth,暂时只支持了`Github`, 需要创建一个`OAuth App`，然后配置到后台
+6. Oauth,暂时只支持了`Github`和`Google`, 需要创建一个`OAuth App`，然后配置到后台
    ![web_admin_oauth](docs/web_admin_oauth.png)
     - `github oauth app`在`Settings`->`Developer settings`->`OAuth Apps`->`New OAuth App`
       中创建,地址 [https://github.com/settings/developers](https://github.com/settings/developers)

@@ -68,7 +68,15 @@ type GithubUserdata struct {
 	UpdatedAt               time.Time `json:"updated_at"`
 	Url                     string    `json:"url"`
 }
-
+type GoogleUserdata struct {
+	Email         string `json:"email"`
+	FamilyName    string `json:"family_name"`
+	GivenName     string `json:"given_name"`
+	Id            string `json:"id"`
+	Name          string `json:"name"`
+	Picture       string `json:"picture"`
+	VerifiedEmail bool   `json:"verified_email"`
+}
 type OauthCacheItem struct {
 	UserId      uint   `json:"user_id"`
 	Id          string `json:"id"` //rustdesk的设备ID
@@ -187,9 +195,40 @@ func (os *OauthService) GithubCallback(code string) (error error, userData *Gith
 	}(resp.Body)
 
 	// 在这里处理 GitHub 用户信息
-	if err := json.NewDecoder(resp.Body).Decode(&userData); err != nil {
+	if err = json.NewDecoder(resp.Body).Decode(&userData); err != nil {
 		global.Logger.Warn("failed decoding user info: %s\n", err)
 		error = errors.New("解析user info失败")
+		return
+	}
+	return
+}
+
+func (os *OauthService) GoogleCallback(code string) (error error, userData *GoogleUserdata) {
+	err, oauthConfig := os.GetOauthConfig(model.OauthTypeGoogle)
+	token, err := oauthConfig.Exchange(context.Background(), code)
+	if err != nil {
+		global.Logger.Warn(fmt.Printf("oauthConfig.Exchange() failed: %s\n", err))
+		error = errors.New("获取token失败")
+		return
+	}
+	// 创建 HTTP 客户端，并将 access_token 添加到 Authorization 头中
+	client := oauthConfig.Client(context.Background(), token)
+	resp, err := client.Get("https://www.googleapis.com/oauth2/v2/userinfo")
+	if err != nil {
+		global.Logger.Warn("failed getting user info: %s\n", err)
+		error = errors.New("获取user info失败： " + err.Error())
+		return
+	}
+	defer func(Body io.ReadCloser) {
+		err := Body.Close()
+		if err != nil {
+			global.Logger.Warn("failed closing response body: %s\n", err)
+		}
+	}(resp.Body)
+
+	if err = json.NewDecoder(resp.Body).Decode(&userData); err != nil {
+		global.Logger.Warn("failed decoding user info: %s\n", err)
+		error = errors.New("解析user info失败：" + err.Error())
 		return
 	}
 	return
@@ -202,14 +241,22 @@ func (os *OauthService) UserThirdInfo(op, openid string) *model.UserThird {
 }
 
 func (os *OauthService) BindGithubUser(openid, username string, userId uint) error {
+	return os.BindOauthUser(model.OauthTypeGithub, openid, username, userId)
+}
+
+func (os *OauthService) BindGoogleUser(email, username string, userId uint) error {
+	return os.BindOauthUser(model.OauthTypeGoogle, email, username, userId)
+}
+func (os *OauthService) BindOauthUser(thirdType, openid, username string, userId uint) error {
 	utr := &model.UserThird{
 		OpenId:    openid,
-		ThirdType: model.OauthTypeGithub,
+		ThirdType: thirdType,
 		ThirdName: username,
 		UserId:    userId,
 	}
 	return global.DB.Create(utr).Error
 }
+
 func (os *OauthService) UnBindGithubUser(userid uint) error {
 	return global.DB.Where("user_id = ? and third_type = ?", userid, model.OauthTypeGithub).Delete(&model.UserThird{}).Error
 }

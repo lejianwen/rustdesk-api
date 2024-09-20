@@ -19,7 +19,7 @@ rustdesk:
   key: "123456789"
 logger:
   path: "./runtime/log.txt"
-  level: "error" #trace,debug,info,warn,error,fatal
+  level: "warn" #trace,debug,info,warn,error,fatal
   report-caller: true
 redis:
   addr: "127.0.0.1:6379"

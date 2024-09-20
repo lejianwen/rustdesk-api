@@ -10,6 +10,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"strconv"
+	"strings"
 )
 
 type Oauth struct {
@@ -161,9 +162,8 @@ func (o *Oauth) OauthCallback(c *gin.Context) {
 			}
 			c.String(http.StatusOK, "绑定成功")
 			return
-		}
-		//登录
-		if ac == service.OauthActionTypeLogin {
+		} else if ac == service.OauthActionTypeLogin {
+			//登录
 			if v.UserId != 0 {
 				c.String(http.StatusInternalServerError, "授权已经成功")
 				return
@@ -181,7 +181,7 @@ func (o *Oauth) OauthCallback(c *gin.Context) {
 				}
 
 				//自动注册
-				u = service.AllService.UserService.RegisterByGithub(userData.Login, int64(userData.Id))
+				u = service.AllService.UserService.RegisterByGithub(userData.Login, strconv.Itoa(userData.Id))
 				if u.Id == 0 {
 					c.String(http.StatusInternalServerError, "注册失败")
 					return
@@ -193,18 +193,75 @@ func (o *Oauth) OauthCallback(c *gin.Context) {
 			c.String(http.StatusOK, "授权成功")
 			return
 		}
-
 		//返回js
 		c.Header("Content-Type", "text/html; charset=utf-8")
 		c.String(http.StatusOK, "授权错误")
-		//up := &apiResp.UserPayload{}
-		//c.JSON(http.StatusOK, apiResp.LoginRes{
-		//	AccessToken: ut.Token,
-		//	Type:        "access_token",
-		//	User:        *up.FromUser(u),
-		//})
 
 	}
+
+	if ty == model.OauthTypeGoogle {
+		code := c.Query("code")
+		err, userData := service.AllService.OauthService.GoogleCallback(code)
+		if err != nil {
+			c.String(http.StatusInternalServerError, "授权失败:"+err.Error())
+			return
+		}
+		//将空格替换成_
+		googleName := strings.Replace(userData.Name, " ", "_", -1)
+		if ac == service.OauthActionTypeBind {
+			//fmt.Println("bind", ty, userData)
+			utr := service.AllService.OauthService.UserThirdInfo(ty, userData.Email)
+			if utr.UserId > 0 {
+				c.String(http.StatusInternalServerError, "已经绑定其他账号")
+				return
+			}
+			//绑定
+			u := service.AllService.UserService.InfoById(v.UserId)
+			if u == nil {
+				c.String(http.StatusInternalServerError, "用户不存在")
+				return
+			}
+			//绑定
+			err = service.AllService.OauthService.BindGoogleUser(userData.Email, googleName, v.UserId)
+			if err != nil {
+				c.String(http.StatusInternalServerError, "绑定失败")
+				return
+			}
+			c.String(http.StatusOK, "绑定成功")
+			return
+		} else if ac == service.OauthActionTypeLogin {
+			if v.UserId != 0 {
+				c.String(http.StatusInternalServerError, "授权已经成功")
+				return
+			}
+			u := service.AllService.UserService.InfoByGoogleEmail(userData.Email)
+			if u == nil {
+				oa := service.AllService.OauthService.InfoByOp(ty)
+				if !*oa.AutoRegister {
+					//c.String(http.StatusInternalServerError, "还未绑定用户，请先绑定")
+
+					v.ThirdName = googleName
+					v.ThirdOpenId = userData.Email
+					url := global.Config.Rustdesk.ApiServer + "/_admin/#/oauth/bind/" + cacheKey
+					c.Redirect(http.StatusFound, url)
+					return
+				}
+
+				//自动注册
+				u = service.AllService.UserService.RegisterByGoogle(googleName, userData.Email)
+				if u.Id == 0 {
+					c.String(http.StatusInternalServerError, "注册失败")
+					return
+				}
+			}
+
+			v.UserId = u.Id
+			service.AllService.OauthService.SetOauthCache(cacheKey, v, 0)
+			c.String(http.StatusOK, "授权成功")
+			return
+		}
+	}
+	c.String(http.StatusInternalServerError, "授权配置错误,请联系管理员")
 
 }
 
