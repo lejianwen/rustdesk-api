@@ -19,9 +19,6 @@ func ApiInit(g *gin.Engine) {
 
 	frg := g.Group("/api")
 
-	//frg.Use(middleware.Cors())
-	frg.OPTIONS("/*any", nil)
-
 	i := &api.Index{}
 	frg.GET("/", i.Index)
 
