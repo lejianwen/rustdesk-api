@@ -146,6 +146,7 @@ rustdesk:
 ```bash
 docker run -d --name rustdesk-api -p 21114:21114 \
 -v /data/rustdesk/api:/app/data \
+-e TZ=Asia/Shanghai \
 -e RUSTDESK_API_RUSTDESK_ID_SERVER=192.168.1.66:21116 \
 -e RUSTDESK_API_RUSTDESK_RELAY_SERVER=192.168.1.66:21117 \
 -e RUSTDESK_API_RUSTDESK_API_SERVER=http://192.168.1.66:21114 \
@@ -162,6 +163,7 @@ lejianwen/rustdesk-api
       rustdesk-api:
        container_name: rustdesk-api
        environment:
+         - TZ=Asia/Shanghai
          - RUSTDESK_API_RUSTDESK_ID_SERVER=192.168.1.66:21116
          - RUSTDESK_API_RUSTDESK_RELAY_SERVER=192.168.1.66:21117
          - RUSTDESK_API_RUSTDESK_API_SERVER=http://192.168.1.66:21114
@@ -222,6 +224,7 @@ lejianwen/rustdesk-api
      rustdesk-api:
        container_name: rustdesk-api
        environment:
+         - TZ=Asia/Shanghai
          - RUSTDESK_API_RUSTDESK_ID_SERVER=192.168.1.66:21116
          - RUSTDESK_API_RUSTDESK_RELAY_SERVER=192.168.1.66:21117
          - RUSTDESK_API_RUSTDESK_API_SERVER=http://192.168.1.66:21114
