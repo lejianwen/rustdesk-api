@@ -65,7 +65,7 @@ func (ct *Tag) Create(c *gin.Context) {
 	}
 	t := f.ToTag()
 	u := service.AllService.UserService.CurUser(c)
-	if !service.AllService.UserService.IsAdmin(u) {
+	if !service.AllService.UserService.IsAdmin(u) || t.UserId == 0 {
 		t.UserId = u.Id
 	}
 	err := service.AllService.TagService.Create(t)

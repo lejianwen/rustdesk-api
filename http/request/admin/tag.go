@@ -6,7 +6,7 @@ type TagForm struct {
 	Id     uint   `json:"id"`
 	Name   string `json:"name" validate:"required"`
 	Color  uint   `json:"color" validate:"required"`
-	UserId uint   `json:"user_id" validate:"required"`
+	UserId uint   `json:"user_id"`
 }
 
 func (f *TagForm) FromTag(group *model.Tag) *TagForm {
