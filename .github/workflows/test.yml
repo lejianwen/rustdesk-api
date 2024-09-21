@@ -44,9 +44,9 @@ jobs:
       - name: Build for ${{ matrix.goos }}-${{ matrix.goarch }}-${{ matrix.go_variant }}
         run: |
           if [ "${{ matrix.go_variant }}" = "alpine" ]; then
-            GOOS=${{ matrix.goos }} GOARCH=${{ matrix.goarch }} CGO_ENABLED=1 CC=/usr/bin/gcc go build -ldflags "-s -w" -o myapp-alpine-${{ matrix.goos }}-${{ matrix.goarch }} .
+            GOOS=${{ matrix.goos }} GOARCH=${{ matrix.goarch }} CGO_ENABLED=1 CC=/usr/bin/gcc go build -ldflags "-s -w" -o myapp-alpine-${{ matrix.goos }}-${{ matrix.goarch }} ./cmd/apimain.go
           else
-            GOOS=${{ matrix.goos }} GOARCH=${{ matrix.goarch }} CGO_ENABLED=1 go build -o myapp-${{ matrix.goos }}-${{ matrix.goarch }} .
+            GOOS=${{ matrix.goos }} GOARCH=${{ matrix.goarch }} CGO_ENABLED=1 go build -o myapp-${{ matrix.goos }}-${{ matrix.goarch }} ./cmd/apimain.go
           fi
 
       - name: Upload artifact
