@@ -1,10 +1,15 @@
 name: Go Build and Release
 
+#on:
+#  push:
+#    tags:
+#      - 'v*.*.*'  # 当推送带有版本号的 tag（例如 v1.0.0）时触发工作流
 on:
   push:
-    tags:
-      - 'v*.*.*'  # 当推送带有版本号的 tag（例如 v1.0.0）时触发工作流
-
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+    
 jobs:
   build:
     runs-on: ubuntu-latest
