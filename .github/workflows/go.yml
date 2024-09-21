@@ -20,9 +20,10 @@ jobs:
       uses: actions/setup-go@v4
       with:
         go-version: '1.22'
-
+    - name: mod tidy
+      run: go mod tidy
     - name: Build
       run: go build  -v -o release/apimain cmd/apimain.go
 
     - name: Test
-      run: go test -v  -o release/apimain cmd/apimain.go   
+      run: go test -v  cmd/apimain.go   
