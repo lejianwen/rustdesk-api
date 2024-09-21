@@ -1,0 +1,53 @@
+name: Go Build and Release
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'  # 当推送带有版本号的 tag（例如 v1.0.0）时触发工作流
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        goos: [linux, windows] # 指定要构建的操作系统
+        goarch: [amd64]         # 指定架构
+        go_variant: [default, alpine] # 使用默认和 Alpine 版本打包 Linux
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Go environment
+        uses: actions/setup-go@v4
+        with:
+          go-version: '1.22'  # 选择 Go 版本
+
+      # 如果是 Linux 或 Alpine，需要安装 SQLite 依赖
+      - name: Install SQLite dependencies (Linux/Alpine)
+        if: matrix.goos == 'linux'  # 仅在 Linux 下运行
+        run: |
+          if [ "${{ matrix.go_variant }}" = "alpine" ]; then
+            sudo apt-get update
+            sudo apt-get install -y musl-dev sqlite3
+          else
+            sudo apt-get update
+            sudo apt-get install -y libsqlite3-dev
+          fi
+
+      - name: Build for ${{ matrix.goos }}-${{ matrix.goarch }}-${{ matrix.go_variant }}
+        run: |
+          if [ "${{ matrix.go_variant }}" = "alpine" ]; then
+            GOOS=${{ matrix.goos }} GOARCH=${{ matrix.goarch }} CGO_ENABLED=1 CC=/usr/bin/gcc go build -ldflags "-s -w" -o myapp-alpine-${{ matrix.goos }}-${{ matrix.goarch }} .
+          else
+            GOOS=${{ matrix.goos }} GOARCH=${{ matrix.goarch }} CGO_ENABLED=1 go build -o myapp-${{ matrix.goos }}-${{ matrix.goarch }} .
+          fi
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: myapp-${{ matrix.goos }}-${{ matrix.goarch }}-${{ matrix.go_variant }}
+          path: |
+            myapp-${{ matrix.goos }}-${{ matrix.goarch }}
+            myapp-alpine-${{ matrix.goos }}-${{ matrix.goarch }}
