@@ -5,55 +5,46 @@ name: Go Build and Release
 #    tags:
 #      - 'v*.*.*'  # 当推送带有版本号的 tag（例如 v1.0.0）时触发工作流
 on:
-#  push:
-#    branches: [ "master" ]
+  push:
+    branches: [ "master" ]
   pull_request:
     branches: [ "master" ]
-    
+
 jobs:
   build:
     runs-on: ubuntu-latest
 
     strategy:
       matrix:
-        goos: [linux, windows] # 指定要构建的操作系统
-        goarch: [amd64]         # 指定架构
-        go_variant: [default] # 使用默认和 Alpine 版本打包 Linux
+        goos: [ linux, windows ] # 指定要构建的操作系统
+        goarch: [ amd64 ]         # 指定架构
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Set up Go environment
         uses: actions/setup-go@v4
         with:
           go-version: '1.22'  # 选择 Go 版本
+      - name: install gcc
+        run: sudo apt-get install gcc-mingw-w64-x86-64
+
       - name: tidy
         run: go mod tidy
-      # 如果是 Linux 或 Alpine，需要安装 SQLite 依赖
-      - name: Install SQLite dependencies (Linux/Alpine)
-        if: matrix.goos == 'linux'  # 仅在 Linux 下运行
-        run: |
-          if [ "${{ matrix.go_variant }}" = "alpine" ]; then
-            sudo apt-get update
-            sudo apt-get install -y musl-dev sqlite3
-          else
-            sudo apt-get update
-            sudo apt-get install -y libsqlite3-dev
-          fi
 
-      - name: Build for ${{ matrix.goos }}-${{ matrix.goarch }}-${{ matrix.go_variant }}
+      - name: Build for ${{ matrix.goos }}-${{ matrix.goarch }}
         run: |
-          if [ "${{ matrix.go_variant }}" = "alpine" ]; then
-            GOOS=${{ matrix.goos }} GOARCH=${{ matrix.goarch }} CGO_ENABLED=1 CC=/usr/bin/gcc go build -ldflags "-s -w" -o myapp-alpine-${{ matrix.goos }}-${{ matrix.goarch }} ./cmd/apimain.go
+          if [ "${{ matrix.goos }}" = "windows" ]; then
+            CC=x86_64-w64-mingw32-gcc GOOS=${{ matrix.goos }} GOARCH=${{ matrix.goarch }} CGO_ENABLED=1 go build -o ./release/apimain.exe ./cmd/apimain.go
           else
-            GOOS=${{ matrix.goos }} GOARCH=${{ matrix.goarch }} CGO_ENABLED=1 go build -o myapp-${{ matrix.goos }}-${{ matrix.goarch }} ./cmd/apimain.go
+            GOOS=${{ matrix.goos }} GOARCH=${{ matrix.goarch }} CGO_ENABLED=1 go build -ldflags "-s -w" -o ./release/apimain ./cmd/apimain.go
           fi
 
       - name: Upload artifact
         uses: actions/upload-artifact@v3
         with:
-          name: myapp-${{ matrix.goos }}-${{ matrix.goarch }}-${{ matrix.go_variant }}
+          name: myapp-${{ matrix.goos }}-${{ matrix.goarch }}
           path: |
-            myapp-${{ matrix.goos }}-${{ matrix.goarch }}
-            myapp-alpine-${{ matrix.goos }}-${{ matrix.goarch }}
+            release/apimain
+            release/apimain.exe
