@@ -62,13 +62,9 @@ jobs:
           path: |
             ${{ matrix.goos}}-${{ matrix.goarch }}.tar.gz
             ${{ matrix.goos}}-${{ matrix.goarch }}.zip
-  release:
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-      - name: Create GitHub Release
+
+      - name: Upload to GitHub Release
         uses: softprops/action-gh-release@v2
-        if: startsWith(github.ref, 'refs/tags/')
         with:
           files: |
             ${{ matrix.goos}}-${{ matrix.goarch }}.tar.gz
