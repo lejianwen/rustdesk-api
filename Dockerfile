@@ -17,11 +17,7 @@ RUN set -eux; \
     swag init -g cmd/apimain.go --output docs/api --instanceName api --exclude http/controller/admin; \
     swag init -g cmd/apimain.go --output docs/admin --instanceName admin --exclude http/controller/api; \
     go env -w GO111MODULE=on;\
-    go env -w CGO_ENABLED=1;\
-    go env -w GOOS=linux;\
-    go env -w GOARCH=amd64;\
-    go env -w CGO_LDFLAGS="-static"; \
-    go build -o release/apimain cmd/apimain.go; \
+    CGO_LDFLAGS="-static" CGO_ENABLED=1 go build -ldflags "-s -w" -o ./release/apimain ./cmd/apimain.go; \
     cp -ar resources release/; \
     mkdir -p release/resources/public; \
     cp -ar docs release/; \
