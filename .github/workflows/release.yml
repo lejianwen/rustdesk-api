@@ -1,4 +1,4 @@
-name: Go Build and Release
+name: Build and Release
 
 on:
   push:
@@ -27,14 +27,34 @@ jobs:
         uses: actions/setup-go@v4
         with:
           go-version: '1.22'  # 选择 Go 版本
-      - name: install gcc zip
+
+      - name: Set up npm
+        uses: actions/setup-node@v2
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: install gcc zip musl
         run: |
           if [ "${{ matrix.goos }}" = "windows" ]; then
             sudo apt-get install gcc-mingw-w64-x86-64 zip -y
+          else
+            sudo apt-get install musl musl-dev musl-tools -y
           fi
+
+
+      - name: build rustdesk-api-web
+        run: |
+          git clone https://github.com/lejianwen/rustdesk-api-web
+          cd rustdesk-api-web
+          npm install
+          npm run build
+          cp -ar dist/* ../resources/admin/
 
       - name: tidy
         run: go mod tidy
+
+
       - name: swag
         run: |
           go install github.com/swaggo/swag/cmd/swag@latest
@@ -50,10 +70,10 @@ jobs:
           mkdir -p release/data
           mkdir -p release/runtime
           if [ "${{ matrix.goos }}" = "windows" ]; then
-            CC=x86_64-w64-mingw32-gcc GOOS=${{ matrix.goos }} GOARCH=${{ matrix.goarch }} CGO_ENABLED=1 go build -o ./release/apimain.exe ./cmd/apimain.go
+            GOOS=${{ matrix.goos }} GOARCH=${{ matrix.goarch }} CC=x86_64-w64-mingw32-gcc CGO_LDFLAGS="-static" CGO_ENABLED=1 go build -ldflags "-s -w" -o ./release/apimain.exe ./cmd/apimain.go
             zip -r ${{ matrix.goos}}-${{ matrix.goarch }}.zip ./release
           else
-            GOOS=${{ matrix.goos }} GOARCH=${{ matrix.goarch }} CGO_LDFLAGS="-static" CGO_ENABLED=1 go build -ldflags "-s -w" -o ./release/apimain ./cmd/apimain.go
+            GOOS=${{ matrix.goos }} GOARCH=${{ matrix.goarch }} CC=musl-gcc CGO_LDFLAGS="-static" CGO_ENABLED=1 go build -ldflags "-s -w" -o ./release/apimain ./cmd/apimain.go
             tar -czf ${{ matrix.goos}}-${{ matrix.goarch }}.tar.gz ./release 
           fi
 
