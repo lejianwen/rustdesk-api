@@ -48,6 +48,7 @@ jobs:
           cd rustdesk-api-web
           npm install
           npm run build
+          mkdir ../resources/admin/ -p
           cp -ar dist/* ../resources/admin/
 
       - name: tidy
