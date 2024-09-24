@@ -53,15 +53,13 @@ desktop software that provides self-hosted solutions.
    hbbr -k abc1234567
    ```
 
-## Features
+## Overview
 
 ### API Service: Basic implementation of the PC client's primary interfaces.Supports the Personal version api, which can be enabled by configuring the `rustdesk.personal` file or the `RUSTDESK_API_RUSTDESK_PERSONAL` environment variable.
 
 #### Login
 
-- Added `GitHub` and `Google` login, which can be used after configuration in the admin panel. See the OAuth
-  configuration section
-  for details.
+- Added `GitHub` and `Google` login, which can be used after configuration in the admin panel. See the OAuth configuration section for details.
 - Added authorization login for the web admin panel.
 
 ![pc_login](docs/pc_login.png)
@@ -70,31 +68,29 @@ desktop software that provides self-hosted solutions.
 
 ![pc_ab](docs/pc_ab.png)
 
-#### Groups: Groups are divided into `shared groups` and `regular groups`. In shared groups, everyone can see the addresses of all group members, while in regular groups, only administrators can see all members' addresses.
+#### Groups: Groups are divided into `shared groups` and `regular groups`. In shared groups, everyone can see the peers of all group members, while in regular groups, only administrators can see all members' peers.
 
 ![pc_gr](docs/pc_gr.png)
 
-### **Web UI
+### Web Admin
 
-**: The frontend and backend are separated to provide a user-friendly management interface, primarily for managing and
-displaying data.
+***The frontend and backend are separated to provide a user-friendly management interface, primarily for managing and
+displaying data.Frontend code is available at [rustdesk-api-web](https://github.com/lejianwen/rustdesk-api-web)***
 
-***Frontend code is available at [rustdesk-api-web](https://github.com/lejianwen/rustdesk-api-web)***
-
-***Admin panel URL: `http://<your server>[:port]/_admin/`. The default username and password for the initial
+***Admin panel URL: `http://<your server[:port]>/_admin/`. The default username and password for the initial
 installation are `admin` `admin`, please change the password immediately.***
 
 1. Admin interface:
    ![web_admin](docs/web_admin.png)
 2. Regular user interface:
    ![web_user](docs/web_admin_user.png)
-3. You can change your password from the top right corner:
+   You can change your password from the top right corner:
    ![web_resetpwd](docs/web_resetpwd.png)
-4. Groups can be customized for easy management. Currently, two types are supported: `shared group` and `regular group`.
+3. Groups can be customized for easy management. Currently, two types are supported: `shared group` and `regular group`.
    ![web_admin_gr](docs/web_admin_gr.png)
-5. You can open the web client directly for convenience:
+4. You can open the web client directly for convenience:
    ![web_webclient](docs/admin_webclient.png)
-6. OAuth support: Currently, `GitHub` and `Google`  is supported. You need to create an `OAuth App` and configure it in
+5. OAuth support: Currently, `GitHub` and `Google`  is supported. You need to create an `OAuth App` and configure it in
    the admin
    panel.
    ![web_admin_oauth](docs/web_admin_oauth.png)
@@ -103,7 +99,7 @@ installation are `admin` `admin`, please change the password immediately.***
     - Set the `Authorization callback URL` to `http://<your server[:port]>/api/oauth/callback`,
       e.g., `http://127.0.0.1:21114/api/oauth/callback`.
 
-### **Web Client**:
+### Web Client:
 
 1. If you're already logged into the admin panel, the web client will log in automatically.
 2. If you're not logged in, simply click the login button at the top right corner, and the API server will be
@@ -112,12 +108,10 @@ installation are `admin` `admin`, please change the password immediately.***
 3. After logging in, the ID server and key will be automatically synced.
 4. The address book will also be automatically saved to the web client for convenient use.
 
-### **Automated Documentation
+### Automated Documentation : API documentation is generated using Swag, making it easier for developers to understand and use the API.
 
-** : API documentation is generated using Swag, making it easier for developers to understand and use the API.
-
-1. Admin panel docs: `<your server>/admin/swagger/index.html`
-2. PC client docs: `<your server>/swagger/index.html`
+1. Admin panel docs: `<your server[:port]>/admin/swagger/index.html`
+2. PC client docs: `<your server[:port]>/swagger/index.html`
    ![api_swag](docs/api_swag.png)
 
 ## Installation and Setup
@@ -150,7 +144,7 @@ rustdesk:
   personal: 1
 ```
 
-* Environment variables, with the prefix `RUSTDESK_API`, will override the settings in the configuration file if
+* Environment variables, with the prefix `RUSTDESK_API_RUSTDESK_PERSONAL`, will override the settings in the configuration file if
   present.
 
 | Variable Name                      | Description                                               | Example                        |
@@ -383,7 +377,7 @@ Download the release from [release](https://github.com/lejianwen/rustdesk-api/re
    compiling, the corresponding executables will be generated in the `release` directory. Run the compiled executables
    directly.
 
-6. Open your browser and visit `http://<your server>:21114/_admin/`, with default credentials `admin admin`. Please
+6. Open your browser and visit `http://<your server[:port]>/_admin/`, with default credentials `admin admin`. Please
    change the password promptly.
 
 ## Miscellaneous
