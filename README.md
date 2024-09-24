@@ -55,7 +55,7 @@
 
 ## 功能
 
-### API 服务: 基本实现了PC端基础的接口。支持Personal版本接口，可以通过配置文件`rustdesk.personal`或环境变量`RUSTDESK_PERSONAL`来控制是否启用
+### API 服务: 基本实现了PC端基础的接口。支持Personal版本接口，可以通过配置文件`rustdesk.personal`或环境变量`RUSTDESK_API_RUSTDESK_PERSONAL`来控制是否启用
 
 #### 登录
 
@@ -136,6 +136,7 @@ rustdesk:
   relay-server: "192.168.1.66:21117"
   api-server: "http://192.168.1.66:21114"
   key: "123456789"
+  personal: 1
 ```
 
 * 环境变量,变量名前缀是RUSTDESK_API，环境变量如果存在将覆盖配置文件中的配置
@@ -149,7 +150,7 @@ rustdesk:
 | RUSTDESK_API_GORM_TYPE              | 数据库类型sqlite或者mysql，默认sqlite          | sqlite                      |
 | RUSTDESK_API_GORM_MAX_IDLE_CONNS    | 数据库最大空闲连接数                           | 10                          |
 | RUSTDESK_API_GORM_MAX_OPEN_CONNS    | 数据库最大打开连接数                           | 100                         |
-| RUSTDESK_PERSONAL                   | 是否启用个人版API， 1:启用,0:不启用； 默认启用         | 1                           |
+| RUSTDESK_API_RUSTDESK_PERSONAL      | 是否启用个人版API， 1:启用,0:不启用； 默认启用         | 1                           |
 | -----MYSQL配置-----                   | ----------                           | ----------                  |
 | RUSTDESK_API_MYSQL_USERNAME         | mysql用户名                             | root                        |
 | RUSTDESK_API_MYSQL_PASSWORD         | mysql密码                              | 111111                      |
