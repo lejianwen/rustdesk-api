@@ -17,11 +17,11 @@ type AddressBookForm struct {
 	Hash             string   `json:"hash"`
 	UserId           uint     `json:"user_id"`
 	ForceAlwaysRelay bool     `json:"forceAlwaysRelay"`
-	RdpPort          string   `json:"rdp_port"`
-	RdpUsername      string   `json:"rdp_username"`
+	RdpPort          string   `json:"rdpPort"`
+	RdpUsername      string   `json:"rdpUsername"`
 	Online           bool     `json:"online"`
-	LoginName        string   `json:"login_name" `
-	SameServer       bool     `json:"same_server"`
+	LoginName        string   `json:"loginName" `
+	SameServer       bool     `json:"sameServer"`
 }
 
 func (a AddressBookForm) ToAddressBook() *model.AddressBook {

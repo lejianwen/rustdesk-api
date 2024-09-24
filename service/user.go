@@ -66,6 +66,9 @@ func (us *UserService) Login(u *model.User, llog *model.LoginLog) *model.UserTok
 	}
 	global.DB.Create(ut)
 	global.DB.Create(llog)
+	if llog.Uuid != "" {
+		AllService.PeerService.UuidBindUserId(llog.Uuid, u.Id)
+	}
 	return ut
 }
 

@@ -12,10 +12,10 @@ import (
 type Peer struct {
 }
 
-// Detail 机器
-// @Tags 机器
-// @Summary 机器详情
-// @Description 机器详情
+// Detail 设备
+// @Tags 设备
+// @Summary 设备详情
+// @Description 设备详情
 // @Accept  json
 // @Produce  json
 // @Param id path int true "ID"
@@ -35,13 +35,13 @@ func (ct *Peer) Detail(c *gin.Context) {
 	return
 }
 
-// Create 创建机器
-// @Tags 机器
-// @Summary 创建机器
-// @Description 创建机器
+// Create 创建设备
+// @Tags 设备
+// @Summary 创建设备
+// @Description 创建设备
 // @Accept  json
 // @Produce  json
-// @Param body body admin.PeerForm true "机器信息"
+// @Param body body admin.PeerForm true "设备信息"
 // @Success 200 {object} response.Response{data=model.Peer}
 // @Failure 500 {object} response.Response
 // @Router /admin/peer/create [post]
@@ -67,9 +67,9 @@ func (ct *Peer) Create(c *gin.Context) {
 }
 
 // List 列表
-// @Tags 机器
-// @Summary 机器列表
-// @Description 机器列表
+// @Tags 设备
+// @Summary 设备列表
+// @Description 设备列表
 // @Accept  json
 // @Produce  json
 // @Param page query int false "页码"
@@ -89,12 +89,12 @@ func (ct *Peer) List(c *gin.Context) {
 }
 
 // Update 编辑
-// @Tags 机器
-// @Summary 机器编辑
-// @Description 机器编辑
+// @Tags 设备
+// @Summary 设备编辑
+// @Description 设备编辑
 // @Accept  json
 // @Produce  json
-// @Param body body admin.PeerForm true "机器信息"
+// @Param body body admin.PeerForm true "设备信息"
 // @Success 200 {object} response.Response{data=model.Peer}
 // @Failure 500 {object} response.Response
 // @Router /admin/peer/update [post]
@@ -124,12 +124,12 @@ func (ct *Peer) Update(c *gin.Context) {
 }
 
 // Delete 删除
-// @Tags 机器
-// @Summary 机器删除
-// @Description 机器删除
+// @Tags 设备
+// @Summary 设备删除
+// @Description 设备删除
 // @Accept  json
 // @Produce  json
-// @Param body body admin.PeerForm true "机器信息"
+// @Param body body admin.PeerForm true "设备信息"
 // @Success 200 {object} response.Response
 // @Failure 500 {object} response.Response
 // @Router /admin/peer/delete [post]

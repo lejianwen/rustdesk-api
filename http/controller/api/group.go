@@ -96,15 +96,15 @@ func (g *Group) Peers(c *gin.Context) {
 		namesById[user.Id] = user.Username
 		userIds = append(userIds, user.Id)
 	}
-	peerList := service.AllService.AddressBookService.ListByUserIds(userIds, q.Page, q.PageSize)
+	peerList := service.AllService.PeerService.ListByUserIds(userIds, q.Page, q.PageSize)
 	var data []*apiResp.GroupPeerPayload
-	for _, ab := range peerList.AddressBooks {
-		uname, ok := namesById[ab.UserId]
+	for _, peer := range peerList.Peers {
+		uname, ok := namesById[peer.UserId]
 		if !ok {
 			uname = ""
 		}
 		pp := &apiResp.GroupPeerPayload{}
-		pp.FromAddressBook(ab, uname)
+		pp.FromPeer(peer, uname)
 		data = append(data, pp)
 
 	}
