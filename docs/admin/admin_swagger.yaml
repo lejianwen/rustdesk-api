@@ -24,7 +24,7 @@ definitions:
         type: string
       id:
         type: string
-      login_name:
+      loginName:
         type: string
       online:
         type: boolean
@@ -32,13 +32,13 @@ definitions:
         type: string
       platform:
         type: string
-      rdp_port:
+      rdpPort:
         type: string
-      rdp_username:
+      rdpUsername:
         type: string
       row_id:
         type: integer
-      same_server:
+      sameServer:
         type: boolean
       tags:
         items:
@@ -1162,9 +1162,9 @@ paths:
     post:
       consumes:
       - application/json
-      description: 创建机器
+      description: 创建设备
       parameters:
-      - description: 机器信息
+      - description: 设备信息
         in: body
         name: body
         required: true
@@ -1188,16 +1188,16 @@ paths:
             $ref: '#/definitions/response.Response'
       security:
       - token: []
-      summary: 创建机器
+      summary: 创建设备
       tags:
-      - 机器
+      - 设备
   /admin/peer/delete:
     post:
       consumes:
       - application/json
-      description: 机器删除
+      description: 设备删除
       parameters:
-      - description: 机器信息
+      - description: 设备信息
         in: body
         name: body
         required: true
@@ -1216,14 +1216,14 @@ paths:
             $ref: '#/definitions/response.Response'
       security:
       - token: []
-      summary: 机器删除
+      summary: 设备删除
       tags:
-      - 机器
+      - 设备
   /admin/peer/detail/{id}:
     get:
       consumes:
       - application/json
-      description: 机器详情
+      description: 设备详情
       parameters:
       - description: ID
         in: path
@@ -1248,14 +1248,14 @@ paths:
             $ref: '#/definitions/response.Response'
       security:
       - token: []
-      summary: 机器详情
+      summary: 设备详情
       tags:
-      - 机器
+      - 设备
   /admin/peer/list:
     get:
       consumes:
       - application/json
-      description: 机器列表
+      description: 设备列表
       parameters:
       - description: 页码
         in: query
@@ -1283,16 +1283,16 @@ paths:
             $ref: '#/definitions/response.Response'
       security:
       - token: []
-      summary: 机器列表
+      summary: 设备列表
       tags:
-      - 机器
+      - 设备
   /admin/peer/update:
     post:
       consumes:
       - application/json
-      description: 机器编辑
+      description: 设备编辑
       parameters:
-      - description: 机器信息
+      - description: 设备信息
         in: body
         name: body
         required: true
@@ -1316,9 +1316,9 @@ paths:
             $ref: '#/definitions/response.Response'
       security:
       - token: []
-      summary: 机器编辑
+      summary: 设备编辑
       tags:
-      - 机器
+      - 设备
   /admin/server-config:
     get:
       consumes:

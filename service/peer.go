@@ -15,24 +15,38 @@ func (ps *PeerService) FindById(id string) *model.Peer {
 	global.DB.Where("id = ?", id).First(p)
 	return p
 }
+func (ps *PeerService) FindByUuid(uuid string) *model.Peer {
+	p := &model.Peer{}
+	global.DB.Where("uuid = ?", uuid).First(p)
+	return p
+}
 func (ps *PeerService) InfoByRowId(id uint) *model.Peer {
 	p := &model.Peer{}
 	global.DB.Where("row_id = ?", id).First(p)
 	return p
 }
 
-//// ListByUserIds 根据用户id取列表
-//func (ps *PeerService) ListByUserIds(userIds []uint, page, pageSize uint) (res *model.PeerList) {
-//	res = &model.PeerList{}
-//	res.Page = int64(page)
-//	res.PageSize = int64(pageSize)
-//	tx := global.DB.Model(&model.Peer{}).Preload("User")
-//	tx.Where("user_id in (?)", userIds)
-//	tx.Count(&res.Total)
-//	tx.Scopes(Paginate(page, pageSize))
-//	tx.Find(&res.Peers)
-//	return
-//}
+// UuidBindUserId 绑定用户id
+func (ps *PeerService) UuidBindUserId(uuid string, userId uint) {
+	peer := ps.FindByUuid(uuid)
+	if peer.RowId > 0 {
+		peer.UserId = userId
+		ps.Update(peer)
+	}
+}
+
+// ListByUserIds 根据用户id取列表
+func (ps *PeerService) ListByUserIds(userIds []uint, page, pageSize uint) (res *model.PeerList) {
+	res = &model.PeerList{}
+	res.Page = int64(page)
+	res.PageSize = int64(pageSize)
+	tx := global.DB.Model(&model.Peer{})
+	tx.Where("user_id in (?)", userIds)
+	tx.Count(&res.Total)
+	tx.Scopes(Paginate(page, pageSize))
+	tx.Find(&res.Peers)
+	return
+}
 
 func (ps *PeerService) List(page, pageSize uint, where func(tx *gorm.DB)) (res *model.PeerList) {
 	res = &model.PeerList{}

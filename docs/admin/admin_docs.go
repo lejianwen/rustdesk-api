@@ -1185,7 +1185,7 @@ const docTemplateadmin = `{
                         "token": []
                     }
                 ],
-                "description": "创建机器",
+                "description": "创建设备",
                 "consumes": [
                     "application/json"
                 ],
@@ -1193,12 +1193,12 @@ const docTemplateadmin = `{
                     "application/json"
                 ],
                 "tags": [
-                    "机器"
+                    "设备"
                 ],
-                "summary": "创建机器",
+                "summary": "创建设备",
                 "parameters": [
                     {
-                        "description": "机器信息",
+                        "description": "设备信息",
                         "name": "body",
                         "in": "body",
                         "required": true,
@@ -1242,7 +1242,7 @@ const docTemplateadmin = `{
                         "token": []
                     }
                 ],
-                "description": "机器删除",
+                "description": "设备删除",
                 "consumes": [
                     "application/json"
                 ],
@@ -1250,12 +1250,12 @@ const docTemplateadmin = `{
                     "application/json"
                 ],
                 "tags": [
-                    "机器"
+                    "设备"
                 ],
-                "summary": "机器删除",
+                "summary": "设备删除",
                 "parameters": [
                     {
-                        "description": "机器信息",
+                        "description": "设备信息",
                         "name": "body",
                         "in": "body",
                         "required": true,
@@ -1287,7 +1287,7 @@ const docTemplateadmin = `{
                         "token": []
                     }
                 ],
-                "description": "机器详情",
+                "description": "设备详情",
                 "consumes": [
                     "application/json"
                 ],
@@ -1295,9 +1295,9 @@ const docTemplateadmin = `{
                     "application/json"
                 ],
                 "tags": [
-                    "机器"
+                    "设备"
                 ],
-                "summary": "机器详情",
+                "summary": "设备详情",
                 "parameters": [
                     {
                         "type": "integer",
@@ -1342,7 +1342,7 @@ const docTemplateadmin = `{
                         "token": []
                     }
                 ],
-                "description": "机器列表",
+                "description": "设备列表",
                 "consumes": [
                     "application/json"
                 ],
@@ -1350,9 +1350,9 @@ const docTemplateadmin = `{
                     "application/json"
                 ],
                 "tags": [
-                    "机器"
+                    "设备"
                 ],
-                "summary": "机器列表",
+                "summary": "设备列表",
                 "parameters": [
                     {
                         "type": "integer",
@@ -1402,7 +1402,7 @@ const docTemplateadmin = `{
                         "token": []
                     }
                 ],
-                "description": "机器编辑",
+                "description": "设备编辑",
                 "consumes": [
                     "application/json"
                 ],
@@ -1410,12 +1410,12 @@ const docTemplateadmin = `{
                     "application/json"
                 ],
                 "tags": [
-                    "机器"
+                    "设备"
                 ],
-                "summary": "机器编辑",
+                "summary": "设备编辑",
                 "parameters": [
                     {
-                        "description": "机器信息",
+                        "description": "设备信息",
                         "name": "body",
                         "in": "body",
                         "required": true,
@@ -2278,7 +2278,7 @@ const docTemplateadmin = `{
                 "id": {
                     "type": "string"
                 },
-                "login_name": {
+                "loginName": {
                     "type": "string"
                 },
                 "online": {
@@ -2290,16 +2290,16 @@ const docTemplateadmin = `{
                 "platform": {
                     "type": "string"
                 },
-                "rdp_port": {
+                "rdpPort": {
                     "type": "string"
                 },
-                "rdp_username": {
+                "rdpUsername": {
                     "type": "string"
                 },
                 "row_id": {
                     "type": "integer"
                 },
-                "same_server": {
+                "sameServer": {
                     "type": "boolean"
                 },
                 "tags": {
