@@ -228,8 +228,34 @@ paths:
       - BearerAuth: []
       summary: 标签添加
       tags:
-      - 地址
-  /ab/peer/add/{id}:
+      - 地址[Personal]
+  /ab/peer/add/{guid}:
+    delete:
+      consumes:
+      - application/json
+      description: 删除地址
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: 删除地址
+      tags:
+      - 地址[Personal]
     post:
       consumes:
       - application/json
@@ -254,6 +280,33 @@ paths:
       security:
       - BearerAuth: []
       summary: 添加地址
+      tags:
+      - 地址[Personal]
+  /ab/peer/update/{guid}:
+    put:
+      consumes:
+      - application/json
+      description: 更新地址
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: 更新地址
       tags:
       - 地址[Personal]
   /ab/peers:
@@ -364,7 +417,70 @@ paths:
       summary: 共享地址簿
       tags:
       - 地址[Personal]
-  /ab/tags/{id}:
+  /ab/tag/{guid}:
+    delete:
+      consumes:
+      - application/json
+      description: 标签
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: 标签删除
+      tags:
+      - 地址[Personal]
+  /ab/tag/rename/{guid}:
+    put:
+      consumes:
+      - application/json
+      description: 标签
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: 标签重命名
+      tags:
+      - 地址[Personal]
+  /ab/tag/update/{guid}:
+    put:
+      consumes:
+      - application/json
+      description: 标签
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: 标签修改颜色
+      tags:
+      - 地址[Personal]
+  /ab/tags/{guid}:
     post:
       consumes:
       - application/json
