@@ -8,6 +8,10 @@ import (
 type Index struct {
 }
 
+func (i *Index) Index(c *gin.Context) {
+	c.Redirect(302, "/_admin/")
+}
+
 func (i *Index) ConfigJs(c *gin.Context) {
 	apiServer := global.Config.Rustdesk.ApiServer
 

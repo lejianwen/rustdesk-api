@@ -16,7 +16,7 @@ type AddressBookForm struct {
 	Tags             []string `json:"tags"`
 	Hash             string   `json:"hash"`
 	UserId           uint     `json:"user_id"`
-	ForceAlwaysRelay bool     `json:"force_always_relay"`
+	ForceAlwaysRelay bool     `json:"forceAlwaysRelay"`
 	RdpPort          string   `json:"rdp_port"`
 	RdpUsername      string   `json:"rdp_username"`
 	Online           bool     `json:"online"`

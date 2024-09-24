@@ -35,3 +35,39 @@ func (pf *PeerForm) ToPeer() *model.Peer {
 		Version:  pf.Version,
 	}
 }
+
+// PersonalAddressBookForm 个人地址簿表单
+type PersonalAddressBookForm struct {
+	model.AddressBook
+	ForceAlwaysRelay string `json:"forceAlwaysRelay"`
+}
+
+func (pabf *PersonalAddressBookForm) ToAddressBook() *model.AddressBook {
+	return &model.AddressBook{
+		RowId:            pabf.RowId,
+		Id:               pabf.Id,
+		Username:         pabf.Username,
+		Password:         pabf.Password,
+		Hostname:         pabf.Hostname,
+		Alias:            pabf.Alias,
+		Platform:         pabf.Platform,
+		Tags:             pabf.Tags,
+		Hash:             pabf.Hash,
+		UserId:           pabf.UserId,
+		ForceAlwaysRelay: pabf.ForceAlwaysRelay == "true",
+		RdpPort:          pabf.RdpPort,
+		RdpUsername:      pabf.RdpUsername,
+		Online:           pabf.Online,
+		LoginName:        pabf.LoginName,
+		SameServer:       pabf.SameServer,
+	}
+}
+
+type TagRenameForm struct {
+	Old string `json:"old"`
+	New string `json:"new"`
+}
+type TagColorForm struct {
+	Name  string `json:"name"`
+	Color uint   `json:"color"`
+}

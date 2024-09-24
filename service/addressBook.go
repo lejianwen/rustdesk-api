@@ -9,9 +9,15 @@ import (
 type AddressBookService struct {
 }
 
-func (s *AddressBookService) Info(id uint) *model.AddressBook {
+func (s *AddressBookService) Info(id string) *model.AddressBook {
 	p := &model.AddressBook{}
 	global.DB.Where("id = ?", id).First(p)
+	return p
+}
+
+func (s *AddressBookService) InfoByUserIdAndId(userid uint, id string) *model.AddressBook {
+	p := &model.AddressBook{}
+	global.DB.Where("user_id = ? and id = ?", userid, id).First(p)
 	return p
 }
 func (s *AddressBookService) InfoByRowId(id uint) *model.AddressBook {

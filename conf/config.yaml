@@ -17,6 +17,7 @@ rustdesk:
   relay-server: "192.168.1.66:21117"
   api-server: "http://192.168.1.66:21114"
   key: "123456789"
+  personal: 1
 logger:
   path: "./runtime/log.txt"
   level: "warn" #trace,debug,info,warn,error,fatal

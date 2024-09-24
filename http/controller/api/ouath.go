@@ -264,16 +264,3 @@ func (o *Oauth) OauthCallback(c *gin.Context) {
 	c.String(http.StatusInternalServerError, "授权配置错误,请联系管理员")
 
 }
-
-// WebOauthLogin
-// @Tags Oauth
-// @Summary WebOauthLogin
-// @Description WebOauthLogin
-// @Accept  json
-// @Produce  json
-// @Success 200 {string} string
-// @Failure 500 {string} string
-// @Router /oauth/login [get]
-func (o *Oauth) WebOauthLogin(c *gin.Context) {
-
-}

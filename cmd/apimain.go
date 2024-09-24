@@ -157,7 +157,7 @@ func ApiInitValidator() {
 }
 
 func DatabaseAutoUpdate() {
-	version := 103
+	version := 126
 
 	db := global.DB
 

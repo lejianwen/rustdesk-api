@@ -74,7 +74,38 @@ func ApiInit(g *gin.Engine) {
 		//更新地址
 		frg.POST("/ab", ab.UpAb)
 	}
-
+	PersonalRoutes(frg)
 	//访问静态文件
 	g.StaticFS("/upload", http.Dir(global.Config.Gin.ResourcesPath+"/public/upload"))
+}
+
+func PersonalRoutes(frg *gin.RouterGroup) {
+	{
+		ab := &api.Ab{}
+		frg.POST("/ab/personal", ab.Personal)
+		//[method:POST] [uri:/api/ab/settings] Request
+		frg.POST("/ab/settings", ab.Settings)
+		// [method:POST] [uri:/api/ab/shared/profiles?current=1&pageSize=100]
+		frg.POST("/ab/shared/profiles", ab.SharedProfiles)
+		//[method:POST] [uri:/api/ab/peers?current=1&pageSize=100&ab=1]
+		frg.POST("/ab/peers", ab.Peers)
+		// [method:POST] [uri:/api/ab/tags/1]
+		frg.POST("/ab/tags/:guid", ab.PTags)
+		//[method:POST] api/ab/peer/add/1
+		frg.POST("/ab/peer/add/:guid", ab.PeerAdd)
+		//[method:DELETE] [uri:/api/ab/peer/1]
+		frg.DELETE("/ab/peer/:guid", ab.PeerDel)
+		//[method:PUT] [uri:/api/ab/peer/update/1]
+		frg.PUT("/ab/peer/update/:guid", ab.PeerUpdate)
+		//[method:POST] [uri:/api/ab/tag/add/1]
+		frg.POST("/ab/tag/add/:guid", ab.TagAdd)
+		//[method:PUT] [uri:/api/ab/tag/rename/1]
+		frg.PUT("/ab/tag/rename/:guid", ab.TagRename)
+		//[method:PUT] [uri:/api/ab/tag/update/1]
+		frg.PUT("/ab/tag/update/:guid", ab.TagUpdate)
+		//[method:DELETE] [uri:/api/ab/tag/1]
+		frg.DELETE("/ab/tag/:guid", ab.TagDel)
+
+	}
+
 }

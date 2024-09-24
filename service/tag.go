@@ -14,6 +14,11 @@ func (s *TagService) Info(id uint) *model.Tag {
 	global.DB.Where("id = ?", id).First(p)
 	return p
 }
+func (s *TagService) InfoByUserIdAndName(userid uint, name string) *model.Tag {
+	p := &model.Tag{}
+	global.DB.Where("user_id = ? and name = ?", userid, name).First(p)
+	return p
+}
 
 func (s *TagService) ListByUserId(userId uint) (res *model.TagList) {
 	res = s.List(1, 1000, func(tx *gorm.DB) {
