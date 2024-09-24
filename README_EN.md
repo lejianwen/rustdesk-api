@@ -55,7 +55,7 @@ desktop software that provides self-hosted solutions.
 
 ## Features
 
-### API Service: Basic implementation of the PC client's primary interfaces.Supports the Personal version api, which can be enabled by configuring the `rustdesk.personal` file or the `RUSTDESK_PERSONAL` environment variable.
+### API Service: Basic implementation of the PC client's primary interfaces.Supports the Personal version api, which can be enabled by configuring the `rustdesk.personal` file or the `RUSTDESK_API_RUSTDESK_PERSONAL` environment variable.
 
 #### Login
 
@@ -147,6 +147,7 @@ rustdesk:
   relay-server: "192.168.1.66:21117"
   api-server: "http://192.168.1.66:21114"
   key: "123456789"
+  personal: 1
 ```
 
 * Environment variables, with the prefix `RUSTDESK_API`, will override the settings in the configuration file if
@@ -154,14 +155,14 @@ rustdesk:
 
 | Variable Name                      | Description                                               | Example                        |
 |------------------------------------|-----------------------------------------------------------|--------------------------------|
+| TZ                                 | timezone                                                  | Asia/Shanghai                  |
 | ----- GIN Configuration -----      | ---------------------------------------                   | ------------------------------ |
-| TZ                                 | 时区                                                        | Asia/Shanghai                  |
 | RUSTDESK_API_GIN_TRUST_PROXY       | Trusted proxy IPs, separated by commas.                   | 192.168.1.2,192.168.1.3        |
 | ----- GORM Configuration -----     | ---------------------------------------                   | ------------------------------ |
 | RUSTDESK_API_GORM_TYPE             | Database type (`sqlite` or `mysql`). Default is `sqlite`. | sqlite                         |
 | RUSTDESK_API_GORM_MAX_IDLE_CONNS   | Maximum idle connections                                  | 10                             |
 | RUSTDESK_API_GORM_MAX_OPEN_CONNS   | Maximum open connections                                  | 100                            |
-| RUSTDESK_PERSONAL                  | Open Personal Api 1:Enable,0:Disable                      | 1                              |
+| RUSTDESK_API_RUSTDESK_PERSONAL     | Open Personal Api 1:Enable,0:Disable                      | 1                              |
 | ----- MYSQL Configuration -----    | ---------------------------------------                   | ------------------------------ |
 | RUSTDESK_API_MYSQL_USERNAME        | MySQL username                                            | root                           |
 | RUSTDESK_API_MYSQL_PASSWORD        | MySQL password                                            | 111111                         |
