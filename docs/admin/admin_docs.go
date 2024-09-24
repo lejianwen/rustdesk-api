@@ -2266,7 +2266,7 @@ const docTemplateadmin = `{
                 "alias": {
                     "type": "string"
                 },
-                "force_always_relay": {
+                "forceAlwaysRelay": {
                     "type": "boolean"
                 },
                 "hash": {
@@ -2434,8 +2434,7 @@ const docTemplateadmin = `{
             "type": "object",
             "required": [
                 "color",
-                "name",
-                "user_id"
+                "name"
             ],
             "properties": {
                 "color": {

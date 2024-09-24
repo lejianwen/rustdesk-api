@@ -103,6 +103,19 @@ definitions:
       user_id:
         type: integer
     type: object
+  model.TagList:
+    properties:
+      list:
+        items:
+          $ref: '#/definitions/model.Tag'
+        type: array
+      page:
+        type: integer
+      page_size:
+        type: integer
+      total:
+        type: integer
+    type: object
   response.DataResponse:
     properties:
       data: {}
@@ -216,11 +229,38 @@ paths:
       summary: 标签添加
       tags:
       - 地址
-  /ab/personal:
+  /ab/peer/add/{id}:
     post:
       consumes:
       - application/json
-      description: 个人信息
+      description: 添加地址
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: 添加地址
+      tags:
+      - 地址[Personal]
+  /ab/peers:
+    post:
+      consumes:
+      - application/json
+      description: 地址
       parameters:
       - description: string valid
         in: body
@@ -240,9 +280,117 @@ paths:
             $ref: '#/definitions/response.Response'
       security:
       - BearerAuth: []
-      summary: 个人信息
+      summary: 地址列表
       tags:
-      - 用户
+      - 地址[Personal]
+  /ab/personal:
+    post:
+      consumes:
+      - application/json
+      description: 个人地址
+      parameters:
+      - description: string valid
+        in: body
+        name: string
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - BearerAuth: []
+      summary: 个人地址
+      tags:
+      - 地址[Personal]
+  /ab/settings:
+    post:
+      consumes:
+      - application/json
+      description: 设置
+      parameters:
+      - description: string valid
+        in: body
+        name: string
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - BearerAuth: []
+      summary: 设置
+      tags:
+      - 地址[Personal]
+  /ab/shared/profiles:
+    post:
+      consumes:
+      - application/json
+      description: 共享
+      parameters:
+      - description: string valid
+        in: body
+        name: string
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - BearerAuth: []
+      summary: 共享地址簿
+      tags:
+      - 地址[Personal]
+  /ab/tags/{id}:
+    post:
+      consumes:
+      - application/json
+      description: 标签
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.TagList'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: 标签
+      tags:
+      - 地址[Personal]
   /api:
     get:
       consumes:
@@ -364,25 +512,6 @@ paths:
           schema:
             $ref: '#/definitions/response.ErrorResponse'
       summary: OauthCallback
-      tags:
-      - Oauth
-  /oauth/login:
-    get:
-      consumes:
-      - application/json
-      description: WebOauthLogin
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            type: string
-        "500":
-          description: Internal Server Error
-          schema:
-            type: string
-      summary: WebOauthLogin
       tags:
       - Oauth
   /oidc/auth:

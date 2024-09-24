@@ -5,4 +5,5 @@ type Rustdesk struct {
 	RelayServer string `mapstructure:"relay-server"`
 	ApiServer   string `mapstructure:"api-server"`
 	Key         string `mapstructure:"key"`
+	Personal    int    `mapstructure:"personal"`
 }

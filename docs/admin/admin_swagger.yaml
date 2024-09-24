@@ -16,7 +16,7 @@ definitions:
     properties:
       alias:
         type: string
-      force_always_relay:
+      forceAlwaysRelay:
         type: boolean
       hash:
         type: string
@@ -141,7 +141,6 @@ definitions:
     required:
     - color
     - name
-    - user_id
     type: object
   admin.UserForm:
     properties:

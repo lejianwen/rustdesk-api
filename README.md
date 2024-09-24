@@ -127,6 +127,7 @@ rustdesk:
 | RUSTDESK_API_GORM_TYPE              | 数据库类型sqlite或者mysql，默认sqlite          | sqlite                      |
 | RUSTDESK_API_GORM_MAX_IDLE_CONNS    | 数据库最大空闲连接数                           | 10                          |
 | RUSTDESK_API_GORM_MAX_OPEN_CONNS    | 数据库最大打开连接数                           | 100                         |
+| RUSTDESK_PERSONAL                   | 是否启用个人版API， 1:启用,0:不启用； 默认启用         | 1                           |
 | -----MYSQL配置-----                   | -----数据库类型为sqlite时不用填-----           | ----------                  |
 | RUSTDESK_API_MYSQL_USERNAME         | mysql用户名                             | root                        |
 | RUSTDESK_API_MYSQL_PASSWORD         | mysql密码                              | 111111                      |
