@@ -15,6 +15,7 @@ type WebClientPeerInfoPayload struct {
 	Username string `json:"username"`
 	Hostname string `json:"hostname"`
 	Platform string `json:"platform"`
+	Hash     string `json:"hash"`
 }
 
 func (wcpp *WebClientPeerPayload) FromAddressBook(a *model.AddressBook) {
@@ -25,5 +26,6 @@ func (wcpp *WebClientPeerPayload) FromAddressBook(a *model.AddressBook) {
 		Username: a.Username,
 		Hostname: a.Hostname,
 		Platform: a.Platform,
+		Hash:     a.Hash,
 	}
 }

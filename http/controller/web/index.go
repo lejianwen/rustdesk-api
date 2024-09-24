@@ -12,6 +12,15 @@ func (i *Index) ConfigJs(c *gin.Context) {
 	apiServer := global.Config.Rustdesk.ApiServer
 
 	tmp := `
+      function stringToUint8Array(str){
+		  var arr = [];
+		  for (var i = 0, j = str.length; i < j; ++i) {
+			arr.push(str.charCodeAt(i));
+		  }
+		 
+		  var tmpUint8Array = new Uint8Array(arr);
+		  return tmpUint8Array
+	 }
  	  window._gwen = {}
       window._gwen.kv = {}
       function getQueryVariable() {
@@ -53,13 +62,26 @@ const autoWriteServer = () => {
 							}	
                          
 						  if (res.data.peers) {
-								oldPeers = JSON.parse(localStorage.getItem('peers')) || {}
+                              oldPeers = JSON.parse(localStorage.getItem('peers')) || {}
+							  let needUpdate = false	
 							  Object.keys(res.data.peers).forEach(k => {
 								if(!oldPeers[k]) {
 									oldPeers[k] = res.data.peers[k]
+									needUpdate = true
+								}else{
+									oldPeers[k].info = res.data.peers[k].info
 								}
+								if (oldPeers[k].info && oldPeers[k].info.hash&&!oldPeers[k].password ) {
+									let p1 = window.atob(oldPeers[k].info.hash)
+									const pwd = stringToUint8Array(p1)
+									oldPeers[k].password = pwd.toString()
+                                    oldPeers[k].remember = true
+								}							
                               })
 							  localStorage.setItem('peers', JSON.stringify(oldPeers))
+							  if(needUpdate) {
+								  window.location.reload()
+                              }
 					      }
                       }
                   })
