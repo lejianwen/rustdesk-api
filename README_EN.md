@@ -8,7 +8,30 @@ desktop software that provides self-hosted solutions.
 <img src="https://img.shields.io/badge/gin-v1.9.0-lightBlue"/>
 <img src="https://img.shields.io/badge/gorm-v1.25.7-green"/>
 <img src="https://img.shields.io/badge/swag-v1.16.3-yellow"/>
+<img src="https://github.com/lejianwen/rustdesk-api/actions/workflows/release.yml/badge.svg"/>
+<img src="https://github.com/lejianwen/rustdesk-api/actions/workflows/docker.yml/badge.svg"/>
 </div>
+
+# Features
+
+- PC API
+    - Personal API
+    - Login
+    - Address Book
+    - Groups
+    - Authorized login, supports `GitHub` and `Google` login, supports `web admin` authorized login
+- Web Admin
+    - User Management
+    - Device Management
+    - Address Book Management
+    - Tag Management
+    - Group Management
+    - OAuth Management
+    - Quick access to web client
+- Web Client
+    - Automatically obtain API server
+    - Automatically obtain ID server and KEY
+    - Automatically obtain address book
 
 ## Prerequisites
 
@@ -32,11 +55,12 @@ desktop software that provides self-hosted solutions.
 
 ## Features
 
-### API Service: Basic implementation of the PC client's primary interfaces.
+### API Service: Basic implementation of the PC client's primary interfaces.Supports the Personal version api, which can be enabled by configuring the `rustdesk.personal` file or the `RUSTDESK_PERSONAL` environment variable.
 
 #### Login
 
-- Added `GitHub` and `Google` login, which can be used after configuration in the admin panel. See the OAuth configuration section
+- Added `GitHub` and `Google` login, which can be used after configuration in the admin panel. See the OAuth
+  configuration section
   for details.
 - Added authorization login for the web admin panel.
 
@@ -50,7 +74,10 @@ desktop software that provides self-hosted solutions.
 
 ![pc_gr](docs/pc_gr.png)
 
-### **Web UI**: The frontend and backend are separated to provide a user-friendly management interface, primarily for managing and displaying data.
+### **Web UI
+
+**: The frontend and backend are separated to provide a user-friendly management interface, primarily for managing and
+displaying data.
 
 ***Frontend code is available at [rustdesk-api-web](https://github.com/lejianwen/rustdesk-api-web)***
 
@@ -67,7 +94,8 @@ installation are `admin` `admin`, please change the password immediately.***
    ![web_admin_gr](docs/web_admin_gr.png)
 5. You can open the web client directly for convenience:
    ![web_webclient](docs/admin_webclient.png)
-6. OAuth support: Currently, `GitHub` and `Google`  is supported. You need to create an `OAuth App` and configure it in the admin
+6. OAuth support: Currently, `GitHub` and `Google`  is supported. You need to create an `OAuth App` and configure it in
+   the admin
    panel.
    ![web_admin_oauth](docs/web_admin_oauth.png)
     - Create a `GitHub OAuth App`
@@ -84,7 +112,9 @@ installation are `admin` `admin`, please change the password immediately.***
 3. After logging in, the ID server and key will be automatically synced.
 4. The address book will also be automatically saved to the web client for convenient use.
 
-### **Automated Documentation** : API documentation is generated using Swag, making it easier for developers to understand and use the API.
+### **Automated Documentation
+
+** : API documentation is generated using Swag, making it easier for developers to understand and use the API.
 
 1. Admin panel docs: `<your server>/admin/swagger/index.html`
 2. PC client docs: `<your server>/swagger/index.html`
@@ -125,11 +155,13 @@ rustdesk:
 | Variable Name                      | Description                                               | Example                        |
 |------------------------------------|-----------------------------------------------------------|--------------------------------|
 | ----- GIN Configuration -----      | ---------------------------------------                   | ------------------------------ |
+| TZ                                 | 时区                                                        | Asia/Shanghai                  |
 | RUSTDESK_API_GIN_TRUST_PROXY       | Trusted proxy IPs, separated by commas.                   | 192.168.1.2,192.168.1.3        |
 | ----- GORM Configuration -----     | ---------------------------------------                   | ------------------------------ |
 | RUSTDESK_API_GORM_TYPE             | Database type (`sqlite` or `mysql`). Default is `sqlite`. | sqlite                         |
 | RUSTDESK_API_GORM_MAX_IDLE_CONNS   | Maximum idle connections                                  | 10                             |
 | RUSTDESK_API_GORM_MAX_OPEN_CONNS   | Maximum open connections                                  | 100                            |
+| RUSTDESK_PERSONAL                  | Open Personal Api 1:Enable,0:Disable                      | 1                              |
 | ----- MYSQL Configuration -----    | ---------------------------------------                   | ------------------------------ |
 | RUSTDESK_API_MYSQL_USERNAME        | MySQL username                                            | root                           |
 | RUSTDESK_API_MYSQL_PASSWORD        | MySQL password                                            | 111111                         |
@@ -241,6 +273,70 @@ lejianwen/rustdesk-api
        restart: unless-stopped
    
    ```
+    - If you are using an S6 image, you need to modify the startup script `/etc/s6-overlay/s6-rc.d/hbbr/run`
+      and `/etc/s6-overlay/s6-rc.d/hbbr/run`
+
+        1. create `hbbr/run`
+
+            ```bash
+            #!/command/with-contenv sh
+            cd /data
+            PARAMS=
+            [ "${ENCRYPTED_ONLY}" = "1" ] && PARAMS="-k ${KEY}"
+            /usr/bin/hbbr $PARAMS
+            ```
+
+        2. create `hbbs/run`
+            ```bash
+            #!/command/with-contenv sh
+            sleep 2
+            cd /data
+            PARAMS=
+            [ "${ENCRYPTED_ONLY}" = "1" ] && PARAMS="-k ${KEY}"
+            /usr/bin/hbbs -r $RELAY $PARAMS
+            ```
+        3. edit `docker-compose.yml`
+            ```
+            networks:
+              rustdesk-net:
+                external: false
+            services:
+              rustdesk-server:
+                container_name: rustdesk-server
+                ports:
+                  - 21115:21115
+                  - 21116:21116
+                  - 21116:21116/udp
+                  - 21117:21117
+                  - 21118:21118
+                  - 21119:21119
+                image: rustdesk/rustdesk-server-s6:latest
+                environment:
+                  - RELAY=192.168.1.66:21117
+                  - ENCRYPTED_ONLY=1
+                  - KEY=abc123456789
+                volumes:
+                  - ./data:/data
+                  - ./hbbr/run:/etc/s6-overlay/s6-rc.d/hbbr/run
+                  - ./hbbs/run:/etc/s6-overlay/s6-rc.d/hbbs/run
+                restart: unless-stopped
+              rustdesk-api:
+                container_name: rustdesk-api
+                ports:
+                  - 21114:21114
+                image: lejianwen/rustdesk-api
+                environment:
+                  - TZ=Asia/Shanghai
+                  - RUSTDESK_API_RUSTDESK_ID_SERVER=192.168.1.66:21116
+                  - RUSTDESK_API_RUSTDESK_RELAY_SERVER=192.168.1.66:21117
+                  - RUSTDESK_API_RUSTDESK_API_SERVER=http://192.168.1.66:21114
+                  - RUSTDESK_API_RUSTDESK_KEY=abc123456789
+                volumes:
+                  - /data/rustdesk/api:/app/data #将数据库挂载
+                networks:
+                  - rustdesk-net
+                restart: unless-stopped
+            ```
 
 #### Running from Release
 
