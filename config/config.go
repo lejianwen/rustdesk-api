@@ -15,6 +15,7 @@ const (
 )
 
 type Config struct {
+	Lang     string `mapstructure:"lang"`
 	Gorm     Gorm
 	Mysql    Mysql
 	Gin      Gin

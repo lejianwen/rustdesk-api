@@ -37,7 +37,7 @@ func (i *Index) Index(c *gin.Context) {
 func (i *Index) Heartbeat(c *gin.Context) {
 	//b := &gin.H{}
 	//err := c.BindJSON(b)
-	//body : &map[id:ljwzhuwo modified_at:0 uuid:NGIxZTZjM2YtNmNkMy00YTMwLWFiNjQtMzQ0MTA0NGE5ZDgz ver:1.003e+06]
+	//body : &map[id:xxx modified_at:0 uuid:NGIxZTZjM2YtNmNkMy00YTMwLWFiNjQtMzQ0MTA0NGE5ZDgz ver:1.003e+06]
 	//fmt.Println(b, err, c.Request.Header)
 	//header : map[Accept:[*/*] Accept-Encoding:[gzip] Content-Length:[105] Content-Type:[application/json]]
 	c.JSON(http.StatusOK, gin.H{})

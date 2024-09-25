@@ -1,3 +1,4 @@
+lang: "en"
 gin:
   api-addr: "0.0.0.0:21114"
   mode: "release" #release,debug,test

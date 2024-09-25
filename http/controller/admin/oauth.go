@@ -18,12 +18,12 @@ type Oauth struct {
 func (o *Oauth) Info(c *gin.Context) {
 	code := c.Query("code")
 	if code == "" {
-		response.Fail(c, 101, "参数错误")
+		response.Fail(c, 101, response.TranslateMsg(c, "ParamsError"))
 		return
 	}
 	v := service.AllService.OauthService.GetOauthCache(code)
 	if v == nil {
-		response.Fail(c, 101, "信息不存在")
+		response.Fail(c, 101, response.TranslateMsg(c, "ItemNotFound"))
 		return
 	}
 	response.Success(c, v)
@@ -33,20 +33,20 @@ func (o *Oauth) ToBind(c *gin.Context) {
 	f := &adminReq.BindOauthForm{}
 	err := c.ShouldBindJSON(f)
 	if err != nil {
-		response.Fail(c, 101, "参数错误")
+		response.Fail(c, 101, response.TranslateMsg(c, "ParamsError")+err.Error())
 		return
 	}
 	u := service.AllService.UserService.CurUser(c)
 
 	utr := service.AllService.UserService.UserThirdInfo(u.Id, f.Op)
 	if utr.Id > 0 {
-		response.Fail(c, 101, "已绑定过了")
+		response.Fail(c, 101, response.TranslateMsg(c, "OauthHasBindOtherUser"))
 		return
 	}
 
 	err, code, url := service.AllService.OauthService.BeginAuth(f.Op)
 	if err != nil {
-		response.Error(c, err.Error())
+		response.Error(c, response.TranslateMsg(c, err.Error()))
 		return
 	}
 
@@ -89,22 +89,22 @@ func (o *Oauth) BindConfirm(c *gin.Context) {
 	j := &adminReq.OauthConfirmForm{}
 	err := c.ShouldBindJSON(j)
 	if err != nil {
-		response.Fail(c, 101, "参数错误"+err.Error())
+		response.Fail(c, 101, response.TranslateMsg(c, "ParamsError")+err.Error())
 		return
 	}
 	if j.Code == "" {
-		response.Fail(c, 101, "参数错误: code 不存在")
+		response.Fail(c, 101, response.TranslateMsg(c, "ParamsError"))
 		return
 	}
 	v := service.AllService.OauthService.GetOauthCache(j.Code)
 	if v == nil {
-		response.Fail(c, 101, "授权已过期")
+		response.Fail(c, 101, response.TranslateMsg(c, "OauthExpired"))
 		return
 	}
 	u := service.AllService.UserService.CurUser(c)
 	err = service.AllService.OauthService.BindGithubUser(v.ThirdOpenId, v.ThirdOpenId, u.Id)
 	if err != nil {
-		response.Fail(c, 101, "绑定失败，请重试")
+		response.Fail(c, 101, response.TranslateMsg(c, "BindFail"))
 		return
 	}
 
@@ -117,22 +117,30 @@ func (o *Oauth) Unbind(c *gin.Context) {
 	f := &adminReq.UnBindOauthForm{}
 	err := c.ShouldBindJSON(f)
 	if err != nil {
-		response.Fail(c, 101, "参数错误")
+		response.Fail(c, 101, response.TranslateMsg(c, "ParamsError")+err.Error())
 		return
 	}
 	u := service.AllService.UserService.CurUser(c)
 	utr := service.AllService.UserService.UserThirdInfo(u.Id, f.Op)
 	if utr.Id == 0 {
-		response.Fail(c, 101, "未绑定")
+		response.Fail(c, 101, response.TranslateMsg(c, "ItemNotFound"))
 		return
 	}
 	if f.Op == model.OauthTypeGithub {
 		err = service.AllService.OauthService.UnBindGithubUser(u.Id)
 		if err != nil {
-			response.Fail(c, 101, "解绑失败")
+			response.Fail(c, 101, response.TranslateMsg(c, "OperationFailed")+err.Error())
 			return
 		}
 	}
+	if f.Op == model.OauthTypeGoogle {
+		err = service.AllService.OauthService.UnBindGoogleUser(u.Id)
+		if err != nil {
+			response.Fail(c, 101, response.TranslateMsg(c, "OperationFailed")+err.Error())
+			return
+		}
+	}
+
 	response.Success(c, nil)
 }
 
@@ -155,7 +163,7 @@ func (o *Oauth) Detail(c *gin.Context) {
 		response.Success(c, u)
 		return
 	}
-	response.Fail(c, 101, "信息不存在")
+	response.Fail(c, 101, response.TranslateMsg(c, "ItemNotFound"))
 	return
 }
 
@@ -173,10 +181,10 @@ func (o *Oauth) Detail(c *gin.Context) {
 func (o *Oauth) Create(c *gin.Context) {
 	f := &admin.OauthForm{}
 	if err := c.ShouldBindJSON(f); err != nil {
-		response.Fail(c, 101, "参数错误"+err.Error())
+		response.Fail(c, 101, response.TranslateMsg(c, "ParamsError")+err.Error())
 		return
 	}
-	errList := global.Validator.ValidStruct(f)
+	errList := global.Validator.ValidStruct(c, f)
 	if len(errList) > 0 {
 		response.Fail(c, 101, errList[0])
 		return
@@ -184,14 +192,14 @@ func (o *Oauth) Create(c *gin.Context) {
 
 	ex := service.AllService.OauthService.InfoByOp(f.Op)
 	if ex.Id > 0 {
-		response.Fail(c, 101, "已存在"+f.Op)
+		response.Fail(c, 101, response.TranslateMsg(c, "ItemExists"))
 		return
 	}
 
 	u := f.ToOauth()
 	err := service.AllService.OauthService.Create(u)
 	if err != nil {
-		response.Fail(c, 101, "创建失败")
+		response.Fail(c, 101, response.TranslateMsg(c, "OperationFailed")+err.Error())
 		return
 	}
 	response.Success(c, u)
@@ -212,7 +220,7 @@ func (o *Oauth) Create(c *gin.Context) {
 func (o *Oauth) List(c *gin.Context) {
 	query := &admin.PageQuery{}
 	if err := c.ShouldBindQuery(query); err != nil {
-		response.Fail(c, 101, "参数错误")
+		response.Fail(c, 101, response.TranslateMsg(c, "ParamsError")+err.Error())
 		return
 	}
 	res := service.AllService.OauthService.List(query.Page, query.PageSize, nil)
@@ -233,14 +241,14 @@ func (o *Oauth) List(c *gin.Context) {
 func (o *Oauth) Update(c *gin.Context) {
 	f := &admin.OauthForm{}
 	if err := c.ShouldBindJSON(f); err != nil {
-		response.Fail(c, 101, "参数错误")
+		response.Fail(c, 101, response.TranslateMsg(c, "ParamsError")+err.Error())
 		return
 	}
 	if f.Id == 0 {
-		response.Fail(c, 101, "参数错误")
+		response.Fail(c, 101, response.TranslateMsg(c, "ParamsError"))
 		return
 	}
-	errList := global.Validator.ValidStruct(f)
+	errList := global.Validator.ValidStruct(c, f)
 	if len(errList) > 0 {
 		response.Fail(c, 101, errList[0])
 		return
@@ -248,7 +256,7 @@ func (o *Oauth) Update(c *gin.Context) {
 	u := f.ToOauth()
 	err := service.AllService.OauthService.Update(u)
 	if err != nil {
-		response.Fail(c, 101, "更新失败")
+		response.Fail(c, 101, response.TranslateMsg(c, "OperationFailed")+err.Error())
 		return
 	}
 	response.Success(c, nil)
@@ -268,11 +276,11 @@ func (o *Oauth) Update(c *gin.Context) {
 func (o *Oauth) Delete(c *gin.Context) {
 	f := &admin.OauthForm{}
 	if err := c.ShouldBindJSON(f); err != nil {
-		response.Fail(c, 101, "系统错误")
+		response.Fail(c, 101, response.TranslateMsg(c, "ParamsError")+err.Error())
 		return
 	}
 	id := f.Id
-	errList := global.Validator.ValidVar(id, "required,gt=0")
+	errList := global.Validator.ValidVar(c, id, "required,gt=0")
 	if len(errList) > 0 {
 		response.Fail(c, 101, errList[0])
 		return
@@ -287,5 +295,5 @@ func (o *Oauth) Delete(c *gin.Context) {
 		response.Fail(c, 101, err.Error())
 		return
 	}
-	response.Fail(c, 101, "信息不存在")
+	response.Fail(c, 101, response.TranslateMsg(c, "ItemNotFound"))
 }

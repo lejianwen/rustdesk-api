@@ -31,14 +31,14 @@ func (ct *AddressBook) Detail(c *gin.Context) {
 	t := service.AllService.AddressBookService.InfoByRowId(uint(iid))
 	u := service.AllService.UserService.CurUser(c)
 	if !service.AllService.UserService.IsAdmin(u) && t.UserId != u.Id {
-		response.Fail(c, 101, "无权限")
+		response.Fail(c, 101, response.TranslateMsg(c, "NoAccess"))
 		return
 	}
 	if t.RowId > 0 {
 		response.Success(c, t)
 		return
 	}
-	response.Fail(c, 101, "信息不存在")
+	response.Fail(c, 101, response.TranslateMsg(c, "ItemNotFound"))
 	return
 }
 
@@ -56,10 +56,10 @@ func (ct *AddressBook) Detail(c *gin.Context) {
 func (ct *AddressBook) Create(c *gin.Context) {
 	f := &admin.AddressBookForm{}
 	if err := c.ShouldBindJSON(f); err != nil {
-		response.Fail(c, 101, "参数错误")
+		response.Fail(c, 101, response.TranslateMsg(c, "ParamsError")+err.Error())
 		return
 	}
-	errList := global.Validator.ValidStruct(f)
+	errList := global.Validator.ValidStruct(c, f)
 	if len(errList) > 0 {
 		response.Fail(c, 101, errList[0])
 		return
@@ -71,7 +71,7 @@ func (ct *AddressBook) Create(c *gin.Context) {
 	}
 	err := service.AllService.AddressBookService.Create(t)
 	if err != nil {
-		response.Fail(c, 101, "创建失败")
+		response.Fail(c, 101, response.TranslateMsg(c, "OperationFailed")+err.Error())
 		return
 	}
 	response.Success(c, u)
@@ -94,7 +94,7 @@ func (ct *AddressBook) Create(c *gin.Context) {
 func (ct *AddressBook) List(c *gin.Context) {
 	query := &admin.AddressBookQuery{}
 	if err := c.ShouldBindQuery(query); err != nil {
-		response.Fail(c, 101, "参数错误")
+		response.Fail(c, 101, response.TranslateMsg(c, "ParamsError")+err.Error())
 		return
 	}
 	u := service.AllService.UserService.CurUser(c)
@@ -123,27 +123,27 @@ func (ct *AddressBook) List(c *gin.Context) {
 func (ct *AddressBook) Update(c *gin.Context) {
 	f := &admin.AddressBookForm{}
 	if err := c.ShouldBindJSON(f); err != nil {
-		response.Fail(c, 101, "参数错误")
+		response.Fail(c, 101, response.TranslateMsg(c, "ParamsError")+err.Error())
 		return
 	}
-	errList := global.Validator.ValidStruct(f)
+	errList := global.Validator.ValidStruct(c, f)
 	if len(errList) > 0 {
 		response.Fail(c, 101, errList[0])
 		return
 	}
 	if f.RowId == 0 {
-		response.Fail(c, 101, "参数错误")
+		response.Fail(c, 101, response.TranslateMsg(c, "ParamsError"))
 		return
 	}
 	t := f.ToAddressBook()
 	u := service.AllService.UserService.CurUser(c)
 	if !service.AllService.UserService.IsAdmin(u) && t.UserId != u.Id {
-		response.Fail(c, 101, "无权限")
+		response.Fail(c, 101, response.TranslateMsg(c, "NoAccess"))
 		return
 	}
 	err := service.AllService.AddressBookService.Update(t)
 	if err != nil {
-		response.Fail(c, 101, "更新失败")
+		response.Fail(c, 101, response.TranslateMsg(c, "OperationFailed")+err.Error())
 		return
 	}
 	response.Success(c, nil)
@@ -163,11 +163,11 @@ func (ct *AddressBook) Update(c *gin.Context) {
 func (ct *AddressBook) Delete(c *gin.Context) {
 	f := &admin.AddressBookForm{}
 	if err := c.ShouldBindJSON(f); err != nil {
-		response.Fail(c, 101, "系统错误")
+		response.Fail(c, 101, response.TranslateMsg(c, "ParamsError")+err.Error())
 		return
 	}
 	id := f.RowId
-	errList := global.Validator.ValidVar(id, "required,gt=0")
+	errList := global.Validator.ValidVar(c, id, "required,gt=0")
 	if len(errList) > 0 {
 		response.Fail(c, 101, errList[0])
 		return
@@ -175,7 +175,7 @@ func (ct *AddressBook) Delete(c *gin.Context) {
 	t := service.AllService.AddressBookService.InfoByRowId(f.RowId)
 	u := service.AllService.UserService.CurUser(c)
 	if !service.AllService.UserService.IsAdmin(u) && t.UserId != u.Id {
-		response.Fail(c, 101, "无权限")
+		response.Fail(c, 101, response.TranslateMsg(c, "NoAccess"))
 		return
 	}
 	if u.Id > 0 {
@@ -184,8 +184,8 @@ func (ct *AddressBook) Delete(c *gin.Context) {
 			response.Success(c, nil)
 			return
 		}
-		response.Fail(c, 101, err.Error())
+		response.Fail(c, 101, response.TranslateMsg(c, "OperationFailed")+err.Error())
 		return
 	}
-	response.Fail(c, 101, "信息不存在")
+	response.Fail(c, 101, response.TranslateMsg(c, "ItemNotFound"))
 }

@@ -29,17 +29,17 @@ func (o *Oauth) OidcAuth(c *gin.Context) {
 	f := &api.OidcAuthRequest{}
 	err := c.ShouldBindJSON(&f)
 	if err != nil {
-		response.Error(c, "参数错误")
+		response.Error(c, response.TranslateMsg(c, "ParamsError")+err.Error())
 		return
 	}
 	if f.Op != model.OauthTypeWebauth && f.Op != model.OauthTypeGoogle && f.Op != model.OauthTypeGithub {
-		response.Error(c, "参数错误")
+		response.Error(c, response.TranslateMsg(c, "ParamsError"))
 		return
 	}
 
 	err, code, url := service.AllService.OauthService.BeginAuth(f.Op)
 	if err != nil {
-		response.Error(c, err.Error())
+		response.Error(c, response.TranslateMsg(c, err.Error()))
 		return
 	}
 
@@ -72,12 +72,12 @@ func (o *Oauth) OidcAuthQuery(c *gin.Context) {
 	q := &api.OidcAuthQuery{}
 	err := c.ShouldBindQuery(q)
 	if err != nil {
-		response.Error(c, "参数错误")
+		response.Error(c, response.TranslateMsg(c, "ParamsError")+err.Error())
 		return
 	}
 	v := service.AllService.OauthService.GetOauthCache(q.Code)
 	if v == nil {
-		response.Error(c, "授权已过期，请重新授权")
+		response.Error(c, response.TranslateMsg(c, "OauthExpired"))
 		return
 	}
 	if v.UserId == 0 {
@@ -87,24 +87,20 @@ func (o *Oauth) OidcAuthQuery(c *gin.Context) {
 	}
 	u := service.AllService.UserService.InfoById(v.UserId)
 	//fmt.Println("auth success u", u)
-	if u.Id > 0 {
-		service.AllService.OauthService.DeleteOauthCache(q.Code)
-		ut := service.AllService.UserService.Login(u, &model.LoginLog{
-			UserId:   u.Id,
-			Client:   v.DeviceType,
-			Uuid:     v.Uuid,
-			Ip:       c.ClientIP(),
-			Type:     model.LoginLogTypeOauth,
-			Platform: v.DeviceOs,
-		})
-		c.JSON(http.StatusOK, apiResp.LoginRes{
-			AccessToken: ut.Token,
-			Type:        "access_token",
-			User:        *(&apiResp.UserPayload{}).FromUser(u),
-		})
-		return
-	}
-	response.Error(c, "用户不存在")
+	service.AllService.OauthService.DeleteOauthCache(q.Code)
+	ut := service.AllService.UserService.Login(u, &model.LoginLog{
+		UserId:   u.Id,
+		Client:   v.DeviceType,
+		Uuid:     v.Uuid,
+		Ip:       c.ClientIP(),
+		Type:     model.LoginLogTypeOauth,
+		Platform: v.DeviceOs,
+	})
+	c.JSON(http.StatusOK, apiResp.LoginRes{
+		AccessToken: ut.Token,
+		Type:        "access_token",
+		User:        *(&apiResp.UserPayload{}).FromUser(u),
+	})
 }
 
 // OauthCallback 回调
@@ -119,7 +115,7 @@ func (o *Oauth) OidcAuthQuery(c *gin.Context) {
 func (o *Oauth) OauthCallback(c *gin.Context) {
 	state := c.Query("state")
 	if state == "" {
-		c.String(http.StatusInternalServerError, "state为空")
+		c.String(http.StatusInternalServerError, response.TranslateParamMsg(c, "ParamIsEmpty", "state"))
 		return
 	}
 
@@ -127,7 +123,7 @@ func (o *Oauth) OauthCallback(c *gin.Context) {
 	//从缓存中获取
 	v := service.AllService.OauthService.GetOauthCache(cacheKey)
 	if v == nil {
-		c.String(http.StatusInternalServerError, "授权已过期，请重新授权")
+		c.String(http.StatusInternalServerError, response.TranslateMsg(c, "OauthExpired"))
 		return
 	}
 
@@ -138,34 +134,34 @@ func (o *Oauth) OauthCallback(c *gin.Context) {
 		code := c.Query("code")
 		err, userData := service.AllService.OauthService.GithubCallback(code)
 		if err != nil {
-			c.String(http.StatusInternalServerError, "授权失败:"+err.Error())
+			c.String(http.StatusInternalServerError, response.TranslateMsg(c, "OauthFailed")+response.TranslateMsg(c, err.Error()))
 			return
 		}
 		if ac == service.OauthActionTypeBind {
 			//fmt.Println("bind", ty, userData)
 			utr := service.AllService.OauthService.UserThirdInfo(ty, strconv.Itoa(userData.Id))
 			if utr.UserId > 0 {
-				c.String(http.StatusInternalServerError, "已经绑定其他账号")
+				c.String(http.StatusInternalServerError, response.TranslateMsg(c, "OauthHasBindOtherUser"))
 				return
 			}
 			//绑定
 			u := service.AllService.UserService.InfoById(v.UserId)
 			if u == nil {
-				c.String(http.StatusInternalServerError, "用户不存在")
+				c.String(http.StatusInternalServerError, response.TranslateMsg(c, "ItemNotFound"))
 				return
 			}
 			//绑定github
 			err = service.AllService.OauthService.BindGithubUser(strconv.Itoa(userData.Id), userData.Login, v.UserId)
 			if err != nil {
-				c.String(http.StatusInternalServerError, "绑定失败")
+				c.String(http.StatusInternalServerError, response.TranslateMsg(c, "BindFail"))
 				return
 			}
-			c.String(http.StatusOK, "绑定成功")
+			c.String(http.StatusOK, response.TranslateMsg(c, "BindSuccess"))
 			return
 		} else if ac == service.OauthActionTypeLogin {
 			//登录
 			if v.UserId != 0 {
-				c.String(http.StatusInternalServerError, "授权已经成功")
+				c.String(http.StatusInternalServerError, response.TranslateMsg(c, "OauthHasBeenSuccess"))
 				return
 			}
 			u := service.AllService.UserService.InfoByGithubId(strconv.Itoa(userData.Id))
@@ -183,19 +179,16 @@ func (o *Oauth) OauthCallback(c *gin.Context) {
 				//自动注册
 				u = service.AllService.UserService.RegisterByGithub(userData.Login, strconv.Itoa(userData.Id))
 				if u.Id == 0 {
-					c.String(http.StatusInternalServerError, "注册失败")
+					c.String(http.StatusInternalServerError, response.TranslateMsg(c, "OauthRegisterFailed"))
 					return
 				}
 			}
 
 			v.UserId = u.Id
 			service.AllService.OauthService.SetOauthCache(cacheKey, v, 0)
-			c.String(http.StatusOK, "授权成功")
+			c.String(http.StatusOK, response.TranslateMsg(c, "OauthSuccess"))
 			return
 		}
-		//返回js
-		c.Header("Content-Type", "text/html; charset=utf-8")
-		c.String(http.StatusOK, "授权错误")
 
 	}
 
@@ -203,7 +196,7 @@ func (o *Oauth) OauthCallback(c *gin.Context) {
 		code := c.Query("code")
 		err, userData := service.AllService.OauthService.GoogleCallback(code)
 		if err != nil {
-			c.String(http.StatusInternalServerError, "授权失败:"+err.Error())
+			c.String(http.StatusInternalServerError, response.TranslateMsg(c, "OauthFailed")+response.TranslateMsg(c, err.Error()))
 			return
 		}
 		//将空格替换成_
@@ -212,26 +205,26 @@ func (o *Oauth) OauthCallback(c *gin.Context) {
 			//fmt.Println("bind", ty, userData)
 			utr := service.AllService.OauthService.UserThirdInfo(ty, userData.Email)
 			if utr.UserId > 0 {
-				c.String(http.StatusInternalServerError, "已经绑定其他账号")
+				c.String(http.StatusInternalServerError, response.TranslateMsg(c, "OauthHasBindOtherUser"))
 				return
 			}
 			//绑定
 			u := service.AllService.UserService.InfoById(v.UserId)
 			if u == nil {
-				c.String(http.StatusInternalServerError, "用户不存在")
+				c.String(http.StatusInternalServerError, response.TranslateMsg(c, "ItemNotFound"))
 				return
 			}
 			//绑定
 			err = service.AllService.OauthService.BindGoogleUser(userData.Email, googleName, v.UserId)
 			if err != nil {
-				c.String(http.StatusInternalServerError, "绑定失败")
+				c.String(http.StatusInternalServerError, response.TranslateMsg(c, "BindFail"))
 				return
 			}
-			c.String(http.StatusOK, "绑定成功")
+			c.String(http.StatusOK, response.TranslateMsg(c, "BindSuccess"))
 			return
 		} else if ac == service.OauthActionTypeLogin {
 			if v.UserId != 0 {
-				c.String(http.StatusInternalServerError, "授权已经成功")
+				c.String(http.StatusInternalServerError, response.TranslateMsg(c, "OauthHasBeenSuccess"))
 				return
 			}
 			u := service.AllService.UserService.InfoByGoogleEmail(userData.Email)
@@ -250,17 +243,17 @@ func (o *Oauth) OauthCallback(c *gin.Context) {
 				//自动注册
 				u = service.AllService.UserService.RegisterByGoogle(googleName, userData.Email)
 				if u.Id == 0 {
-					c.String(http.StatusInternalServerError, "注册失败")
+					c.String(http.StatusInternalServerError, response.TranslateMsg(c, "OauthRegisterFailed"))
 					return
 				}
 			}
 
 			v.UserId = u.Id
 			service.AllService.OauthService.SetOauthCache(cacheKey, v, 0)
-			c.String(http.StatusOK, "授权成功")
+			c.String(http.StatusOK, response.TranslateMsg(c, "OauthSuccess"))
 			return
 		}
 	}
-	c.String(http.StatusInternalServerError, "授权配置错误,请联系管理员")
+	c.String(http.StatusInternalServerError, response.TranslateMsg(c, "SystemError"))
 
 }

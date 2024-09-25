@@ -165,7 +165,6 @@ definitions:
         type: string
     required:
     - group_id
-    - nickname
     - status
     - username
     type: object
