@@ -1,0 +1,111 @@
+[Test]
+description = "test"
+one = "test1 "
+other = "Test2 {{.P0}}"
+
+[ParamsError]
+description = "Params validation failed."
+one = "Params validation failed."
+other = "Params validation failed."
+
+[OperationFailed]
+description = "OperationFailed."
+one = "the operation failed."
+other = "the operation failed."
+
+[OperationSuccess]
+description = "OperationSuccess."
+one = "the operation success."
+other = "the operation success."
+
+[ItemExists]
+description = "Item already exists."
+one = "Item already exists."
+other = "Item already exists."
+
+[ItemNotFound]
+description = "Item not found."
+one = "Item not found."
+other = "Item not found."
+
+[NoAccess]
+description = "No access."
+one = "No access."
+other = "No access."
+
+[UsernameOrPasswordError]
+description = "Username or password error."
+one = "Username or password error."
+other = "Username or password error."
+
+[SystemError]
+description = "System error."
+one = "System error."
+other = "System error."
+
+[ConfigNotFound]
+description = "Config not found."
+one = "Config not found."
+other = "Config not found."
+
+[OauthExpired]
+description = "Oauth expired."
+one = "Oauth expired, please try again."
+other = "Oauth expired,please try again."
+
+[OauthFailed]
+description = "Oauth failed."
+one = "Oauth failed."
+other = "Oauth failed."
+
+[OauthHasBindOtherUser]
+description = "Oauth has bind other user."
+one = "Oauth has bind other user."
+other = "Oauth has bind other user."
+
+[ParamIsEmpty]
+description = "Param is empty."
+one = "{{.P0}} is empty."
+other = "{{.P0}} is empty."
+
+[BindFail]
+description = "Bind fail."
+one = "Bind fail."
+other = "Bind fail."
+[BindSuccess]
+description = "Bind success."
+one = "Bind success."
+other = "Bind success."
+[OauthHasBeenSuccess]
+description = "Oauth has been success."
+one = "Oauth has been success."
+other = "Oauth has been success."
+[OauthSuccess]
+description = "Oauth success."
+one = "Oauth success."
+other = "Oauth success."
+[OauthRegisterSuccess]
+description = "Oauth register success."
+one = "Oauth register success."
+other = "Oauth register success."
+[OauthRegisterFailed]
+description = "Oauth register failed."
+one = "Oauth register failed."
+other = "Oauth register failed."
+[GetOauthTokenError]
+description = "Get oauth token error."
+one = "Get oauth token error."
+other = "Get oauth token error."
+[GetOauthUserInfoError]
+description = "Get oauth user info error."
+one = "Get oauth user info error."
+other = "Get oauth user info error."
+[DecodeOauthUserInfoError]
+description = "Decode oauth user info error."
+one = "Decode oauth user info error."
+other = "Decode oauth user info error."
+
+[OldPasswordError]
+description = "Old password error."
+one = "Old password error."
+other = "Old password error."

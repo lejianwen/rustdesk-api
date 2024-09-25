@@ -33,7 +33,7 @@ func (ct *LoginLog) Detail(c *gin.Context) {
 		response.Success(c, u)
 		return
 	}
-	response.Fail(c, 101, "信息不存在")
+	response.Fail(c, 101, response.TranslateMsg(c, "ItemNotFound"))
 	return
 }
 
@@ -53,7 +53,7 @@ func (ct *LoginLog) Detail(c *gin.Context) {
 func (ct *LoginLog) List(c *gin.Context) {
 	query := &admin.LoginLogQuery{}
 	if err := c.ShouldBindQuery(query); err != nil {
-		response.Fail(c, 101, "参数错误")
+		response.Fail(c, 101, response.TranslateMsg(c, "ParamsError")+err.Error())
 		return
 	}
 	u := service.AllService.UserService.CurUser(c)
@@ -82,11 +82,11 @@ func (ct *LoginLog) List(c *gin.Context) {
 func (ct *LoginLog) Delete(c *gin.Context) {
 	f := &model.LoginLog{}
 	if err := c.ShouldBindJSON(f); err != nil {
-		response.Fail(c, 101, "系统错误")
+		response.Fail(c, 101, response.TranslateMsg(c, "ParamsError")+err.Error())
 		return
 	}
 	id := f.Id
-	errList := global.Validator.ValidVar(id, "required,gt=0")
+	errList := global.Validator.ValidVar(c, id, "required,gt=0")
 	if len(errList) > 0 {
 		response.Fail(c, 101, errList[0])
 		return
@@ -94,7 +94,7 @@ func (ct *LoginLog) Delete(c *gin.Context) {
 	l := service.AllService.LoginLogService.InfoById(f.Id)
 	u := service.AllService.UserService.CurUser(c)
 	if !service.AllService.UserService.IsAdmin(u) && l.UserId != u.Id {
-		response.Fail(c, 101, "无权限")
+		response.Fail(c, 101, response.TranslateMsg(c, "NoAccess"))
 		return
 	}
 	if l.Id > 0 {
@@ -106,5 +106,5 @@ func (ct *LoginLog) Delete(c *gin.Context) {
 		response.Fail(c, 101, err.Error())
 		return
 	}
-	response.Fail(c, 101, "信息不存在")
+	response.Fail(c, 101, response.TranslateMsg(c, "ItemNotFound"))
 }

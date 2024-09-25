@@ -33,7 +33,7 @@ func (g *Group) Users(c *gin.Context) {
 	if !*u.IsAdmin {
 		gr := service.AllService.GroupService.InfoById(u.GroupId)
 		if gr.Type != model.GroupTypeShare {
-			response.Error(c, "不是管理员也不在分享组")
+			response.Error(c, response.TranslateMsg(c, "NoAccess"))
 			return
 		}
 	}
@@ -77,7 +77,7 @@ func (g *Group) Peers(c *gin.Context) {
 	if !*u.IsAdmin {
 		gr := service.AllService.GroupService.InfoById(u.GroupId)
 		if gr.Type != model.GroupTypeShare {
-			response.Error(c, "不是管理员也不在分享组")
+			response.Error(c, response.TranslateMsg(c, "NoAccess"))
 			return
 		}
 	}

@@ -27,7 +27,7 @@ func (p *Peer) SysInfo(c *gin.Context) {
 	f := &requstform.PeerForm{}
 	err := c.ShouldBindBodyWith(f, binding.JSON)
 	if err != nil {
-		response.Error(c, err.Error())
+		response.Error(c, response.TranslateMsg(c, "ParamsError")+err.Error())
 		return
 	}
 
@@ -36,7 +36,7 @@ func (p *Peer) SysInfo(c *gin.Context) {
 		pe = f.ToPeer()
 		err = service.AllService.PeerService.Create(pe)
 		if err != nil {
-			response.Error(c, err.Error())
+			response.Error(c, response.TranslateMsg(c, "OperationFailed")+err.Error())
 			return
 		}
 	}

@@ -68,37 +68,30 @@ func (a *Ab) UpAb(c *gin.Context) {
 	abf := &requstform.AddressBookForm{}
 	err := c.ShouldBindJSON(&abf)
 	if err != nil {
-		response.Error(c, "参数错误")
+		response.Error(c, response.TranslateMsg(c, "ParamsError")+err.Error())
 		return
 	}
 	abd := &requstform.AddressBookFormData{}
 	err = json.Unmarshal([]byte(abf.Data), abd)
 	if err != nil {
-		response.Error(c, "系统错误")
+		response.Error(c, response.TranslateMsg(c, "ParamsError")+err.Error())
 		return
 	}
-
-	//fmt.Println(abd)
-	//for _, peer := range abd.Peers {
-	//	fmt.Println(peer)
-	//}
-
+	tc := map[string]uint{}
+	err = json.Unmarshal([]byte(abd.TagColors), &tc)
+	if err != nil {
+		response.Error(c, response.TranslateMsg(c, "ParamsError")+err.Error())
+		return
+	}
 	user := service.AllService.UserService.CurUser(c)
 
 	err = service.AllService.AddressBookService.UpdateAddressBook(abd.Peers, user.Id)
 	if err != nil {
-		c.Abort()
+		response.Error(c, response.TranslateMsg(c, "OperationFailed")+err.Error())
 		return
 	}
 
-	tc := map[string]uint{}
-	err = json.Unmarshal([]byte(abd.TagColors), &tc)
-	if err != nil {
-		response.Error(c, "系统错误")
-		return
-	} else {
-		service.AllService.TagService.UpdateTags(user.Id, tc)
-	}
+	service.AllService.TagService.UpdateTags(user.Id, tc)
 
 	c.JSON(http.StatusOK, nil)
 }
@@ -134,19 +127,19 @@ func (a *Ab) TagAdd(c *gin.Context) {
 	t := &model.Tag{}
 	err := c.ShouldBindJSON(t)
 	if err != nil {
-		response.Error(c, "参数错误")
+		response.Error(c, response.TranslateMsg(c, "ParamsError")+err.Error())
 		return
 	}
 	u := service.AllService.UserService.CurUser(c)
 	tag := service.AllService.TagService.InfoByUserIdAndName(u.Id, t.Name)
 	if tag != nil && tag.Id != 0 {
-		response.Error(c, "已存在")
+		response.Error(c, response.TranslateMsg(c, "ItemExists"))
 		return
 	}
 	t.UserId = u.Id
 	err = service.AllService.TagService.Create(t)
 	if err != nil {
-		response.Error(c, "操作失败")
+		response.Error(c, response.TranslateMsg(c, "OperationFailed")+err.Error())
 		return
 	}
 	c.String(http.StatusOK, "")
@@ -166,24 +159,24 @@ func (a *Ab) TagRename(c *gin.Context) {
 	t := &requstform.TagRenameForm{}
 	err := c.ShouldBindJSON(t)
 	if err != nil {
-		response.Error(c, "参数错误")
+		response.Error(c, response.TranslateMsg(c, "ParamsError")+err.Error())
 		return
 	}
 	u := service.AllService.UserService.CurUser(c)
 	tag := service.AllService.TagService.InfoByUserIdAndName(u.Id, t.Old)
 	if tag == nil || tag.Id == 0 {
-		response.Error(c, "参数错误")
+		response.Error(c, response.TranslateMsg(c, "ItemNotFound"))
 		return
 	}
 	ntag := service.AllService.TagService.InfoByUserIdAndName(u.Id, t.New)
 	if ntag != nil && ntag.Id != 0 {
-		response.Error(c, "已存在")
+		response.Error(c, response.TranslateMsg(c, "ItemExists"))
 		return
 	}
 	tag.Name = t.New
 	err = service.AllService.TagService.Update(tag)
 	if err != nil {
-		response.Error(c, "操作失败")
+		response.Error(c, response.TranslateMsg(c, "OperationFailed")+err.Error())
 		return
 	}
 	c.String(http.StatusOK, "")
@@ -203,19 +196,19 @@ func (a *Ab) TagUpdate(c *gin.Context) {
 	t := &requstform.TagColorForm{}
 	err := c.ShouldBindJSON(t)
 	if err != nil {
-		response.Error(c, "参数错误")
+		response.Error(c, response.TranslateMsg(c, "ParamsError")+err.Error())
 		return
 	}
 	u := service.AllService.UserService.CurUser(c)
 	tag := service.AllService.TagService.InfoByUserIdAndName(u.Id, t.Name)
 	if tag == nil || tag.Id == 0 {
-		response.Error(c, "参数错误")
+		response.Error(c, response.TranslateMsg(c, "ItemNotFound"))
 		return
 	}
 	tag.Color = t.Color
 	err = service.AllService.TagService.Update(tag)
 	if err != nil {
-		response.Error(c, "操作失败")
+		response.Error(c, response.TranslateMsg(c, "OperationFailed")+err.Error())
 		return
 	}
 	c.String(http.StatusOK, "")
@@ -235,7 +228,7 @@ func (a *Ab) TagDel(c *gin.Context) {
 	t := &[]string{}
 	err := c.ShouldBind(t)
 	if err != nil {
-		response.Error(c, "参数错误")
+		response.Error(c, response.TranslateMsg(c, "ParamsError")+err.Error())
 		return
 	}
 	//fmt.Println(t)
@@ -243,12 +236,12 @@ func (a *Ab) TagDel(c *gin.Context) {
 	for _, name := range *t {
 		tag := service.AllService.TagService.InfoByUserIdAndName(u.Id, name)
 		if tag == nil || tag.Id == 0 {
-			response.Error(c, "参数错误")
+			response.Error(c, response.TranslateMsg(c, "ItemNotFound"))
 			return
 		}
 		err = service.AllService.TagService.Delete(tag)
 		if err != nil {
-			response.Error(c, "操作失败")
+			response.Error(c, response.TranslateMsg(c, "OperationFailed")+err.Error())
 			return
 		}
 	}
@@ -406,7 +399,7 @@ func (a *Ab) PeerAdd(c *gin.Context) {
 	f := &requstform.PersonalAddressBookForm{}
 	err := c.ShouldBindJSON(f)
 	if err != nil {
-		response.Error(c, "参数错误"+err.Error())
+		response.Error(c, response.TranslateMsg(c, "ParamsError")+err.Error())
 		return
 	}
 	fmt.Println(f)
@@ -415,7 +408,7 @@ func (a *Ab) PeerAdd(c *gin.Context) {
 	ab := f.ToAddressBook()
 	err = service.AllService.AddressBookService.AddAddressBook(ab)
 	if err != nil {
-		response.Error(c, "操作失败")
+		response.Error(c, response.TranslateMsg(c, "OperationFailed")+err.Error())
 		return
 	}
 	c.String(http.StatusOK, "")
@@ -436,19 +429,19 @@ func (a *Ab) PeerDel(c *gin.Context) {
 	f := &[]string{}
 	err := c.ShouldBind(f)
 	if err != nil {
-		response.Error(c, "参数错误")
+		response.Error(c, response.TranslateMsg(c, "ParamsError")+err.Error())
 		return
 	}
 	u := service.AllService.UserService.CurUser(c)
 	for _, id := range *f {
 		ab := service.AllService.AddressBookService.InfoByUserIdAndId(u.Id, id)
 		if ab == nil || ab.RowId == 0 {
-			response.Error(c, "参数错误")
+			response.Error(c, response.TranslateMsg(c, "ItemNotFound"))
 			return
 		}
 		err = service.AllService.AddressBookService.Delete(ab)
 		if err != nil {
-			response.Error(c, "操作失败")
+			response.Error(c, response.TranslateMsg(c, "OperationFailed")+err.Error())
 			return
 		}
 	}
@@ -472,22 +465,22 @@ func (a *Ab) PeerUpdate(c *gin.Context) {
 	f := &requstform.PersonalAddressBookForm{}
 	err := c.ShouldBindJSON(f)
 	if err != nil {
-		response.Error(c, "参数错误")
+		response.Error(c, response.TranslateMsg(c, "ParamsError")+err.Error())
 		return
 	}
-	fmt.Println(f)
+	//fmt.Println(f)
 	//return
 	u := service.AllService.UserService.CurUser(c)
 	ab := service.AllService.AddressBookService.InfoByUserIdAndId(u.Id, f.Id)
 	if ab == nil || ab.RowId == 0 {
-		response.Error(c, "参数错误")
+		response.Error(c, response.TranslateMsg(c, "ItemNotFound"))
 		return
 	}
 	nab := f.ToAddressBook()
 	nab.RowId = ab.RowId
 	err = service.AllService.AddressBookService.Update(nab)
 	if err != nil {
-		response.Error(c, "操作失败")
+		response.Error(c, response.TranslateMsg(c, "OperationFailed")+err.Error())
 		return
 	}
 	c.String(http.StatusOK, "")

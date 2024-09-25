@@ -1,0 +1,112 @@
+[Test]
+description = "test"
+one = "测试1 {{.P0}}"
+other = "测试2 {{.P0}}"
+
+[ParamsError]
+description = "Params validation failed."
+one = "参数错误。"
+other = "参数错误。"
+
+[OperationFailed]
+description = "OperationFailed."
+one = "操作失败。"
+other = "操作失败。"
+
+[OperationSuccess]
+description = "OperationSuccess."
+one = "操作成功。"
+other = "操作成功。"
+
+[ItemExists]
+description = "Item already exists."
+one = "数据已存在。"
+other = "数据已存在。"
+
+[ItemNotFound]
+description = "Item not found."
+one = "数据不存在。"
+other = "数据不存在。"
+
+[NoAccess]
+description = "No access."
+one = "无权限。"
+other = "无权限。"
+
+[UsernameOrPasswordError]
+description = "Username or password error."
+one = "用户名或密码错误。"
+other = "用户名或密码错误。"
+
+[SystemError]
+description = "System error."
+one = "系统错误。"
+other = "系统错误。"
+
+[ConfigNotFound]
+description = "Config not found."
+one = "配置不存在。"
+other = "配置不存在。"
+
+#授权过期
+[OauthExpired]
+description = "Oauth expired."
+one = "授权过期，请重新授权。"
+other = "授权过期，请重新授权。"
+
+[OauthFailed]
+description = "Oauth failed."
+one = "授权失败。"
+other = "授权失败。"
+
+[OauthHasBindOtherUser]
+description = "Oauth has bind other user."
+one = "授权已绑定其他用户。"
+other = "授权已绑定其他用户。"
+
+[ParamIsEmpty]
+description = "Param is empty."
+one = "{{.P0}} 为空。"
+other = "{{.P0}} 为空。"
+
+[BindFail]
+description = "Bind fail."
+one = "绑定失败。"
+other = "绑定失败。"
+[BindSuccess]
+description = "Bind success."
+one = "绑定成功。"
+other = "绑定成功。"
+[OauthHasBeenSuccess]
+description = "Oauth has been success."
+one = "授权已成功。"
+other = "授权已成功。"
+[OauthSuccess]
+description = "Oauth success."
+one = "授权成功。"
+other = "授权成功。"
+[OauthRegisterSuccess]
+description = "Oauth register success."
+one = "授权注册成功。"
+other = "授权注册成功。"
+[OauthRegisterFailed]
+description = "Oauth register failed."
+one = "授权注册失败。"
+other = "授权注册失败。"
+[GetOauthTokenError]
+description = "Get oauth token error."
+one = "获取授权token失败。"
+other = "获取授权token失败。"
+[GetOauthUserInfoError]
+description = "Get oauth user info error."
+one = "获取授权用户信息失败。"
+other = "获取授权用户信息失败。"
+[DecodeOauthUserInfoError]
+description = "Decode oauth user info error."
+one = "解析授权用户信息失败。"
+other = "解析授权用户信息失败。"
+
+[OldPasswordError]
+description = "Old password error."
+one = "旧密码错误。"
+other = "旧密码错误。"

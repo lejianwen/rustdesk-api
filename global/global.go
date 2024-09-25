@@ -6,9 +6,11 @@ import (
 	"Gwen/lib/jwt"
 	"Gwen/lib/lock"
 	"Gwen/lib/upload"
+	"github.com/gin-gonic/gin"
 	ut "github.com/go-playground/universal-translator"
 	"github.com/go-playground/validator/v10"
 	"github.com/go-redis/redis/v8"
+	"github.com/nicksnyder/go-i18n/v2/i18n"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
 	"gorm.io/gorm"
@@ -23,11 +25,13 @@ var (
 	Cache     cache.Handler
 	Validator struct {
 		Validate    *validator.Validate
+		UT          *ut.UniversalTranslator
 		VTrans      ut.Translator
-		ValidStruct func(interface{}) []string
-		ValidVar    func(field interface{}, tag string) []string
+		ValidStruct func(*gin.Context, interface{}) []string
+		ValidVar    func(ctx *gin.Context, field interface{}, tag string) []string
 	}
-	Oss  *upload.Oss
-	Jwt  *jwt.Jwt
-	Lock lock.Locker
+	Oss       *upload.Oss
+	Jwt       *jwt.Jwt
+	Lock      lock.Locker
+	Localizer func(ctx *gin.Context) *i18n.Localizer
 )

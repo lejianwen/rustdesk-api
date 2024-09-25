@@ -5,5 +5,6 @@ go.sum
 resources/*
 !resources/public/upload/.gitignore
 !resources/web
+!resources/i18n
 release
 data

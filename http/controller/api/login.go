@@ -30,11 +30,11 @@ func (l *Login) Login(c *gin.Context) {
 	err := c.ShouldBindJSON(f)
 	//fmt.Println(f)
 	if err != nil {
-		response.Error(c, "参数错误")
+		response.Error(c, response.TranslateMsg(c, "ParamsError")+err.Error())
 		return
 	}
 
-	errList := global.Validator.ValidStruct(f)
+	errList := global.Validator.ValidStruct(c, f)
 	if len(errList) > 0 {
 		response.Error(c, errList[0])
 		return
@@ -43,7 +43,7 @@ func (l *Login) Login(c *gin.Context) {
 	u := service.AllService.UserService.InfoByUsernamePassword(f.Username, f.Password)
 
 	if u.Id == 0 {
-		response.Error(c, "用户名或密码错误")
+		response.Error(c, response.TranslateMsg(c, "UsernameOrPasswordError"))
 		return
 	}
 
@@ -95,7 +95,7 @@ func (l *Login) LoginOptions(c *gin.Context) {
 	}
 	common, err := json.Marshal(oidcItems)
 	if err != nil {
-		response.Error(c, "参数错误")
+		response.Error(c, response.TranslateMsg(c, "SystemError")+err.Error())
 		return
 	}
 	var res []string

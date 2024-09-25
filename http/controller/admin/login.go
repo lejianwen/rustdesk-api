@@ -28,11 +28,11 @@ func (ct *Login) Login(c *gin.Context) {
 	f := &admin.Login{}
 	err := c.ShouldBindJSON(f)
 	if err != nil {
-		response.Fail(c, 101, "参数错误")
+		response.Fail(c, 101, response.TranslateMsg(c, "ParamsError")+err.Error())
 		return
 	}
 
-	errList := global.Validator.ValidStruct(f)
+	errList := global.Validator.ValidStruct(c, f)
 	if len(errList) > 0 {
 		response.Fail(c, 101, errList[0])
 		return
@@ -40,7 +40,7 @@ func (ct *Login) Login(c *gin.Context) {
 	u := service.AllService.UserService.InfoByUsernamePassword(f.Username, f.Password)
 
 	if u.Id == 0 {
-		response.Fail(c, 101, "用户名或密码错误")
+		response.Fail(c, 101, response.TranslateMsg(c, "UsernameOrPasswordError"))
 		return
 	}
 

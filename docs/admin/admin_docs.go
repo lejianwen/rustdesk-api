@@ -2455,7 +2455,6 @@ const docTemplateadmin = `{
             "type": "object",
             "required": [
                 "group_id",
-                "nickname",
                 "status",
                 "username"
             ],

@@ -33,7 +33,7 @@ func (ct *User) Detail(c *gin.Context) {
 		response.Success(c, u)
 		return
 	}
-	response.Fail(c, 101, "信息不存在")
+	response.Fail(c, 101, response.TranslateMsg(c, "ItemNotFound"))
 	return
 }
 
@@ -51,10 +51,10 @@ func (ct *User) Detail(c *gin.Context) {
 func (ct *User) Create(c *gin.Context) {
 	f := &admin.UserForm{}
 	if err := c.ShouldBindJSON(f); err != nil {
-		response.Fail(c, 101, "参数错误")
+		response.Fail(c, 101, response.TranslateMsg(c, "ParamsError")+err.Error())
 		return
 	}
-	errList := global.Validator.ValidStruct(f)
+	errList := global.Validator.ValidStruct(c, f)
 	if len(errList) > 0 {
 		response.Fail(c, 101, errList[0])
 		return
@@ -62,7 +62,7 @@ func (ct *User) Create(c *gin.Context) {
 	u := f.ToUser()
 	err := service.AllService.UserService.Create(u)
 	if err != nil {
-		response.Fail(c, 101, "创建失败")
+		response.Fail(c, 101, response.TranslateMsg(c, "OperationFailed")+err.Error())
 		return
 	}
 	response.Success(c, u)
@@ -84,7 +84,7 @@ func (ct *User) Create(c *gin.Context) {
 func (ct *User) List(c *gin.Context) {
 	query := &admin.UserQuery{}
 	if err := c.ShouldBindQuery(query); err != nil {
-		response.Fail(c, 101, "参数错误")
+		response.Fail(c, 101, response.TranslateMsg(c, "ParamsError")+err.Error())
 		return
 	}
 	res := service.AllService.UserService.List(query.Page, query.PageSize, func(tx *gorm.DB) {
@@ -109,14 +109,14 @@ func (ct *User) List(c *gin.Context) {
 func (ct *User) Update(c *gin.Context) {
 	f := &admin.UserForm{}
 	if err := c.ShouldBindJSON(f); err != nil {
-		response.Fail(c, 101, "参数错误:"+err.Error())
+		response.Fail(c, 101, response.TranslateMsg(c, "ParamsError")+err.Error())
 		return
 	}
 	if f.Id == 0 {
-		response.Fail(c, 101, "参数错误")
+		response.Fail(c, 101, response.TranslateMsg(c, "ParamsError"))
 		return
 	}
-	errList := global.Validator.ValidStruct(f)
+	errList := global.Validator.ValidStruct(c, f)
 	if len(errList) > 0 {
 		response.Fail(c, 101, errList[0])
 		return
@@ -124,7 +124,7 @@ func (ct *User) Update(c *gin.Context) {
 	u := f.ToUser()
 	err := service.AllService.UserService.Update(u)
 	if err != nil {
-		response.Fail(c, 101, "更新失败")
+		response.Fail(c, 101, response.TranslateMsg(c, "OperationFailed")+err.Error())
 		return
 	}
 	response.Success(c, nil)
@@ -144,11 +144,11 @@ func (ct *User) Update(c *gin.Context) {
 func (ct *User) Delete(c *gin.Context) {
 	f := &admin.UserForm{}
 	if err := c.ShouldBindJSON(f); err != nil {
-		response.Fail(c, 101, "系统错误")
+		response.Fail(c, 101, response.TranslateMsg(c, "ParamsError")+err.Error())
 		return
 	}
 	id := f.Id
-	errList := global.Validator.ValidVar(id, "required,gt=0")
+	errList := global.Validator.ValidVar(c, id, "required,gt=0")
 	if len(errList) > 0 {
 		response.Fail(c, 101, errList[0])
 		return
@@ -163,7 +163,7 @@ func (ct *User) Delete(c *gin.Context) {
 		response.Fail(c, 101, err.Error())
 		return
 	}
-	response.Fail(c, 101, "信息不存在")
+	response.Fail(c, 101, response.TranslateMsg(c, "ItemNotFound"))
 }
 
 // UpdatePassword 修改密码
@@ -180,22 +180,22 @@ func (ct *User) Delete(c *gin.Context) {
 func (ct *User) UpdatePassword(c *gin.Context) {
 	f := &admin.UserPasswordForm{}
 	if err := c.ShouldBindJSON(f); err != nil {
-		response.Fail(c, 101, "参数错误")
+		response.Fail(c, 101, response.TranslateMsg(c, "ParamsError")+err.Error())
 		return
 	}
-	errList := global.Validator.ValidStruct(f)
+	errList := global.Validator.ValidStruct(c, f)
 	if len(errList) > 0 {
 		response.Fail(c, 101, errList[0])
 		return
 	}
 	u := service.AllService.UserService.InfoById(f.Id)
 	if u.Id == 0 {
-		response.Fail(c, 101, "信息不存在")
+		response.Fail(c, 101, response.TranslateMsg(c, "ItemNotFound"))
 		return
 	}
 	err := service.AllService.UserService.UpdatePassword(u, f.Password)
 	if err != nil {
-		response.Fail(c, 101, "更新失败")
+		response.Fail(c, 101, response.TranslateMsg(c, "OperationFailed")+err.Error())
 		return
 	}
 	response.Success(c, nil)
@@ -237,11 +237,11 @@ func (ct *User) Current(c *gin.Context) {
 func (ct *User) ChangeCurPwd(c *gin.Context) {
 	f := &admin.ChangeCurPasswordForm{}
 	if err := c.ShouldBindJSON(f); err != nil {
-		response.Fail(c, 101, "参数错误")
+		response.Fail(c, 101, response.TranslateMsg(c, "ParamsError")+err.Error())
 		return
 	}
 
-	errList := global.Validator.ValidStruct(f)
+	errList := global.Validator.ValidStruct(c, f)
 	if len(errList) > 0 {
 		response.Fail(c, 101, errList[0])
 		return
@@ -249,12 +249,12 @@ func (ct *User) ChangeCurPwd(c *gin.Context) {
 	u := service.AllService.UserService.CurUser(c)
 	oldPwd := service.AllService.UserService.EncryptPassword(f.OldPassword)
 	if u.Password != oldPwd {
-		response.Fail(c, 101, "旧密码错误")
+		response.Fail(c, 101, response.TranslateMsg(c, "OldPasswordError"))
 		return
 	}
 	err := service.AllService.UserService.UpdatePassword(u, f.NewPassword)
 	if err != nil {
-		response.Fail(c, 101, "更新失败")
+		response.Fail(c, 101, response.TranslateMsg(c, "OperationFailed")+err.Error())
 		return
 	}
 	response.Success(c, nil)

@@ -30,14 +30,14 @@ func (ct *Tag) Detail(c *gin.Context) {
 	t := service.AllService.TagService.InfoById(uint(iid))
 	u := service.AllService.UserService.CurUser(c)
 	if !service.AllService.UserService.IsAdmin(u) && t.UserId != u.Id {
-		response.Fail(c, 101, "无权限")
+		response.Fail(c, 101, response.TranslateMsg(c, "NoAccess"))
 		return
 	}
 	if t.Id > 0 {
 		response.Success(c, t)
 		return
 	}
-	response.Fail(c, 101, "信息不存在")
+	response.Fail(c, 101, response.TranslateMsg(c, "ItemNotFound"))
 	return
 }
 
@@ -55,10 +55,10 @@ func (ct *Tag) Detail(c *gin.Context) {
 func (ct *Tag) Create(c *gin.Context) {
 	f := &admin.TagForm{}
 	if err := c.ShouldBindJSON(f); err != nil {
-		response.Fail(c, 101, "参数错误")
+		response.Fail(c, 101, response.TranslateMsg(c, "ParamsError")+err.Error())
 		return
 	}
-	errList := global.Validator.ValidStruct(f)
+	errList := global.Validator.ValidStruct(c, f)
 	if len(errList) > 0 {
 		response.Fail(c, 101, errList[0])
 		return
@@ -70,7 +70,7 @@ func (ct *Tag) Create(c *gin.Context) {
 	}
 	err := service.AllService.TagService.Create(t)
 	if err != nil {
-		response.Fail(c, 101, "创建失败")
+		response.Fail(c, 101, response.TranslateMsg(c, "OperationFailed")+err.Error())
 		return
 	}
 	response.Success(c, u)
@@ -93,7 +93,7 @@ func (ct *Tag) Create(c *gin.Context) {
 func (ct *Tag) List(c *gin.Context) {
 	query := &admin.TagQuery{}
 	if err := c.ShouldBindQuery(query); err != nil {
-		response.Fail(c, 101, "参数错误")
+		response.Fail(c, 101, response.TranslateMsg(c, "ParamsError")+err.Error())
 		return
 	}
 	u := service.AllService.UserService.CurUser(c)
@@ -122,27 +122,27 @@ func (ct *Tag) List(c *gin.Context) {
 func (ct *Tag) Update(c *gin.Context) {
 	f := &admin.TagForm{}
 	if err := c.ShouldBindJSON(f); err != nil {
-		response.Fail(c, 101, "参数错误")
+		response.Fail(c, 101, response.TranslateMsg(c, "ParamsError")+err.Error())
 		return
 	}
-	errList := global.Validator.ValidStruct(f)
+	errList := global.Validator.ValidStruct(c, f)
 	if len(errList) > 0 {
 		response.Fail(c, 101, errList[0])
 		return
 	}
 	if f.Id == 0 {
-		response.Fail(c, 101, "参数错误")
+		response.Fail(c, 101, response.TranslateMsg(c, "ParamsError"))
 		return
 	}
 	t := f.ToTag()
 	u := service.AllService.UserService.CurUser(c)
 	if !service.AllService.UserService.IsAdmin(u) && t.UserId != u.Id {
-		response.Fail(c, 101, "无权限")
+		response.Fail(c, 101, response.TranslateMsg(c, "NoAccess"))
 		return
 	}
 	err := service.AllService.TagService.Update(t)
 	if err != nil {
-		response.Fail(c, 101, "更新失败")
+		response.Fail(c, 101, response.TranslateMsg(c, "OperationFailed")+err.Error())
 		return
 	}
 	response.Success(c, nil)
@@ -162,11 +162,11 @@ func (ct *Tag) Update(c *gin.Context) {
 func (ct *Tag) Delete(c *gin.Context) {
 	f := &admin.TagForm{}
 	if err := c.ShouldBindJSON(f); err != nil {
-		response.Fail(c, 101, "系统错误")
+		response.Fail(c, 101, response.TranslateMsg(c, "ParamsError")+err.Error())
 		return
 	}
 	id := f.Id
-	errList := global.Validator.ValidVar(id, "required,gt=0")
+	errList := global.Validator.ValidVar(c, id, "required,gt=0")
 	if len(errList) > 0 {
 		response.Fail(c, 101, errList[0])
 		return
@@ -174,7 +174,7 @@ func (ct *Tag) Delete(c *gin.Context) {
 	t := service.AllService.TagService.InfoById(f.Id)
 	u := service.AllService.UserService.CurUser(c)
 	if !service.AllService.UserService.IsAdmin(u) && t.UserId != u.Id {
-		response.Fail(c, 101, "无权限")
+		response.Fail(c, 101, response.TranslateMsg(c, "NoAccess"))
 		return
 	}
 	if u.Id > 0 {
@@ -186,5 +186,5 @@ func (ct *Tag) Delete(c *gin.Context) {
 		response.Fail(c, 101, err.Error())
 		return
 	}
-	response.Fail(c, 101, "信息不存在")
+	response.Fail(c, 101, response.TranslateMsg(c, "ItemNotFound"))
 }

@@ -20,6 +20,7 @@ desktop software that provides self-hosted solutions.
     - Address Book
     - Groups
     - Authorized login, supports `GitHub` and `Google` login, supports `web admin` authorized login
+    - i18n
 - Web Admin
     - User Management
     - Device Management
@@ -28,6 +29,7 @@ desktop software that provides self-hosted solutions.
     - Group Management
     - OAuth Management
     - Quick access to web client
+    - i18n
 - Web Client
     - Automatically obtain API server
     - Automatically obtain ID server and KEY
@@ -59,7 +61,8 @@ desktop software that provides self-hosted solutions.
 
 #### Login
 
-- Added `GitHub` and `Google` login, which can be used after configuration in the admin panel. See the OAuth configuration section for details.
+- Added `GitHub` and `Google` login, which can be used after configuration in the admin panel. See the OAuth
+  configuration section for details.
 - Added authorization login for the web admin panel.
 
 ![pc_login](docs/pc_login.png)
@@ -122,6 +125,7 @@ installation are `admin` `admin`, please change the password immediately.***
   not required.
 
 ```yaml
+lang: "en"
 gin:
   api-addr: "0.0.0.0:21114"
   mode: "release"
@@ -144,12 +148,14 @@ rustdesk:
   personal: 1
 ```
 
-* Environment variables, with the prefix `RUSTDESK_API_RUSTDESK_PERSONAL`, will override the settings in the configuration file if
+* Environment variables, with the prefix `RUSTDESK_API_RUSTDESK_PERSONAL`, will override the settings in the
+  configuration file if
   present.
 
 | Variable Name                      | Description                                               | Example                        |
 |------------------------------------|-----------------------------------------------------------|--------------------------------|
 | TZ                                 | timezone                                                  | Asia/Shanghai                  |
+| RUSTDESK_API_LANG                  | Language                                                  | `en`,`zh-CN`                   |
 | ----- GIN Configuration -----      | ---------------------------------------                   | ------------------------------ |
 | RUSTDESK_API_GIN_TRUST_PROXY       | Trusted proxy IPs, separated by commas.                   | 192.168.1.2,192.168.1.3        |
 | ----- GORM Configuration -----     | ---------------------------------------                   | ------------------------------ |

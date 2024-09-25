@@ -133,7 +133,7 @@ func (os *OauthService) BeginAuth(op string) (error error, code, url string) {
 		return err, code, conf.AuthCodeURL(code)
 	}
 
-	return errors.New("op错误"), code, ""
+	return err, code, ""
 }
 
 // GetOauthConfig 获取配置
@@ -141,7 +141,7 @@ func (os *OauthService) GetOauthConfig(op string) (error, *oauth2.Config) {
 	if op == model.OauthTypeGithub {
 		g := os.InfoByOp(model.OauthTypeGithub)
 		if g.Id == 0 || g.ClientId == "" || g.ClientSecret == "" || g.RedirectUrl == "" {
-			return errors.New("配置不存在"), nil
+			return errors.New("ConfigNotFound"), nil
 		}
 		return nil, &oauth2.Config{
 			ClientID:     g.ClientId,
@@ -154,7 +154,7 @@ func (os *OauthService) GetOauthConfig(op string) (error, *oauth2.Config) {
 	if op == model.OauthTypeGoogle {
 		g := os.InfoByOp(model.OauthTypeGoogle)
 		if g.Id == 0 || g.ClientId == "" || g.ClientSecret == "" || g.RedirectUrl == "" {
-			return errors.New("配置不存在"), nil
+			return errors.New("ConfigNotFound"), nil
 		}
 		return nil, &oauth2.Config{
 			ClientID:     g.ClientId,
@@ -164,7 +164,7 @@ func (os *OauthService) GetOauthConfig(op string) (error, *oauth2.Config) {
 			Scopes:       []string{"https://www.googleapis.com/auth/userinfo.profile", "https://www.googleapis.com/auth/userinfo.email"},
 		}
 	}
-	return errors.New("op错误"), nil
+	return errors.New("ConfigNotFound"), nil
 }
 
 func (os *OauthService) GithubCallback(code string) (error error, userData *GithubUserdata) {
@@ -175,7 +175,7 @@ func (os *OauthService) GithubCallback(code string) (error error, userData *Gith
 	token, err := oauthConfig.Exchange(context.Background(), code)
 	if err != nil {
 		global.Logger.Warn(fmt.Printf("oauthConfig.Exchange() failed: %s\n", err))
-		error = errors.New("获取token失败")
+		error = errors.New("GetOauthTokenError")
 		return
 	}
 
@@ -184,7 +184,7 @@ func (os *OauthService) GithubCallback(code string) (error error, userData *Gith
 	resp, err := client.Get("https://api.github.com/user")
 	if err != nil {
 		global.Logger.Warn("failed getting user info: %s\n", err)
-		error = errors.New("获取user info失败")
+		error = errors.New("GetOauthUserInfoError")
 		return
 	}
 	defer func(Body io.ReadCloser) {
@@ -197,7 +197,7 @@ func (os *OauthService) GithubCallback(code string) (error error, userData *Gith
 	// 在这里处理 GitHub 用户信息
 	if err = json.NewDecoder(resp.Body).Decode(&userData); err != nil {
 		global.Logger.Warn("failed decoding user info: %s\n", err)
-		error = errors.New("解析user info失败")
+		error = errors.New("DecodeOauthUserInfoError")
 		return
 	}
 	return
@@ -208,7 +208,7 @@ func (os *OauthService) GoogleCallback(code string) (error error, userData *Goog
 	token, err := oauthConfig.Exchange(context.Background(), code)
 	if err != nil {
 		global.Logger.Warn(fmt.Printf("oauthConfig.Exchange() failed: %s\n", err))
-		error = errors.New("获取token失败")
+		error = errors.New("GetOauthTokenError")
 		return
 	}
 	// 创建 HTTP 客户端，并将 access_token 添加到 Authorization 头中
@@ -216,7 +216,7 @@ func (os *OauthService) GoogleCallback(code string) (error error, userData *Goog
 	resp, err := client.Get("https://www.googleapis.com/oauth2/v2/userinfo")
 	if err != nil {
 		global.Logger.Warn("failed getting user info: %s\n", err)
-		error = errors.New("获取user info失败： " + err.Error())
+		error = errors.New("GetOauthUserInfoError")
 		return
 	}
 	defer func(Body io.ReadCloser) {
@@ -228,7 +228,7 @@ func (os *OauthService) GoogleCallback(code string) (error error, userData *Goog
 
 	if err = json.NewDecoder(resp.Body).Decode(&userData); err != nil {
 		global.Logger.Warn("failed decoding user info: %s\n", err)
-		error = errors.New("解析user info失败：" + err.Error())
+		error = errors.New("DecodeOauthUserInfoError")
 		return
 	}
 	return
@@ -258,7 +258,13 @@ func (os *OauthService) BindOauthUser(thirdType, openid, username string, userId
 }
 
 func (os *OauthService) UnBindGithubUser(userid uint) error {
-	return global.DB.Where("user_id = ? and third_type = ?", userid, model.OauthTypeGithub).Delete(&model.UserThird{}).Error
+	return os.UnBindThird(model.OauthTypeGithub, userid)
+}
+func (os *OauthService) UnBindGoogleUser(userid uint) error {
+	return os.UnBindThird(model.OauthTypeGoogle, userid)
+}
+func (os *OauthService) UnBindThird(thirdType string, userid uint) error {
+	return global.DB.Where("user_id = ? and third_type = ?", userid, thirdType).Delete(&model.UserThird{}).Error
 }
 
 // InfoById 根据id取用户信息

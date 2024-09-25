@@ -1,7 +1,10 @@
 package response
 
 import (
+	"Gwen/global"
+	"fmt"
 	"github.com/gin-gonic/gin"
+	"github.com/nicksnyder/go-i18n/v2/i18n"
 	"net/http"
 )
 
@@ -50,4 +53,49 @@ type ServerConfigResponse struct {
 	Key         string `json:"key"`
 	RelayServer string `json:"relay_server"`
 	ApiServer   string `json:"api_server"`
+}
+
+func TranslateMsg(c *gin.Context, messageId string) string {
+	localizer := global.Localizer(c)
+	errMsg, err := localizer.LocalizeMessage(&i18n.Message{
+		ID: messageId,
+	})
+	if err != nil {
+		global.Logger.Warn("LocalizeMessage Error: " + err.Error())
+		errMsg = messageId
+	}
+	return errMsg
+}
+func TranslateTempMsg(c *gin.Context, messageId string, templateData map[string]interface{}) string {
+	localizer := global.Localizer(c)
+	errMsg, err := localizer.Localize(&i18n.LocalizeConfig{
+		DefaultMessage: &i18n.Message{
+			ID: messageId,
+		},
+		TemplateData: templateData,
+	})
+	if err != nil {
+		global.Logger.Warn("LocalizeMessage Error: " + err.Error())
+		errMsg = messageId
+	}
+	return errMsg
+}
+func TranslateParamMsg(c *gin.Context, messageId string, params ...string) string {
+	localizer := global.Localizer(c)
+	templateData := make(map[string]interface{})
+	for i, v := range params {
+		k := fmt.Sprintf("P%d", i)
+		templateData[k] = v
+	}
+	errMsg, err := localizer.Localize(&i18n.LocalizeConfig{
+		DefaultMessage: &i18n.Message{
+			ID: messageId,
+		},
+		TemplateData: templateData,
+	})
+	if err != nil {
+		global.Logger.Warn("LocalizeMessage Error: " + err.Error())
+		errMsg = messageId
+	}
+	return errMsg
 }
