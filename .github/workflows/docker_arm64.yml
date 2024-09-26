@@ -38,4 +38,4 @@ jobs:
           docker buildx create --use
           docker buildx build --platform linux/arm64 \
             -t lejianwen/rustdesk-api:actiontest-arm64 \
-            --push .
+            --push . -f ./Dockerfile_arm64
