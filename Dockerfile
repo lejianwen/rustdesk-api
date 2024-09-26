@@ -25,11 +25,12 @@ RUN set -eux; \
     mkdir -p release/data; \
     mkdir -p release/runtime;
 
-VOLUME /app/data
+
 FROM alpine
 WORKDIR /app
 RUN apk add --no-cache tzdata
 COPY --from=builder /go/rustdesk-api/release /app/
+VOLUME /app/data
 
 EXPOSE 21114
 CMD ["./apimain"]
