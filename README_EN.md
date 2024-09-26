@@ -121,8 +121,9 @@ installation are `admin` `admin`, please change the password immediately.***
 
 ### Configuration
 
-* Modify the configuration in `conf/config.yaml`. If `gorm.type` is set to `sqlite`, MySQL-related configurations are
-  not required.
+* Modify the configuration in `conf/config.yaml`. 
+* If `gorm.type` is set to `sqlite`, MySQL-related configurations are not required.
+* Language support: `en` and `zh-CN` are supported. The default is `zh-CN`.
 
 ```yaml
 lang: "en"
@@ -184,6 +185,7 @@ rustdesk:
 ```bash
 docker run -d --name rustdesk-api -p 21114:21114 \
 -v /data/rustdesk/api:/app/data \
+-e RUSTDESK_API_LANG=en \
 -e RUSTDESK_API_RUSTDESK_ID_SERVER=192.168.1.66:21116 \
 -e RUSTDESK_API_RUSTDESK_RELAY_SERVER=192.168.1.66:21117 \
 -e RUSTDESK_API_RUSTDESK_API_SERVER=http://192.168.1.66:21114 \

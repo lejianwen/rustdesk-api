@@ -76,9 +76,7 @@
 
 ### Web Admin:
 
-**
-*使用前后端分离，提供用户友好的管理界面，主要用来管理和展示。前端代码在[rustdesk-api-web](https://github.com/lejianwen/rustdesk-api-web)
-***
+***使用前后端分离，提供用户友好的管理界面，主要用来管理和展示。前端代码在[rustdesk-api-web](https://github.com/lejianwen/rustdesk-api-web)***
 
 ***后台访问地址是`http://<your server>[:port]/_admin/`初次安装管理员为用户名密码为`admin` `admin`，请即时更改密码***
 
@@ -118,7 +116,9 @@
 
 ### 相关配置
 
-* 参考`conf/config.yaml`配置文件，修改相关配置。如果`gorm.type`是`sqlite`，则不需要配置mysql相关配置。
+* 参考`conf/config.yaml`配置文件，修改相关配置。
+* 如果`gorm.type`是`sqlite`，则不需要配置mysql相关配置。
+* 语言如果不设置默认为`zh-CN`
 
 ```yaml
 lang: "en"
