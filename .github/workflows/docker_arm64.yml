@@ -1,6 +1,7 @@
 name: Build and Push Docker Arm64 Image
 
 on:
+  workflow_dispatch: # 仅当手动触发工作流时触发
   push:
     tags:
       - 'v*.*.*'  # 仅当推送标签（例如 v1.0.0）时触发
