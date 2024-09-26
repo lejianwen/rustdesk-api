@@ -1,12 +1,12 @@
-name: Build and Release
+name: Build and Release Arm64
 
-#on:
-#  push:
-#    tags:
-#      - 'v*.*.*'  # 当推送带有版本号的 tag（例如 v1.0.0）时触发工作流
 on:
   push:
-    branches: [ "master" ]
+    tags:
+      - 'v*.*.*'  # 当推送带有版本号的 tag（例如 v1.0.0）时触发工作流
+#on:
+#  push:
+#    branches: [ "master" ]
 #  pull_request:
 #    branches: [ "master" ]
 
@@ -33,7 +33,7 @@ jobs:
         with:
           node-version: '20'
 
-      - name: install gcc zip musl
+      - name: install gcc
         run: |
           sudo apt-get install gcc-aarch64-linux-gnu -y
 
