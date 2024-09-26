@@ -65,15 +65,15 @@ desktop software that provides self-hosted solutions.
   configuration section for details.
 - Added authorization login for the web admin panel.
 
-![pc_login](docs/pc_login.png)
+![pc_login](docs/en_img/pc_login.png)
 
 #### Address Book
 
-![pc_ab](docs/pc_ab.png)
+![pc_ab](docs/en_img/pc_ab.png)
 
 #### Groups: Groups are divided into `shared groups` and `regular groups`. In shared groups, everyone can see the peers of all group members, while in regular groups, only administrators can see all members' peers.
 
-![pc_gr](docs/pc_gr.png)
+![pc_gr](docs/en_img/pc_gr.png)
 
 ### Web Admin
 
@@ -84,19 +84,19 @@ displaying data.Frontend code is available at [rustdesk-api-web](https://github.
 installation are `admin` `admin`, please change the password immediately.***
 
 1. Admin interface:
-   ![web_admin](docs/web_admin.png)
+   ![web_admin](docs/en_img/web_admin.png)
 2. Regular user interface:
-   ![web_user](docs/web_admin_user.png)
+   ![web_user](docs/en_img/web_admin_user.png)
    You can change your password from the top right corner:
-   ![web_resetpwd](docs/web_resetpwd.png)
+   ![web_resetpwd](docs/en_img/web_resetpwd.png)
 3. Groups can be customized for easy management. Currently, two types are supported: `shared group` and `regular group`.
-   ![web_admin_gr](docs/web_admin_gr.png)
+   ![web_admin_gr](docs/en_img/web_admin_gr.png)
 4. You can open the web client directly for convenience:
-   ![web_webclient](docs/admin_webclient.png)
+   ![web_webclient](docs/en_img/admin_webclient.png)
 5. OAuth support: Currently, `GitHub` and `Google`  is supported. You need to create an `OAuth App` and configure it in
    the admin
    panel.
-   ![web_admin_oauth](docs/web_admin_oauth.png)
+   ![web_admin_oauth](docs/en_img/web_admin_oauth.png)
     - Create a `GitHub OAuth App`
       at `Settings` -> `Developer settings` -> `OAuth Apps` -> `New OAuth App` [here](https://github.com/settings/developers).
     - Set the `Authorization callback URL` to `http://<your server[:port]>/api/oauth/callback`,
