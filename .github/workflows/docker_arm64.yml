@@ -1,7 +1,12 @@
 name: Build and Push Docker Arm64 Image
 
 on:
-  workflow_dispatch # 仅当手动触发工作流时触发
+  workflow_dispatch: # 手动触发工作流时触发
+    inputs:
+      tags:
+        description: 'Test scenario tags'
+        required: false
+        type: boolean
 #  push:
 #    tags:
 #      - 'v*.*.*'  # 仅当推送标签（例如 v1.0.0）时触发
@@ -32,5 +37,5 @@ jobs:
         run: |
           docker buildx create --use
           docker buildx build --platform linux/arm64 \
-            -t lejianwen/rustdesk-api:${{ env.TAG }}-arm64 \
+            -t lejianwen/rustdesk-api:actiontest-arm64 \
             --push .
