@@ -5,7 +5,7 @@ on:
   push:
     tags:
       - 'v*.*.*'  # 当推送带有版本号的 tag（例如 v1.0.0）时触发工作流
-      - 'test'
+      - 'test*'
 
 jobs:
   build:
@@ -126,6 +126,7 @@ jobs:
       - name: Unzip binaries
         run: |
           mkdir release -p
+          ls -l
           tar -xzf rustdesk-api-${{ matrix.job.goos }}-${{ matrix.job.platform }}.tar.gz -C release/
 
       - name: Build and push Docker image
