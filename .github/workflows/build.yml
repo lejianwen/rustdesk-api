@@ -148,34 +148,34 @@ jobs:
         with:
           context: "."
           file: ./Dockerfile
-          platforms: ${{ matrix.job.docker_platform }}
+          platforms: ["linux/amd64", "linux/arm64"]
           push: true
-          tags: lejianwen/rustdesk-api:${{ env.TAG }}-${{ matrix.job.platform }}
+          tags: lejianwen/rustdesk-api:${{ env.TAG }}
           #           lejianwen/rustdesk-api:${{ env.LATEST_TAG }}
           #            lejianwen/rustdesk-api:${{ env.TAG }}-${{ matrix.job.docker_platform }}
           labels: ${{ steps.meta.outputs.labels }}
   #
-  docker-manifest:
-    name: Push Docker Manifest
-    needs: docker
-    runs-on: ubuntu-latest
-    steps:
-      - name: Extract version from tag
-        id: vars
-        run: echo "TAG=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
-
-      - name: Log in to Docker Hub
-        uses: docker/login-action@v2
-        with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_ACCESS_TOKEN }}
-
-      - name: Create and push manifest (:version)
-        uses: Noelware/docker-manifest-action@master
-        with:
-          base-image: lejianwen/rustdesk-api:${{ env.TAG }}
-          extra-images: lejianwen/rustdesk-api:${{ env.TAG }}-amd64,lejianwen/rustdesk-api:${{ env.TAG }}-arm64
-          push: true
+#  docker-manifest:
+#    name: Push Docker Manifest
+#    needs: docker
+#    runs-on: ubuntu-latest
+#    steps:
+#      - name: Extract version from tag
+#        id: vars
+#        run: echo "TAG=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
+#
+#      - name: Log in to Docker Hub
+#        uses: docker/login-action@v2
+#        with:
+#          username: ${{ secrets.DOCKER_USERNAME }}
+#          password: ${{ secrets.DOCKER_ACCESS_TOKEN }}
+#
+#      - name: Create and push manifest (:version)
+#        uses: Noelware/docker-manifest-action@master
+#        with:
+#          base-image: lejianwen/rustdesk-api:${{ env.TAG }}
+#          extra-images: lejianwen/rustdesk-api:${{ env.TAG }}-amd64,lejianwen/rustdesk-api:${{ env.TAG }}-arm64
+#          push: true
 
 #      - name: Create and push manifest (:latest)
 #        uses: Noelware/docker-manifest-action@master
