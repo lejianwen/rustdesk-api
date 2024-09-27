@@ -16,7 +16,7 @@ jobs:
       matrix:
         job:
           - { platform: "amd64", goos: "linux" }
-          - { platform: "arm64v8", goos: "linux" }
+          - { platform: "arm64", goos: "linux" }
           - { platform: "amd64", goos: "windows" }
 
     steps:
@@ -65,7 +65,7 @@ jobs:
             GOOS=${{ matrix.job.goos }} GOARCH=${{ matrix.job.platform }} CC=x86_64-w64-mingw32-gcc CGO_LDFLAGS="-static" CGO_ENABLED=1 go build -ldflags "-s -w" -o ./release/apimain.exe ./cmd/apimain.go
             zip -r ${{ matrix.job.goos}}-${{ matrix.job.platform }}.zip ./release
           else
-            if [ "${{ matrix.job.platform }}" = "arm64v8" ]; then
+            if [ "${{ matrix.job.platform }}" = "arm64" ]; then
                 wget https://musl.cc/aarch64-linux-musl-cross.tgz
                 tar -xf aarch64-linux-musl-cross.tgz
                 export PATH=$PATH:$PWD/aarch64-linux-musl-cross/bin
@@ -102,7 +102,7 @@ jobs:
       matrix:
         job:
           - { platform: "amd64", goos: "linux",  docker_platform: "linux/amd64" }
-          - { platform: "arm64v8", goos: "linux",  docker_platform: "linux/arm64" }
+          - { platform: "arm64", goos: "linux",  docker_platform: "linux/arm64" }
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -157,12 +157,12 @@ jobs:
         uses: Noelware/docker-manifest-action@master
         with:
           base-image: lejianwen/rustdesk-api:${{ env.TAG }}
-          extra-images: lejianwen/rustdesk-api:${{ env.TAG }}-amd64,lejianwen/rustdesk-api:${{ env.TAG }}-arm64v8
+          extra-images: lejianwen/rustdesk-api:${{ env.TAG }}-amd64,lejianwen/rustdesk-api:${{ env.TAG }}-arm64
           push: true
 
 #      - name: Create and push manifest (:latest)
 #        uses: Noelware/docker-manifest-action@master
 #        with:
 #          base-image: lejianwen/rustdesk-api:latest
-#          extra-images: lejianwen/rustdesk-api:latest-amd64,lejianwen/rustdesk-api:latest-arm64v8
+#          extra-images: lejianwen/rustdesk-api:latest-amd64,lejianwen/rustdesk-api:latest-arm64
 #          push: true
