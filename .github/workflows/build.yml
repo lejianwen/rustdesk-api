@@ -146,6 +146,8 @@ jobs:
           file: ./Dockerfile
           platforms: ${{ matrix.job.docker_platform }}
           push: true
+          build-args: |
+            ARCH=${{ matrix.job.docker_platform }}
           tags: |
             lejianwen/rustdesk-api:latest-${{ matrix.job.platform }}
             lejianwen/rustdesk-api:${{ env.TAG }}-${{ matrix.job.platform }}
