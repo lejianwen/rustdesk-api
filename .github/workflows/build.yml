@@ -155,6 +155,7 @@ jobs:
           tags: |
             lejianwen/rustdesk-api:latest-${{ matrix.job.platform }}
             lejianwen/rustdesk-api:${{ env.GIT_TAG }}-${{ matrix.job.platform }}
+            lejianwen/rustdesk-api:${{ env.MAJOR_TAG }}-${{ matrix.job.platform }}
           labels: ${{ steps.meta.outputs.labels }}
 
   docker-manifest:
@@ -185,6 +186,12 @@ jobs:
         with:
           base-image: lejianwen/rustdesk-api:${{ env.GIT_TAG }}
           extra-images: lejianwen/rustdesk-api:${{ env.GIT_TAG }}-amd64,lejianwen/rustdesk-api:${{ env.GIT_TAG }}-arm64
+          push: true
+      - name: Create and push manifest (:MAJOR_TAG)
+        uses: Noelware/docker-manifest-action@master
+        with:
+          base-image: lejianwen/rustdesk-api:${{ env.MAJOR_TAG }}
+          extra-images: lejianwen/rustdesk-api:${{ env.MAJOR_TAG }}-amd64,lejianwen/rustdesk-api:${{ env.MAJOR_TAG }}-arm64
           push: true
 
 #      - name: Create and push manifest (:latest)
