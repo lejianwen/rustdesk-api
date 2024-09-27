@@ -103,8 +103,8 @@ jobs:
           - { platform: "amd64", goos: "linux",  docker_platform: "linux/amd64" }
           - { platform: "arm64v8", goos: "linux",  docker_platform: "linux/arm64" }
     steps:
-#      - name: Checkout code
-#        uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
       - name: Log in to Docker Hub
         uses: docker/login-action@v2
@@ -120,11 +120,12 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: rustdesk-api-${{ matrix.goos }}-${{ matrix.goarch }}
-          path: rustdesk-api/
+          path: ./
 
       - name: Unzip binaries
         run: |
-          tar -xzf rustdesk-api/rustdesk-api-${{ matrix.goos }}-${{ matrix.goarch }}.tar.gz -C rustdesk-api/
+          mkdir release -p
+          tar -xzf rustdesk-api-${{ matrix.goos }}-${{ matrix.goarch }}.tar.gz -C release/
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
