@@ -119,9 +119,13 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_ACCESS_TOKEN }}
 
-      - name: Extract version from tag
+      - name: Get git tag
         id: vars
-        run: echo "TAG=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
+        run: |
+          T=${GITHUB_REF#refs/*/}
+          M=${T%%.*}
+          echo "GIT_TAG=$T" >> $GITHUB_ENV
+          echo "MAJOR_TAG=$M" >> $GITHUB_ENV
 
       - name: Extract metadata (tags, labels) for Docker
         id: meta
@@ -150,7 +154,7 @@ jobs:
             ARCH=${{ matrix.job.docker_platform }}
           tags: |
             lejianwen/rustdesk-api:latest-${{ matrix.job.platform }}
-            lejianwen/rustdesk-api:${{ env.TAG }}-${{ matrix.job.platform }}
+            lejianwen/rustdesk-api:${{ env.GIT_TAG }}-${{ matrix.job.platform }}
           labels: ${{ steps.meta.outputs.labels }}
 
   docker-manifest:
@@ -168,11 +172,19 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_ACCESS_TOKEN }}
 
+      - name: Get git tag
+        id: vars
+        run: |
+          T=${GITHUB_REF#refs/*/}
+          M=${T%%.*}
+          echo "GIT_TAG=$T" >> $GITHUB_ENV
+          echo "MAJOR_TAG=$M" >> $GITHUB_ENV
+
       - name: Create and push manifest (:version)
         uses: Noelware/docker-manifest-action@master
         with:
-          base-image: lejianwen/rustdesk-api:${{ env.TAG }}
-          extra-images: lejianwen/rustdesk-api:${{ env.TAG }}-amd64,lejianwen/rustdesk-api:${{ env.TAG }}-arm64
+          base-image: lejianwen/rustdesk-api:${{ env.GIT_TAG }}
+          extra-images: lejianwen/rustdesk-api:${{ env.GIT_TAG }}-amd64,lejianwen/rustdesk-api:${{ env.GIT_TAG }}-arm64
           push: true
 
 #      - name: Create and push manifest (:latest)
