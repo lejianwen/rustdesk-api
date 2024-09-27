@@ -1,12 +1,12 @@
 name: Build and Release Arm64
 
-on:
-  push:
-    tags:
-      - 'v*.*.*'  # 当推送带有版本号的 tag（例如 v1.0.0）时触发工作流
 #on:
 #  push:
-#    branches: [ "master" ]
+#    tags:
+#      - 'v*.*.*'  # 当推送带有版本号的 tag（例如 v1.0.0）时触发工作流
+on:
+  push:
+    branches: [ "master" ]
 #  pull_request:
 #    branches: [ "master" ]
 
@@ -35,7 +35,10 @@ jobs:
 
       - name: install gcc
         run: |
-          sudo apt-get install gcc-aarch64-linux-gnu -y
+          sudo apt-get install -y
+          wget https://musl.cc/aarch64-linux-musl-cross.tgz
+          tar -xvzf aarch64-linux-musl-cross.tgz
+          export PATH=$PATH:$PWD/aarch64-linux-musl-cross/bin
 
 
       - name: build rustdesk-api-web
@@ -65,7 +68,7 @@ jobs:
           cp -ar conf release/
           mkdir -p release/data
           mkdir -p release/runtime
-          GOOS=${{ matrix.goos }} GOARCH=${{ matrix.goarch }} CC=aarch64-linux-gnu-gcc CGO_LDFLAGS="-static" CGO_ENABLED=1 go build -ldflags "-s -w" -o ./release/apimain ./cmd/apimain.go
+          GOOS=${{ matrix.goos }} GOARCH=${{ matrix.goarch }} CC=aarch64-linux-musl-gcc CGO_LDFLAGS="-static" CGO_ENABLED=1 go build -ldflags "-s -w" -o ./release/apimain ./cmd/apimain.go
           tar -czf ${{ matrix.goos}}-${{ matrix.goarch }}.tar.gz ./release 
 
       - name: Upload artifact
@@ -75,10 +78,10 @@ jobs:
           path: |
             ${{ matrix.goos}}-${{ matrix.goarch }}.tar.gz
 
-      - name: Upload to GitHub Release
-        uses: softprops/action-gh-release@v2
-        with:
-          files: |
-            ${{ matrix.goos}}-${{ matrix.goarch }}.tar.gz
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#      - name: Upload to GitHub Release
+#        uses: softprops/action-gh-release@v2
+#        with:
+#          files: |
+#            ${{ matrix.goos}}-${{ matrix.goarch }}.tar.gz
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
