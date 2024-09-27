@@ -1,4 +1,6 @@
 FROM alpine
+
+ARG ARCH
 WORKDIR /app
 RUN apk add --no-cache tzdata
 COPY ./release /app/
