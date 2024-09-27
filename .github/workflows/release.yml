@@ -1,9 +1,9 @@
 name: Build and Release
 
 on:
-  push:
-    tags:
-      - 'v*.*.*'  # 当推送带有版本号的 tag（例如 v1.0.0）时触发工作流
+  workflow_dispatch:
+#    tags:
+#      - 'v*.*.*'  # 当推送带有版本号的 tag（例如 v1.0.0）时触发工作流
 #on:
 #  push:
 #    branches: [ "master" ]
