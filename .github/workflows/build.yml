@@ -7,6 +7,8 @@ on:
       - 'v*.*.*'  # 当推送带有版本号的 tag（例如 v1.0.0）时触发工作流
       - 'test*'
 
+env:
+  LATEST_TAG: latest
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -93,6 +95,8 @@ jobs:
             ${{ matrix.job.goos}}-${{ matrix.job.platform }}.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  # docker build and push of single-arch images
   docker:
     name: Push Docker Image ${{ matrix.job.platform }}
     needs: build
@@ -146,10 +150,8 @@ jobs:
           file: ./Dockerfile
           platforms: ${{ matrix.job.docker_platform }}
           push: true
-          build-args: |
-            ARCH=${{ matrix.job.docker_platform }}
           tags: |
-            lejianwen/rustdesk-api:latest-${{ matrix.job.platform }}
+            lejianwen/rustdesk-api:${{ env.LATEST_TAG }}-${{ matrix.job.platform }}
             lejianwen/rustdesk-api:${{ env.TAG }}-${{ matrix.job.platform }}
           labels: ${{ steps.meta.outputs.labels }}
 
