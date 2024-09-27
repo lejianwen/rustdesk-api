@@ -163,9 +163,9 @@ jobs:
     needs: docker
     runs-on: ubuntu-latest
     steps:
-      - name: Extract version from tag
-        id: vars
-        run: echo "TAG=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
+#      - name: Extract version from tag
+#        id: vars
+#        run: echo "TAG=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
 
       - name: Log in to Docker Hub
         uses: docker/login-action@v2
