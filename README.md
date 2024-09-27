@@ -9,8 +9,7 @@
 <img src="https://img.shields.io/badge/gin-v1.9.0-lightBlue"/>
 <img src="https://img.shields.io/badge/gorm-v1.25.7-green"/>
 <img src="https://img.shields.io/badge/swag-v1.16.3-yellow"/>
-<img src="https://github.com/lejianwen/rustdesk-api/actions/workflows/release.yml/badge.svg"/>
-<img src="https://github.com/lejianwen/rustdesk-api/actions/workflows/docker.yml/badge.svg"/>
+<img src="https://github.com/lejianwen/rustdesk-api/actions/workflows/build.yml/badge.svg"/>
 </div>
 
 # 特性
