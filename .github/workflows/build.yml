@@ -123,6 +123,12 @@ jobs:
         id: vars
         run: echo "TAG=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
 
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@v4
+        with:
+          images: lejianwen/rustdesk-api
+
       - name: Download binaries
         uses: actions/download-artifact@v4
         with:
@@ -143,6 +149,8 @@ jobs:
           tags: |
             lejianwen/rustdesk-api:latest-${{ matrix.job.platform }}
             lejianwen/rustdesk-api:${{ env.TAG }}-${{ matrix.job.platform }}
+          labels: ${{ steps.meta.outputs.labels }}
+
   docker-manifest:
     name: Push Docker Manifest
     needs: docker
@@ -151,8 +159,6 @@ jobs:
       - name: Extract version from tag
         id: vars
         run: echo "TAG=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
-
-
 
       - name: Log in to Docker Hub
         uses: docker/login-action@v2
