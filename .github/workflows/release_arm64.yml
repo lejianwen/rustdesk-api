@@ -33,13 +33,6 @@ jobs:
         with:
           node-version: '20'
 
-      - name: install gcc
-        run: |
-          sudo apt-get install -y
-          wget https://musl.cc/aarch64-linux-musl-cross.tgz
-          tar -xvzf aarch64-linux-musl-cross.tgz
-          export PATH=$PATH:$PWD/aarch64-linux-musl-cross/bin
-
 
       - name: build rustdesk-api-web
         run: |
@@ -62,6 +55,9 @@ jobs:
 
       - name: Build for ${{ matrix.goos }}-${{ matrix.goarch }}
         run: |
+          wget https://musl.cc/aarch64-linux-musl-cross.tgz
+          tar -xvzf aarch64-linux-musl-cross.tgz
+          export PATH=$PATH:$PWD/aarch64-linux-musl-cross/bin
           mkdir release -p
           cp -ar resources release/
           cp -ar docs release/
