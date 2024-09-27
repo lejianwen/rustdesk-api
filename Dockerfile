@@ -1,5 +1,3 @@
-FROM golang:1.22-alpine as builder
-
 FROM alpine
 WORKDIR /app
 RUN apk add --no-cache tzdata
