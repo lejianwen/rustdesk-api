@@ -96,7 +96,6 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-  # docker build and push of single-arch images
   docker:
     name: Push Docker Image
     needs: build
@@ -150,10 +149,114 @@ jobs:
           file: ./Dockerfile
           platforms: linux/amd64,linux/arm64
           push: true
+          provenance: false
           tags: lejianwen/rustdesk-api:${{ env.TAG }}
           #           lejianwen/rustdesk-api:${{ env.LATEST_TAG }}
           #            lejianwen/rustdesk-api:${{ env.TAG }}-${{ matrix.job.docker_platform }}
           labels: ${{ steps.meta.outputs.labels }}
+
+  dockertest1:
+    name: test manifest list image1
+    needs: build
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        job:
+          - { platform: "amd64", goos: "linux",  docker_platform: "linux/amd64" }
+          - { platform: "arm64", goos: "linux",  docker_platform: "linux/arm64" }
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+
+      - name: Extract version from tag
+        id: vars
+        run: echo "TAG=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
+
+      - name: Download binaries
+        uses: actions/download-artifact@v4
+        with:
+          name: rustdesk-api-${{ matrix.job.goos }}-${{ matrix.job.platform }}
+          path: ./
+
+      - name: Unzip binaries
+        run: |
+          tar -xzf ${{ matrix.job.goos }}-${{ matrix.job.platform }}.tar.gz
+
+      - name: Build and push Docker image ${{ matrix.job.docker_platform }}
+        uses: docker/build-push-action@v5
+        with:
+          context: "."
+          file: ./Dockerfile
+          platforms: linux/amd64,linux/arm64
+          push: false
+          provenance: false
+          tags: |
+            lejianwen/rustdesk-api:${{ env.LATEST_TAG }}
+            lejianwen/rustdesk-api:${{ env.TAG }}-${{ matrix.job.docker_platform }}
+      - name: echo manifest
+        run: |
+          echo " provenance: false"
+          docker manifest inspect lejianwen/rustdesk-api:${{ env.LATEST_TAG }}
+          docker manifest inspect lejianwen/rustdesk-api:${{ env.TAG }}-${{ matrix.job.docker_platform }}
+  dockertest2:
+    name: test manifest list image2
+    needs: build
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        job:
+          - { platform: "amd64", goos: "linux",  docker_platform: "linux/amd64" }
+          - { platform: "arm64", goos: "linux",  docker_platform: "linux/arm64" }
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+
+      - name: Extract version from tag
+        id: vars
+        run: echo "TAG=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
+
+      - name: Download binaries
+        uses: actions/download-artifact@v4
+        with:
+          name: rustdesk-api-${{ matrix.job.goos }}-${{ matrix.job.platform }}
+          path: ./
+
+      - name: Unzip binaries
+        run: |
+          tar -xzf ${{ matrix.job.goos }}-${{ matrix.job.platform }}.tar.gz
+
+      - name: Build and push Docker image ${{ matrix.job.docker_platform }}
+        uses: docker/build-push-action@v5
+        with:
+          context: "."
+          file: ./Dockerfile
+          platforms: linux/amd64,linux/arm64
+          push: false
+          provenance: false
+          tags: |
+            lejianwen/rustdesk-api:${{ env.LATEST_TAG }}
+            lejianwen/rustdesk-api:${{ env.TAG }}
+      - name: echo manifest
+        run: |
+          echo " provenance: false"
+          docker manifest inspect lejianwen/rustdesk-api:${{ env.LATEST_TAG }}
+          docker manifest inspect lejianwen/rustdesk-api:${{ env.TAG }}
   #
 #  docker-manifest:
 #    name: Push Docker Manifest
