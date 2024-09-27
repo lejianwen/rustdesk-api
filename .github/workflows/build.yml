@@ -143,16 +143,16 @@ jobs:
         run: |
           tar -xzf ${{ matrix.job.goos }}-${{ matrix.job.platform }}.tar.gz
 
-      - name: Build and push Docker image
+      - name: Build and push Docker image ${{ matrix.job.docker_platform }}
         uses: docker/build-push-action@v5
         with:
           context: "."
           file: ./Dockerfile
           platforms: ${{ matrix.job.docker_platform }}
           push: true
-          tags: |
+          tags: lejianwen/rustdesk-api:${{ env.TAG }}-${{ matrix.job.docker_platform }}
 #           lejianwen/rustdesk-api:${{ env.LATEST_TAG }}
-            lejianwen/rustdesk-api:${{ env.TAG }}-${{ matrix.job.docker_platform }}
+#            lejianwen/rustdesk-api:${{ env.TAG }}-${{ matrix.job.docker_platform }}
           labels: ${{ steps.meta.outputs.labels }}
 #
 #  docker-manifest:
