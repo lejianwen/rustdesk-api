@@ -125,9 +125,7 @@ jobs:
 
       - name: Unzip binaries
         run: |
-          mkdir release -p
-          ls -l
-          tar -xzf rustdesk-api-${{ matrix.job.goos }}-${{ matrix.job.platform }}.tar.gz -C release/
+          tar -xzf ${{ matrix.job.goos }}-${{ matrix.job.platform }}.tar.gz
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
