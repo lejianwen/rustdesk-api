@@ -2,6 +2,31 @@ name: Build
 
 on:
   workflow_dispatch:
+    inputs:
+      BASE_IMAGE_NAMESPACE:
+        description: 'Base image namespace (Default: Your Github username)'
+        required: false
+        default: ''
+      DOCKERHUB_IMAGE_NAMESPACE:
+        description: 'Docker Hub image namespace (Default: Your Github username)'
+        required: false
+        default: ''
+      GHCR_IMAGE_NAMESPACE:
+        description: 'GitHub Container Registry image namespace (Default: Your Github username)'
+        required: false
+        default: ''
+      SKIP_DOCKER_HUB:
+        description: 'Set to true to skip pushing to Docker Hub (default: false)'
+        required: false
+        default: 'false'
+      SKIP_GHCR:
+        description: 'Set to true to skip pushing to GHCR (default: false)'
+        required: false
+        default: 'false'
+      WEBCLIENT_SOURCE_LOCATION:
+        description: 'Web Client API Repository'
+        required: true
+        default: 'https://github.com/lejianwen/rustdesk-api-web'
   push:
     tags:
       - 'v*.*.*'  # 当推送带有版本号的 tag（例如 v1.0.0）时触发工作流
@@ -9,6 +34,12 @@ on:
 
 env:
   LATEST_TAG: latest
+  WEBCLIENT_SOURCE_LOCATION: ${{ github.event.inputs.WEBCLIENT_SOURCE_LOCATION }}
+  BASE_IMAGE_NAMESPACE: ${{ github.event.inputs.BASE_IMAGE_NAMESPACE || github.actor }}
+  DOCKERHUB_IMAGE_NAMESPACE: ${{ github.event.inputs.DOCKERHUB_IMAGE_NAMESPACE || github.actor }}
+  GHCR_IMAGE_NAMESPACE: ${{ github.event.inputs.GHCR_IMAGE_NAMESPACE || github.actor }}
+  SKIP_DOCKER_HUB: ${{ github.event.inputs.SKIP_DOCKER_HUB }}
+  SKIP_GHCR: ${{ github.event.inputs.SKIP_GHCR }}
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -38,7 +69,7 @@ jobs:
 
       - name: build rustdesk-api-web
         run: |
-          git clone https://github.com/lejianwen/rustdesk-api-web
+          git clone ${{ env.WEBCLIENT_SOURCE_LOCATION }}
           cd rustdesk-api-web
           npm install
           npm run build
@@ -86,13 +117,13 @@ jobs:
           path: |
             ${{ matrix.job.goos}}-${{ matrix.job.platform }}.tar.gz
             ${{ matrix.job.goos}}-${{ matrix.job.platform }}.zip
-
       - name: Upload to GitHub Release
         uses: softprops/action-gh-release@v2
         with:
           files: |
             ${{ matrix.job.goos}}-${{ matrix.job.platform }}.tar.gz
             ${{ matrix.job.goos}}-${{ matrix.job.platform }}.zip
+          tag_name: ${{ env.LATEST_TAG }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -117,20 +148,34 @@ jobs:
         uses: docker/setup-buildx-action@v2
 
       - name: Log in to Docker Hub
+        if: ${{ env.SKIP_DOCKER_HUB == 'false' }}  # Only log in if SKIP_DOCKER_HUB is false
         uses: docker/login-action@v2
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_ACCESS_TOKEN }}
 
+      - name: Log in to GitHub Container Registry
+        if: ${{ env.SKIP_GHCR == 'false' }}  # Only log in if GHCR push is enabled
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Extract version from tag
         id: vars
-        run: echo "TAG=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
+        run: |
+          if [[ "${GITHUB_REF}" == refs/tags/* ]]; then
+            echo "TAG=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
+          else
+            echo "TAG=latest" >> $GITHUB_ENV  # Default to 'latest' if not a tag
+          fi
 
       - name: Extract metadata (tags, labels) for Docker
         id: meta
         uses: docker/metadata-action@v4
         with:
-          images: lejianwen/rustdesk-api
+          images: ${{ env.BASE_IMAGE_NAMESPACE }}/rustdesk-api
 
       - name: Download binaries
         uses: actions/download-artifact@v4
@@ -144,7 +189,8 @@ jobs:
           tar -xzf ${{ matrix.job.goos }}-${{ matrix.job.platform }}.tar.gz -C ${{ matrix.job.platform }}
           file ${{ matrix.job.platform }}/apimain
 
-      - name: Build and push Docker image ${{ matrix.job.platform }}
+      - name: Build and push Docker image to Docker Hub ${{ matrix.job.platform }}
+        if: ${{ env.SKIP_DOCKER_HUB == 'false' }}  # Only run this step if SKIP_DOCKER_HUB is false
         uses: docker/build-push-action@v5
         with:
           context: "."
@@ -155,8 +201,24 @@ jobs:
           build-args: |
             BUILDARCH=${{ matrix.job.platform }}
           tags: |
-            lejianwen/rustdesk-api:${{ env.LATEST_TAG }}-${{ matrix.job.platform }}
-            lejianwen/rustdesk-api:${{ env.TAG }}-${{ matrix.job.platform }}
+            ${{ env.DOCKERHUB_IMAGE_NAMESPACE }}/rustdesk-api:${{ env.LATEST_TAG }}-${{ matrix.job.platform }},
+            ${{ env.DOCKERHUB_IMAGE_NAMESPACE }}/rustdesk-api:${{ env.TAG }}-${{ matrix.job.platform }}
+          labels: ${{ steps.meta.outputs.labels }}
+
+      - name: Build and push Docker image to GHCR ${{ matrix.job.platform }}
+        if: ${{ env.SKIP_GHCR == 'false' }}  # Only run this step if SKIP_GHCR is false
+        uses: docker/build-push-action@v5
+        with:
+          context: "."
+          file: ./Dockerfile
+          platforms: ${{ matrix.job.docker_platform }}
+          push: true
+          provenance: false
+          build-args: |
+            BUILDARCH=${{ matrix.job.platform }}
+          tags: |
+            ghcr.io/${{ env.GHCR_IMAGE_NAMESPACE }}/rustdesk-api:${{ env.LATEST_TAG }}-${{ matrix.job.platform }},
+            ghcr.io/${{ env.GHCR_IMAGE_NAMESPACE }}/rustdesk-api:${{ env.TAG }}-${{ matrix.job.platform }}
           labels: ${{ steps.meta.outputs.labels }}
 
   #
@@ -167,24 +229,62 @@ jobs:
     steps:
       - name: Extract version from tag
         id: vars
-        run: echo "TAG=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
+        run: |
+          if [[ "${GITHUB_REF}" == refs/tags/* ]]; then
+            echo "TAG=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
+          else
+            echo "TAG=latest" >> $GITHUB_ENV  # Default to 'latest' if not a tag
+          fi
 
       - name: Log in to Docker Hub
+        if: ${{ env.SKIP_DOCKER_HUB == 'false' }}  # Only log in if Docker Hub push is enabled
         uses: docker/login-action@v2
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_ACCESS_TOKEN }}
 
-      - name: Create and push manifest (:version)
+      - name: Log in to GitHub Container Registry
+        if: ${{ env.SKIP_GHCR == 'false' }}  # Only log in if GHCR push is enabled
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Create and push manifest Docker Hub (:version)
+        if: ${{ env.SKIP_DOCKER_HUB == 'false' }}
         uses: Noelware/docker-manifest-action@master
         with:
-          base-image: lejianwen/rustdesk-api:${{ env.TAG }}
-          extra-images: lejianwen/rustdesk-api:${{ env.TAG }}-amd64,lejianwen/rustdesk-api:${{ env.TAG }}-arm64
+          base-image: ${{ env.BASE_IMAGE_NAMESPACE }}/rustdesk-api:${{ env.TAG }}
+          extra-images: ${{ env.DOCKERHUB_IMAGE_NAMESPACE }}/rustdesk-api:${{ env.TAG }}-amd64, 
+                        ${{ env.DOCKERHUB_IMAGE_NAMESPACE }}/rustdesk-api:${{ env.TAG }}-arm64
           push: true
 
-      - name: Create and push manifest (:latest)
+      - name: Create and push manifest GHCR (:version)
+        if: ${{ env.SKIP_GHCR == 'false' }}
         uses: Noelware/docker-manifest-action@master
         with:
-          base-image: lejianwen/rustdesk-api:latest
-          extra-images: lejianwen/rustdesk-api:latest-amd64,lejianwen/rustdesk-api:latest-arm64
+          base-image: ghcr.io/${{ env.BASE_IMAGE_NAMESPACE }}/rustdesk-api:${{ env.TAG }}
+          extra-images: ghcr.io/${{ env.GHCR_IMAGE_NAMESPACE }}/rustdesk-api:${{ env.TAG }}-amd64, 
+                        ghcr.io/${{ env.GHCR_IMAGE_NAMESPACE }}/rustdesk-api:${{ env.TAG }}-arm64
           push: true
+          amend: true
+
+      - name: Create and push manifest Docker Hub (:latest)
+        if: ${{ env.SKIP_DOCKER_HUB == 'false' }}
+        uses: Noelware/docker-manifest-action@master
+        with:
+          base-image: ${{ env.BASE_IMAGE_NAMESPACE }}/rustdesk-api:latest
+          extra-images: ${{ env.DOCKERHUB_IMAGE_NAMESPACE }}/rustdesk-api:latest-amd64, 
+                        ${{ env.DOCKERHUB_IMAGE_NAMESPACE }}/rustdesk-api:latest-arm64
+          push: true
+
+      - name: Create and push manifest GHCR (:latest)
+        if: ${{ env.SKIP_GHCR == 'false' }}
+        uses: Noelware/docker-manifest-action@master
+        with:
+          base-image: ghcr.io/${{ env.BASE_IMAGE_NAMESPACE }}/rustdesk-api:latest
+          extra-images: ghcr.io/${{ env.GHCR_IMAGE_NAMESPACE }}/rustdesk-api:latest-amd64, 
+                        ghcr.io/${{ env.GHCR_IMAGE_NAMESPACE }}/rustdesk-api:latest-arm64
+          push: true
+          amend: true
