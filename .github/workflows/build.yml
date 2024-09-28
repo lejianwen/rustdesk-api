@@ -140,7 +140,7 @@ jobs:
 
       - name: Unzip binaries
         run: |
-          tar -xzf ${{ matrix.job.goos }}-${{ matrix.job.platform }}.tar.gz
+          tar -xzf ${{ matrix.job.goos }}-${{ matrix.job.platform }}.tar.gz -C ${{ matrix.job.platform }}
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
@@ -150,6 +150,8 @@ jobs:
           platforms: linux/amd64,linux/arm64
           push: true
           provenance: false
+          build-args: |
+            BUILDARCH=${{ matrix.job.platform }}
           tags: |
             lejianwen/rustdesk-api:${{ env.LATEST_TAG }}
             lejianwen/rustdesk-api:${{ env.TAG }}
