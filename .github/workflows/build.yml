@@ -140,6 +140,7 @@ jobs:
 
       - name: Unzip binaries
         run: |
+          mkdir -p ${{ matrix.job.platform }}
           tar -xzf ${{ matrix.job.goos }}-${{ matrix.job.platform }}.tar.gz -C ${{ matrix.job.platform }}
 
       - name: Build and push Docker image
