@@ -151,7 +151,7 @@ jobs:
           file: ./Dockerfile
           platforms: linux/amd64,linux/arm64
           push: true
-          provenance: false
+          #          provenance: false
           build-args: |
             BUILDARCH=${{ matrix.job.platform }}
           tags: |
