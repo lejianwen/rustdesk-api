@@ -4,6 +4,7 @@ import (
 	"Gwen/global"
 	"Gwen/http/request/admin"
 	"Gwen/http/response"
+	"Gwen/model"
 	"Gwen/service"
 	_ "encoding/json"
 	"github.com/gin-gonic/gin"
@@ -69,12 +70,70 @@ func (ct *AddressBook) Create(c *gin.Context) {
 	if !service.AllService.UserService.IsAdmin(u) || t.UserId == 0 {
 		t.UserId = u.Id
 	}
+	ex := service.AllService.AddressBookService.InfoByUserIdAndId(t.UserId, t.Id)
+	if ex.RowId > 0 {
+		response.Fail(c, 101, response.TranslateMsg(c, "ItemExist"))
+		return
+	}
+
 	err := service.AllService.AddressBookService.Create(t)
 	if err != nil {
 		response.Fail(c, 101, response.TranslateMsg(c, "OperationFailed")+err.Error())
 		return
 	}
 	response.Success(c, u)
+}
+
+// BatchCreate 批量创建地址簿
+// @Tags 地址簿
+// @Summary 批量创建地址簿
+// @Description 批量创建地址簿
+// @Accept  json
+// @Produce  json
+// @Param body body admin.AddressBookForm true "地址簿信息"
+// @Success 200 {object} response.Response{data=model.AddressBook}
+// @Failure 500 {object} response.Response
+// @Router /admin/address_book/create [post]
+// @Security token
+func (ct *AddressBook) BatchCreate(c *gin.Context) {
+	f := &admin.AddressBookForm{}
+	if err := c.ShouldBindJSON(f); err != nil {
+		response.Fail(c, 101, response.TranslateMsg(c, "ParamsError")+err.Error())
+		return
+	}
+	errList := global.Validator.ValidStruct(c, f)
+	if len(errList) > 0 {
+		response.Fail(c, 101, errList[0])
+		return
+	}
+
+	//创建标签
+	for _, fu := range f.UserIds {
+		if fu == 0 {
+			continue
+		}
+		for _, ft := range f.Tags {
+			exTag := service.AllService.TagService.InfoByUserIdAndName(fu, ft)
+			if exTag.Id == 0 {
+				service.AllService.TagService.Create(&model.Tag{
+					UserId: fu,
+					Name:   ft,
+				})
+			}
+		}
+	}
+	ts := f.ToAddressBooks()
+	for _, t := range ts {
+		if t.UserId == 0 {
+			continue
+		}
+		ex := service.AllService.AddressBookService.InfoByUserIdAndId(t.UserId, t.Id)
+		if ex.RowId == 0 {
+			service.AllService.AddressBookService.Create(t)
+		}
+	}
+
+	response.Success(c, nil)
 }
 
 // List 列表
@@ -102,8 +161,17 @@ func (ct *AddressBook) List(c *gin.Context) {
 		query.UserId = int(u.Id)
 	}
 	res := service.AllService.AddressBookService.List(query.Page, query.PageSize, func(tx *gorm.DB) {
+		if query.Id != "" {
+			tx.Where("id like ?", "%"+query.Id+"%")
+		}
 		if query.UserId > 0 {
 			tx.Where("user_id = ?", query.UserId)
+		}
+		if query.Username != "" {
+			tx.Where("username like ?", "%"+query.Username+"%")
+		}
+		if query.Hostname != "" {
+			tx.Where("hostname like ?", "%"+query.Hostname+"%")
 		}
 	})
 	response.Success(c, res)

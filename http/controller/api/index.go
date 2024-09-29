@@ -1,9 +1,12 @@
 package api
 
 import (
+	requstform "Gwen/http/request/api"
 	"Gwen/http/response"
+	"Gwen/service"
 	"github.com/gin-gonic/gin"
 	"net/http"
+	"time"
 )
 
 type Index struct {
@@ -35,10 +38,22 @@ func (i *Index) Index(c *gin.Context) {
 // @Failure 500 {object} response.Response
 // @Router /heartbeat [post]
 func (i *Index) Heartbeat(c *gin.Context) {
-	//b := &gin.H{}
-	//err := c.BindJSON(b)
-	//body : &map[id:xxx modified_at:0 uuid:NGIxZTZjM2YtNmNkMy00YTMwLWFiNjQtMzQ0MTA0NGE5ZDgz ver:1.003e+06]
-	//fmt.Println(b, err, c.Request.Header)
-	//header : map[Accept:[*/*] Accept-Encoding:[gzip] Content-Length:[105] Content-Type:[application/json]]
+	info := &requstform.PeerInfoInHeartbeat{}
+	err := c.ShouldBindJSON(info)
+	if err != nil {
+		c.JSON(http.StatusOK, gin.H{})
+		return
+	}
+	if info.Uuid == "" {
+		c.JSON(http.StatusOK, gin.H{})
+		return
+	}
+	peer := service.AllService.PeerService.FindByUuid(info.Uuid)
+	if peer == nil {
+		c.JSON(http.StatusOK, gin.H{})
+		return
+	}
+	peer.LastOnlineTime = time.Now().Unix()
+	service.AllService.PeerService.Update(peer)
 	c.JSON(http.StatusOK, gin.H{})
 }

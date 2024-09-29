@@ -16,6 +16,7 @@ type AddressBookForm struct {
 	Tags             []string `json:"tags"`
 	Hash             string   `json:"hash"`
 	UserId           uint     `json:"user_id"`
+	UserIds          []uint   `json:"user_ids"`
 	ForceAlwaysRelay bool     `json:"forceAlwaysRelay"`
 	RdpPort          string   `json:"rdpPort"`
 	RdpUsername      string   `json:"rdpUsername"`
@@ -48,9 +49,39 @@ func (a AddressBookForm) ToAddressBook() *model.AddressBook {
 	}
 
 }
+func (a AddressBookForm) ToAddressBooks() []*model.AddressBook {
+	//tags转换
+	tags, _ := json.Marshal(a.Tags)
+
+	abs := make([]*model.AddressBook, 0, len(a.UserIds))
+	for _, userId := range a.UserIds {
+		abs = append(abs, &model.AddressBook{
+			RowId:            a.RowId,
+			Id:               a.Id,
+			Username:         a.Username,
+			Password:         a.Password,
+			Hostname:         a.Hostname,
+			Alias:            a.Alias,
+			Platform:         a.Platform,
+			Tags:             tags,
+			Hash:             a.Hash,
+			UserId:           userId,
+			ForceAlwaysRelay: a.ForceAlwaysRelay,
+			RdpPort:          a.RdpPort,
+			RdpUsername:      a.RdpUsername,
+			Online:           a.Online,
+			LoginName:        a.LoginName,
+			SameServer:       a.SameServer,
+		})
+	}
+	return abs
+}
 
 type AddressBookQuery struct {
-	UserId int `form:"user_id"`
-	IsMy   int `form:"is_my"`
+	UserId   int    `form:"user_id"`
+	IsMy     int    `form:"is_my"`
+	Username string `form:"username"`
+	Hostname string `form:"hostname"`
+	Id       string `form:"id"`
 	PageQuery
 }

@@ -71,6 +71,11 @@ func (ps *PeerService) Delete(u *model.Peer) error {
 	return global.DB.Delete(u).Error
 }
 
+// BatchDelete
+func (ps *PeerService) BatchDelete(ids []uint) error {
+	return global.DB.Where("row_id in (?)", ids).Delete(&model.Peer{}).Error
+}
+
 // Update 更新
 func (ps *PeerService) Update(u *model.Peer) error {
 	return global.DB.Model(u).Updates(u).Error

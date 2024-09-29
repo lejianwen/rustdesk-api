@@ -109,3 +109,13 @@ other = "Decode oauth user info error."
 description = "Old password error."
 one = "Old password error."
 other = "Old password error."
+
+[DefaultGroup]
+description = "Default group"
+one = "Default Group"
+other = "Default Group"
+
+[ShareGroup]
+description = "Share group"
+one = "Share Group"
+other = "Share Group"

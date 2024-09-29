@@ -110,3 +110,14 @@ other = "解析授权用户信息失败。"
 description = "Old password error."
 one = "旧密码错误。"
 other = "旧密码错误。"
+
+
+[DefaultGroup]
+description = "Default group."
+one = "默认组"
+other = "默认组"
+
+[ShareGroup]
+description = "Share group."
+one = "共享组"
+other = "共享组"
