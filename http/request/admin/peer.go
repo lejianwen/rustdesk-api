@@ -14,6 +14,10 @@ type PeerForm struct {
 	Version  string `json:"version"`
 }
 
+type PeerBatchDeleteForm struct {
+	RowIds []uint `json:"row_ids" validate:"required"`
+}
+
 // ToPeer
 func (f *PeerForm) ToPeer() *model.Peer {
 	return &model.Peer{
@@ -27,4 +31,9 @@ func (f *PeerForm) ToPeer() *model.Peer {
 		Uuid:     f.Uuid,
 		Version:  f.Version,
 	}
+}
+
+type PeerQuery struct {
+	PageQuery
+	TimeAgo int `json:"time_ago" form:"time_ago"`
 }

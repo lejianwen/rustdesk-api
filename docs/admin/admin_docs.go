@@ -2759,6 +2759,9 @@ const docTemplateadmin = `{
                 "id": {
                     "type": "string"
                 },
+                "last_online_time": {
+                    "type": "integer"
+                },
                 "memory": {
                     "type": "string"
                 },

@@ -23,6 +23,7 @@ import (
 	"github.com/go-redis/redis/v8"
 	"github.com/nicksnyder/go-i18n/v2/i18n"
 	"golang.org/x/text/language"
+	nethttp "net/http"
 	"reflect"
 )
 
@@ -46,6 +47,8 @@ func main() {
 		Level:        global.Config.Logger.Level,
 		ReportCaller: global.Config.Logger.ReportCaller,
 	})
+
+	InitI18n()
 
 	//redis
 	global.Redis = redis.NewClient(&redis.Options{
@@ -103,7 +106,6 @@ func main() {
 	//locker
 	global.Lock = lock.NewLocal()
 
-	InitI18n()
 	//gin
 	http.ApiInit()
 
@@ -198,7 +200,7 @@ func getTranslatorForLang(lang string) ut.Translator {
 	}
 }
 func DatabaseAutoUpdate() {
-	version := 126
+	version := 212
 
 	db := global.DB
 
@@ -268,13 +270,23 @@ func Migrate(version uint) {
 	var vc int64
 	global.DB.Model(&model.Version{}).Count(&vc)
 	if vc == 1 {
+		localizer := global.Localizer(&gin.Context{
+			Request: &nethttp.Request{},
+		})
+		defaultGroup, _ := localizer.LocalizeMessage(&i18n.Message{
+			ID: "DefaultGroup",
+		})
 		group := &model.Group{
-			Name: "默认组",
+			Name: defaultGroup,
 			Type: model.GroupTypeDefault,
 		}
 		service.AllService.GroupService.Create(group)
+
+		shareGroup, _ := localizer.LocalizeMessage(&i18n.Message{
+			ID: "ShareGroup",
+		})
 		groupShare := &model.Group{
-			Name: "共享组",
+			Name: shareGroup,
 			Type: model.GroupTypeShare,
 		}
 		service.AllService.GroupService.Create(groupShare)
@@ -282,7 +294,7 @@ func Migrate(version uint) {
 		is_admin := true
 		admin := &model.User{
 			Username: "admin",
-			Nickname: "管理员",
+			Nickname: "Admin",
 			Status:   model.COMMON_STATUS_ENABLE,
 			IsAdmin:  &is_admin,
 			GroupId:  1,

@@ -71,3 +71,9 @@ type TagColorForm struct {
 	Name  string `json:"name"`
 	Color uint   `json:"color"`
 }
+
+type PeerInfoInHeartbeat struct {
+	Id   string `json:"id"`
+	Uuid string `json:"uuid"`
+	Ver  int    `json:"ver"`
+}
