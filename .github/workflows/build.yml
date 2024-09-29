@@ -38,7 +38,7 @@ env:
   BASE_IMAGE_NAMESPACE: ${{ github.event.inputs.BASE_IMAGE_NAMESPACE || github.actor }}
   DOCKERHUB_IMAGE_NAMESPACE: ${{ github.event.inputs.DOCKERHUB_IMAGE_NAMESPACE || github.actor }}
   GHCR_IMAGE_NAMESPACE: ${{ github.event.inputs.GHCR_IMAGE_NAMESPACE || github.actor }}
-  SKIP_DOCKER_HUB: ${{ github.event.inputs.SKIP_DOCKER_HUB }}
+  SKIP_DOCKER_HUB: ${{ github.event.inputs.SKIP_DOCKER_HUB || 'false' }}
   SKIP_GHCR: ${{ github.event.inputs.SKIP_GHCR }}
 jobs:
   build:
