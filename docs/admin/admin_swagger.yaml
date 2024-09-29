@@ -46,6 +46,10 @@ definitions:
         type: array
       user_id:
         type: integer
+      user_ids:
+        items:
+          type: integer
+        type: array
       username:
         type: string
     required:
@@ -106,6 +110,15 @@ definitions:
     - client_secret
     - op
     - redirect_url
+    type: object
+  admin.PeerBatchDeleteForm:
+    properties:
+      row_ids:
+        items:
+          type: integer
+        type: array
+    required:
+    - row_ids
     type: object
   admin.PeerForm:
     properties:
@@ -473,7 +486,7 @@ paths:
     post:
       consumes:
       - application/json
-      description: 创建地址簿
+      description: 批量创建地址簿
       parameters:
       - description: 地址簿信息
         in: body
@@ -499,7 +512,7 @@ paths:
             $ref: '#/definitions/response.Response'
       security:
       - token: []
-      summary: 创建地址簿
+      summary: 批量创建地址簿
       tags:
       - 地址簿
   /admin/address_book/delete:
@@ -1196,14 +1209,14 @@ paths:
     post:
       consumes:
       - application/json
-      description: 设备删除
+      description: 批量设备删除
       parameters:
-      - description: 设备信息
+      - description: 设备id
         in: body
         name: body
         required: true
         schema:
-          $ref: '#/definitions/admin.PeerForm'
+          $ref: '#/definitions/admin.PeerBatchDeleteForm'
       produces:
       - application/json
       responses:
@@ -1217,7 +1230,7 @@ paths:
             $ref: '#/definitions/response.Response'
       security:
       - token: []
-      summary: 设备删除
+      summary: 批量设备删除
       tags:
       - 设备
   /admin/peer/detail/{id}:
@@ -1265,6 +1278,10 @@ paths:
       - description: 页大小
         in: query
         name: page_size
+        type: integer
+      - description: 时间
+        in: query
+        name: time_ago
         type: integer
       produces:
       - application/json

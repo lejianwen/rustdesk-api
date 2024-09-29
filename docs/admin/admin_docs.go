@@ -22,7 +22,7 @@ const docTemplateadmin = `{
                         "token": []
                     }
                 ],
-                "description": "创建地址簿",
+                "description": "批量创建地址簿",
                 "consumes": [
                     "application/json"
                 ],
@@ -32,7 +32,7 @@ const docTemplateadmin = `{
                 "tags": [
                     "地址簿"
                 ],
-                "summary": "创建地址簿",
+                "summary": "批量创建地址簿",
                 "parameters": [
                     {
                         "description": "地址簿信息",
@@ -1242,7 +1242,7 @@ const docTemplateadmin = `{
                         "token": []
                     }
                 ],
-                "description": "设备删除",
+                "description": "批量设备删除",
                 "consumes": [
                     "application/json"
                 ],
@@ -1252,15 +1252,15 @@ const docTemplateadmin = `{
                 "tags": [
                     "设备"
                 ],
-                "summary": "设备删除",
+                "summary": "批量设备删除",
                 "parameters": [
                     {
-                        "description": "设备信息",
+                        "description": "设备id",
                         "name": "body",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/admin.PeerForm"
+                            "$ref": "#/definitions/admin.PeerBatchDeleteForm"
                         }
                     }
                 ],
@@ -1364,6 +1364,12 @@ const docTemplateadmin = `{
                         "type": "integer",
                         "description": "页大小",
                         "name": "page_size",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "时间",
+                        "name": "time_ago",
                         "in": "query"
                     }
                 ],
@@ -2311,6 +2317,12 @@ const docTemplateadmin = `{
                 "user_id": {
                     "type": "integer"
                 },
+                "user_ids": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
                 "username": {
                     "type": "string"
                 }
@@ -2395,6 +2407,20 @@ const docTemplateadmin = `{
                 },
                 "redirect_url": {
                     "type": "string"
+                }
+            }
+        },
+        "admin.PeerBatchDeleteForm": {
+            "type": "object",
+            "required": [
+                "row_ids"
+            ],
+            "properties": {
+                "row_ids": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
                 }
             }
         },
