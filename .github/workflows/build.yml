@@ -123,7 +123,7 @@ jobs:
           files: |
             ${{ matrix.job.goos}}-${{ matrix.job.platform }}.tar.gz
             ${{ matrix.job.goos}}-${{ matrix.job.platform }}.zip
-          tag_name: ${{ env.LATEST_TAG }}
+        #          tag_name: ${{ env.LATEST_TAG }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
