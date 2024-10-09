@@ -3,6 +3,7 @@ package service
 import (
 	"Gwen/global"
 	"Gwen/model"
+	"github.com/google/uuid"
 	"gorm.io/gorm"
 )
 
@@ -112,4 +113,17 @@ func (t *AddressBookService) Delete(u *model.AddressBook) error {
 // Update 更新
 func (t *AddressBookService) Update(u *model.AddressBook) error {
 	return global.DB.Model(u).Updates(u).Error
+}
+
+// ShareByWebClient 分享
+func (t *AddressBookService) ShareByWebClient(m *model.ShareRecord) error {
+	m.ShareToken = uuid.New().String()
+	return global.DB.Create(m).Error
+}
+
+// SharedPeer
+func (t *AddressBookService) SharedPeer(shareToken string) *model.ShareRecord {
+	m := &model.ShareRecord{}
+	global.DB.Where("share_token = ?", shareToken).First(m)
+	return m
 }

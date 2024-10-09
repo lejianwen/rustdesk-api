@@ -93,6 +93,7 @@ func AddressBookBind(rg *gin.RouterGroup) {
 		aR.POST("/create", cont.Create)
 		aR.POST("/update", cont.Update)
 		aR.POST("/delete", cont.Delete)
+		aR.POST("/shareByWebClient", cont.ShareByWebClient)
 
 		arp := aR.Use(middleware.AdminPrivilege())
 		arp.POST("/batchCreate", cont.BatchCreate)

@@ -46,6 +46,12 @@ func ApiInit(g *gin.Engine) {
 		//提交系统信息
 		frg.POST("/sysinfo", pe.SysInfo)
 	}
+
+	{
+		w := &api.WebClient{}
+		frg.POST("/shared-peer", w.SharedPeer)
+	}
+
 	frg.Use(middleware.RustAuth())
 	{
 		w := &api.WebClient{}

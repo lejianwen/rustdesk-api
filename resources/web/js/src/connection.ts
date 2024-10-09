@@ -14,7 +14,8 @@ const HOSTS = [
   "rs-us.rustdesk.com",
 ];
 let HOST = localStorage.getItem("rendezvous-server") || HOSTS[0];
-const SCHEMA = "ws://";
+//根据协议设置为ws或wss
+const SCHEMA=location.protocol=="https:"?"wss://":"ws://";
 
 type MsgboxCallback = (type: string, title: string, text: string) => void;
 type DrawCallback = (data: Uint8Array) => void;
@@ -99,7 +100,7 @@ export default class Connection {
     ws.sendRendezvous({ punch_hole_request });
     const msg = (await ws.next()) as rendezvous.RendezvousMessage;
     ws.close();
-    console.log(new Date() + ": Got relay response");
+    console.log(new Date() + ": Got relay response", msg);
     const phr = msg.punch_hole_response;
     const rr = msg.relay_response;
     if (phr) {
@@ -236,8 +237,14 @@ export default class Connection {
   async msgLoop() {
     while (true) {
       const msg = (await this._ws?.next()) as message.Message;
+      // console.log("msg", msg);
       if (msg?.hash) {
         this._hash = msg?.hash;
+        const tmp = this.getOption('tmppwd')
+        if(!this._password && tmp){
+          this._password = Uint8Array.from(JSON.parse("[" + tmp + "]"));
+          this.setOption('tmppwd', '')
+        }
         if (!this._password)
           this.msgbox("input-password", "Password Required", "");
         this.login();

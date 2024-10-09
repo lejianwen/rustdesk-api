@@ -9,6 +9,7 @@ type WebClientPeerPayload struct {
 	ViewStyle string                   `json:"view-style"`
 	Tm        int64                    `json:"tm"`
 	Info      WebClientPeerInfoPayload `json:"info"`
+	Tmppwd    string                   `json:"tmppwd"`
 }
 
 type WebClientPeerInfoPayload struct {
@@ -16,6 +17,7 @@ type WebClientPeerInfoPayload struct {
 	Hostname string `json:"hostname"`
 	Platform string `json:"platform"`
 	Hash     string `json:"hash"`
+	Id       string `json:"id"`
 }
 
 func (wcpp *WebClientPeerPayload) FromAddressBook(a *model.AddressBook) {
@@ -27,5 +29,18 @@ func (wcpp *WebClientPeerPayload) FromAddressBook(a *model.AddressBook) {
 		Hostname: a.Hostname,
 		Platform: a.Platform,
 		Hash:     a.Hash,
+	}
+}
+
+func (wcpp *WebClientPeerPayload) FromShareRecord(sr *model.ShareRecord) {
+	wcpp.ViewStyle = "shrink"
+	//24小时前
+	wcpp.Tm = time.Now().UnixNano()
+	wcpp.Tmppwd = sr.Password
+	wcpp.Info = WebClientPeerInfoPayload{
+		Username: "",
+		Hostname: "",
+		Platform: "",
+		Id:       sr.PeerId,
 	}
 }

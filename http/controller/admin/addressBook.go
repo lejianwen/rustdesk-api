@@ -257,3 +257,44 @@ func (ct *AddressBook) Delete(c *gin.Context) {
 	}
 	response.Fail(c, 101, response.TranslateMsg(c, "ItemNotFound"))
 }
+
+// ShareByWebClient
+// @Tags 地址簿
+// @Summary 地址簿分享
+// @Description 地址簿分享
+// @Accept  json
+// @Produce  json
+// @Param body body admin.ShareByWebClientForm true "地址簿信息"
+// @Success 200 {object} response.Response
+// @Failure 500 {object} response.Response
+// @Router /admin/address_book/share [post]
+// @Security token
+func (ct *AddressBook) ShareByWebClient(c *gin.Context) {
+	f := &admin.ShareByWebClientForm{}
+	if err := c.ShouldBindJSON(f); err != nil {
+		response.Fail(c, 101, response.TranslateMsg(c, "ParamsError")+err.Error())
+		return
+	}
+	errList := global.Validator.ValidStruct(c, f)
+	if len(errList) > 0 {
+		response.Fail(c, 101, errList[0])
+		return
+	}
+
+	u := service.AllService.UserService.CurUser(c)
+	ab := service.AllService.AddressBookService.InfoByUserIdAndId(u.Id, f.Id)
+	if ab.RowId == 0 {
+		response.Fail(c, 101, response.TranslateMsg(c, "ItemNotFound"))
+		return
+	}
+	m := f.ToShareRecord()
+	m.UserId = u.Id
+	err := service.AllService.AddressBookService.ShareByWebClient(m)
+	if err != nil {
+		response.Fail(c, 101, response.TranslateMsg(c, "OperationFailed")+err.Error())
+		return
+	}
+	response.Success(c, &gin.H{
+		"share_token": m.ShareToken,
+	})
+}

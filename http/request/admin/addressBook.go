@@ -85,3 +85,20 @@ type AddressBookQuery struct {
 	Id       string `form:"id"`
 	PageQuery
 }
+
+type ShareByWebClientForm struct {
+	Id           string `json:"id" validate:"required"`
+	PasswordType string `json:"password_type" validate:"required,oneof=once fixed"` //只能是once,fixed
+	Password     string `json:"password" validate:"required"`
+	Expire       int64  `json:"expire"`
+}
+
+func (sbwcf ShareByWebClientForm) ToShareRecord() *model.ShareRecord {
+	return &model.ShareRecord{
+		UserId:       0,
+		PeerId:       sbwcf.Id,
+		PasswordType: sbwcf.PasswordType,
+		Password:     sbwcf.Password,
+		Expire:       sbwcf.Expire,
+	}
+}
