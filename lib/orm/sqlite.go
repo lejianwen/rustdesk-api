@@ -1,9 +1,12 @@
 package orm
 
 import (
+	"Gwen/global"
 	"fmt"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
+	"gorm.io/gorm/logger"
+	"time"
 )
 
 type SqliteConfig struct {
@@ -12,7 +15,18 @@ type SqliteConfig struct {
 }
 
 func NewSqlite(sqliteConf *SqliteConfig) *gorm.DB {
-	db, err := gorm.Open(sqlite.Open("./data/rustdeskapi.db"), &gorm.Config{})
+	db, err := gorm.Open(sqlite.Open("./data/rustdeskapi.db"), &gorm.Config{
+		Logger: logger.New(
+			global.Logger, // io writer
+			logger.Config{
+				SlowThreshold:             time.Second, // Slow SQL threshold
+				LogLevel:                  logger.Warn, // Log level
+				IgnoreRecordNotFoundError: true,        // Ignore ErrRecordNotFound error for logger
+				ParameterizedQueries:      true,        // Don't include params in the SQL log
+				Colorful:                  true,
+			},
+		),
+	})
 	if err != nil {
 		fmt.Println(err)
 	}

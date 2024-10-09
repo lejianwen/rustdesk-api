@@ -1,9 +1,12 @@
 package orm
 
 import (
+	"Gwen/global"
 	"fmt"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
+	"gorm.io/gorm/logger"
+	"time"
 )
 
 type MysqlConfig struct {
@@ -22,6 +25,16 @@ func NewMysql(mysqlConf *MysqlConfig) *gorm.DB {
 		//SkipInitializeWithVersion: false,                   // 根据当前 MySQL 版本自动配置
 	}), &gorm.Config{
 		DisableForeignKeyConstraintWhenMigrating: true,
+		Logger: logger.New(
+			global.Logger, // io writer
+			logger.Config{
+				SlowThreshold:             time.Second, // Slow SQL threshold
+				LogLevel:                  logger.Warn, // Log level
+				IgnoreRecordNotFoundError: true,        // Ignore ErrRecordNotFound error for logger
+				ParameterizedQueries:      true,        // Don't include params in the SQL log
+				Colorful:                  true,
+			},
+		),
 	})
 	if err != nil {
 		fmt.Println(err)
