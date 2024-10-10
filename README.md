@@ -30,10 +30,12 @@
     - Oauth 管理
     - 快速使用web client
     - i18n
+    - 通过 web client 分享给游客
 - Web Client
     - 自动获取API server
     - 自动获取ID服务器和KEY
     - 自动获取地址簿
+    - 游客通过临时分享链接直接远程到设备
 
 ## 使用前准备
 
