@@ -29,10 +29,12 @@ desktop software that provides self-hosted solutions.
     - OAuth Management
     - Quick access to web client
     - i18n
+    - Share to guest by web client
 - Web Client
     - Automatically obtain API server
     - Automatically obtain ID server and KEY
     - Automatically obtain address book
+    - Visitors are remotely to the device via a temporary sharing link
 
 ## Prerequisites
 
