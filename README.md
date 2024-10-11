@@ -42,7 +42,7 @@
 ### [Rustdesk](https://github.com/rustdesk/rustdesk)
 
 1. PC客户端使用的是 ***1.3.0***，经测试 ***1.2.6+*** 都可以
-2. server端必须指定key，不能用自带的生成的key,否则可能链接不上或者超时
+2. server端指定key，不用自带的生成的key,否则可能链接不上或者超时
 
    ```bash
    hbbs -r <relay-server-ip[:port]> -k <key>
@@ -55,6 +55,8 @@
    hbbs -r <relay-server-ip[:port]> -k abc1234567
    hbbr -k abc1234567
    ```
+3. server端使用系统生成的key，但如果client已登录，链接时容易超时或者链接不上，可以退出登录后再链接就可以了，webclient可以不用退出登录
+
 
 ## 功能
 

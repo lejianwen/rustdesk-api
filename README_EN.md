@@ -41,8 +41,7 @@ desktop software that provides self-hosted solutions.
 ### [Rustdesk](https://github.com/rustdesk/rustdesk)
 
 1. The PC client version used is ***1.3.0***, and versions ***1.2.6+*** have been tested to work.
-2. The server must specify a key, and not use the auto-generated key, otherwise there may be connection failures or
-   timeouts.
+2. The server can specify a key, and not use the auto-generated key, otherwise there may be connection failures or timeouts.
 
    ```bash
    hbbs -r <relay-server-ip[:port]> -k <key>
@@ -55,6 +54,7 @@ desktop software that provides self-hosted solutions.
    hbbs -r <relay-server-ip[:port]> -k abc1234567
    hbbr -k abc1234567
    ```
+3. The server use the auto-generated key, but if the client has logged in, it is easy to time out or the link failed, you can log out and then link again, and the webclient don't have to log out
 
 ## Overview
 
