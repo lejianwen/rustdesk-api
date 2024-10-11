@@ -41,22 +41,45 @@
 
 ### [Rustdesk](https://github.com/rustdesk/rustdesk)
 
-1. PC客户端使用的是 ***1.3.0***，经测试 ***1.2.6+*** 都可以
-2. server端指定key，不用自带的生成的key,否则可能链接不上或者超时
+#### PC客户端使用的是 ***1.3.0***，经测试 ***1.2.6+*** 都可以
 
-   ```bash
-   hbbs -r <relay-server-ip[:port]> -k <key>
-   hbbr -k <key>
-   ```
+#### 关于PC端链接超时或者链接不上的问题以及解决方案
+- 链接不上是因为server端相对于客户端落后版本，server不会响应客户端的`secure_tcp`请求，所以客户端超时
+  相关代码代码位置在`https://github.com/rustdesk/rustdesk/blob/master/src/client.rs#L322`
+  ```rust
+    if !key.is_empty() && !token.is_empty() {
+    // mainly for the security of token
+    allow_err!(secure_tcp(&mut socket, key).await);
+    }
+  ```
+  可看到当`key`和`token`都不为空时，会调用`secure_tcp`，但是server端不会响应，所以客户端超时
+  `secure_tcp` 代码位置在 `https://github.com/rustdesk/rustdesk/blob/master/src/common.rs#L1203`
+  
+- ***解决方案***
 
-   比如
-
-   ```bash
-   hbbs -r <relay-server-ip[:port]> -k abc1234567
-   hbbr -k abc1234567
-   ```
-3. server端使用系统生成的key，但如果client已登录，链接时容易超时或者链接不上，可以退出登录后再链接就可以了，webclient可以不用退出登录
-
+  1. server端指定key。
+      - 优点：简单
+      - 缺点：链接不是加密的
+         ```bash
+         hbbs -r <relay-server-ip[:port]> -k <key>
+         hbbr -k <key>
+         ```
+         比如
+         ```bash
+           hbbs -r <relay-server-ip[:port]> -k abc1234567
+           hbbr -k abc1234567
+         ```
+  2. server端使用系统生成的key，或者自定义的密钥对，但如果client已登录，链接时容易超时或者链接不上，可以退出登录后再链接就可以了，webclient可以不用退出登录
+      - 优点：链接加密
+      - 缺点：操作麻烦
+  3. server端使用系统生成的key，或者自定义的密钥对，fork官方客户端的代码将`secure_tcp`修改成直接返回，然后通过`Github Actions`编译，下载编译后的客户端。
+  参考[官方文档](https://rustdesk.com/docs/en/dev/build/all/)
+      - 优点：链接加密，可以自定义客户端一些功能，编译后直接可用
+      - 缺点：需要自己fork代码，编译，有点难度
+  4. 使用[我fork的代码](https://github.com/lejianwen/rustdesk)，已经修改了`secure_tcp`，可以直接下载使用，[下载地址](https://github.com/lejianwen/rustdesk/releases)
+      - 优点：代码改动可查看，`Github Actions`编译，链接加密，直接下载使用
+      - 缺点：可能跟不上官方版本更新
+##### 对链接加密要求不高的可以使用`1`，对链接加密要求高的可以使用`3`或`4`
 
 ## 功能
 
@@ -145,6 +168,10 @@ rustdesk:
   api-server: "http://192.168.1.66:21114"
   key: "123456789"
   personal: 1
+logger:
+  path: "./runtime/log.txt"
+  level: "warn" #trace,debug,info,warn,error,fatal
+  report-caller: true
 ```
 
 * 环境变量,变量名前缀是RUSTDESK_API，环境变量如果存在将覆盖配置文件中的配置
@@ -171,28 +198,27 @@ rustdesk:
 | RUSTDESK_API_RUSTDESK_API_SERVER    | Rustdesk的api服务器地址                    | http://192.168.1.66:21114   |
 | RUSTDESK_API_RUSTDESK_KEY           | Rustdesk的key                         | 123456789                   |
 
-### 安装步骤
+### 运行
 
 #### docker运行
 
 1. 直接docker运行,配置可以通过挂载配置文件`/app/conf/config.yaml`来修改,或者通过环境变量覆盖配置文件中的配置
 
-```bash
-docker run -d --name rustdesk-api -p 21114:21114 \
--v /data/rustdesk/api:/app/data \
--e TZ=Asia/Shanghai \
--e RUSTDESK_API_RUSTDESK_ID_SERVER=192.168.1.66:21116 \
--e RUSTDESK_API_RUSTDESK_RELAY_SERVER=192.168.1.66:21117 \
--e RUSTDESK_API_RUSTDESK_API_SERVER=http://192.168.1.66:21114 \
--e RUSTDESK_API_RUSTDESK_KEY=123456789 \
-lejianwen/rustdesk-api
-```
+    ```bash
+    docker run -d --name rustdesk-api -p 21114:21114 \
+    -v /data/rustdesk/api:/app/data \
+    -e TZ=Asia/Shanghai \
+    -e RUSTDESK_API_LANG=zh-CN \
+    -e RUSTDESK_API_RUSTDESK_ID_SERVER=192.168.1.66:21116 \
+    -e RUSTDESK_API_RUSTDESK_RELAY_SERVER=192.168.1.66:21117 \
+    -e RUSTDESK_API_RUSTDESK_API_SERVER=http://192.168.1.66:21114 \
+    -e RUSTDESK_API_RUSTDESK_KEY=<key> \
+    lejianwen/rustdesk-api
+    ```
 
 2. 使用`docker compose`
-
-    - 简单示例
-
-   ```docker-compose
+   - 简单示例
+   ```yaml
    services:
       rustdesk-api:
        container_name: rustdesk-api
@@ -201,7 +227,7 @@ lejianwen/rustdesk-api
          - RUSTDESK_API_RUSTDESK_ID_SERVER=192.168.1.66:21116
          - RUSTDESK_API_RUSTDESK_RELAY_SERVER=192.168.1.66:21117
          - RUSTDESK_API_RUSTDESK_API_SERVER=http://192.168.1.66:21114
-         - RUSTDESK_API_RUSTDESK_KEY=123456789
+         - RUSTDESK_API_RUSTDESK_KEY=<key>
        ports:
          - 21114:21114
        image: lejianwen/rustdesk-api
@@ -212,74 +238,70 @@ lejianwen/rustdesk-api
        restart: unless-stopped
    ```
 
-    - 根据rustdesk提供的示例加上自己的rustdesk-api
-
-   ```docker-compose
-   networks:
-     rustdesk-net:
-       external: false
-   services:
-     hbbs:
-       container_name: hbbs
-       ports:
-         - 21115:21115
-         - 21116:21116 # 自定义 hbbs 映射端口
-         - 21116:21116/udp # 自定义 hbbs 映射端口
-         - 21118:21118 # web client
-       image: rustdesk/rustdesk-server
-       command: hbbs -r <relay-server-ip[:port]> -k 123456789 # 填入个人域名或 IP + hbbr 暴露端口
-       volumes:
-         - /data/rustdesk/hbbs:/root # 自定义挂载目录
-       networks:
-         - rustdesk-net
-       depends_on:
-         - hbbr
-       restart: unless-stopped
-       deploy:
-         resources:
-           limits:
-             memory: 64M
-     hbbr:
-       container_name: hbbr
-       ports:
-         - 21117:21117 # 自定义 hbbr 映射端口
-         - 21119:21119 # web client
-       image: rustdesk/rustdesk-server
-       command: hbbr -k 123456789
-       #command: hbbr
-       volumes:
-         - /data/rustdesk/hbbr:/root # 自定义挂载目录
-       networks:
-         - rustdesk-net
-       restart: unless-stopped
-       deploy:
-         resources:
-           limits:
-             memory: 64M
-     rustdesk-api:
-       container_name: rustdesk-api
-       environment:
-         - TZ=Asia/Shanghai
-         - RUSTDESK_API_RUSTDESK_ID_SERVER=192.168.1.66:21116
-         - RUSTDESK_API_RUSTDESK_RELAY_SERVER=192.168.1.66:21117
-         - RUSTDESK_API_RUSTDESK_API_SERVER=http://192.168.1.66:21114
-         - RUSTDESK_API_RUSTDESK_KEY=123456789
-       ports:
-         - 21114:21114
-       image: lejianwen/rustdesk-api
-       volumes:
-         - /data/rustdesk/api:/app/data #将数据库挂载出来方便备份
-       networks:
-         - rustdesk-net
-       restart: unless-stopped
-   
-   ```
-
-    - 如果使用的是S6的镜像，会需要修改启动脚本，覆盖镜像中的`/etc/s6-overlay/s6-rc.d/hbbr/run`
-      和`/etc/s6-overlay/s6-rc.d/hbbr/run`
-
-        1. 创建`hbbr/run`
-
+   - 根据rustdesk官方提供的示例，加上自己的rustdesk-api
+     - 如果是使用的系统生成的KEY，去掉`-k <key>`参数，在启动后运行`docker-compose logs hbbs`或者`cat ./data/id_ed25519.pub`查看KEY，然后再修改`RUSTDESK_API_RUSTDESK_KEY=<key>`再执行`docker-compose up -d`
+      ```yaml
+      networks:
+        rustdesk-net:
+          external: false
+      services:
+        hbbs:
+          container_name: hbbs
+          ports:
+            - 21115:21115
+            - 21116:21116 # 自定义 hbbs 映射端口
+            - 21116:21116/udp # 自定义 hbbs 映射端口
+            - 21118:21118 # web client
+          image: rustdesk/rustdesk-server
+          command: hbbs -r <relay-server-ip[:port]> -k <key> # 填入个人域名或 IP + hbbr 暴露端口
+          volumes:
+            - ./data:/root # 自定义挂载目录
+          networks:
+            - rustdesk-net
+          depends_on:
+            - hbbr
+          restart: unless-stopped
+          deploy:
+            resources:
+              limits:
+                memory: 64M
+        hbbr:
+          container_name: hbbr
+          ports:
+            - 21117:21117 # 自定义 hbbr 映射端口
+            - 21119:21119 # web client
+          image: rustdesk/rustdesk-server
+          command: hbbr -k <key>
+          volumes:
+            - ./data:/root
+          networks:
+            - rustdesk-net
+          restart: unless-stopped
+          deploy:
+            resources:
+              limits:
+                memory: 64M
+        rustdesk-api:
+          container_name: rustdesk-api
+          environment:
+            - TZ=Asia/Shanghai
+            - RUSTDESK_API_RUSTDESK_ID_SERVER=192.168.1.66:21116
+            - RUSTDESK_API_RUSTDESK_RELAY_SERVER=192.168.1.66:21117
+            - RUSTDESK_API_RUSTDESK_API_SERVER=http://192.168.1.66:21114
+            - RUSTDESK_API_RUSTDESK_KEY=<key>
+          ports:
+            - 21114:21114
+          image: lejianwen/rustdesk-api
+          volumes:
+            - /data/rustdesk/api:/app/data #将数据库挂载出来方便备份
+          networks:
+            - rustdesk-net
+          restart: unless-stopped
+      ```
+     
+   - S6的镜像
+     - 如果使用***自定义KEY***，会需要修改启动脚本，覆盖镜像中的`/etc/s6-overlay/s6-rc.d/hbbr/run`和`/etc/s6-overlay/s6-rc.d/hbbr/run`
+         1. 创建`hbbr/run`，自定义KEY才需要
             ```bash
             #!/command/with-contenv sh
             cd /data
@@ -287,63 +309,99 @@ lejianwen/rustdesk-api
             [ "${ENCRYPTED_ONLY}" = "1" ] && PARAMS="-k ${KEY}"
             /usr/bin/hbbr $PARAMS
             ```
-
-        2. 创建`hbbs/run`
-            ```bash
-            #!/command/with-contenv sh
-            sleep 2
-            cd /data
-            PARAMS=
-            [ "${ENCRYPTED_ONLY}" = "1" ] && PARAMS="-k ${KEY}"
-            /usr/bin/hbbs -r $RELAY $PARAMS
-            ```
-        3. 修改`docker-compose.yml`中的`s6`部分
-
-            ```
-            networks:
-              rustdesk-net:
-                external: false
-            services:
-              rustdesk-server:
-                container_name: rustdesk-server
-                ports:
-                  - 21115:21115
-                  - 21116:21116
-                  - 21116:21116/udp
-                  - 21117:21117
-                  - 21118:21118
-                  - 21119:21119
-                image: rustdesk/rustdesk-server-s6:latest
-                environment:
-                  - RELAY=192.168.1.66:21117
-                  - ENCRYPTED_ONLY=1
-                  - KEY=abc123456789
-                volumes:
-                  - ./data:/data
-                  - ./hbbr/run:/etc/s6-overlay/s6-rc.d/hbbr/run
-                  - ./hbbs/run:/etc/s6-overlay/s6-rc.d/hbbs/run
-                restart: unless-stopped
-              rustdesk-api:
-                container_name: rustdesk-api
-                ports:
-                  - 21114:21114
-                image: lejianwen/rustdesk-api
-                environment:
-                  - TZ=Asia/Shanghai
-                  - RUSTDESK_API_RUSTDESK_ID_SERVER=192.168.1.66:21116
-                  - RUSTDESK_API_RUSTDESK_RELAY_SERVER=192.168.1.66:21117
-                  - RUSTDESK_API_RUSTDESK_API_SERVER=http://192.168.1.66:21114
-                  - RUSTDESK_API_RUSTDESK_KEY=abc123456789
-                volumes:
-                  - /data/rustdesk/api:/app/data #将数据库挂载
-                networks:
-                  - rustdesk-net
-                restart: unless-stopped
-            ```
-
+         2. 创建`hbbs/run`，自定义KEY才需要
+             ```bash
+             #!/command/with-contenv sh
+             sleep 2
+             cd /data
+             PARAMS=
+             [ "${ENCRYPTED_ONLY}" = "1" ] && PARAMS="-k ${KEY}"
+             /usr/bin/hbbs -r $RELAY $PARAMS
+             ```
+         3. 修改`docker-compose.yml`中的`s6`部分
+         ```yaml
+         networks:
+           rustdesk-net:
+             external: false
+         services:
+           rustdesk-server:
+             container_name: rustdesk-server
+             ports:
+               - 21115:21115
+               - 21116:21116
+               - 21116:21116/udp
+               - 21117:21117
+               - 21118:21118
+               - 21119:21119
+             image: rustdesk/rustdesk-server-s6:latest
+             environment:
+               - RELAY=192.168.1.66:21117
+               - ENCRYPTED_ONLY=1
+               - KEY=<key>  #自定义KEY
+             volumes:
+               - ./data:/data
+               - ./hbbr/run:/etc/s6-overlay/s6-rc.d/hbbr/run 
+               - ./hbbs/run:/etc/s6-overlay/s6-rc.d/hbbs/run 
+             restart: unless-stopped
+           rustdesk-api:
+             container_name: rustdesk-api
+             ports:
+               - 21114:21114
+             image: lejianwen/rustdesk-api
+             environment:
+               - TZ=Asia/Shanghai
+               - RUSTDESK_API_RUSTDESK_ID_SERVER=192.168.1.66:21116
+               - RUSTDESK_API_RUSTDESK_RELAY_SERVER=192.168.1.66:21117
+               - RUSTDESK_API_RUSTDESK_API_SERVER=http://192.168.1.66:21114
+               - RUSTDESK_API_RUSTDESK_KEY=<key>
+             volumes:
+               - /data/rustdesk/api:/app/data #将数据库挂载
+             networks:
+               - rustdesk-net
+             restart: unless-stopped
+         ```
+   - 如果使用***系统生成的KEY***或者***自定义KEY_PUB,KEY_PRIV***，不需要修改启动脚本，但要在生成KEY后获取到KEY再`docker-compose up -d`
+       ```yaml
+       networks:
+         rustdesk-net:
+           external: false
+       services:
+         rustdesk-server:
+           container_name: rustdesk-server
+           ports:
+             - 21115:21115
+             - 21116:21116
+             - 21116:21116/udp
+             - 21117:21117
+             - 21118:21118
+             - 21119:21119
+           image: rustdesk/rustdesk-server-s6:latest
+           environment:
+             - RELAY=192.168.1.66:21117
+             - ENCRYPTED_ONLY=1
+           volumes:
+             - ./data:/data
+           restart: unless-stopped
+         rustdesk-api:
+           container_name: rustdesk-api
+           ports:
+             - 21114:21114
+           image: lejianwen/rustdesk-api
+           environment:
+             - TZ=Asia/Shanghai
+             - RUSTDESK_API_RUSTDESK_ID_SERVER=192.168.1.66:21116
+             - RUSTDESK_API_RUSTDESK_RELAY_SERVER=192.168.1.66:21117
+             - RUSTDESK_API_RUSTDESK_API_SERVER=http://192.168.1.66:21114
+             - RUSTDESK_API_RUSTDESK_KEY=<key> #系统生成的KEY
+           volumes:
+             - /data/rustdesk/api:/app/data #将数据库挂载
+           networks:
+             - rustdesk-net
+           restart: unless-stopped
+       ```
 #### 下载release直接运行
 
-下载地址[release](https://github.com/lejianwen/rustdesk-api/releases)
+[下载地址](https://github.com/lejianwen/rustdesk-api/releases)
 
 #### 源码安装
 
