@@ -40,46 +40,21 @@ desktop software that provides self-hosted solutions.
 
 ### [Rustdesk](https://github.com/rustdesk/rustdesk)
 
+1. The PC client version used is ***1.3.0***, and versions ***1.2.6+*** have been tested to work.
+2. The server can specify a key, and not use the auto-generated key, otherwise there may be connection failures or timeouts.
 
-#### The PC client uses version ***1.3.0***, and versions ***1.2.6+*** have been tested to work.
+   ```bash
+   hbbs -r <relay-server-ip[:port]> -k <key>
+   hbbr -k <key>
+   ```
 
-#### Solutions for PC client connection timeout or connection issues
-- The connection issue is due to the server version lagging behind the client version, causing the server to not respond to the client's `secure_tcp` request, resulting in a timeout.
-  Relevant code can be found at `https://github.com/rustdesk/rustdesk/blob/master/src/client.rs#L322`
-  ```rust
-    if !key.is_empty() && !token.is_empty() {
-    // mainly for the security of token
-    allow_err!(secure_tcp(&mut socket, key).await);
-    }
-  ```
-  
-As seen, when both `key` and `token` are not empty, `secure_tcp` is called, but the server does not respond, causing the client to timeout.
-The `secure_tcp` code is located at `https://github.com/rustdesk/rustdesk/blob/master/src/common.rs#L1203`
+   Example:
 
-- ***Solutions***
-    1. Specify the key on the server.
-        - Advantage: Simple
-        - Disadvantage: The connection is not encrypted
-           ```bash
-           hbbs -r <relay-server-ip[:port]> -k <key>
-           hbbr -k <key>
-           ```
-          For example
-           ```bash
-             hbbs -r <relay-server-ip[:port]> -k abc1234567
-             hbbr -k abc1234567
-           ```
-    2. Use a system-generated key or a custom key pair on the server. If the client is already logged in, it may timeout or fail to connect. Logging out and reconnecting usually resolves the issue, and the web client does not need to log out.
-        - Advantage: Encrypted connection
-        - Disadvantage: Complicated operation
-    3. Use a system-generated key or a custom key pair on the server, fork the official client code to modify `secure_tcp` to return directly, then compile using `Github Actions` and download the compiled client.
-       Refer to [official documentation](https://rustdesk.com/docs/en/dev/build/all/)
-        - Advantage: Encrypted connection, customizable client features, ready to use after compilation
-        - Disadvantage: Requires forking code and compiling, which can be challenging
-    4. Use [my forked code](https://github.com/lejianwen/rustdesk), which has already modified `secure_tcp`. You can download and use it directly from [here](https://github.com/lejianwen/rustdesk/releases)
-        - Advantage: Code changes are viewable, compiled with `Github Actions`, encrypted connection, ready to use
-        - Disadvantage: May not keep up with official version updates
-##### If encryption is not a high priority, use `1`. If encryption is important, use `3` or `4`.
+   ```bash
+   hbbs -r <relay-server-ip[:port]> -k abc1234567
+   hbbr -k abc1234567
+   ```
+3. The server use the auto-generated key, but if the client has logged in, it is easy to time out or the link failed, you can log out and then link again, and the webclient don't have to log out
 
 ## Overview
 
@@ -173,10 +148,6 @@ rustdesk:
   api-server: "http://192.168.1.66:21114"
   key: "123456789"
   personal: 1
-logger:
-  path: "./runtime/log.txt"
-  level: "warn" #trace,debug,info,warn,error,fatal
-  report-caller: true
 ```
 
 * Environment variables, with the prefix `RUSTDESK_API_RUSTDESK_PERSONAL`, will override the settings in the
@@ -211,201 +182,167 @@ logger:
 
 1. Run directly with Docker. Configuration can be modified by mounting the config file `/app/conf/config.yaml`, or by
    using environment variables to override settings.
-    
-    ```bash
-    docker run -d --name rustdesk-api -p 21114:21114 \
-    -v /data/rustdesk/api:/app/data \
-    -e RUSTDESK_API_LANG=en \
-    -e RUSTDESK_API_RUSTDESK_ID_SERVER=192.168.1.66:21116 \
-    -e RUSTDESK_API_RUSTDESK_RELAY_SERVER=192.168.1.66:21117 \
-    -e RUSTDESK_API_RUSTDESK_API_SERVER=http://192.168.1.66:21114 \
-    -e RUSTDESK_API_RUSTDESK_KEY=abc123456 \
-    lejianwen/rustdesk-api
-    ```
+
+```bash
+docker run -d --name rustdesk-api -p 21114:21114 \
+-v /data/rustdesk/api:/app/data \
+-e RUSTDESK_API_LANG=en \
+-e RUSTDESK_API_RUSTDESK_ID_SERVER=192.168.1.66:21116 \
+-e RUSTDESK_API_RUSTDESK_RELAY_SERVER=192.168.1.66:21117 \
+-e RUSTDESK_API_RUSTDESK_API_SERVER=http://192.168.1.66:21114 \
+-e RUSTDESK_API_RUSTDESK_KEY=123456789 \
+lejianwen/rustdesk-api
+```
 
 2. Using `docker-compose`
+
     - Simple example:
-       ```yaml
-       services:
-          rustdesk-api:
-           container_name: rustdesk-api
-           environment:
-             - RUSTDESK_API_LANG=en
-             - RUSTDESK_API_RUSTDESK_ID_SERVER=192.168.1.66:21116
-             - RUSTDESK_API_RUSTDESK_RELAY_SERVER=192.168.1.66:21117
-             - RUSTDESK_API_RUSTDESK_API_SERVER=http://192.168.1.66:21114
-             - RUSTDESK_API_RUSTDESK_KEY=<key>
-           ports:
-             - 21114:21114
-           image: lejianwen/rustdesk-api
-           volumes:
-             - /data/rustdesk/api:/app/data # Mount the database for easy backup
-           networks:
-             - rustdesk-net
-           restart: unless-stopped
-       ```
+
+   ```docker-compose
+   services:
+      rustdesk-api:
+       container_name: rustdesk-api
+       environment:
+         - RUSTDESK_API_RUSTDESK_ID_SERVER=192.168.1.66:21116
+         - RUSTDESK_API_RUSTDESK_RELAY_SERVER=192.168.1.66:21117
+         - RUSTDESK_API_RUSTDESK_API_SERVER=http://192.168.1.66:21114
+         - RUSTDESK_API_RUSTDESK_KEY=123456789
+       ports:
+         - 21114:21114
+       image: lejianwen/rustdesk-api
+       volumes:
+         - /data/rustdesk/api:/app/data # Mount the database for easy backup
+       networks:
+         - rustdesk-net
+       restart: unless-stopped
+   ```
 
     - Example with RustDesk's official Docker Compose file, adding your `rustdesk-api` service:
-     - If you are using a system-generated KEY, remove the `-k <key>` parameter. However, after the first startup, run `docker-compose logs hbbs` or `cat ./data/id_ed25519.pub` to view the KEY, then modify `RUSTDESK_API_RUSTDESK_KEY=<key>` and execute `docker-compose up -d` again.
-       ```yaml
-          networks:
-            rustdesk-net:
-              external: false
-          services:
-            hbbs:
-              container_name: hbbs
-              ports:
-                - 21115:21115
-                - 21116:21116 # 自定义 hbbs 映射端口
-                - 21116:21116/udp # 自定义 hbbs 映射端口
-                - 21118:21118 # web client
-              image: rustdesk/rustdesk-server
-              command: hbbs -r <relay-server-ip[:port]> -k <key> # 填入个人域名或 IP + hbbr 暴露端口
-              volumes:
-                - ./data:/root # 自定义挂载目录
-              networks:
-                - rustdesk-net
-              depends_on:
-                - hbbr
-              restart: unless-stopped
-              deploy:
-                resources:
-                  limits:
-                    memory: 64M
-            hbbr:
-              container_name: hbbr
-              ports:
-                - 21117:21117 # 自定义 hbbr 映射端口
-                - 21119:21119 # web client
-              image: rustdesk/rustdesk-server
-              command: hbbr -k <key>
-              volumes:
-                - ./data:/root
-              networks:
-                - rustdesk-net
-              restart: unless-stopped
-              deploy:
-                resources:
-                  limits:
-                    memory: 64M
-            rustdesk-api:
-              container_name: rustdesk-api
-              environment:
-                - TZ=Asia/Shanghai
-                - RUSTDESK_API_RUSTDESK_ID_SERVER=192.168.1.66:21116
-                - RUSTDESK_API_RUSTDESK_RELAY_SERVER=192.168.1.66:21117
-                - RUSTDESK_API_RUSTDESK_API_SERVER=http://192.168.1.66:21114
-                - RUSTDESK_API_RUSTDESK_KEY=<key>
-              ports:
-                - 21114:21114
-              image: lejianwen/rustdesk-api
-              volumes:
-                - /data/rustdesk/api:/app/data #将数据库挂载出来方便备份
-              networks:
-                - rustdesk-net
-              restart: unless-stopped
-          ```
 
-   - S6 image
-       - - If using ***custom KEY***, you will need to modify the startup script to override the `/etc/s6-overlay/s6-rc.d/hbbr/run` and `/etc/s6-overlay/s6-rc.d/hbbr/run` in the image.
-           1. Create `hbbr/run`, only needed for custom KEY
-              ```bash
-              #!/command/with-contenv sh
-              cd /data
-              PARAMS=
-              [ "${ENCRYPTED_ONLY}" = "1" ] && PARAMS="-k ${KEY}"
-              /usr/bin/hbbr $PARAMS
-              ```
-           2. Create `hbbs/run`, only needed for custom KEY
-               ```bash
-               #!/command/with-contenv sh
-               sleep 2
-               cd /data
-               PARAMS=
-               [ "${ENCRYPTED_ONLY}" = "1" ] && PARAMS="-k ${KEY}"
-               /usr/bin/hbbs -r $RELAY $PARAMS
-               ```
-           3. Modify the `s6` section in `docker-compose.yml`
-           ```yaml
-           networks:
-             rustdesk-net:
-               external: false
-           services:
-             rustdesk-server:
-               container_name: rustdesk-server
-               ports:
-                 - 21115:21115
-                 - 21116:21116
-                 - 21116:21116/udp
-                 - 21117:21117
-                 - 21118:21118
-                 - 21119:21119
-               image: rustdesk/rustdesk-server-s6:latest
-               environment:
-                 - RELAY=192.168.1.66:21117
-                 - ENCRYPTED_ONLY=1
-                 - KEY=<key>  #KEY
-               volumes:
-                 - ./data:/data
-                 - ./hbbr/run:/etc/s6-overlay/s6-rc.d/hbbr/run 
-                 - ./hbbs/run:/etc/s6-overlay/s6-rc.d/hbbs/run 
-               restart: unless-stopped
-             rustdesk-api:
-               container_name: rustdesk-api
-               ports:
-                 - 21114:21114
-               image: lejianwen/rustdesk-api
-               environment:
-                 - TZ=Asia/Shanghai
-                 - RUSTDESK_API_RUSTDESK_ID_SERVER=192.168.1.66:21116
-                 - RUSTDESK_API_RUSTDESK_RELAY_SERVER=192.168.1.66:21117
-                 - RUSTDESK_API_RUSTDESK_API_SERVER=http://192.168.1.66:21114
-                 - RUSTDESK_API_RUSTDESK_KEY=<key>
-               volumes:
-                 - /data/rustdesk/api:/app/data 
-               networks:
-                 - rustdesk-net
-               restart: unless-stopped
-           ```
-   - If using ***system-generated KEY*** or ***custom KEY_PUB, KEY_PRIV***, you do not need to modify the startup script, but you need to obtain the KEY after it is generated and then run `docker-compose up -d`
-       ```yaml
+   ```docker-compose
+   networks:
+     rustdesk-net:
+       external: false
+   services:
+     hbbs:
+       container_name: hbbs
+       ports:
+         - 21115:21115
+         - 21116:21116 # 自定义 hbbs 映射端口
+         - 21116:21116/udp # 自定义 hbbs 映射端口
+         - 21118:21118 # web client
+
+       image: rustdesk/rustdesk-server
+       command: hbbs -r <relay-server-ip[:port]> -k 123456789 # 填入个人域名或 IP + hbbr 暴露端口
+       volumes:
+         - /data/rustdesk/hbbs:/root # 自定义挂载目录
        networks:
-         rustdesk-net:
-           external: false
-       services:
-         rustdesk-server:
-           container_name: rustdesk-server
-           ports:
-             - 21115:21115
-             - 21116:21116
-             - 21116:21116/udp
-             - 21117:21117
-             - 21118:21118
-             - 21119:21119
-           image: rustdesk/rustdesk-server-s6:latest
-           environment:
-             - RELAY=192.168.1.66:21117
-             - ENCRYPTED_ONLY=1
-           volumes:
-             - ./data:/data
-           restart: unless-stopped
-         rustdesk-api:
-           container_name: rustdesk-api
-           ports:
-             - 21114:21114
-           image: lejianwen/rustdesk-api
-           environment:
-             - TZ=Asia/Shanghai
-             - RUSTDESK_API_RUSTDESK_ID_SERVER=192.168.1.66:21116
-             - RUSTDESK_API_RUSTDESK_RELAY_SERVER=192.168.1.66:21117
-             - RUSTDESK_API_RUSTDESK_API_SERVER=http://192.168.1.66:21114
-             - RUSTDESK_API_RUSTDESK_KEY=<key>
-           volumes:
-             - /data/rustdesk/api:/app/data 
-           networks:
-             - rustdesk-net
-           restart: unless-stopped
-       ```
+         - rustdesk-net
+       depends_on:
+         - hbbr
+       restart: unless-stopped
+       deploy:
+         resources:
+           limits:
+             memory: 64M
+     hbbr:
+       container_name: hbbr
+       ports:
+         - 21117:21117 # 自定义 hbbr 映射端口
+         - 21119:21119 # web client
+       image: rustdesk/rustdesk-server
+       command: hbbr -k 123456789
+       #command: hbbr
+       volumes:
+         - /data/rustdesk/hbbr:/root # 自定义挂载目录
+       networks:
+         - rustdesk-net
+       restart: unless-stopped
+       deploy:
+         resources:
+           limits:
+             memory: 64M
+     rustdesk-api:
+       container_name: rustdesk-api
+       environment:
+         - RUSTDESK_API_RUSTDESK_ID_SERVER=192.168.1.66:21116
+         - RUSTDESK_API_RUSTDESK_RELAY_SERVER=192.168.1.66:21117
+         - RUSTDESK_API_RUSTDESK_API_SERVER=http://192.168.1.66:21114
+         - RUSTDESK_API_RUSTDESK_KEY=123456789
+       ports:
+         - 21114:21114
+       image: lejianwen/rustdesk-api
+       volumes:
+         - /data/rustdesk/api:/app/data #将数据库挂载出来方便备份
+       networks:
+         - rustdesk-net
+       restart: unless-stopped
+   
+   ```
+    - If you are using an S6 image, you need to modify the startup script `/etc/s6-overlay/s6-rc.d/hbbr/run`
+      and `/etc/s6-overlay/s6-rc.d/hbbr/run`
+
+        1. create `hbbr/run`
+
+            ```bash
+            #!/command/with-contenv sh
+            cd /data
+            PARAMS=
+            [ "${ENCRYPTED_ONLY}" = "1" ] && PARAMS="-k ${KEY}"
+            /usr/bin/hbbr $PARAMS
+            ```
+
+        2. create `hbbs/run`
+            ```bash
+            #!/command/with-contenv sh
+            sleep 2
+            cd /data
+            PARAMS=
+            [ "${ENCRYPTED_ONLY}" = "1" ] && PARAMS="-k ${KEY}"
+            /usr/bin/hbbs -r $RELAY $PARAMS
+            ```
+        3. edit `docker-compose.yml`
+            ```
+            networks:
+              rustdesk-net:
+                external: false
+            services:
+              rustdesk-server:
+                container_name: rustdesk-server
+                ports:
+                  - 21115:21115
+                  - 21116:21116
+                  - 21116:21116/udp
+                  - 21117:21117
+                  - 21118:21118
+                  - 21119:21119
+                image: rustdesk/rustdesk-server-s6:latest
+                environment:
+                  - RELAY=192.168.1.66:21117
+                  - ENCRYPTED_ONLY=1
+                  - KEY=abc123456789
+                volumes:
+                  - ./data:/data
+                  - ./hbbr/run:/etc/s6-overlay/s6-rc.d/hbbr/run
+                  - ./hbbs/run:/etc/s6-overlay/s6-rc.d/hbbs/run
+                restart: unless-stopped
+              rustdesk-api:
+                container_name: rustdesk-api
+                ports:
+                  - 21114:21114
+                image: lejianwen/rustdesk-api
+                environment:
+                  - TZ=Asia/Shanghai
+                  - RUSTDESK_API_RUSTDESK_ID_SERVER=192.168.1.66:21116
+                  - RUSTDESK_API_RUSTDESK_RELAY_SERVER=192.168.1.66:21117
+                  - RUSTDESK_API_RUSTDESK_API_SERVER=http://192.168.1.66:21114
+                  - RUSTDESK_API_RUSTDESK_KEY=abc123456789
+                volumes:
+                  - /data/rustdesk/api:/app/data #将数据库挂载
+                networks:
+                  - rustdesk-net
+                restart: unless-stopped
+            ```
 
 #### Running from Release
 
