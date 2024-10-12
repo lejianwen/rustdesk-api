@@ -44,7 +44,8 @@ desktop software that provides self-hosted solutions.
 #### The PC client uses version ***1.3.0***, and versions ***1.2.6+*** have been tested to work.
 
 #### Solutions for PC client connection timeout or connection issues
-- The connection issue is due to the server version lagging behind the client version, causing the server to not respond to the client's `secure_tcp` request, resulting in a timeout.
+##### Connection issues or timeouts
+Because the server version lags behind the client version, the server does not respond to the client's `secure_tcp` request, causing the client to timeout.
   Relevant code can be found at `https://github.com/rustdesk/rustdesk/blob/master/src/client.rs#L322`
   ```rust
     if !key.is_empty() && !token.is_empty() {
@@ -56,34 +57,36 @@ desktop software that provides self-hosted solutions.
 As seen, when both `key` and `token` are not empty, `secure_tcp` is called, but the server does not respond, causing the client to timeout.
 The `secure_tcp` code is located at `https://github.com/rustdesk/rustdesk/blob/master/src/common.rs#L1203`
 
-- ***Solutions***
-    1. Specify the key on the server.
-        - Advantage: Simple
-        - Disadvantage: The connection is not encrypted
-           ```bash
-           hbbs -r <relay-server-ip[:port]> -k <key>
-           hbbr -k <key>
-           ```
-          For example
-           ```bash
-             hbbs -r <relay-server-ip[:port]> -k abc1234567
-             hbbr -k abc1234567
-           ```
-    2. Use a system-generated key or a custom key pair on the server. If the client is already logged in, it may timeout or fail to connect. Logging out and reconnecting usually resolves the issue, and the web client does not need to log out.
-        - Advantage: Encrypted connection
-        - Disadvantage: Complicated operation
-    3. Use a system-generated key or a custom key pair on the server, fork the official client code to modify `secure_tcp` to return directly, then compile using `Github Actions` and download the compiled client.
-       Refer to [official documentation](https://rustdesk.com/docs/en/dev/build/all/)
-        - Advantage: Encrypted connection, customizable client features, ready to use after compilation
-        - Disadvantage: Requires forking code and compiling, which can be challenging
-    4. Use [my forked code](https://github.com/lejianwen/rustdesk), which has already modified `secure_tcp`. You can download and use it directly from [here](https://github.com/lejianwen/rustdesk/releases)
-        - Advantage: Code changes are viewable, compiled with `Github Actions`, encrypted connection, ready to use
-        - Disadvantage: May not keep up with official version updates
-##### If encryption is not a high priority, use `1`. If encryption is important, use `3` or `4`.
+##### Four Solutions
+1. Specify the key on the server.
+    - Advantage: Simple
+    - Disadvantage: The connection is not encrypted
+       ```bash
+       hbbs -r <relay-server-ip[:port]> -k <key>
+       hbbr -k <key>
+       ```
+      For example
+       ```bash
+         hbbs -r <relay-server-ip[:port]> -k abc1234567
+         hbbr -k abc1234567
+       ```
+2. Use a system-generated key or a custom key pair on the server. If the client is already logged in, it may timeout or fail to connect. Logging out and reconnecting usually resolves the issue, and the web client does not need to log out.
+    - Advantage: Encrypted connection
+    - Disadvantage: Complicated operation
+3. Use a system-generated key or a custom key pair on the server, fork the official client code to modify `secure_tcp` to return directly, then compile using `Github Actions` and download the compiled client.
+   Refer to [official documentation](https://rustdesk.com/docs/en/dev/build/all/)
+    - Advantage: Encrypted connection, customizable client features, ready to use after compilation
+    - Disadvantage: Requires forking code and compiling, which can be challenging
+4. Use [my forked code](https://github.com/lejianwen/rustdesk), which has already modified `secure_tcp`. You can download and use it directly from [here](https://github.com/lejianwen/rustdesk/releases)
+    - Advantage: Code changes are viewable, compiled with `Github Actions`, encrypted connection, ready to use
+    - Disadvantage: May not keep up with official version updates
+   
+***If encryption is not a high priority, use `1`. If encryption is important, use `3` or `4`.***
 
 ## Overview
 
-### API Service: Basic implementation of the PC client's primary interfaces.Supports the Personal version api, which can be enabled by configuring the `rustdesk.personal` file or the `RUSTDESK_API_RUSTDESK_PERSONAL` environment variable.
+### API Service
+Basic implementation of the PC client's primary interfaces.Supports the Personal version api, which can be enabled by configuring the `rustdesk.personal` file or the `RUSTDESK_API_RUSTDESK_PERSONAL` environment variable.
 
 #### Login
 
@@ -97,17 +100,18 @@ The `secure_tcp` code is located at `https://github.com/rustdesk/rustdesk/blob/m
 
 ![pc_ab](docs/en_img/pc_ab.png)
 
-#### Groups: Groups are divided into `shared groups` and `regular groups`. In shared groups, everyone can see the peers of all group members, while in regular groups, only administrators can see all members' peers.
+#### Groups
+Groups are divided into `shared groups` and `regular groups`. In shared groups, everyone can see the peers of all group members, while in regular groups, only administrators can see all members' peers.
 
 ![pc_gr](docs/en_img/pc_gr.png)
 
 ### Web Admin
 
-***The frontend and backend are separated to provide a user-friendly management interface, primarily for managing and
-displaying data.Frontend code is available at [rustdesk-api-web](https://github.com/lejianwen/rustdesk-api-web)***
+* The frontend and backend are separated to provide a user-friendly management interface, primarily for managing and
+displaying data.Frontend code is available at [rustdesk-api-web](https://github.com/lejianwen/rustdesk-api-web)
 
-***Admin panel URL: `http://<your server[:port]>/_admin/`. The default username and password for the initial
-installation are `admin` `admin`, please change the password immediately.***
+* Admin panel URL: `http://<your server[:port]>/_admin/`. The default username and password for the initial
+installation are `admin` `admin`, please change the password immediately.
 
 1. Admin interface:
    ![web_admin](docs/en_img/web_admin.png)
@@ -117,7 +121,7 @@ installation are `admin` `admin`, please change the password immediately.***
    ![web_resetpwd](docs/en_img/web_resetpwd.png)
 3. Groups can be customized for easy management. Currently, two types are supported: `shared group` and `regular group`.
    ![web_admin_gr](docs/en_img/web_admin_gr.png)
-4. You can open the web client directly for convenience:
+4. You can directly open the web client for convenient use; it can also be shared with guests, allowing them to remotely access the device via the web client.
    ![web_webclient](docs/en_img/admin_webclient.png)
 5. OAuth support: Currently, `GitHub` and `Google`  is supported. You need to create an `OAuth App` and configure it in
    the admin
@@ -179,9 +183,8 @@ logger:
   report-caller: true
 ```
 
-* Environment variables, with the prefix `RUSTDESK_API_RUSTDESK_PERSONAL`, will override the settings in the
-  configuration file if
-  present.
+### Environment Variables
+The prefix for variable names is `RUSTDESK_API`. If environment variables exist, they will override the configurations in the configuration file.
 
 | Variable Name                      | Description                                               | Example                        |
 |------------------------------------|-----------------------------------------------------------|--------------------------------|
@@ -454,7 +457,22 @@ Download the release from [release](https://github.com/lejianwen/rustdesk-api/re
 6. Open your browser and visit `http://<your server[:port]>/_admin/`, with default credentials `admin admin`. Please
    change the password promptly.
 
-## Miscellaneous
+#### nginx reverse proxy
+Configure reverse proxy in `nginx`
+```
+server {
+    listen <your port>;
+    server_name <your server>;
+    location / {
+        proxy_pass http://<api-server[:port]>;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+}
+```
+## Others
 
 - [Change client ID](https://github.com/abdullah-erturk/RustDesk-ID-Changer)
-- [webclient](https://hub.docker.com/r/keyurbhole/flutter_web_desk)
+- [Web client source](https://hub.docker.com/r/keyurbhole/flutter_web_desk)

@@ -44,8 +44,9 @@
 #### PC客户端使用的是 ***1.3.0***，经测试 ***1.2.6+*** 都可以
 
 #### 关于PC端链接超时或者链接不上的问题以及解决方案
-- 链接不上是因为server端相对于客户端落后版本，server不会响应客户端的`secure_tcp`请求，所以客户端超时
-  相关代码代码位置在`https://github.com/rustdesk/rustdesk/blob/master/src/client.rs#L322`
+##### 链接不上是或者超时
+因为server端相对于客户端落后版本，server不会响应客户端的`secure_tcp`请求，所以客户端超时。
+相关代码代码位置在`https://github.com/rustdesk/rustdesk/blob/master/src/client.rs#L322`
   ```rust
     if !key.is_empty() && !token.is_empty() {
     // mainly for the security of token
@@ -55,35 +56,36 @@
   可看到当`key`和`token`都不为空时，会调用`secure_tcp`，但是server端不会响应，所以客户端超时
   `secure_tcp` 代码位置在 `https://github.com/rustdesk/rustdesk/blob/master/src/common.rs#L1203`
   
-- ***解决方案***
-
-  1. server端指定key。
-      - 优点：简单
-      - 缺点：链接不是加密的
-         ```bash
-         hbbs -r <relay-server-ip[:port]> -k <key>
-         hbbr -k <key>
-         ```
-         比如
-         ```bash
-           hbbs -r <relay-server-ip[:port]> -k abc1234567
-           hbbr -k abc1234567
-         ```
-  2. server端使用系统生成的key，或者自定义的密钥对，但如果client已登录，链接时容易超时或者链接不上，可以退出登录后再链接就可以了，webclient可以不用退出登录
-      - 优点：链接加密
-      - 缺点：操作麻烦
-  3. server端使用系统生成的key，或者自定义的密钥对，fork官方客户端的代码将`secure_tcp`修改成直接返回，然后通过`Github Actions`编译，下载编译后的客户端。
-  参考[官方文档](https://rustdesk.com/docs/en/dev/build/all/)
-      - 优点：链接加密，可以自定义客户端一些功能，编译后直接可用
-      - 缺点：需要自己fork代码，编译，有点难度
-  4. 使用[我fork的代码](https://github.com/lejianwen/rustdesk)，已经修改了`secure_tcp`，可以直接下载使用，[下载地址](https://github.com/lejianwen/rustdesk/releases)
-      - 优点：代码改动可查看，`Github Actions`编译，链接加密，直接下载使用
-      - 缺点：可能跟不上官方版本更新
-##### 对链接加密要求不高的可以使用`1`，对链接加密要求高的可以使用`3`或`4`
+##### 4种解决方案
+1. server端指定key。
+    - 优点：简单
+    - 缺点：链接不是加密的
+       ```bash
+       hbbs -r <relay-server-ip[:port]> -k <key>
+       hbbr -k <key>
+       ```
+       比如
+       ```bash
+         hbbs -r <relay-server-ip[:port]> -k abc1234567
+         hbbr -k abc1234567
+       ```
+2. server端使用系统生成的key，或者自定义的密钥对，但如果client已登录，链接时容易超时或者链接不上，可以退出登录后再链接就可以了，webclient可以不用退出登录
+    - 优点：链接加密
+    - 缺点：操作麻烦
+3. server端使用系统生成的key，或者自定义的密钥对，fork官方客户端的代码将`secure_tcp`修改成直接返回，然后通过`Github Actions`编译，下载编译后的客户端。
+参考[官方文档](https://rustdesk.com/docs/en/dev/build/all/)
+    - 优点：链接加密，可以自定义客户端一些功能，编译后直接可用
+    - 缺点：需要自己fork代码，编译，有点难度
+4. 使用[我fork的代码](https://github.com/lejianwen/rustdesk)，已经修改了`secure_tcp`，可以直接下载使用，[下载地址](https://github.com/lejianwen/rustdesk/releases)
+    - 优点：代码改动可查看，`Github Actions`编译，链接加密，直接下载使用
+    - 缺点：可能跟不上官方版本更新
+     
+***对链接加密要求不高的可以使用`1`，对链接加密要求高的可以使用`3`或`4`***
 
 ## 功能
 
-### API 服务: 基本实现了PC端基础的接口。支持Personal版本接口，可以通过配置文件`rustdesk.personal`或环境变量`RUSTDESK_API_RUSTDESK_PERSONAL`来控制是否启用
+### API 服务 
+基本实现了PC端基础的接口。支持Personal版本接口，可以通过配置文件`rustdesk.personal`或环境变量`RUSTDESK_API_RUSTDESK_PERSONAL`来控制是否启用
 
 #### 登录
 
@@ -96,26 +98,27 @@
 
 ![pc_ab](docs/pc_ab.png)
 
-#### 群组,群组分为`共享组`和`普通组`，共享组中所有人都能看到小组成员的设备，普通组只有管理员能看到所有小组成员的设备
+#### 群组
+群组分为`共享组`和`普通组`，共享组中所有人都能看到小组成员的设备，普通组只有管理员能看到所有小组成员的设备
 
 ![pc_gr](docs/pc_gr.png)
 
 ### Web Admin:
 
-***使用前后端分离，提供用户友好的管理界面，主要用来管理和展示。前端代码在[rustdesk-api-web](https://github.com/lejianwen/rustdesk-api-web)***
+* 使用前后端分离，提供用户友好的管理界面，主要用来管理和展示。前端代码在[rustdesk-api-web](https://github.com/lejianwen/rustdesk-api-web)
 
-***后台访问地址是`http://<your server>[:port]/_admin/`初次安装管理员为用户名密码为`admin` `admin`，请即时更改密码***
+* 后台访问地址是`http://<your server>[:port]/_admin/`初次安装管理员为用户名密码为`admin` `admin`，请即时更改密码
 
 1. 管理员界面
    ![web_admin](docs/web_admin.png)
 2. 普通用户界面
    ![web_user](docs/web_admin_user.png)
-   右上角也可以更改密码
+   右上角可以更改密码,也可以切换语言
    ![web_resetpwd](docs/web_resetpwd.png)
 
 3. 分组可以自定义，方便管理，暂时支持两种类型: `共享组` 和 `普通组`
    ![web_admin_gr](docs/web_admin_gr.png)
-4. 可以直接打开webclient，方便使用
+4. 可以直接打开webclient，方便使用；也可以分享给游客，游客可以直接通过webclient远程到设备
    ![web_webclient](docs/admin_webclient.png)
 5. Oauth,暂时只支持了`Github`和`Google`, 需要创建一个`OAuth App`，然后配置到后台
    ![web_admin_oauth](docs/web_admin_oauth.png)
@@ -174,7 +177,8 @@ logger:
   report-caller: true
 ```
 
-* 环境变量,变量名前缀是RUSTDESK_API，环境变量如果存在将覆盖配置文件中的配置
+### 环境变量
+变量名前缀是`RUSTDESK_API`，环境变量如果存在将覆盖配置文件中的配置
 
 | 变量名                                 | 说明                                   | 示例                          |
 |-------------------------------------|--------------------------------------|-----------------------------|
@@ -441,7 +445,22 @@ logger:
 
 6. 打开浏览器访问`http://<your server[:port]>/_admin/`，默认用户名密码为`admin`，请及时更改密码。
 
+#### nginx反代
+在`nginx`中配置反代
+```
+server {
+    listen <your port>;
+    server_name <your server>;
+    location / {
+        proxy_pass http://<api-server[:port]>;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+}
+```
 ## 其他
 
 - [修改客户端ID](https://github.com/abdullah-erturk/RustDesk-ID-Changer)
-- [webclient](https://hub.docker.com/r/keyurbhole/flutter_web_desk)
+- [webclient来源](https://hub.docker.com/r/keyurbhole/flutter_web_desk)
