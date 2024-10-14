@@ -8,7 +8,6 @@ import (
 	"Gwen/model"
 	"Gwen/service"
 	"encoding/json"
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"strconv"
@@ -402,7 +401,7 @@ func (a *Ab) PeerAdd(c *gin.Context) {
 		response.Error(c, response.TranslateMsg(c, "ParamsError")+err.Error())
 		return
 	}
-	fmt.Println(f)
+	//fmt.Println(f)
 	u := service.AllService.UserService.CurUser(c)
 	f.UserId = u.Id
 	ab := f.ToAddressBook()

@@ -96,6 +96,12 @@ func (ct *Peer) List(c *gin.Context) {
 			lt := time.Now().Unix() + int64(query.TimeAgo)
 			tx.Where("last_online_time > ?", lt)
 		}
+		if query.Id != "" {
+			tx.Where("id like ?", "%"+query.Id+"%")
+		}
+		if query.Hostname != "" {
+			tx.Where("hostname like ?", "%"+query.Hostname+"%")
+		}
 	})
 	response.Success(c, res)
 }

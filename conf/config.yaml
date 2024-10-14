@@ -1,4 +1,6 @@
 lang: "zh-CN"
+app:
+  web-client: 1  # 1:启用 0:禁用
 gin:
   api-addr: "0.0.0.0:21114"
   mode: "release" #release,debug,test
@@ -16,7 +18,7 @@ mysql:
 rustdesk:
   id-server: "192.168.1.66:21116"
   relay-server: "192.168.1.66:21117"
-  api-server: "http://192.168.1.66:21114"
+  api-server: "http://127.0.0.1:21114"
   key: "123456789"
   personal: 1
 logger:

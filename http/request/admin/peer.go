@@ -35,5 +35,7 @@ func (f *PeerForm) ToPeer() *model.Peer {
 
 type PeerQuery struct {
 	PageQuery
-	TimeAgo int `json:"time_ago" form:"time_ago"`
+	TimeAgo  int    `json:"time_ago" form:"time_ago"`
+	Id       string `json:"id" form:"id"`
+	Hostname string `json:"hostname" form:"hostname"`
 }

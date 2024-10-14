@@ -7,7 +7,7 @@ import (
 
 func RustAuth() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		//fmt.Println(c.Request.Header)
+		//fmt.Println(c.Request.URL, c.Request.Header)
 		//获取HTTP_AUTHORIZATION
 		token := c.GetHeader("Authorization")
 		if token == "" {

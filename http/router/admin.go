@@ -30,6 +30,7 @@ func Init(g *gin.Engine) {
 
 	rs := &admin.Rustdesk{}
 	adg.GET("/server-config", rs.ServerConfig)
+	adg.GET("/app-config", rs.AppConfig)
 
 	//访问静态文件
 	//g.StaticFS("/upload", http.Dir(global.Config.Gin.ResourcesPath+"/upload"))

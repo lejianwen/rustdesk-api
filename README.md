@@ -151,6 +151,8 @@
 
 ```yaml
 lang: "en"
+app:
+  web-client: 1  # 1:启用 0:禁用
 gin:
   api-addr: "0.0.0.0:21114"
   mode: "release"
@@ -180,27 +182,28 @@ logger:
 ### 环境变量
 变量名前缀是`RUSTDESK_API`，环境变量如果存在将覆盖配置文件中的配置
 
-| 变量名                                 | 说明                                   | 示例                          |
-|-------------------------------------|--------------------------------------|-----------------------------|
-| TZ                                  | 时区                                   | Asia/Shanghai               |
-| RUSTDESK_API_LANG                   | 语言                                   | `en`,`zh-CN`                |
-| -----GIN配置-----                     | ----------                           | ----------                  |
-| RUSTDESK_API_GIN_TRUST_PROXY        | 信任的代理IP列表，以`,`分割，默认信任所有              | 192.168.1.2,192.168.1.3     |
-| -----------GORM配置------------------ | ------------------------------------ | --------------------------- |
-| RUSTDESK_API_GORM_TYPE              | 数据库类型sqlite或者mysql，默认sqlite          | sqlite                      |
-| RUSTDESK_API_GORM_MAX_IDLE_CONNS    | 数据库最大空闲连接数                           | 10                          |
-| RUSTDESK_API_GORM_MAX_OPEN_CONNS    | 数据库最大打开连接数                           | 100                         |
-| RUSTDESK_API_RUSTDESK_PERSONAL      | 是否启用个人版API， 1:启用,0:不启用； 默认启用         | 1                           |
-| -----MYSQL配置-----                   | ----------                           | ----------                  |
-| RUSTDESK_API_MYSQL_USERNAME         | mysql用户名                             | root                        |
-| RUSTDESK_API_MYSQL_PASSWORD         | mysql密码                              | 111111                      |
-| RUSTDESK_API_MYSQL_ADDR             | mysql地址                              | 192.168.1.66:3306           |
-| RUSTDESK_API_MYSQL_DBNAME           | mysql数据库名                            | rustdesk                    |
-| -----RUSTDESK配置-----                | ---------------                      | ----------                  |
-| RUSTDESK_API_RUSTDESK_ID_SERVER     | Rustdesk的id服务器地址                     | 192.168.1.66:21116          |
-| RUSTDESK_API_RUSTDESK_RELAY_SERVER  | Rustdesk的relay服务器地址                  | 192.168.1.66:21117          |
-| RUSTDESK_API_RUSTDESK_API_SERVER    | Rustdesk的api服务器地址                    | http://192.168.1.66:21114   |
-| RUSTDESK_API_RUSTDESK_KEY           | Rustdesk的key                         | 123456789                   |
+| 变量名                                | 说明                                   | 示例                          |
+|------------------------------------|--------------------------------------|-----------------------------|
+| TZ                                 | 时区                                   | Asia/Shanghai               |
+| RUSTDESK_API_LANG                  | 语言                                   | `en`,`zh-CN`                |
+| RUSTDESK_API_APP_WEB_CLIENT        | 是否启用web-client; 1:启用,0:不启用; 默认启用     | 1                           |
+| -----GIN配置-----                    | ----------                           | ----------                  |
+| RUSTDESK_API_GIN_TRUST_PROXY       | 信任的代理IP列表，以`,`分割，默认信任所有              | 192.168.1.2,192.168.1.3     |
+| -----------GORM配置----------------  | ------------------------------------ | --------------------------- |
+| RUSTDESK_API_GORM_TYPE             | 数据库类型sqlite或者mysql，默认sqlite          | sqlite                      |
+| RUSTDESK_API_GORM_MAX_IDLE_CONNS   | 数据库最大空闲连接数                           | 10                          |
+| RUSTDESK_API_GORM_MAX_OPEN_CONNS   | 数据库最大打开连接数                           | 100                         |
+| RUSTDESK_API_RUSTDESK_PERSONAL     | 是否启用个人版API， 1:启用,0:不启用； 默认启用         | 1                           |
+| -----MYSQL配置-----                  | ----------                           | ----------                  |
+| RUSTDESK_API_MYSQL_USERNAME        | mysql用户名                             | root                        |
+| RUSTDESK_API_MYSQL_PASSWORD        | mysql密码                              | 111111                      |
+| RUSTDESK_API_MYSQL_ADDR            | mysql地址                              | 192.168.1.66:3306           |
+| RUSTDESK_API_MYSQL_DBNAME          | mysql数据库名                            | rustdesk                    |
+| -----RUSTDESK配置-----               | ---------------                      | ----------                  |
+| RUSTDESK_API_RUSTDESK_ID_SERVER    | Rustdesk的id服务器地址                     | 192.168.1.66:21116          |
+| RUSTDESK_API_RUSTDESK_RELAY_SERVER | Rustdesk的relay服务器地址                  | 192.168.1.66:21117          |
+| RUSTDESK_API_RUSTDESK_API_SERVER   | Rustdesk的api服务器地址                    | http://192.168.1.66:21114   |
+| RUSTDESK_API_RUSTDESK_KEY          | Rustdesk的key                         | 123456789                   |
 
 ### 运行
 

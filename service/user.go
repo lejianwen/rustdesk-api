@@ -262,3 +262,10 @@ func (us *UserService) UserThirdInfo(userId uint, op string) *model.UserThird {
 	global.DB.Where("user_id = ? and third_type = ?", userId, op).First(ut)
 	return ut
 }
+
+// FindLatestUserIdFromLoginLogByUuid 根据uuid查找最后登录的用户id
+func (us *UserService) FindLatestUserIdFromLoginLogByUuid(uuid string) uint {
+	llog := &model.LoginLog{}
+	global.DB.Where("uuid = ?", uuid).Order("id desc").First(llog)
+	return llog.UserId
+}

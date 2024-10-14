@@ -157,6 +157,8 @@ installation are `admin` `admin`, please change the password immediately.
 
 ```yaml
 lang: "en"
+app:
+  web-client: 1  # web client route 1:open 0:close  
 gin:
   api-addr: "0.0.0.0:21114"
   mode: "release"
@@ -186,27 +188,28 @@ logger:
 ### Environment Variables
 The prefix for variable names is `RUSTDESK_API`. If environment variables exist, they will override the configurations in the configuration file.
 
-| Variable Name                      | Description                                               | Example                        |
-|------------------------------------|-----------------------------------------------------------|--------------------------------|
-| TZ                                 | timezone                                                  | Asia/Shanghai                  |
-| RUSTDESK_API_LANG                  | Language                                                  | `en`,`zh-CN`                   |
-| ----- GIN Configuration -----      | ---------------------------------------                   | ------------------------------ |
-| RUSTDESK_API_GIN_TRUST_PROXY       | Trusted proxy IPs, separated by commas.                   | 192.168.1.2,192.168.1.3        |
-| ----- GORM Configuration -----     | ---------------------------------------                   | ------------------------------ |
-| RUSTDESK_API_GORM_TYPE             | Database type (`sqlite` or `mysql`). Default is `sqlite`. | sqlite                         |
-| RUSTDESK_API_GORM_MAX_IDLE_CONNS   | Maximum idle connections                                  | 10                             |
-| RUSTDESK_API_GORM_MAX_OPEN_CONNS   | Maximum open connections                                  | 100                            |
-| RUSTDESK_API_RUSTDESK_PERSONAL     | Open Personal Api 1:Enable,0:Disable                      | 1                              |
-| ----- MYSQL Configuration -----    | ---------------------------------------                   | ------------------------------ |
-| RUSTDESK_API_MYSQL_USERNAME        | MySQL username                                            | root                           |
-| RUSTDESK_API_MYSQL_PASSWORD        | MySQL password                                            | 111111                         |
-| RUSTDESK_API_MYSQL_ADDR            | MySQL address                                             | 192.168.1.66:3306              |
-| RUSTDESK_API_MYSQL_DBNAME          | MySQL database name                                       | rustdesk                       |
-| ----- RUSTDESK Configuration ----- | ---------------------------------------                   | ------------------------------ |
-| RUSTDESK_API_RUSTDESK_ID_SERVER    | Rustdesk ID server address                                | 192.168.1.66:21116             |
-| RUSTDESK_API_RUSTDESK_RELAY_SERVER | Rustdesk relay server address                             | 192.168.1.66:21117             |
-| RUSTDESK_API_RUSTDESK_API_SERVER   | Rustdesk API server address                               | http://192.168.1.66:21114      |
-| RUSTDESK_API_RUSTDESK_KEY          | Rustdesk key                                              | 123456789                      |
+| Variable Name                      | Description                                               | Example                       |
+|------------------------------------|-----------------------------------------------------------|-------------------------------|
+| TZ                                 | timezone                                                  | Asia/Shanghai                 |
+| RUSTDESK_API_LANG                  | Language                                                  | `en`,`zh-CN`                  |
+| RUSTDESK_API_APP_WEB_CLIENT        | web client on/off; 1: on, 0 off, deault 1                 | 1                             |
+| ----- GIN Configuration -----      | ---------------------------------------                   | ----------------------------- |
+| RUSTDESK_API_GIN_TRUST_PROXY       | Trusted proxy IPs, separated by commas.                   | 192.168.1.2,192.168.1.3       |
+| ----- GORM Configuration -----     | ---------------------------------------                   | ----------------------------- |
+| RUSTDESK_API_GORM_TYPE             | Database type (`sqlite` or `mysql`). Default is `sqlite`. | sqlite                        |
+| RUSTDESK_API_GORM_MAX_IDLE_CONNS   | Maximum idle connections                                  | 10                            |
+| RUSTDESK_API_GORM_MAX_OPEN_CONNS   | Maximum open connections                                  | 100                           |
+| RUSTDESK_API_RUSTDESK_PERSONAL     | Open Personal Api 1:Enable,0:Disable                      | 1                             |
+| ----- MYSQL Configuration -----    | ---------------------------------------                   | ----------------------------- |
+| RUSTDESK_API_MYSQL_USERNAME        | MySQL username                                            | root                          |
+| RUSTDESK_API_MYSQL_PASSWORD        | MySQL password                                            | 111111                        |
+| RUSTDESK_API_MYSQL_ADDR            | MySQL address                                             | 192.168.1.66:3306             |
+| RUSTDESK_API_MYSQL_DBNAME          | MySQL database name                                       | rustdesk                      |
+| ----- RUSTDESK Configuration ----- | ---------------------------------------                   | ----------------------------- |
+| RUSTDESK_API_RUSTDESK_ID_SERVER    | Rustdesk ID server address                                | 192.168.1.66:21116            |
+| RUSTDESK_API_RUSTDESK_RELAY_SERVER | Rustdesk relay server address                             | 192.168.1.66:21117            |
+| RUSTDESK_API_RUSTDESK_API_SERVER   | Rustdesk API server address                               | http://192.168.1.66:21114     |
+| RUSTDESK_API_RUSTDESK_KEY          | Rustdesk key                                              | 123456789                     |
 
 ### Installation Steps
 

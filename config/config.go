@@ -14,8 +14,13 @@ const (
 	DefaultConfig = "conf/config.yaml"
 )
 
+type App struct {
+	WebClient int `mapstructure:"web-client"`
+}
+
 type Config struct {
 	Lang     string `mapstructure:"lang"`
+	App      App
 	Gorm     Gorm
 	Mysql    Mysql
 	Gin      Gin

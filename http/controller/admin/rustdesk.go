@@ -9,9 +9,9 @@ import (
 type Rustdesk struct {
 }
 
-// ServerConfig 服务配置
+// ServerConfig RUSTDESK服务配置
 // @Tags ADMIN
-// @Summary 服务配置
+// @Summary RUSTDESK服务配置
 // @Description 服务配置,给webclient提供api-server
 // @Accept  json
 // @Produce  json
@@ -27,4 +27,20 @@ func (r *Rustdesk) ServerConfig(c *gin.Context) {
 		ApiServer:   global.Config.Rustdesk.ApiServer,
 	}
 	response.Success(c, cf)
+}
+
+// AppConfig APP服务配置
+// @Tags ADMIN
+// @Summary APP服务配置
+// @Description APP服务配置
+// @Accept  json
+// @Produce  json
+// @Success 200 {object} response.Response
+// @Failure 500 {object} response.Response
+// @Router /admin/app-config [get]
+// @Security token
+func (r *Rustdesk) AppConfig(c *gin.Context) {
+	response.Success(c, &gin.H{
+		"web_client": global.Config.App.WebClient,
+	})
 }
