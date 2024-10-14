@@ -8,6 +8,7 @@ import (
 	"Gwen/model"
 	"Gwen/service"
 	"encoding/json"
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
@@ -30,12 +31,14 @@ func (l *Login) Login(c *gin.Context) {
 	err := c.ShouldBindJSON(f)
 	//fmt.Println(f)
 	if err != nil {
+		global.Logger.Warn(fmt.Sprintf("Login Fail: %s %s %s", "ParamsError", c.RemoteIP(), c.ClientIP()))
 		response.Error(c, response.TranslateMsg(c, "ParamsError")+err.Error())
 		return
 	}
 
 	errList := global.Validator.ValidStruct(c, f)
 	if len(errList) > 0 {
+		global.Logger.Warn(fmt.Sprintf("Login Fail: %s %s %s", "ParamsError", c.RemoteIP(), c.ClientIP()))
 		response.Error(c, errList[0])
 		return
 	}
@@ -43,6 +46,7 @@ func (l *Login) Login(c *gin.Context) {
 	u := service.AllService.UserService.InfoByUsernamePassword(f.Username, f.Password)
 
 	if u.Id == 0 {
+		global.Logger.Warn(fmt.Sprintf("Login Fail: %s %s %s", "UsernameOrPasswordError", c.RemoteIP(), c.ClientIP()))
 		response.Error(c, response.TranslateMsg(c, "UsernameOrPasswordError"))
 		return
 	}
