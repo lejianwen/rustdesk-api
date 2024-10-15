@@ -35,8 +35,7 @@ desktop software that provides self-hosted solutions.
     - Automatically obtain ID server and KEY
     - Automatically obtain address book
     - Visitors are remotely to the device via a temporary sharing link
-- Web Client V2 Preview
-    - Temporarily integrated the official preview version, updates will be made as needed
+
 ## Prerequisites
 
 ### [Rustdesk](https://github.com/rustdesk/rustdesk)
