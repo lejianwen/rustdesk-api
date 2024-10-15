@@ -727,6 +727,25 @@ paths:
       summary: 服务配置
       tags:
       - WEBCLIENT
+  /shared-peer:
+    post:
+      consumes:
+      - application/json
+      description: 分享的peer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: 分享的peer
+      tags:
+      - WEBCLIENT
   /sysinfo:
     post:
       consumes:
@@ -750,8 +769,6 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/response.ErrorResponse'
-      security:
-      - BearerAuth: []
       summary: 提交系统信息
       tags:
       - 地址

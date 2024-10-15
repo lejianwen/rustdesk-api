@@ -244,6 +244,51 @@ const docTemplateadmin = `{
                 }
             }
         },
+        "/admin/address_book/share": {
+            "post": {
+                "security": [
+                    {
+                        "token": []
+                    }
+                ],
+                "description": "地址簿分享",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "地址簿"
+                ],
+                "summary": "地址簿分享",
+                "parameters": [
+                    {
+                        "description": "地址簿信息",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/admin.ShareByWebClientForm"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
         "/admin/address_book/update": {
             "post": {
                 "security": [
@@ -290,6 +335,40 @@ const docTemplateadmin = `{
                                     }
                                 }
                             ]
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/app-config": {
+            "get": {
+                "security": [
+                    {
+                        "token": []
+                    }
+                ],
+                "description": "APP服务配置",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "ADMIN"
+                ],
+                "summary": "APP服务配置",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
                         }
                     },
                     "500": {
@@ -1371,6 +1450,18 @@ const docTemplateadmin = `{
                         "description": "时间",
                         "name": "time_ago",
                         "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "ID",
+                        "name": "id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "主机名",
+                        "name": "hostname",
+                        "in": "query"
                     }
                 ],
                 "responses": {
@@ -1475,7 +1566,7 @@ const docTemplateadmin = `{
                 "tags": [
                     "ADMIN"
                 ],
-                "summary": "服务配置",
+                "summary": "RUSTDESK服务配置",
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -2453,6 +2544,33 @@ const docTemplateadmin = `{
                 },
                 "version": {
                     "type": "string"
+                }
+            }
+        },
+        "admin.ShareByWebClientForm": {
+            "type": "object",
+            "required": [
+                "id",
+                "password",
+                "password_type"
+            ],
+            "properties": {
+                "expire": {
+                    "type": "integer"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                },
+                "password_type": {
+                    "description": "只能是once,fixed",
+                    "type": "string",
+                    "enum": [
+                        "once",
+                        "fixed"
+                    ]
                 }
             }
         },

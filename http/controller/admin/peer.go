@@ -77,6 +77,8 @@ func (ct *Peer) Create(c *gin.Context) {
 // @Param page query int false "页码"
 // @Param page_size query int false "页大小"
 // @Param time_ago query int false "时间"
+// @Param id query string false "ID"
+// @Param hostname query string false "主机名"
 // @Success 200 {object} response.Response{data=model.PeerList}
 // @Failure 500 {object} response.Response
 // @Router /admin/peer/list [get]

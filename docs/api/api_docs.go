@@ -945,13 +945,37 @@ const docTemplateapi = `{
                 }
             }
         },
+        "/shared-peer": {
+            "post": {
+                "description": "分享的peer",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "WEBCLIENT"
+                ],
+                "summary": "分享的peer",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
         "/sysinfo": {
             "post": {
-                "security": [
-                    {
-                        "BearerAuth": []
-                    }
-                ],
                 "description": "提交系统信息",
                 "consumes": [
                     "application/json"
