@@ -141,6 +141,25 @@ definitions:
       version:
         type: string
     type: object
+  admin.ShareByWebClientForm:
+    properties:
+      expire:
+        type: integer
+      id:
+        type: string
+      password:
+        type: string
+      password_type:
+        description: 只能是once,fixed
+        enum:
+        - once
+        - fixed
+        type: string
+    required:
+    - id
+    - password
+    - password_type
+    type: object
   admin.TagForm:
     properties:
       color:
@@ -618,6 +637,34 @@ paths:
       summary: 地址簿列表
       tags:
       - 地址簿
+  /admin/address_book/share:
+    post:
+      consumes:
+      - application/json
+      description: 地址簿分享
+      parameters:
+      - description: 地址簿信息
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/admin.ShareByWebClientForm'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - token: []
+      summary: 地址簿分享
+      tags:
+      - 地址簿
   /admin/address_book/update:
     post:
       consumes:
@@ -651,6 +698,27 @@ paths:
       summary: 地址簿编辑
       tags:
       - 地址簿
+  /admin/app-config:
+    get:
+      consumes:
+      - application/json
+      description: APP服务配置
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - token: []
+      summary: APP服务配置
+      tags:
+      - ADMIN
   /admin/file/oss_token:
     get:
       consumes:
@@ -1283,6 +1351,14 @@ paths:
         in: query
         name: time_ago
         type: integer
+      - description: ID
+        in: query
+        name: id
+        type: string
+      - description: 主机名
+        in: query
+        name: hostname
+        type: string
       produces:
       - application/json
       responses:
@@ -1355,7 +1431,7 @@ paths:
             $ref: '#/definitions/response.Response'
       security:
       - token: []
-      summary: 服务配置
+      summary: RUSTDESK服务配置
       tags:
       - ADMIN
   /admin/tag/create:
