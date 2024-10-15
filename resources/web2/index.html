@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <!--
+    If you are serving your web app in a path other than the root, change the
+    href value below to reflect the base path you are serving from.
+
+    The path provided below has to start and end with a slash "/" in order for
+    it to work correctly.
+
+    For more details:
+    * https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base
+
+    This is a placeholder for base href that will be replaced by the value of
+    the `--base-href` argument provided to `flutter build`.
+  -->
+    <base href="/webclient2/" />
+
+    <meta charset="UTF-8" />
+    <meta content="IE=Edge" http-equiv="X-UA-Compatible" />
+    <meta name="description" content="Remote Desktop." />
+
+    <!-- iOS meta tags & icons -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta name="apple-mobile-web-app-title" content="RustDesk" />
+    <link rel="apple-touch-icon" href="icons/Icon-192.png?v=1a7ad736" />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="favicon.svg?v=8fcccd9a" />
+
+    <title>RustDesk</title>
+    <link rel="manifest" href="manifest.json" />
+    <script type="module" crossorigin src="js/dist/index.js?v=22564f40"></script>
+    <link rel="modulepreload" href="js/dist/vendor.js?v=0b990c6e" />
+    <style>
+      html,
+      body,
+      #root {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      #root {
+        background-repeat: no-repeat;
+        background-size: 100% auto;
+      }
+
+      .loading-title {
+        font-size: 1.1rem;
+      }
+
+      .loading-sub-title {
+        margin-top: 20px;
+        font-size: 1rem;
+        color: #888;
+      }
+
+      .page-loading-warp {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 26px;
+      }
+      .ant-spin {
+        position: absolute;
+        display: none;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        color: rgba(0, 0, 0, 0.65);
+        color: #1890ff;
+        font-size: 14px;
+        font-variant: tabular-nums;
+        line-height: 1.5;
+        text-align: center;
+        list-style: none;
+        opacity: 0;
+        -webkit-transition: -webkit-transform 0.3s
+          cubic-bezier(0.78, 0.14, 0.15, 0.86);
+        transition: -webkit-transform 0.3s cubic-bezier(0.78, 0.14, 0.15, 0.86);
+        transition: transform 0.3s cubic-bezier(0.78, 0.14, 0.15, 0.86);
+        transition: transform 0.3s cubic-bezier(0.78, 0.14, 0.15, 0.86),
+          -webkit-transform 0.3s cubic-bezier(0.78, 0.14, 0.15, 0.86);
+        -webkit-font-feature-settings: "tnum";
+        font-feature-settings: "tnum";
+      }
+
+      .ant-spin-spinning {
+        position: static;
+        display: inline-block;
+        opacity: 1;
+      }
+
+      .ant-spin-dot {
+        position: relative;
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        font-size: 20px;
+      }
+
+      .ant-spin-dot-item {
+        position: absolute;
+        display: block;
+        width: 9px;
+        height: 9px;
+        background-color: #1890ff;
+        border-radius: 100%;
+        -webkit-transform: scale(0.75);
+        -ms-transform: scale(0.75);
+        transform: scale(0.75);
+        -webkit-transform-origin: 50% 50%;
+        -ms-transform-origin: 50% 50%;
+        transform-origin: 50% 50%;
+        opacity: 0.3;
+        -webkit-animation: antspinmove 1s infinite linear alternate;
+        animation: antSpinMove 1s infinite linear alternate;
+      }
+
+      .ant-spin-dot-item:nth-child(1) {
+        top: 0;
+        left: 0;
+      }
+
+      .ant-spin-dot-item:nth-child(2) {
+        top: 0;
+        right: 0;
+        -webkit-animation-delay: 0.4s;
+        animation-delay: 0.4s;
+      }
+
+      .ant-spin-dot-item:nth-child(3) {
+        right: 0;
+        bottom: 0;
+        -webkit-animation-delay: 0.8s;
+        animation-delay: 0.8s;
+      }
+
+      .ant-spin-dot-item:nth-child(4) {
+        bottom: 0;
+        left: 0;
+        -webkit-animation-delay: 1.2s;
+        animation-delay: 1.2s;
+      }
+
+      .ant-spin-dot-spin {
+        -webkit-transform: rotate(45deg);
+        -ms-transform: rotate(45deg);
+        transform: rotate(45deg);
+        -webkit-animation: antrotate 1.2s infinite linear;
+        animation: antRotate 1.2s infinite linear;
+      }
+
+      .ant-spin-lg .ant-spin-dot {
+        width: 32px;
+        height: 32px;
+        font-size: 32px;
+      }
+
+      .ant-spin-lg .ant-spin-dot i {
+        width: 14px;
+        height: 14px;
+      }
+
+      @media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+        .ant-spin-blur {
+          background: #fff;
+          opacity: 0.5;
+        }
+      }
+
+      @-webkit-keyframes antSpinMove {
+        to {
+          opacity: 1;
+        }
+      }
+
+      @keyframes antSpinMove {
+        to {
+          opacity: 1;
+        }
+      }
+
+      @-webkit-keyframes antRotate {
+        to {
+          -webkit-transform: rotate(405deg);
+          transform: rotate(405deg);
+        }
+      }
+
+      @keyframes antRotate {
+        to {
+          -webkit-transform: rotate(405deg);
+          transform: rotate(405deg);
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="root">
+      <div
+        id="div-background"
+        style="
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          height: 100%;
+          min-height: 420px;
+        "
+      >
+        <img src="./favicon.svg?v=8fcccd9a" alt="logo" width="256" />
+        <div class="page-loading-warp">
+          <div class="ant-spin ant-spin-lg ant-spin-spinning">
+            <span class="ant-spin-dot ant-spin-dot-spin">
+              <i class="ant-spin-dot-item"></i>
+              <i class="ant-spin-dot-item"></i>
+              <i class="ant-spin-dot-item"></i><i class="ant-spin-dot-item"></i>
+            </span>
+          </div>
+        </div>
+        <div
+          style="display: flex; align-items: center; justify-content: center"
+        >
+          <img src="./favicon.svg?v=8fcccd9a" width="32" style="margin-right: 8px" />
+          <span id="span-text">RustDesk Web Client V2 Preview</span>
+        </div>
+      </div>
+    </div>
+    <!-- This script installs service_worker.js to provide PWA functionality to
+       application. For more information, see:
+       https://developers.google.com/web/fundamentals/primers/service-workers -->
+    <script>
+      const systemTheme = window.matchMedia("(prefers-color-scheme: dark)")
+        .matches
+        ? "dark"
+        : "light";
+      const myTheme = localStorage.getItem("wc-option:local:theme");
+      const them = myTheme || systemTheme;
+
+      const divBackground = document.querySelector("#div-background");
+      if (divBackground) {
+        divBackground.style.backgroundColor = them === "dark" ? "#000" : "#fff";
+      }
+      const spanConsole = document.querySelector("#span-text");
+      if (spanConsole) {
+        spanConsole.style.color = them === "dark" ? "#fff" : "#000";
+      }
+
+      const serviceWorkerVersion = "3267265270";
+      var scriptLoaded = false;
+      function loadMainDartJs() {
+        if (scriptLoaded) {
+          return;
+        }
+        scriptLoaded = true;
+        var scriptTag = document.createElement("script");
+        scriptTag.src = "main.dart.js?v=6d46937e";
+        scriptTag.type = "application/javascript";
+        document.body.append(scriptTag);
+      }
+
+      if ("serviceWorker" in navigator) {
+        // Service workers are supported. Use them.
+        window.addEventListener("load", function () {
+          // Wait for registration to finish before dropping the <script> tag.
+          // Otherwise, the browser will load the script multiple times,
+          // potentially different versions.
+          var serviceWorkerUrl =
+            "flutter_service_worker.js?v=" + serviceWorkerVersion;
+          navigator.serviceWorker.register(serviceWorkerUrl).then((reg) => {
+            function waitForActivation(serviceWorker) {
+              serviceWorker.addEventListener("statechange", () => {
+                if (serviceWorker.state == "activated") {
+                  console.log("Installed new service worker.");
+                  loadMainDartJs();
+                }
+              });
+            }
+            if (!reg.active && (reg.installing || reg.waiting)) {
+              // No active web worker and we have installed or are installing
+              // one for the first time. Simply wait for it to activate.
+              waitForActivation(reg.installing || reg.waiting);
+            } else if (!reg.active.scriptURL.endsWith(serviceWorkerVersion)) {
+              // When the app updates the serviceWorkerVersion changes, so we
+              // need to ask the service worker to update.
+              console.log("New service worker available.");
+              reg.update();
+              waitForActivation(reg.installing);
+            } else {
+              // Existing service worker is still good.
+              console.log("Loading app from service worker.");
+              loadMainDartJs();
+            }
+          });
+
+          // If service worker doesn't succeed in a reasonable amount of time,
+          // fallback to plaint <script> tag.
+          setTimeout(() => {
+            if (!scriptLoaded) {
+              console.warn(
+                "Failed to load app from service worker. Falling back to plain <script> tag."
+              );
+              loadMainDartJs();
+            }
+          }, 4000);
+        });
+      } else {
+        // Service workers not supported. Just drop the <script> tag.
+        loadMainDartJs();
+      }
+    </script>
+    <script src="libs/stream/ponyfill.min.js"></script>
+    <script src="libs/stream/StreamSaver.min.js"></script>
+    <script src="libs/firebase-app.js?8.10.1"></script>
+    <script src="libs/firebase-analytics.js?8.10.1"></script>
+
+    <script>
+      // Your web app's Firebase configuration
+      // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+      const firebaseConfig = {
+        apiKey: "AIzaSyCgehIZk1aFP0E7wZtYRRqrfvNiNAF39-A",
+        authDomain: "rustdesk.firebaseapp.com",
+        databaseURL: "https://rustdesk.firebaseio.com",
+        projectId: "rustdesk",
+        storageBucket: "rustdesk.appspot.com",
+        messagingSenderId: "768133699366",
+        appId: "1:768133699366:web:d50faf0792cb208d7993e7",
+        measurementId: "G-9PEH85N6ZQ",
+      };
+
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+      firebase.analytics();
+    </script>
+  </body>
+</html>
