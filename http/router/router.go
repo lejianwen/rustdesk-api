@@ -17,6 +17,7 @@ func WebInit(g *gin.Engine) {
 
 	if global.Config.App.WebClient == 1 {
 		g.StaticFS("/webclient", http.Dir(global.Config.Gin.ResourcesPath+"/web"))
+		g.StaticFS("/webclient2", http.Dir(global.Config.Gin.ResourcesPath+"/web2"))
 	}
 	g.StaticFS("/_admin", http.Dir(global.Config.Gin.ResourcesPath+"/admin"))
 }
