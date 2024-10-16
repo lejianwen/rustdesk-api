@@ -70,6 +70,14 @@ func (s *AddressBookService) UpdateAddressBook(abs []*model.AddressBook, userId 
 		ab.UserId = userId
 		if !ok {
 			//添加
+			if ab.Platform == "" || ab.Username == "" || ab.Hostname == "" {
+				peer := AllService.PeerService.FindById(ab.Id)
+				if peer.RowId != 0 {
+					ab.Platform = AllService.AddressBookService.PlatformFromOs(peer.Os)
+					ab.Username = peer.Username
+					ab.Hostname = peer.Hostname
+				}
+			}
 			tx.Create(ab)
 		} else {
 			//更新
