@@ -393,7 +393,7 @@ func (a *Ab) PTags(c *gin.Context) {
 // @Router /ab/peer/add/{guid} [post]
 // @Security BearerAuth
 func (a *Ab) PeerAdd(c *gin.Context) {
-	// forceAlwaysRelay永远是字符串"false"，真是坑
+	// forceAlwaysRelay永远是字符串"false"
 	//f := &gin.H{}
 	f := &requstform.PersonalAddressBookForm{}
 	err := c.ShouldBindJSON(f)
@@ -405,6 +405,16 @@ func (a *Ab) PeerAdd(c *gin.Context) {
 	u := service.AllService.UserService.CurUser(c)
 	f.UserId = u.Id
 	ab := f.ToAddressBook()
+
+	if ab.Platform == "" || ab.Username == "" || ab.Hostname == "" {
+		peer := service.AllService.PeerService.FindById(ab.Id)
+		if peer.RowId != 0 {
+			ab.Platform = service.AllService.AddressBookService.PlatformFromOs(peer.Os)
+			ab.Username = peer.Username
+			ab.Hostname = peer.Hostname
+		}
+	}
+
 	err = service.AllService.AddressBookService.AddAddressBook(ab)
 	if err != nil {
 		response.Error(c, response.TranslateMsg(c, "OperationFailed")+err.Error())

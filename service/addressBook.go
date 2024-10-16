@@ -5,6 +5,7 @@ import (
 	"Gwen/model"
 	"github.com/google/uuid"
 	"gorm.io/gorm"
+	"strings"
 )
 
 type AddressBookService struct {
@@ -126,4 +127,21 @@ func (t *AddressBookService) SharedPeer(shareToken string) *model.ShareRecord {
 	m := &model.ShareRecord{}
 	global.DB.Where("share_token = ?", shareToken).First(m)
 	return m
+}
+
+// PlatformFromOs
+func (t *AddressBookService) PlatformFromOs(os string) string {
+	if strings.Contains(os, "Android") || strings.Contains(os, "android") {
+		return "Android"
+	}
+	if strings.Contains(os, "Windows") || strings.Contains(os, "windows") {
+		return "Windows"
+	}
+	if strings.Contains(os, "Linux") || strings.Contains(os, "linux") {
+		return "Linux"
+	}
+	if strings.Contains(os, "mac") || strings.Contains(os, "Mac") {
+		return "Mac OS"
+	}
+	return ""
 }
