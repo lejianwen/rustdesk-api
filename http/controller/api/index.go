@@ -3,6 +3,7 @@ package api
 import (
 	requstform "Gwen/http/request/api"
 	"Gwen/http/response"
+	"Gwen/model"
 	"Gwen/service"
 	"github.com/gin-gonic/gin"
 	"net/http"
@@ -53,7 +54,11 @@ func (i *Index) Heartbeat(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{})
 		return
 	}
-	peer.LastOnlineTime = time.Now().Unix()
-	service.AllService.PeerService.Update(peer)
+	//如果在一分钟以内则不更新
+	if time.Now().Unix()-peer.LastOnlineTime > 60 {
+		peer.LastOnlineTime = time.Now().Unix()
+		upp := &model.Peer{RowId: peer.RowId, LastOnlineTime: peer.LastOnlineTime}
+		service.AllService.PeerService.Update(upp)
+	}
 	c.JSON(http.StatusOK, gin.H{})
 }
