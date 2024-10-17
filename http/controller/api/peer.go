@@ -54,5 +54,5 @@ func (p *Peer) SysInfo(c *gin.Context) {
 	//SYSINFO_UPDATED 上传成功
 	//ID_NOT_FOUND 下次心跳会上传
 	//直接响应文本
-	c.String(http.StatusOK, "")
+	c.String(http.StatusOK, "SYSINFO_UPDATED")
 }
