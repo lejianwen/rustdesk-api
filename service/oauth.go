@@ -7,7 +7,6 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
-	"fmt"
 	"golang.org/x/oauth2"
 	"golang.org/x/oauth2/github"
 	"golang.org/x/oauth2/google"
@@ -174,7 +173,7 @@ func (os *OauthService) GithubCallback(code string) (error error, userData *Gith
 	}
 	token, err := oauthConfig.Exchange(context.Background(), code)
 	if err != nil {
-		global.Logger.Warn(fmt.Printf("oauthConfig.Exchange() failed: %s\n", err))
+		global.Logger.Warn("oauthConfig.Exchange() failed: ", err)
 		error = errors.New("GetOauthTokenError")
 		return
 	}
@@ -183,20 +182,20 @@ func (os *OauthService) GithubCallback(code string) (error error, userData *Gith
 	client := oauthConfig.Client(context.Background(), token)
 	resp, err := client.Get("https://api.github.com/user")
 	if err != nil {
-		global.Logger.Warn("failed getting user info: %s\n", err)
+		global.Logger.Warn("failed getting user info: ", err)
 		error = errors.New("GetOauthUserInfoError")
 		return
 	}
 	defer func(Body io.ReadCloser) {
 		err := Body.Close()
 		if err != nil {
-			global.Logger.Warn("failed closing response body: %s\n", err)
+			global.Logger.Warn("failed closing response body: ", err)
 		}
 	}(resp.Body)
 
 	// 在这里处理 GitHub 用户信息
 	if err = json.NewDecoder(resp.Body).Decode(&userData); err != nil {
-		global.Logger.Warn("failed decoding user info: %s\n", err)
+		global.Logger.Warn("failed decoding user info: ", err)
 		error = errors.New("DecodeOauthUserInfoError")
 		return
 	}
@@ -207,7 +206,7 @@ func (os *OauthService) GoogleCallback(code string) (error error, userData *Goog
 	err, oauthConfig := os.GetOauthConfig(model.OauthTypeGoogle)
 	token, err := oauthConfig.Exchange(context.Background(), code)
 	if err != nil {
-		global.Logger.Warn(fmt.Printf("oauthConfig.Exchange() failed: %s\n", err))
+		global.Logger.Warn("oauthConfig.Exchange() failed: ", err)
 		error = errors.New("GetOauthTokenError")
 		return
 	}
@@ -215,14 +214,14 @@ func (os *OauthService) GoogleCallback(code string) (error error, userData *Goog
 	client := oauthConfig.Client(context.Background(), token)
 	resp, err := client.Get("https://www.googleapis.com/oauth2/v2/userinfo")
 	if err != nil {
-		global.Logger.Warn("failed getting user info: %s\n", err)
+		global.Logger.Warn("failed getting user info: ", err)
 		error = errors.New("GetOauthUserInfoError")
 		return
 	}
 	defer func(Body io.ReadCloser) {
 		err := Body.Close()
 		if err != nil {
-			global.Logger.Warn("failed closing response body: %s\n", err)
+			global.Logger.Warn("failed closing response body: ", err)
 		}
 	}(resp.Body)
 

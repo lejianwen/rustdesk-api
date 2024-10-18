@@ -273,6 +273,48 @@ definitions:
       total:
         type: integer
     type: object
+  model.AuditConn:
+    properties:
+      action:
+        type: string
+      close_time:
+        type: integer
+      conn_id:
+        type: integer
+      created_at:
+        type: string
+      from_name:
+        type: string
+      from_peer:
+        type: string
+      id:
+        type: integer
+      ip:
+        type: string
+      peer_id:
+        type: string
+      session_id:
+        type: string
+      type:
+        type: integer
+      updated_at:
+        type: string
+      uuid:
+        type: string
+    type: object
+  model.AuditConnList:
+    properties:
+      list:
+        items:
+          $ref: '#/definitions/model.AuditConn'
+        type: array
+      page:
+        type: integer
+      page_size:
+        type: integer
+      total:
+        type: integer
+    type: object
   model.Group:
     properties:
       created_at:
@@ -719,6 +761,77 @@ paths:
       summary: APP服务配置
       tags:
       - ADMIN
+  /admin/audit_conn/delete:
+    post:
+      consumes:
+      - application/json
+      description: 链接日志删除
+      parameters:
+      - description: 链接日志信息
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/model.AuditConn'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - token: []
+      summary: 链接日志删除
+      tags:
+      - 链接日志
+  /admin/audit_conn/list:
+    get:
+      consumes:
+      - application/json
+      description: 链接日志列表
+      parameters:
+      - description: 页码
+        in: query
+        name: page
+        type: integer
+      - description: 页大小
+        in: query
+        name: page_size
+        type: integer
+      - description: 目标设备
+        in: query
+        name: peer_id
+        type: integer
+      - description: 来源设备
+        in: query
+        name: from_peer
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.AuditConnList'
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - token: []
+      summary: 链接日志列表
+      tags:
+      - 链接日志
   /admin/file/oss_token:
     get:
       consumes:

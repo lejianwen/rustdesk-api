@@ -200,7 +200,7 @@ func getTranslatorForLang(lang string) ut.Translator {
 	}
 }
 func DatabaseAutoUpdate() {
-	version := 220
+	version := 233
 
 	db := global.DB
 
@@ -262,6 +262,7 @@ func Migrate(version uint) {
 		&model.Oauth{},
 		&model.LoginLog{},
 		&model.ShareRecord{},
+		&model.AuditConn{},
 	)
 	if err != nil {
 		fmt.Println("migrate err :=>", err)

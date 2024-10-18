@@ -21,6 +21,11 @@ func (us *UserService) InfoById(id uint) *model.User {
 	global.DB.Where("id = ?", id).First(u)
 	return u
 }
+func (us *UserService) InfoByUsername(un string) *model.User {
+	u := &model.User{}
+	global.DB.Where("username = ?", un).First(u)
+	return u
+}
 
 // InfoByOpenid 根据openid取用户信息
 func (us *UserService) InfoByOpenid(openid string) *model.User {

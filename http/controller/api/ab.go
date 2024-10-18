@@ -118,9 +118,10 @@ func (a *Ab) Tags(c *gin.Context) {
 // @Description 标签
 // @Accept  json
 // @Produce  json
+// @Param guid path string true "guid"
 // @Success 200 {string} string
 // @Failure 500 {object} response.ErrorResponse
-// @Router /ab/add [post]
+// @Router /ab/tag/add/{guid} [post]
 // @Security BearerAuth
 func (a *Ab) TagAdd(c *gin.Context) {
 	t := &model.Tag{}
@@ -150,6 +151,7 @@ func (a *Ab) TagAdd(c *gin.Context) {
 // @Description 标签
 // @Accept  json
 // @Produce  json
+// @Param guid path string true "guid"
 // @Success 200 {string} string
 // @Failure 500 {object} response.ErrorResponse
 // @Router /ab/tag/rename/{guid} [put]
@@ -187,6 +189,7 @@ func (a *Ab) TagRename(c *gin.Context) {
 // @Description 标签
 // @Accept  json
 // @Produce  json
+// @Param guid path string true "guid"
 // @Success 200 {string} string
 // @Failure 500 {object} response.ErrorResponse
 // @Router /ab/tag/update/{guid} [put]
@@ -219,6 +222,7 @@ func (a *Ab) TagUpdate(c *gin.Context) {
 // @Description 标签
 // @Accept  json
 // @Produce  json
+// @Param guid path string true "guid"
 // @Success 200 {string} string
 // @Failure 500 {object} response.ErrorResponse
 // @Router /ab/tag/{guid} [delete]
@@ -273,7 +277,7 @@ func (a *Ab) Personal(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{
 			"guid": guid,
 			"name": user.Username,
-			"rule": 0,
+			"rule": 3,
 		})
 	} else {
 		c.JSON(http.StatusOK, nil)
@@ -304,7 +308,8 @@ func (a *Ab) Settings(c *gin.Context) {
 // @Description 共享
 // @Accept  json
 // @Produce  json
-// @Param string body string false  "string valid"
+// @Param current query int false "页码"
+// @Param pageSize query int false "每页数量"
 // @Success 200 {object} response.Response
 // @Failure 500 {object} response.Response
 // @Router /ab/shared/profiles [post]
@@ -322,14 +327,14 @@ func (a *Ab) SharedProfiles(c *gin.Context) {
 		"name":  "admin",
 		"owner": "admin",
 		"note":  "admin11",
-		"rule":  0,
+		"rule":  3,
 	}
 	item2 := map[string]interface{}{
 		"guid":  "2",
 		"name":  "admin2",
 		"owner": "admin2",
 		"note":  "admin22",
-		"rule":  0,
+		"rule":  2,
 	}
 	c.JSON(http.StatusOK, gin.H{
 		"total": 2,
@@ -348,7 +353,9 @@ func (a *Ab) SharedProfiles(c *gin.Context) {
 // @Description 地址
 // @Accept  json
 // @Produce  json
-// @Param string body string false  "string valid"
+// @Param current query int false "页码"
+// @Param pageSize query int false "每页数量"
+// @Param ab query string false "guid"
 // @Success 200 {object} response.Response
 // @Failure 500 {object} response.Response
 // @Router /ab/peers [post]
@@ -369,7 +376,7 @@ func (a *Ab) Peers(c *gin.Context) {
 // @Description 标签
 // @Accept  json
 // @Produce  json
-// @Param id path string true "id"
+// @Param guid path string true "guid"
 // @Success 200 {object} model.TagList
 // @Failure 500 {object} response.ErrorResponse
 // @Router /ab/tags/{guid} [post]
@@ -387,7 +394,7 @@ func (a *Ab) PTags(c *gin.Context) {
 // @Description 添加地址
 // @Accept  json
 // @Produce  json
-// @Param id path string true "id"
+// @Param guid path string true "guid"
 // @Success 200 {string} string
 // @Failure 500 {object} response.ErrorResponse
 // @Router /ab/peer/add/{guid} [post]
@@ -395,6 +402,7 @@ func (a *Ab) PTags(c *gin.Context) {
 func (a *Ab) PeerAdd(c *gin.Context) {
 	// forceAlwaysRelay永远是字符串"false"
 	//f := &gin.H{}
+	//guid := c.Param("guid")
 	f := &requstform.PersonalAddressBookForm{}
 	err := c.ShouldBindJSON(f)
 	if err != nil {
@@ -429,7 +437,7 @@ func (a *Ab) PeerAdd(c *gin.Context) {
 // @Description 删除地址
 // @Accept  json
 // @Produce  json
-// @Param id path string true "id"
+// @Param guid path string true "guid"
 // @Success 200 {string} string
 // @Failure 500 {object} response.ErrorResponse
 // @Router /ab/peer/add/{guid} [delete]
@@ -464,7 +472,7 @@ func (a *Ab) PeerDel(c *gin.Context) {
 // @Description 更新地址
 // @Accept  json
 // @Produce  json
-// @Param id path string true "id"
+// @Param guid path string true "guid"
 // @Success 200 {string} string
 // @Failure 500 {object} response.ErrorResponse
 // @Router /ab/peer/update/{guid} [put]
