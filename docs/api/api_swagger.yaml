@@ -6,6 +6,27 @@ definitions:
         example: '{"tags":["tag1","tag2","tag3"],"peers":[{"id":"abc","username":"abv-l","hostname":"","platform":"Windows","alias":"","tags":["tag1","tag2"],"hash":"hash"}],"tag_colors":"{\"tag1\":4288585374,\"tag2\":4278238420,\"tag3\":4291681337}"}'
         type: string
     type: object
+  api.AuditConnForm:
+    properties:
+      action:
+        type: string
+      conn_id:
+        type: integer
+      id:
+        type: string
+      ip:
+        type: string
+      peer:
+        items:
+          type: string
+        type: array
+      session_id:
+        type: number
+      type:
+        type: integer
+      uuid:
+        type: string
+    type: object
   api.DeviceInfoInLogin:
     properties:
       name:
@@ -208,36 +229,15 @@ paths:
       summary: 地址更新
       tags:
       - 地址
-  /ab/add:
-    post:
-      consumes:
-      - application/json
-      description: 标签
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            type: string
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/response.ErrorResponse'
-      security:
-      - BearerAuth: []
-      summary: 标签添加
-      tags:
-      - 地址[Personal]
   /ab/peer/add/{guid}:
     delete:
       consumes:
       - application/json
       description: 删除地址
       parameters:
-      - description: id
+      - description: guid
         in: path
-        name: id
+        name: guid
         required: true
         type: string
       produces:
@@ -261,9 +261,9 @@ paths:
       - application/json
       description: 添加地址
       parameters:
-      - description: id
+      - description: guid
         in: path
-        name: id
+        name: guid
         required: true
         type: string
       produces:
@@ -288,9 +288,9 @@ paths:
       - application/json
       description: 更新地址
       parameters:
-      - description: id
+      - description: guid
         in: path
-        name: id
+        name: guid
         required: true
         type: string
       produces:
@@ -315,11 +315,18 @@ paths:
       - application/json
       description: 地址
       parameters:
-      - description: string valid
-        in: body
-        name: string
-        schema:
-          type: string
+      - description: 页码
+        in: query
+        name: current
+        type: integer
+      - description: 每页数量
+        in: query
+        name: pageSize
+        type: integer
+      - description: guid
+        in: query
+        name: ab
+        type: string
       produces:
       - application/json
       responses:
@@ -396,11 +403,14 @@ paths:
       - application/json
       description: 共享
       parameters:
-      - description: string valid
-        in: body
-        name: string
-        schema:
-          type: string
+      - description: 页码
+        in: query
+        name: current
+        type: integer
+      - description: 每页数量
+        in: query
+        name: pageSize
+        type: integer
       produces:
       - application/json
       responses:
@@ -422,6 +432,12 @@ paths:
       consumes:
       - application/json
       description: 标签
+      parameters:
+      - description: guid
+        in: path
+        name: guid
+        required: true
+        type: string
       produces:
       - application/json
       responses:
@@ -438,11 +454,44 @@ paths:
       summary: 标签删除
       tags:
       - 地址[Personal]
+  /ab/tag/add/{guid}:
+    post:
+      consumes:
+      - application/json
+      description: 标签
+      parameters:
+      - description: guid
+        in: path
+        name: guid
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: 标签添加
+      tags:
+      - 地址[Personal]
   /ab/tag/rename/{guid}:
     put:
       consumes:
       - application/json
       description: 标签
+      parameters:
+      - description: guid
+        in: path
+        name: guid
+        required: true
+        type: string
       produces:
       - application/json
       responses:
@@ -464,6 +513,12 @@ paths:
       consumes:
       - application/json
       description: 标签
+      parameters:
+      - description: guid
+        in: path
+        name: guid
+        required: true
+        type: string
       produces:
       - application/json
       responses:
@@ -486,9 +541,9 @@ paths:
       - application/json
       description: 标签
       parameters:
-      - description: id
+      - description: guid
         in: path
-        name: id
+        name: guid
         required: true
         type: string
       produces:
@@ -528,6 +583,32 @@ paths:
       summary: 用户信息
       tags:
       - 用户
+  /audit/conn:
+    post:
+      consumes:
+      - application/json
+      description: 审计连接
+      parameters:
+      - description: 审计连接
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/api.AuditConnForm'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: 审计连接
+      tags:
+      - 审计
   /heartbeat:
     post:
       consumes:

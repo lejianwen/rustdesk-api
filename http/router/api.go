@@ -50,7 +50,9 @@ func ApiInit(g *gin.Engine) {
 	if global.Config.App.WebClient == 1 {
 		WebClientRoutes(frg)
 	}
-
+	au := &api.Audit{}
+	//[method:POST] [uri:/api/audit/conn]
+	frg.POST("/audit/conn", au.AuditConn)
 	frg.Use(middleware.RustAuth())
 	{
 		u := &api.User{}

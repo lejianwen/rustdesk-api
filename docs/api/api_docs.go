@@ -121,40 +121,6 @@ const docTemplateapi = `{
                 }
             }
         },
-        "/ab/add": {
-            "post": {
-                "security": [
-                    {
-                        "BearerAuth": []
-                    }
-                ],
-                "description": "标签",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "地址[Personal]"
-                ],
-                "summary": "标签添加",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/response.ErrorResponse"
-                        }
-                    }
-                }
-            }
-        },
         "/ab/peer/add/{guid}": {
             "post": {
                 "security": [
@@ -176,8 +142,8 @@ const docTemplateapi = `{
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "id",
-                        "name": "id",
+                        "description": "guid",
+                        "name": "guid",
                         "in": "path",
                         "required": true
                     }
@@ -217,8 +183,8 @@ const docTemplateapi = `{
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "id",
-                        "name": "id",
+                        "description": "guid",
+                        "name": "guid",
                         "in": "path",
                         "required": true
                     }
@@ -260,8 +226,8 @@ const docTemplateapi = `{
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "id",
-                        "name": "id",
+                        "description": "guid",
+                        "name": "guid",
                         "in": "path",
                         "required": true
                     }
@@ -302,12 +268,22 @@ const docTemplateapi = `{
                 "summary": "地址列表",
                 "parameters": [
                     {
-                        "description": "string valid",
-                        "name": "string",
-                        "in": "body",
-                        "schema": {
-                            "type": "string"
-                        }
+                        "type": "integer",
+                        "description": "页码",
+                        "name": "current",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "每页数量",
+                        "name": "pageSize",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "guid",
+                        "name": "ab",
+                        "in": "query"
                     }
                 ],
                 "responses": {
@@ -434,12 +410,16 @@ const docTemplateapi = `{
                 "summary": "共享地址簿",
                 "parameters": [
                     {
-                        "description": "string valid",
-                        "name": "string",
-                        "in": "body",
-                        "schema": {
-                            "type": "string"
-                        }
+                        "type": "integer",
+                        "description": "页码",
+                        "name": "current",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "每页数量",
+                        "name": "pageSize",
+                        "in": "query"
                     }
                 ],
                 "responses": {
@@ -453,6 +433,49 @@ const docTemplateapi = `{
                         "description": "Internal Server Error",
                         "schema": {
                             "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/ab/tag/add/{guid}": {
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "标签",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "地址[Personal]"
+                ],
+                "summary": "标签添加",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "guid",
+                        "name": "guid",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     }
                 }
@@ -476,6 +499,15 @@ const docTemplateapi = `{
                     "地址[Personal]"
                 ],
                 "summary": "标签重命名",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "guid",
+                        "name": "guid",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -510,6 +542,15 @@ const docTemplateapi = `{
                     "地址[Personal]"
                 ],
                 "summary": "标签修改颜色",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "guid",
+                        "name": "guid",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -544,6 +585,15 @@ const docTemplateapi = `{
                     "地址[Personal]"
                 ],
                 "summary": "标签删除",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "guid",
+                        "name": "guid",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -581,8 +631,8 @@ const docTemplateapi = `{
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "id",
-                        "name": "id",
+                        "description": "guid",
+                        "name": "guid",
                         "in": "path",
                         "required": true
                     }
@@ -626,6 +676,46 @@ const docTemplateapi = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/api.UserPayload"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/audit/conn": {
+            "post": {
+                "description": "审计连接",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "审计"
+                ],
+                "summary": "审计连接",
+                "parameters": [
+                    {
+                        "description": "审计连接",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/api.AuditConnForm"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
                         }
                     },
                     "500": {
@@ -1134,6 +1224,38 @@ const docTemplateapi = `{
                 "data": {
                     "type": "string",
                     "example": "{\"tags\":[\"tag1\",\"tag2\",\"tag3\"],\"peers\":[{\"id\":\"abc\",\"username\":\"abv-l\",\"hostname\":\"\",\"platform\":\"Windows\",\"alias\":\"\",\"tags\":[\"tag1\",\"tag2\"],\"hash\":\"hash\"}],\"tag_colors\":\"{\\\"tag1\\\":4288585374,\\\"tag2\\\":4278238420,\\\"tag3\\\":4291681337}\"}"
+                }
+            }
+        },
+        "api.AuditConnForm": {
+            "type": "object",
+            "properties": {
+                "action": {
+                    "type": "string"
+                },
+                "conn_id": {
+                    "type": "integer"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "ip": {
+                    "type": "string"
+                },
+                "peer": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "session_id": {
+                    "type": "number"
+                },
+                "type": {
+                    "type": "integer"
+                },
+                "uuid": {
+                    "type": "string"
                 }
             }
         },

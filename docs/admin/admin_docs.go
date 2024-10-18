@@ -380,6 +380,123 @@ const docTemplateadmin = `{
                 }
             }
         },
+        "/admin/audit_conn/delete": {
+            "post": {
+                "security": [
+                    {
+                        "token": []
+                    }
+                ],
+                "description": "链接日志删除",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "链接日志"
+                ],
+                "summary": "链接日志删除",
+                "parameters": [
+                    {
+                        "description": "链接日志信息",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.AuditConn"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/audit_conn/list": {
+            "get": {
+                "security": [
+                    {
+                        "token": []
+                    }
+                ],
+                "description": "链接日志列表",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "链接日志"
+                ],
+                "summary": "链接日志列表",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "页码",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "页大小",
+                        "name": "page_size",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "目标设备",
+                        "name": "peer_id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "来源设备",
+                        "name": "from_peer",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/model.AuditConnList"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
         "/admin/file/oss_token": {
             "get": {
                 "security": [
@@ -2731,6 +2848,70 @@ const docTemplateadmin = `{
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/model.AddressBook"
+                    }
+                },
+                "page": {
+                    "type": "integer"
+                },
+                "page_size": {
+                    "type": "integer"
+                },
+                "total": {
+                    "type": "integer"
+                }
+            }
+        },
+        "model.AuditConn": {
+            "type": "object",
+            "properties": {
+                "action": {
+                    "type": "string"
+                },
+                "close_time": {
+                    "type": "integer"
+                },
+                "conn_id": {
+                    "type": "integer"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "from_name": {
+                    "type": "string"
+                },
+                "from_peer": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "ip": {
+                    "type": "string"
+                },
+                "peer_id": {
+                    "type": "string"
+                },
+                "session_id": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "integer"
+                },
+                "updated_at": {
+                    "type": "string"
+                },
+                "uuid": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.AuditConnList": {
+            "type": "object",
+            "properties": {
+                "list": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/model.AuditConn"
                     }
                 },
                 "page": {

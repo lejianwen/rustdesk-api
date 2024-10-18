@@ -27,7 +27,7 @@ func Init(g *gin.Engine) {
 	PeerBind(adg)
 	OauthBind(adg)
 	LoginLogBind(adg)
-
+	AuditBind(adg)
 	rs := &admin.Rustdesk{}
 	adg.GET("/server-config", rs.ServerConfig)
 	adg.GET("/app-config", rs.AppConfig)
@@ -142,6 +142,12 @@ func LoginLogBind(rg *gin.RouterGroup) {
 	cont := &admin.LoginLog{}
 	aR.GET("/list", cont.List)
 	aR.POST("/delete", cont.Delete)
+}
+func AuditBind(rg *gin.RouterGroup) {
+	cont := &admin.Audit{}
+	aR := rg.Group("/audit_conn").Use(middleware.AdminPrivilege())
+	aR.GET("/list", cont.ConnList)
+	aR.POST("/delete", cont.ConnDelete)
 }
 
 /*
