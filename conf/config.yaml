@@ -45,3 +45,6 @@ oss:
 jwt:
   private-key: "./conf/jwt_pri.pem"
   expire-duration: 360000
+proxy:
+  enable: false
+  host: ""
