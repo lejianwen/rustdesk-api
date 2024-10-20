@@ -39,7 +39,7 @@ env:
   DOCKERHUB_IMAGE_NAMESPACE: ${{ github.event.inputs.DOCKERHUB_IMAGE_NAMESPACE || github.actor }}
   GHCR_IMAGE_NAMESPACE: ${{ github.event.inputs.GHCR_IMAGE_NAMESPACE || github.actor }}
   SKIP_DOCKER_HUB: ${{ github.event.inputs.SKIP_DOCKER_HUB || 'false' }}
-  SKIP_GHCR: ${{ github.event.inputs.SKIP_GHCR }}
+  SKIP_GHCR: ${{ github.event.inputs.SKIP_GHCR || 'false' }}
 jobs:
   build:
     runs-on: ubuntu-latest
