@@ -210,6 +210,9 @@ The prefix for variable names is `RUSTDESK_API`. If environment variables exist,
 | RUSTDESK_API_RUSTDESK_RELAY_SERVER | Rustdesk relay server address                             | 192.168.1.66:21117            |
 | RUSTDESK_API_RUSTDESK_API_SERVER   | Rustdesk API server address                               | http://192.168.1.66:21114     |
 | RUSTDESK_API_RUSTDESK_KEY          | Rustdesk key                                              | 123456789                     |
+| ---- PROXY -----                   | ---------------                                           | ----------                    |
+| RUSTDESK_API_PROXY_ENABLE          | proxy_enable :`false`, `true`                             | `false`                       |
+| RUSTDESK_API_PROXY_HOST            | proxy_host                                                | `http://127.0.0.1:1080`       |
 
 ### Installation Steps
 

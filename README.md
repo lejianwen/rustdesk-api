@@ -177,6 +177,9 @@ logger:
   path: "./runtime/log.txt"
   level: "warn" #trace,debug,info,warn,error,fatal
   report-caller: true
+proxy:
+  enable: false
+  host: ""
 ```
 
 ### 环境变量
@@ -204,6 +207,10 @@ logger:
 | RUSTDESK_API_RUSTDESK_RELAY_SERVER | Rustdesk的relay服务器地址                  | 192.168.1.66:21117          |
 | RUSTDESK_API_RUSTDESK_API_SERVER   | Rustdesk的api服务器地址                    | http://192.168.1.66:21114   |
 | RUSTDESK_API_RUSTDESK_KEY          | Rustdesk的key                         | 123456789                   |
+| ----PROXY配置-----                   | ---------------                      | ----------                  |
+| RUSTDESK_API_PROXY_ENABLE          | 是否启用代理:`false`, `true`               | `false`                     |
+| RUSTDESK_API_PROXY_HOST            | 代理地址                                 | `http://127.0.0.1:1080`     |
+
 
 ### 运行
 
