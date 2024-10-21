@@ -28,6 +28,9 @@
     - 标签管理
     - 群组管理
     - Oauth 管理
+    - 登录日志
+    - 链接日志
+    - 文件传输日志
     - 快速使用web client
     - i18n
     - 通过 web client 分享给游客
@@ -44,7 +47,7 @@
 #### PC客户端使用的是 ***1.3.0***，经测试 ***1.2.6+*** 都可以
 
 #### 关于PC端链接超时或者链接不上的问题以及解决方案
-##### 链接不上是或者超时
+##### 链接不上或者超时
 因为server端相对于客户端落后版本，server不会响应客户端的`secure_tcp`请求，所以客户端超时。
 相关代码代码位置在`https://github.com/rustdesk/rustdesk/blob/master/src/client.rs#L322`
   ```rust
@@ -113,12 +116,13 @@
    ![web_admin](docs/web_admin.png)
 2. 普通用户界面
    ![web_user](docs/web_admin_user.png)
-   右上角可以更改密码,也可以切换语言
+   右上角可以更改密码,可以切换语言，可以切换`白天/黑夜`模式
    ![web_resetpwd](docs/web_resetpwd.png)
 
 3. 分组可以自定义，方便管理，暂时支持两种类型: `共享组` 和 `普通组`
    ![web_admin_gr](docs/web_admin_gr.png)
-4. 可以直接打开webclient，方便使用；也可以分享给游客，游客可以直接通过webclient远程到设备
+4. You can directly launch the client, or open the web client for convenient use; you can also share it with guests, allowing them to remotely access the device through the web client.
+
    ![web_webclient](docs/admin_webclient.png)
 5. Oauth,暂时只支持了`Github`和`Google`, 需要创建一个`OAuth App`，然后配置到后台
    ![web_admin_oauth](docs/web_admin_oauth.png)
