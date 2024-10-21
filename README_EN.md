@@ -27,6 +27,9 @@ desktop software that provides self-hosted solutions.
     - Tag Management
     - Group Management
     - OAuth Management
+    - Login Logs
+    - Connection Logs
+    - File Transfer Logs
     - Quick access to web client
     - i18n
     - Share to guest by web client
@@ -117,15 +120,16 @@ installation are `admin` `admin`, please change the password immediately.
    ![web_admin](docs/en_img/web_admin.png)
 2. Regular user interface:
    ![web_user](docs/en_img/web_admin_user.png)
-   You can change your password from the top right corner:
+   In the top right corner, you can change the password, switch languages, and toggle between `day/night` mode.
+
    ![web_resetpwd](docs/en_img/web_resetpwd.png)
 3. Groups can be customized for easy management. Currently, two types are supported: `shared group` and `regular group`.
    ![web_admin_gr](docs/en_img/web_admin_gr.png)
-4. You can directly open the web client for convenient use; it can also be shared with guests, allowing them to remotely access the device via the web client.
+4. You can directly launch the client or open the web client for convenience; you can also share it with guests, who can remotely access the device via the web client.
+
    ![web_webclient](docs/en_img/admin_webclient.png)
 5. OAuth support: Currently, `GitHub` and `Google`  is supported. You need to create an `OAuth App` and configure it in
-   the admin
-   panel.
+   the admin panel.
    ![web_admin_oauth](docs/en_img/web_admin_oauth.png)
     - Create a `GitHub OAuth App`
       at `Settings` -> `Developer settings` -> `OAuth Apps` -> `New OAuth App` [here](https://github.com/settings/developers).
@@ -135,7 +139,7 @@ installation are `admin` `admin`, please change the password immediately.
 ### Web Client:
 
 1. If you're already logged into the admin panel, the web client will log in automatically.
-2. If you're not logged in, simply click the login button at the top right corner, and the API server will be
+2. If you're not logged in, simply click the login button in the top right corner, and the API server will be
    pre-configured.
    ![webclient_conf](docs/webclient_conf.png)
 3. After logging in, the ID server and key will be automatically synced.
@@ -183,6 +187,9 @@ logger:
   path: "./runtime/log.txt"
   level: "warn" #trace,debug,info,warn,error,fatal
   report-caller: true
+proxy:
+  enable: false
+  host: ""
 ```
 
 ### Environment Variables
