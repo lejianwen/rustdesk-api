@@ -387,7 +387,7 @@ const docTemplateadmin = `{
                         "token": []
                     }
                 ],
-                "description": "链接日志删除",
+                "description": "文件日志删除",
                 "consumes": [
                     "application/json"
                 ],
@@ -395,17 +395,17 @@ const docTemplateadmin = `{
                     "application/json"
                 ],
                 "tags": [
-                    "链接日志"
+                    "文件日志"
                 ],
-                "summary": "链接日志删除",
+                "summary": "文件日志删除",
                 "parameters": [
                     {
-                        "description": "链接日志信息",
+                        "description": "文件日志信息",
                         "name": "body",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/model.AuditConn"
+                            "$ref": "#/definitions/model.AuditFile"
                         }
                     }
                 ],
@@ -432,7 +432,7 @@ const docTemplateadmin = `{
                         "token": []
                     }
                 ],
-                "description": "链接日志列表",
+                "description": "文件日志列表",
                 "consumes": [
                     "application/json"
                 ],
@@ -440,9 +440,9 @@ const docTemplateadmin = `{
                     "application/json"
                 ],
                 "tags": [
-                    "链接日志"
+                    "文件日志"
                 ],
-                "summary": "链接日志列表",
+                "summary": "文件日志列表",
                 "parameters": [
                     {
                         "type": "integer",
@@ -481,7 +481,7 @@ const docTemplateadmin = `{
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/model.AuditConnList"
+                                            "$ref": "#/definitions/model.AuditFileList"
                                         }
                                     }
                                 }
@@ -2566,6 +2566,9 @@ const docTemplateadmin = `{
                 },
                 "name": {
                     "type": "string"
+                },
+                "type": {
+                    "type": "integer"
                 }
             }
         },
@@ -2912,6 +2915,70 @@ const docTemplateadmin = `{
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/model.AuditConn"
+                    }
+                },
+                "page": {
+                    "type": "integer"
+                },
+                "page_size": {
+                    "type": "integer"
+                },
+                "total": {
+                    "type": "integer"
+                }
+            }
+        },
+        "model.AuditFile": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "from_name": {
+                    "type": "string"
+                },
+                "from_peer": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "info": {
+                    "type": "string"
+                },
+                "ip": {
+                    "type": "string"
+                },
+                "is_file": {
+                    "type": "boolean"
+                },
+                "num": {
+                    "type": "integer"
+                },
+                "path": {
+                    "type": "string"
+                },
+                "peer_id": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "integer"
+                },
+                "updated_at": {
+                    "type": "string"
+                },
+                "uuid": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.AuditFileList": {
+            "type": "object",
+            "properties": {
+                "list": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/model.AuditFile"
                     }
                 },
                 "page": {

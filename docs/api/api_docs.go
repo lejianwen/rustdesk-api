@@ -727,6 +727,46 @@ const docTemplateapi = `{
                 }
             }
         },
+        "/audit/file": {
+            "post": {
+                "description": "审计文件",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "审计"
+                ],
+                "summary": "审计文件",
+                "parameters": [
+                    {
+                        "description": "审计文件",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/api.AuditFileForm"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
         "/heartbeat": {
             "post": {
                 "description": "心跳",
@@ -1250,6 +1290,32 @@ const docTemplateapi = `{
                 },
                 "session_id": {
                     "type": "number"
+                },
+                "type": {
+                    "type": "integer"
+                },
+                "uuid": {
+                    "type": "string"
+                }
+            }
+        },
+        "api.AuditFileForm": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "info": {
+                    "type": "string"
+                },
+                "is_file": {
+                    "type": "boolean"
+                },
+                "path": {
+                    "type": "string"
+                },
+                "peer_id": {
+                    "type": "string"
                 },
                 "type": {
                     "type": "integer"

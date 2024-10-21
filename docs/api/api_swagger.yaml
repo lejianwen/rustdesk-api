@@ -27,6 +27,23 @@ definitions:
       uuid:
         type: string
     type: object
+  api.AuditFileForm:
+    properties:
+      id:
+        type: string
+      info:
+        type: string
+      is_file:
+        type: boolean
+      path:
+        type: string
+      peer_id:
+        type: string
+      type:
+        type: integer
+      uuid:
+        type: string
+    type: object
   api.DeviceInfoInLogin:
     properties:
       name:
@@ -607,6 +624,32 @@ paths:
           schema:
             $ref: '#/definitions/response.Response'
       summary: 审计连接
+      tags:
+      - 审计
+  /audit/file:
+    post:
+      consumes:
+      - application/json
+      description: 审计文件
+      parameters:
+      - description: 审计文件
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/api.AuditFileForm'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: 审计文件
       tags:
       - 审计
   /heartbeat:
