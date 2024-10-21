@@ -53,6 +53,8 @@ func ApiInit(g *gin.Engine) {
 	au := &api.Audit{}
 	//[method:POST] [uri:/api/audit/conn]
 	frg.POST("/audit/conn", au.AuditConn)
+	//[method:POST] [uri:/api/audit/file]
+	frg.POST("/audit/file", au.AuditFile)
 	frg.Use(middleware.RustAuth())
 	{
 		u := &api.User{}
