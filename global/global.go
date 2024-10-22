@@ -33,5 +33,5 @@ var (
 	Oss       *upload.Oss
 	Jwt       *jwt.Jwt
 	Lock      lock.Locker
-	Localizer func(ctx *gin.Context) *i18n.Localizer
+	Localizer func(lang string) *i18n.Localizer
 )

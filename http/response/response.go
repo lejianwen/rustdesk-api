@@ -56,7 +56,7 @@ type ServerConfigResponse struct {
 }
 
 func TranslateMsg(c *gin.Context, messageId string) string {
-	localizer := global.Localizer(c)
+	localizer := global.Localizer(c.GetHeader("Accept-Language"))
 	errMsg, err := localizer.LocalizeMessage(&i18n.Message{
 		ID: messageId,
 	})
@@ -67,7 +67,7 @@ func TranslateMsg(c *gin.Context, messageId string) string {
 	return errMsg
 }
 func TranslateTempMsg(c *gin.Context, messageId string, templateData map[string]interface{}) string {
-	localizer := global.Localizer(c)
+	localizer := global.Localizer(c.GetHeader("Accept-Language"))
 	errMsg, err := localizer.Localize(&i18n.LocalizeConfig{
 		DefaultMessage: &i18n.Message{
 			ID: messageId,
@@ -81,7 +81,7 @@ func TranslateTempMsg(c *gin.Context, messageId string, templateData map[string]
 	return errMsg
 }
 func TranslateParamMsg(c *gin.Context, messageId string, params ...string) string {
-	localizer := global.Localizer(c)
+	localizer := global.Localizer(c.GetHeader("Accept-Language"))
 	templateData := make(map[string]interface{})
 	for i, v := range params {
 		k := fmt.Sprintf("P%d", i)
