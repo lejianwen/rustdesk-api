@@ -1,0 +1,129 @@
+[Test]
+description = "test"
+one = "тест 1 {{.P0}}"
+other = "тест 2 {{.P0}}"
+
+[ParamsError]
+description = "Params validation failed."
+one = "Ошибка параметра."
+other = "Ошибка параметра."
+
+[OperationFailed]
+description = "OperationFailed."
+one = "Операция не удалась."
+other = "Операция не удалась."
+
+[OperationSuccess]
+description = "OperationSuccess."
+one = "Операция успешна."
+other = "Операция успешна."
+
+[ItemExists]
+description = "Item already exists."
+one = "Данные уже существуют."
+other = "Данные уже существуют."
+
+[ItemNotFound]
+description = "Item not found."
+one = "Данные не найдены."
+other = "Данные не найдены."
+
+[NoAccess]
+description = "No access."
+one = "Нет доступа."
+other = "Нет доступа."
+
+[UsernameOrPasswordError]
+description = "Username or password error."
+one = "Неправильное имя пользователя или пароль."
+other = "Неправильное имя пользователя или пароль."
+
+[SystemError]
+description = "System error."
+one = "Системная ошибка."
+other = "Системная ошибка."
+
+[ConfigNotFound]
+description = "Config not found."
+one = "Конфигурация не найдена."
+other = "Конфигурация не найдена."
+
+[OauthExpired]
+description = "Oauth expired."
+one = "Авторизация истекла, пожалуйста, авторизуйтесь снова."
+other = "Авторизация истекла, пожалуйста, авторизуйтесь снова."
+
+[OauthFailed]
+description = "Oauth failed."
+one = "Авторизация не удалась."
+other = "Авторизация не удалась."
+
+[OauthHasBindOtherUser]
+description = "Oauth has bind other user."
+one = "Авторизация уже привязана к другому пользователю."
+other = "Авторизация уже привязана к другому пользователю."
+
+[ParamIsEmpty]
+description = "Param is empty."
+one = "{{.P0}} пуст."
+other = "{{.P0}} пуст."
+
+[BindFail]
+description = "Bind fail."
+one = "Привязка не удалась."
+other = "Привязка не удалась."
+
+[BindSuccess]
+description = "Bind success."
+one = "Привязка успешна."
+other = "Привязка успешна."
+
+[OauthHasBeenSuccess]
+description = "Oauth has been success."
+one = "Авторизация уже выполнена успешно."
+other = "Авторизация уже выполнена успешно."
+
+[OauthSuccess]
+description = "Oauth success."
+one = "Авторизация успешна."
+other = "Авторизация успешна."
+
+[OauthRegisterSuccess]
+description = "Oauth register success."
+one = "Регистрация авторизации успешна."
+other = "Регистрация авторизации успешна."
+
+[OauthRegisterFailed]
+description = "Oauth register failed."
+one = "Ошибка регистрации авторизации."
+other = "Ошибка регистрации авторизации."
+
+[GetOauthTokenError]
+description = "Get oauth token error."
+one = "Не удалось получить токен авторизации."
+other = "Не удалось получить токен авторизации."
+
+[GetOauthUserInfoError]
+description = "Get oauth user info error."
+one = "Не удалось получить информацию о пользователе авторизации."
+other = "Не удалось получить информацию о пользователе авторизации."
+
+[DecodeOauthUserInfoError]
+description = "Decode oauth user info error."
+one = "Не удалось декодировать информацию о пользователе авторизации."
+other = "Не удалось декодировать информацию о пользователе авторизации."
+
+[OldPasswordError]
+description = "Old password error."
+one = "Неправильный старый пароль."
+other = "Неправильный старый пароль."
+
+[DefaultGroup]
+description = "Default group."
+one = "Группа по умолчанию"
+other = "Группа по умолчанию"
+
+[ShareGroup]
+description = "Share group."
+one = "Общая группа"
+other = "Общая группа"
