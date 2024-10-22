@@ -12,19 +12,8 @@ import (
 	"Gwen/model"
 	"Gwen/service"
 	"fmt"
-	"github.com/BurntSushi/toml"
-	"github.com/gin-gonic/gin"
-	"github.com/go-playground/locales/en"
-	"github.com/go-playground/locales/zh_Hans_CN"
-	ut "github.com/go-playground/universal-translator"
-	"github.com/go-playground/validator/v10"
-	en_translations "github.com/go-playground/validator/v10/translations/en"
-	zh_translations "github.com/go-playground/validator/v10/translations/zh"
 	"github.com/go-redis/redis/v8"
 	"github.com/nicksnyder/go-i18n/v2/i18n"
-	"golang.org/x/text/language"
-	nethttp "net/http"
-	"reflect"
 )
 
 // @title 管理系统API
@@ -48,7 +37,7 @@ func main() {
 		ReportCaller: global.Config.Logger.ReportCaller,
 	})
 
-	InitI18n()
+	global.InitI18n()
 
 	//redis
 	global.Redis = redis.NewClient(&redis.Options{
@@ -87,7 +76,7 @@ func main() {
 	DatabaseAutoUpdate()
 
 	//validator
-	ApiInitValidator()
+	global.ApiInitValidator()
 
 	//oss
 	global.Oss = &upload.Oss{
@@ -111,94 +100,6 @@ func main() {
 
 }
 
-func ApiInitValidator() {
-	validate := validator.New()
-
-	// 定义不同的语言翻译
-	enT := en.New()
-	cn := zh_Hans_CN.New()
-
-	uni := ut.New(enT, cn)
-
-	enTrans, _ := uni.GetTranslator("en")
-	zhTrans, _ := uni.GetTranslator("zh_Hans_CN")
-
-	err := zh_translations.RegisterDefaultTranslations(validate, zhTrans)
-	if err != nil {
-		panic(err)
-	}
-	err = en_translations.RegisterDefaultTranslations(validate, enTrans)
-	if err != nil {
-		panic(err)
-	}
-
-	validate.RegisterTagNameFunc(func(field reflect.StructField) string {
-		label := field.Tag.Get("label")
-		if label == "" {
-			return field.Name
-		}
-		return label
-	})
-	global.Validator.Validate = validate
-	global.Validator.UT = uni // 存储 Universal Translator
-	global.Validator.VTrans = zhTrans
-
-	global.Validator.ValidStruct = func(ctx *gin.Context, i interface{}) []string {
-		err := global.Validator.Validate.Struct(i)
-		lang := ctx.GetHeader("Accept-Language")
-		if lang == "" {
-			lang = global.Config.Lang
-		}
-		trans := getTranslatorForLang(lang)
-		errList := make([]string, 0, 10)
-		if err != nil {
-			if _, ok := err.(*validator.InvalidValidationError); ok {
-				errList = append(errList, err.Error())
-				return errList
-			}
-			for _, err2 := range err.(validator.ValidationErrors) {
-				errList = append(errList, err2.Translate(trans))
-			}
-		}
-		return errList
-	}
-	global.Validator.ValidVar = func(ctx *gin.Context, field interface{}, tag string) []string {
-		err := global.Validator.Validate.Var(field, tag)
-		lang := ctx.GetHeader("Accept-Language")
-		if lang == "" {
-			lang = global.Config.Lang
-		}
-		trans := getTranslatorForLang(lang)
-		errList := make([]string, 0, 10)
-		if err != nil {
-			if _, ok := err.(*validator.InvalidValidationError); ok {
-				errList = append(errList, err.Error())
-				return errList
-			}
-			for _, err2 := range err.(validator.ValidationErrors) {
-				errList = append(errList, err2.Translate(trans))
-			}
-		}
-		return errList
-	}
-
-}
-func getTranslatorForLang(lang string) ut.Translator {
-	switch lang {
-	case "zh_CN":
-		fallthrough
-	case "zh-CN":
-		fallthrough
-	case "zh":
-		trans, _ := global.Validator.UT.GetTranslator("zh_Hans_CN")
-		return trans
-	case "en":
-		fallthrough
-	default:
-		trans, _ := global.Validator.UT.GetTranslator("en")
-		return trans
-	}
-}
 func DatabaseAutoUpdate() {
 	version := 235
 
@@ -273,9 +174,7 @@ func Migrate(version uint) {
 	var vc int64
 	global.DB.Model(&model.Version{}).Count(&vc)
 	if vc == 1 {
-		localizer := global.Localizer(&gin.Context{
-			Request: &nethttp.Request{},
-		})
+		localizer := global.Localizer("")
 		defaultGroup, _ := localizer.LocalizeMessage(&i18n.Message{
 			ID: "DefaultGroup",
 		})
@@ -305,39 +204,5 @@ func Migrate(version uint) {
 		admin.Password = service.AllService.UserService.EncryptPassword("admin")
 		global.DB.Create(admin)
 	}
-
-}
-
-func InitI18n() {
-	bundle := i18n.NewBundle(language.English)
-	bundle.RegisterUnmarshalFunc("toml", toml.Unmarshal)
-	bundle.LoadMessageFile(global.Config.Gin.ResourcesPath + "/i18n/en.toml")
-	bundle.LoadMessageFile(global.Config.Gin.ResourcesPath + "/i18n/zh_CN.toml")
-	global.Localizer = func(ctx *gin.Context) *i18n.Localizer {
-		lang := ctx.GetHeader("Accept-Language")
-		if lang == "" {
-			lang = global.Config.Lang
-		}
-		if lang == "en" {
-			return i18n.NewLocalizer(bundle, "en")
-		} else {
-			return i18n.NewLocalizer(bundle, lang, "en")
-		}
-	}
-
-	//personUnreadEmails := localizer.MustLocalize(&i18n.LocalizeConfig{
-	//	DefaultMessage: &i18n.Message{
-	//		ID: "PersonUnreadEmails",
-	//	},
-	//	PluralCount: 6,
-	//	TemplateData: map[string]interface{}{
-	//		"Name":        "LE",
-	//		"PluralCount": 6,
-	//	},
-	//})
-	//personUnreadEmails, err := global.Localizer.LocalizeMessage(&i18n.Message{
-	//	ID: "ParamsError",
-	//})
-	//fmt.Println(err, personUnreadEmails)
 
 }
