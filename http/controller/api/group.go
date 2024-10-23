@@ -28,23 +28,23 @@ type Group struct {
 // @Router /users [get]
 // @Security BearerAuth
 func (g *Group) Users(c *gin.Context) {
-	u := service.AllService.UserService.CurUser(c)
-
-	if !*u.IsAdmin {
-		gr := service.AllService.GroupService.InfoById(u.GroupId)
-		if gr.Type != model.GroupTypeShare {
-			response.Error(c, response.TranslateMsg(c, "NoAccess"))
-			return
-		}
-	}
-
 	q := &apiReq.UserListQuery{}
 	err := c.ShouldBindQuery(&q)
 	if err != nil {
 		response.Error(c, err.Error())
 		return
 	}
-	userList := service.AllService.UserService.ListByGroupId(u.GroupId, q.Page, q.PageSize)
+	u := service.AllService.UserService.CurUser(c)
+	gr := service.AllService.GroupService.InfoById(u.GroupId)
+	userList := &model.UserList{}
+	if !*u.IsAdmin && gr.Type != model.GroupTypeShare {
+		//仅能获取到自己
+		userList.Users = append(userList.Users, u)
+		userList.Total = 1
+	} else {
+		userList = service.AllService.UserService.ListByGroupId(u.GroupId, q.Page, q.PageSize)
+	}
+
 	var data []*apiResp.UserPayload
 	for _, user := range userList.Users {
 		up := &apiResp.UserPayload{}
@@ -73,23 +73,21 @@ func (g *Group) Users(c *gin.Context) {
 // @Security BearerAuth
 func (g *Group) Peers(c *gin.Context) {
 	u := service.AllService.UserService.CurUser(c)
-
-	if !*u.IsAdmin {
-		gr := service.AllService.GroupService.InfoById(u.GroupId)
-		if gr.Type != model.GroupTypeShare {
-			response.Error(c, response.TranslateMsg(c, "NoAccess"))
-			return
-		}
-	}
-
 	q := &apiReq.PeerListQuery{}
 	err := c.ShouldBindQuery(&q)
 	if err != nil {
 		response.Error(c, err.Error())
 		return
 	}
+	gr := service.AllService.GroupService.InfoById(u.GroupId)
+	users := make([]*model.User, 0, 1)
+	if !*u.IsAdmin && gr.Type != model.GroupTypeShare {
+		//仅能获取到自己
+		users = append(users, u)
+	} else {
+		users = service.AllService.UserService.ListIdAndNameByGroupId(u.GroupId)
+	}
 
-	users := service.AllService.UserService.ListIdAndNameByGroupId(u.GroupId)
 	namesById := make(map[uint]string)
 	userIds := make([]uint, 0)
 	for _, user := range users {
