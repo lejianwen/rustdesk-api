@@ -121,7 +121,7 @@
 
 3. 分组可以自定义，方便管理，暂时支持两种类型: `共享组` 和 `普通组`
    ![web_admin_gr](docs/web_admin_gr.png)
-4. You can directly launch the client, or open the web client for convenient use; you can also share it with guests, allowing them to remotely access the device through the web client.
+4. 可以直接打开webclient，方便使用；也可以分享给游客，游客可以直接通过webclient远程到设备
 
    ![web_webclient](docs/admin_webclient.png)
 5. Oauth,暂时只支持了`Github`和`Google`, 需要创建一个`OAuth App`，然后配置到后台
