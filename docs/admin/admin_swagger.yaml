@@ -16,6 +16,8 @@ definitions:
     properties:
       alias:
         type: string
+      collection_id:
+        type: integer
       forceAlwaysRelay:
         type: boolean
       hash:
@@ -164,6 +166,8 @@ definitions:
     type: object
   admin.TagForm:
     properties:
+      collection_id:
+        type: integer
       color:
         type: integer
       id:
@@ -225,6 +229,10 @@ definitions:
     properties:
       alias:
         type: string
+      collection:
+        $ref: '#/definitions/model.AddressBookCollection'
+      collection_id:
+        type: integer
       created_at:
         type: string
       forceAlwaysRelay:
@@ -261,6 +269,64 @@ definitions:
         type: integer
       username:
         type: string
+    type: object
+  model.AddressBookCollection:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      updated_at:
+        type: string
+      user_id:
+        type: integer
+    required:
+    - name
+    type: object
+  model.AddressBookCollectionList:
+    properties:
+      list:
+        items:
+          $ref: '#/definitions/model.AddressBookCollection'
+        type: array
+      page:
+        type: integer
+      page_size:
+        type: integer
+      total:
+        type: integer
+    type: object
+  model.AddressBookCollectionRule:
+    properties:
+      collection_id:
+        type: integer
+      created_at:
+        type: string
+      id:
+        type: integer
+      rule:
+        description: '0: 无 1: 读 2: 读写  3: 完全控制'
+        maximum: 3
+        minimum: 1
+        type: integer
+      to_id:
+        type: integer
+      type:
+        description: '1: 个人 2: 群组'
+        maximum: 2
+        minimum: 1
+        type: integer
+      updated_at:
+        type: string
+      user_id:
+        type: integer
+    required:
+    - collection_id
+    - rule
+    - to_id
+    - type
     type: object
   model.AddressBookList:
     properties:
@@ -511,6 +577,10 @@ definitions:
     - COMMON_STATUS_DISABLED
   model.Tag:
     properties:
+      collection:
+        $ref: '#/definitions/model.AddressBookCollection'
+      collection_id:
+        type: integer
       color:
         description: color 是flutter的颜色值,从0x00000000 到 0xFFFFFFFF; 前两位表示透明度，后面6位表示颜色,
           可以转成rgba
@@ -784,6 +854,328 @@ paths:
       summary: 地址簿编辑
       tags:
       - 地址簿
+  /admin/address_book_collection/create:
+    post:
+      consumes:
+      - application/json
+      description: 创建地址簿集合
+      parameters:
+      - description: 地址簿集合信息
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/model.AddressBookCollection'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.AddressBookCollection'
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - token: []
+      summary: 创建地址簿集合
+  /admin/address_book_collection/delete:
+    post:
+      consumes:
+      - application/json
+      description: 地址簿集合删除
+      parameters:
+      - description: 地址簿集合信息
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/model.AddressBookCollection'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - token: []
+      summary: 地址簿集合删除
+  /admin/address_book_collection/detail/{id}:
+    get:
+      consumes:
+      - application/json
+      description: 地址簿集合详情
+      parameters:
+      - description: ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.AddressBookCollection'
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - token: []
+      summary: 地址簿集合详情
+  /admin/address_book_collection/list:
+    get:
+      consumes:
+      - application/json
+      description: 地址簿集合列表
+      parameters:
+      - description: 页码
+        in: query
+        name: page
+        type: integer
+      - description: 页大小
+        in: query
+        name: page_size
+        type: integer
+      - description: 是否是我的
+        in: query
+        name: is_my
+        type: integer
+      - description: 用户id
+        in: query
+        name: user_id
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.AddressBookCollectionList'
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - token: []
+      summary: 地址簿集合列表
+  /admin/address_book_collection/update:
+    post:
+      consumes:
+      - application/json
+      description: 地址簿集合编辑
+      parameters:
+      - description: 地址簿集合信息
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/model.AddressBookCollection'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.AddressBookCollection'
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - token: []
+      summary: 地址簿集合编辑
+  /admin/address_book_collection_rule/create:
+    post:
+      consumes:
+      - application/json
+      description: 创建地址簿集合规则
+      parameters:
+      - description: 地址簿集合规则信息
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/model.AddressBookCollectionRule'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.AddressBookCollection'
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - token: []
+      summary: 创建地址簿集合规则
+  /admin/address_book_collection_rule/delete:
+    post:
+      consumes:
+      - application/json
+      description: 地址簿集合规则删除
+      parameters:
+      - description: 地址簿集合规则信息
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/model.AddressBookCollectionRule'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - token: []
+      summary: 地址簿集合规则删除
+  /admin/address_book_collection_rule/detail/{id}:
+    get:
+      consumes:
+      - application/json
+      description: 地址簿集合规则详情
+      parameters:
+      - description: ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.AddressBookCollectionRule'
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - token: []
+      summary: 地址簿集合规则详情
+  /admin/address_book_collection_rule/list:
+    get:
+      consumes:
+      - application/json
+      description: 地址簿集合规则列表
+      parameters:
+      - description: 页码
+        in: query
+        name: page
+        type: integer
+      - description: 页大小
+        in: query
+        name: page_size
+        type: integer
+      - description: 是否是我的
+        in: query
+        name: is_my
+        type: integer
+      - description: 用户id
+        in: query
+        name: user_id
+        type: integer
+      - description: 地址簿集合id
+        in: query
+        name: collection_id
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.AddressBookCollectionList'
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - token: []
+      summary: 地址簿集合规则列表
+  /admin/address_book_collection_rule/update:
+    post:
+      consumes:
+      - application/json
+      description: 地址簿集合规则编辑
+      parameters:
+      - description: 地址簿集合规则信息
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/model.AddressBookCollectionRule'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.AddressBookCollection'
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - token: []
+      summary: 地址簿集合规则编辑
   /admin/app-config:
     get:
       consumes:

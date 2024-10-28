@@ -70,9 +70,14 @@ func (ct *AddressBook) Create(c *gin.Context) {
 	if !service.AllService.UserService.IsAdmin(u) || t.UserId == 0 {
 		t.UserId = u.Id
 	}
-	ex := service.AllService.AddressBookService.InfoByUserIdAndId(t.UserId, t.Id)
+	if t.CollectionId > 0 && !service.AllService.AddressBookService.CheckCollectionOwner(t.UserId, t.CollectionId) {
+		response.Fail(c, 101, response.TranslateMsg(c, "ParamsError"))
+		return
+	}
+
+	ex := service.AllService.AddressBookService.InfoByUserIdAndIdAndCid(t.UserId, t.Id, t.CollectionId)
 	if ex.RowId > 0 {
-		response.Fail(c, 101, response.TranslateMsg(c, "ItemExist"))
+		response.Fail(c, 101, response.TranslateMsg(c, "ItemExists"))
 		return
 	}
 
@@ -81,7 +86,7 @@ func (ct *AddressBook) Create(c *gin.Context) {
 		response.Fail(c, 101, response.TranslateMsg(c, "OperationFailed")+err.Error())
 		return
 	}
-	response.Success(c, u)
+	response.Success(c, nil)
 }
 
 // BatchCreate 批量创建地址簿
@@ -113,7 +118,7 @@ func (ct *AddressBook) BatchCreate(c *gin.Context) {
 			continue
 		}
 		for _, ft := range f.Tags {
-			exTag := service.AllService.TagService.InfoByUserIdAndName(fu, ft)
+			exTag := service.AllService.TagService.InfoByUserIdAndNameAndCollectionId(fu, ft, 0)
 			if exTag.Id == 0 {
 				service.AllService.TagService.Create(&model.Tag{
 					UserId: fu,
@@ -161,6 +166,9 @@ func (ct *AddressBook) List(c *gin.Context) {
 		query.UserId = int(u.Id)
 	}
 	res := service.AllService.AddressBookService.List(query.Page, query.PageSize, func(tx *gorm.DB) {
+		tx.Preload("Collection", func(txc *gorm.DB) *gorm.DB {
+			return txc.Select("id,name")
+		})
 		if query.Id != "" {
 			tx.Where("id like ?", "%"+query.Id+"%")
 		}
@@ -173,7 +181,20 @@ func (ct *AddressBook) List(c *gin.Context) {
 		if query.Hostname != "" {
 			tx.Where("hostname like ?", "%"+query.Hostname+"%")
 		}
+		if query.CollectionId != nil && *query.CollectionId >= 0 {
+			tx.Where("collection_id = ?", query.CollectionId)
+		}
 	})
+
+	abCIds := make([]uint, 0)
+	for _, ab := range res.AddressBooks {
+		abCIds = append(abCIds, ab.CollectionId)
+	}
+	//获取地址簿名称
+	//cRes := service.AllService.AddressBookService.ListCollection(1, 999, func(tx *gorm.DB) {
+	//		tx.Where("id in ?", abCIds)
+	//})
+	//
 	response.Success(c, res)
 }
 
@@ -209,6 +230,10 @@ func (ct *AddressBook) Update(c *gin.Context) {
 		response.Fail(c, 101, response.TranslateMsg(c, "NoAccess"))
 		return
 	}
+	if t.CollectionId > 0 && !service.AllService.AddressBookService.CheckCollectionOwner(t.UserId, t.CollectionId) {
+		response.Fail(c, 101, response.TranslateMsg(c, "ParamsError"))
+		return
+	}
 	err := service.AllService.AddressBookService.Update(t)
 	if err != nil {
 		response.Fail(c, 101, response.TranslateMsg(c, "OperationFailed")+err.Error())
@@ -241,6 +266,10 @@ func (ct *AddressBook) Delete(c *gin.Context) {
 		return
 	}
 	t := service.AllService.AddressBookService.InfoByRowId(f.RowId)
+	if t.RowId == 0 {
+		response.Fail(c, 101, response.TranslateMsg(c, "ItemNotFound"))
+		return
+	}
 	u := service.AllService.UserService.CurUser(c)
 	if !service.AllService.UserService.IsAdmin(u) && t.UserId != u.Id {
 		response.Fail(c, 101, response.TranslateMsg(c, "NoAccess"))

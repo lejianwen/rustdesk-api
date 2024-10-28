@@ -65,7 +65,7 @@ func (ct *User) Create(c *gin.Context) {
 		response.Fail(c, 101, response.TranslateMsg(c, "OperationFailed")+err.Error())
 		return
 	}
-	response.Success(c, u)
+	response.Success(c, nil)
 }
 
 // List 列表
@@ -292,4 +292,34 @@ func (ct *User) MyOauth(c *gin.Context) {
 		res = append(res, item)
 	}
 	response.Success(c, res)
+}
+
+// groupUsers
+func (ct *User) GroupUsers(c *gin.Context) {
+	q := &admin.GroupUsersQuery{}
+	if err := c.ShouldBindJSON(q); err != nil {
+		response.Fail(c, 101, response.TranslateMsg(c, "ParamsError")+err.Error())
+		return
+	}
+	u := service.AllService.UserService.CurUser(c)
+	gid := u.GroupId
+	uid := u.Id
+	if service.AllService.UserService.IsAdmin(u) && q.UserId > 0 {
+		nu := service.AllService.UserService.InfoById(q.UserId)
+		gid = nu.GroupId
+		uid = q.UserId
+	}
+	res := service.AllService.UserService.List(1, 999, func(tx *gorm.DB) {
+		tx.Where("group_id = ?", gid)
+	})
+	var data []*adResp.GroupUsersPayload
+	for _, _u := range res.Users {
+		gup := &adResp.GroupUsersPayload{}
+		gup.FromUser(_u)
+		if _u.Id == uid {
+			gup.Status = 0
+		}
+		data = append(data, gup)
+	}
+	response.Success(c, data)
 }

@@ -73,3 +73,21 @@ func RandomString(n int) string {
 	}
 	return string(b)
 }
+
+// Keys 泛型函数，K 是键类型，V 是值类型
+func Keys[K comparable, V any](m map[K]V) []K {
+	keys := make([]K, 0, len(m))
+	for k := range m {
+		keys = append(keys, k)
+	}
+	return keys
+}
+
+// Values 泛型函数，K 是键类型，V 是值类型
+func Values[K comparable, V any](m map[K]V) []V {
+	values := make([]V, 0, len(m))
+	for _, v := range m {
+		values = append(values, v)
+	}
+	return values
+}

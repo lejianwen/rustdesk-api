@@ -101,6 +101,11 @@ func (us *UserService) List(page, pageSize uint, where func(tx *gorm.DB)) (res *
 	return
 }
 
+func (us *UserService) ListByIds(ids []uint) (res []*model.User) {
+	global.DB.Where("id in ?", ids).Find(&res)
+	return res
+}
+
 // ListByGroupId 根据组id取用户列表
 func (us *UserService) ListByGroupId(groupId, page, pageSize uint) (res *model.UserList) {
 	res = us.List(page, pageSize, func(tx *gorm.DB) {

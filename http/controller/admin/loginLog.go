@@ -64,6 +64,7 @@ func (ct *LoginLog) List(c *gin.Context) {
 		if query.UserId > 0 {
 			tx.Where("user_id = ?", query.UserId)
 		}
+		tx.Order("id desc")
 	})
 	response.Success(c, res)
 }

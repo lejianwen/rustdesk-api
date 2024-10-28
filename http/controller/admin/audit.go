@@ -40,6 +40,7 @@ func (a *Audit) ConnList(c *gin.Context) {
 		if query.FromPeer != "" {
 			tx.Where("from_peer like ?", "%"+query.FromPeer+"%")
 		}
+		tx.Order("id desc")
 	})
 	response.Success(c, res)
 }
@@ -107,6 +108,7 @@ func (a *Audit) FileList(c *gin.Context) {
 		if query.FromPeer != "" {
 			tx.Where("from_peer like ?", "%"+query.FromPeer+"%")
 		}
+		tx.Order("id desc")
 	})
 	response.Success(c, res)
 }

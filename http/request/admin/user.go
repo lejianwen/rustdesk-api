@@ -55,3 +55,7 @@ type ChangeCurPasswordForm struct {
 	OldPassword string `json:"old_password" validate:"required,gte=4,lte=20"`
 	NewPassword string `json:"new_password" validate:"required,gte=4,lte=20"`
 }
+type GroupUsersQuery struct {
+	IsMy   int  `json:"is_my"`
+	UserId uint `json:"user_id"`
+}

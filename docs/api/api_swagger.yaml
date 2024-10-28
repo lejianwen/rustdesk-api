@@ -124,8 +124,27 @@ definitions:
       status:
         type: integer
     type: object
+  model.AddressBookCollection:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      updated_at:
+        type: string
+      user_id:
+        type: integer
+    required:
+    - name
+    type: object
   model.Tag:
     properties:
+      collection:
+        $ref: '#/definitions/model.AddressBookCollection'
+      collection_id:
+        type: integer
       color:
         description: color 是flutter的颜色值,从0x00000000 到 0xFFFFFFFF; 前两位表示透明度，后面6位表示颜色,
           可以转成rgba

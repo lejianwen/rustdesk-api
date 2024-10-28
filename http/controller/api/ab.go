@@ -7,10 +7,13 @@ import (
 	"Gwen/http/response/api"
 	"Gwen/model"
 	"Gwen/service"
+	"Gwen/utils"
 	"encoding/json"
+	"errors"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"strconv"
+	"strings"
 )
 
 type Ab struct {
@@ -112,6 +115,35 @@ func (a *Ab) Tags(c *gin.Context) {
 	c.JSON(http.StatusOK, tags.Tags)
 }
 
+// PTags
+// @Tags 地址[Personal]
+// @Summary 标签
+// @Description 标签
+// @Accept  json
+// @Produce  json
+// @Param guid path string true "guid"
+// @Success 200 {object} model.TagList
+// @Failure 500 {object} response.ErrorResponse
+// @Router /ab/tags/{guid} [post]
+// @Security BearerAuth
+func (a *Ab) PTags(c *gin.Context) {
+	u := service.AllService.UserService.CurUser(c)
+	guid := c.Param("guid")
+	_, uid, cid, err := a.CheckGuid(u, guid)
+	if err != nil {
+		response.Error(c, response.TranslateMsg(c, err.Error()))
+		return
+	}
+
+	//check privileges
+	if !service.AllService.AddressBookService.CheckUserReadPrivilege(u, uid, cid) {
+		response.Error(c, response.TranslateMsg(c, "NoAccess"))
+		return
+	}
+	tags := service.AllService.TagService.ListByUserIdAndCollectionId(uid, cid)
+	c.JSON(http.StatusOK, tags.Tags)
+}
+
 // TagAdd
 // @Tags 地址[Personal]
 // @Summary 标签添加
@@ -124,19 +156,35 @@ func (a *Ab) Tags(c *gin.Context) {
 // @Router /ab/tag/add/{guid} [post]
 // @Security BearerAuth
 func (a *Ab) TagAdd(c *gin.Context) {
+
 	t := &model.Tag{}
 	err := c.ShouldBindJSON(t)
 	if err != nil {
 		response.Error(c, response.TranslateMsg(c, "ParamsError")+err.Error())
 		return
 	}
+
 	u := service.AllService.UserService.CurUser(c)
-	tag := service.AllService.TagService.InfoByUserIdAndName(u.Id, t.Name)
+	guid := c.Param("guid")
+	_, uid, cid, err := a.CheckGuid(u, guid)
+	if err != nil {
+		response.Error(c, response.TranslateMsg(c, err.Error()))
+		return
+	}
+
+	//check privileges
+	if !service.AllService.AddressBookService.CheckUserWritePrivilege(u, uid, cid) {
+		response.Error(c, response.TranslateMsg(c, "NoAccess"))
+		return
+	}
+
+	tag := service.AllService.TagService.InfoByUserIdAndNameAndCollectionId(uid, t.Name, cid)
 	if tag != nil && tag.Id != 0 {
 		response.Error(c, response.TranslateMsg(c, "ItemExists"))
 		return
 	}
-	t.UserId = u.Id
+	t.UserId = uid
+	t.CollectionId = cid
 	err = service.AllService.TagService.Create(t)
 	if err != nil {
 		response.Error(c, response.TranslateMsg(c, "OperationFailed")+err.Error())
@@ -157,6 +205,7 @@ func (a *Ab) TagAdd(c *gin.Context) {
 // @Router /ab/tag/rename/{guid} [put]
 // @Security BearerAuth
 func (a *Ab) TagRename(c *gin.Context) {
+
 	t := &requstform.TagRenameForm{}
 	err := c.ShouldBindJSON(t)
 	if err != nil {
@@ -164,12 +213,25 @@ func (a *Ab) TagRename(c *gin.Context) {
 		return
 	}
 	u := service.AllService.UserService.CurUser(c)
-	tag := service.AllService.TagService.InfoByUserIdAndName(u.Id, t.Old)
+	guid := c.Param("guid")
+	_, uid, cid, err := a.CheckGuid(u, guid)
+	if err != nil {
+		response.Error(c, response.TranslateMsg(c, err.Error()))
+		return
+	}
+
+	//check privileges
+	if !service.AllService.AddressBookService.CheckUserWritePrivilege(u, uid, cid) {
+		response.Error(c, response.TranslateMsg(c, "NoAccess"))
+		return
+	}
+
+	tag := service.AllService.TagService.InfoByUserIdAndNameAndCollectionId(uid, t.Old, cid)
 	if tag == nil || tag.Id == 0 {
 		response.Error(c, response.TranslateMsg(c, "ItemNotFound"))
 		return
 	}
-	ntag := service.AllService.TagService.InfoByUserIdAndName(u.Id, t.New)
+	ntag := service.AllService.TagService.InfoByUserIdAndNameAndCollectionId(uid, t.New, cid)
 	if ntag != nil && ntag.Id != 0 {
 		response.Error(c, response.TranslateMsg(c, "ItemExists"))
 		return
@@ -202,7 +264,20 @@ func (a *Ab) TagUpdate(c *gin.Context) {
 		return
 	}
 	u := service.AllService.UserService.CurUser(c)
-	tag := service.AllService.TagService.InfoByUserIdAndName(u.Id, t.Name)
+	guid := c.Param("guid")
+	_, uid, cid, err := a.CheckGuid(u, guid)
+	if err != nil {
+		response.Error(c, response.TranslateMsg(c, err.Error()))
+		return
+	}
+
+	//check privileges
+	if !service.AllService.AddressBookService.CheckUserWritePrivilege(u, uid, cid) {
+		response.Error(c, response.TranslateMsg(c, "NoAccess"))
+		return
+	}
+
+	tag := service.AllService.TagService.InfoByUserIdAndNameAndCollectionId(uid, t.Name, cid)
 	if tag == nil || tag.Id == 0 {
 		response.Error(c, response.TranslateMsg(c, "ItemNotFound"))
 		return
@@ -228,6 +303,7 @@ func (a *Ab) TagUpdate(c *gin.Context) {
 // @Router /ab/tag/{guid} [delete]
 // @Security BearerAuth
 func (a *Ab) TagDel(c *gin.Context) {
+
 	t := &[]string{}
 	err := c.ShouldBind(t)
 	if err != nil {
@@ -236,8 +312,21 @@ func (a *Ab) TagDel(c *gin.Context) {
 	}
 	//fmt.Println(t)
 	u := service.AllService.UserService.CurUser(c)
+	guid := c.Param("guid")
+	_, uid, cid, err := a.CheckGuid(u, guid)
+	if err != nil {
+		response.Error(c, response.TranslateMsg(c, err.Error()))
+		return
+	}
+
+	//check privileges
+	if !service.AllService.AddressBookService.CheckUserFullControlPrivilege(u, uid, cid) {
+		response.Error(c, response.TranslateMsg(c, "NoAccess"))
+		return
+	}
+
 	for _, name := range *t {
-		tag := service.AllService.TagService.InfoByUserIdAndName(u.Id, name)
+		tag := service.AllService.TagService.InfoByUserIdAndNameAndCollectionId(uid, name, cid)
 		if tag == nil || tag.Id == 0 {
 			response.Error(c, response.TranslateMsg(c, "ItemNotFound"))
 			return
@@ -272,7 +361,7 @@ func (a *Ab) Personal(c *gin.Context) {
 	       rule = json['rule'] ?? 0;
 	*/
 	if global.Config.Rustdesk.Personal == 1 {
-		guid := strconv.Itoa(int(user.GroupId)) + "-" + strconv.Itoa(int(user.Id))
+		guid := a.ComposeGuid(user.GroupId, user.Id, 0)
 		//如果返回了guid，后面的请求会有变化
 		c.JSON(http.StatusOK, gin.H{
 			"guid": guid,
@@ -315,36 +404,137 @@ func (a *Ab) Settings(c *gin.Context) {
 // @Router /ab/shared/profiles [post]
 // @Security BearerAuth
 func (a *Ab) SharedProfiles(c *gin.Context) {
-	//AbProfile.fromJson(Map<String, dynamic> json)
-	//: guid = json['guid'] ?? '',
-	//	name = json['name'] ?? '',
-	//	owner = json['owner'] ?? '',
-	//	note = json['note'] ?? '',
-	//	rule = json['rule'] ?? 0;
-	//暂时没必要返回数据，可能是为了共享地址簿
-	/*item := map[string]interface{}{
-		"guid":  "1",
-		"name":  "admin",
-		"owner": "admin",
-		"note":  "admin11",
-		"rule":  3,
+
+	var res []*api.SharedProfilesPayload
+
+	user := service.AllService.UserService.CurUser(c)
+	myAbCollectionList := service.AllService.AddressBookService.ListCollectionByUserId(user.Id)
+	for _, ab := range myAbCollectionList.AddressBookCollection {
+		res = append(res, &api.SharedProfilesPayload{
+			Guid:  a.ComposeGuid(user.GroupId, user.Id, ab.Id),
+			Name:  ab.Name,
+			Owner: user.Username,
+			Rule:  model.ShareAddressBookRuleRuleFullControl,
+		})
 	}
-	item2 := map[string]interface{}{
-		"guid":  "2",
-		"name":  "admin2",
-		"owner": "admin2",
-		"note":  "admin22",
-		"rule":  2,
+
+	allAbIds := make(map[uint]int) //用map去重，并保留最大Rule
+	allUserIds := make(map[uint]*model.User)
+	rules := service.AllService.AddressBookService.CollectionReadRules(user)
+	for _, rule := range rules {
+		//先判断是否存在
+		r, ok := allAbIds[rule.CollectionId]
+		if ok {
+			//再判断权限大小
+			if r < rule.Rule {
+				allAbIds[rule.CollectionId] = rule.Rule
+			}
+		} else {
+			allAbIds[rule.CollectionId] = rule.Rule
+			allUserIds[rule.UserId] = nil
+		}
+
 	}
-	c.JSON(http.StatusOK, gin.H{
-		"total": 2,
-		"data":  []interface{}{item, item2},
-	})*/
+	abids := utils.Keys(allAbIds)
+	collections := service.AllService.AddressBookService.ListCollectionByIds(abids)
+
+	ids := utils.Keys(allUserIds)
+	allUsers := service.AllService.UserService.ListByIds(ids)
+	for _, u := range allUsers {
+		allUserIds[u.Id] = u
+	}
+
+	for _, collection := range collections {
+		_u, ok := allUserIds[collection.UserId]
+		if !ok {
+			continue
+		}
+		res = append(res, &api.SharedProfilesPayload{
+			Guid:  a.ComposeGuid(_u.GroupId, _u.Id, collection.Id),
+			Name:  collection.Name,
+			Owner: _u.Username,
+			Rule:  allAbIds[collection.Id],
+		})
+	}
 
 	c.JSON(http.StatusOK, gin.H{
-		"total": 0,
-		"data":  nil,
+		"total": 0, //len(res),
+		"data":  res,
 	})
+}
+
+// ParseGuid
+func (a *Ab) ParseGuid(guid string) (gid, uid, cid uint) {
+	//用-切割 guid
+	guids := strings.Split(guid, "-")
+	if len(guids) < 2 {
+		return 0, 0, 0
+	}
+	if len(guids) != 3 {
+		cid = 0
+	} else {
+		s, err := strconv.Atoi(guids[2])
+		if err != nil {
+			return 0, 0, 0
+		}
+		cid = uint(s)
+	}
+	g, err := strconv.Atoi(guids[0])
+	if err != nil {
+		return 0, 0, 0
+	}
+	gid = uint(g)
+	u, err := strconv.Atoi(guids[1])
+	if err != nil {
+		return 0, 0, 0
+	}
+	uid = uint(u)
+	return
+}
+
+// ComposeGuid
+func (a *Ab) ComposeGuid(gid, uid, cid uint) string {
+	return strconv.Itoa(int(gid)) + "-" + strconv.Itoa(int(uid)) + "-" + strconv.Itoa(int(cid))
+}
+
+// CheckGuid
+func (a *Ab) CheckGuid(cu *model.User, guid string) (gid, uid, cid uint, err error) {
+	gid, uid, cid = a.ParseGuid(guid)
+	err = nil
+	if gid == 0 || uid == 0 {
+		err = errors.New("ParamsError")
+		return
+	}
+	u := &model.User{}
+	if cu.Id == uid {
+		u = cu
+	} else {
+		u = service.AllService.UserService.InfoById(uid)
+	}
+	if u == nil || u.Id == 0 {
+		err = errors.New("ParamsError")
+		return
+	}
+	if u.GroupId != gid {
+		err = errors.New("ParamsError")
+		return
+	}
+	if cid == 0 && cu.Id != uid {
+		err = errors.New("ParamsError")
+		return
+	}
+	if cid > 0 {
+		c := service.AllService.AddressBookService.CollectionInfoById(cid)
+		if c == nil || c.Id == 0 {
+			err = errors.New("ParamsError")
+			return
+		}
+		if c.UserId != uid {
+			err = errors.New("ParamsError")
+			return
+		}
+	}
+	return
 }
 
 // Peers
@@ -361,31 +551,26 @@ func (a *Ab) SharedProfiles(c *gin.Context) {
 // @Router /ab/peers [post]
 // @Security BearerAuth
 func (a *Ab) Peers(c *gin.Context) {
-	user := service.AllService.UserService.CurUser(c)
-	al := service.AllService.AddressBookService.ListByUserId(user.Id, 1, 1000)
+	u := service.AllService.UserService.CurUser(c)
+	guid := c.Query("ab")
+	_, uid, cid, err := a.CheckGuid(u, guid)
+	if err != nil {
+		response.Error(c, response.TranslateMsg(c, err.Error()))
+		return
+	}
+
+	//check privileges
+	if !service.AllService.AddressBookService.CheckUserReadPrivilege(u, uid, cid) {
+		response.Error(c, response.TranslateMsg(c, "NoAccess"))
+		return
+	}
+
+	al := service.AllService.AddressBookService.ListByUserIdAndCollectionId(uid, cid, 1, 1000)
 	c.JSON(http.StatusOK, gin.H{
 		"total":            al.Total,
 		"data":             al.AddressBooks,
 		"licensed_devices": 99999,
 	})
-}
-
-// PTags
-// @Tags 地址[Personal]
-// @Summary 标签
-// @Description 标签
-// @Accept  json
-// @Produce  json
-// @Param guid path string true "guid"
-// @Success 200 {object} model.TagList
-// @Failure 500 {object} response.ErrorResponse
-// @Router /ab/tags/{guid} [post]
-// @Security BearerAuth
-func (a *Ab) PTags(c *gin.Context) {
-	user := service.AllService.UserService.CurUser(c)
-
-	tags := service.AllService.TagService.ListByUserId(user.Id)
-	c.JSON(http.StatusOK, tags.Tags)
 }
 
 // PeerAdd
@@ -402,18 +587,31 @@ func (a *Ab) PTags(c *gin.Context) {
 func (a *Ab) PeerAdd(c *gin.Context) {
 	// forceAlwaysRelay永远是字符串"false"
 	//f := &gin.H{}
-	//guid := c.Param("guid")
 	f := &requstform.PersonalAddressBookForm{}
 	err := c.ShouldBindJSON(f)
 	if err != nil {
 		response.Error(c, response.TranslateMsg(c, "ParamsError")+err.Error())
 		return
 	}
-	//fmt.Println(f)
-	u := service.AllService.UserService.CurUser(c)
-	f.UserId = u.Id
-	ab := f.ToAddressBook()
 
+	u := service.AllService.UserService.CurUser(c)
+	guid := c.Param("guid")
+	_, uid, cid, err := a.CheckGuid(u, guid)
+	if err != nil {
+		response.Error(c, response.TranslateMsg(c, err.Error()))
+		return
+	}
+
+	//check privileges
+	if !service.AllService.AddressBookService.CheckUserWritePrivilege(u, uid, cid) {
+		response.Error(c, response.TranslateMsg(c, "NoAccess"))
+		return
+	}
+
+	//fmt.Println(f)
+	f.UserId = uid
+	ab := f.ToAddressBook()
+	ab.CollectionId = cid
 	if ab.Platform == "" || ab.Username == "" || ab.Hostname == "" {
 		peer := service.AllService.PeerService.FindById(ab.Id)
 		if peer.RowId != 0 {
@@ -450,8 +648,21 @@ func (a *Ab) PeerDel(c *gin.Context) {
 		return
 	}
 	u := service.AllService.UserService.CurUser(c)
+	guid := c.Param("guid")
+	_, uid, cid, err := a.CheckGuid(u, guid)
+	if err != nil {
+		response.Error(c, response.TranslateMsg(c, err.Error()))
+		return
+	}
+
+	//check privileges
+	if !service.AllService.AddressBookService.CheckUserFullControlPrivilege(u, uid, cid) {
+		response.Error(c, response.TranslateMsg(c, "NoAccess"))
+		return
+	}
+
 	for _, id := range *f {
-		ab := service.AllService.AddressBookService.InfoByUserIdAndId(u.Id, id)
+		ab := service.AllService.AddressBookService.InfoByUserIdAndIdAndCid(uid, id, cid)
 		if ab == nil || ab.RowId == 0 {
 			response.Error(c, response.TranslateMsg(c, "ItemNotFound"))
 			return
@@ -485,10 +696,23 @@ func (a *Ab) PeerUpdate(c *gin.Context) {
 		response.Error(c, response.TranslateMsg(c, "ParamsError")+err.Error())
 		return
 	}
+	u := service.AllService.UserService.CurUser(c)
+	guid := c.Param("guid")
+	_, uid, cid, err := a.CheckGuid(u, guid)
+	if err != nil {
+		response.Error(c, response.TranslateMsg(c, err.Error()))
+		return
+	}
+
+	//check privileges
+	if !service.AllService.AddressBookService.CheckUserWritePrivilege(u, uid, cid) {
+		response.Error(c, response.TranslateMsg(c, "NoAccess"))
+		return
+	}
+
 	//fmt.Println(f)
 	//return
-	u := service.AllService.UserService.CurUser(c)
-	ab := service.AllService.AddressBookService.InfoByUserIdAndId(u.Id, f.Id)
+	ab := service.AllService.AddressBookService.InfoByUserIdAndIdAndCid(uid, f.Id, cid)
 	if ab == nil || ab.RowId == 0 {
 		response.Error(c, response.TranslateMsg(c, "ItemNotFound"))
 		return

@@ -14,9 +14,9 @@ func (s *TagService) Info(id uint) *model.Tag {
 	global.DB.Where("id = ?", id).First(p)
 	return p
 }
-func (s *TagService) InfoByUserIdAndName(userid uint, name string) *model.Tag {
+func (s *TagService) InfoByUserIdAndNameAndCollectionId(userid uint, name string, cid uint) *model.Tag {
 	p := &model.Tag{}
-	global.DB.Where("user_id = ? and name = ?", userid, name).First(p)
+	global.DB.Where("user_id = ? and name = ? and collection_id = ?", userid, name, cid).First(p)
 	return p
 }
 
@@ -26,7 +26,12 @@ func (s *TagService) ListByUserId(userId uint) (res *model.TagList) {
 	})
 	return
 }
-
+func (s *TagService) ListByUserIdAndCollectionId(userId, cid uint) (res *model.TagList) {
+	res = s.List(1, 1000, func(tx *gorm.DB) {
+		tx.Where("user_id = ? and collection_id = ?", userId, cid)
+	})
+	return
+}
 func (s *TagService) UpdateTags(userId uint, tags map[string]uint) {
 	tx := global.DB.Begin()
 	//先查询所有tag
@@ -58,13 +63,13 @@ func (s *TagService) UpdateTags(userId uint, tags map[string]uint) {
 }
 
 // InfoById 根据用户id取用户信息
-func (t *TagService) InfoById(id uint) *model.Tag {
+func (s *TagService) InfoById(id uint) *model.Tag {
 	u := &model.Tag{}
 	global.DB.Where("id = ?", id).First(u)
 	return u
 }
 
-func (t *TagService) List(page, pageSize uint, where func(tx *gorm.DB)) (res *model.TagList) {
+func (s *TagService) List(page, pageSize uint, where func(tx *gorm.DB)) (res *model.TagList) {
 	res = &model.TagList{}
 	res.Page = int64(page)
 	res.PageSize = int64(pageSize)
@@ -79,15 +84,15 @@ func (t *TagService) List(page, pageSize uint, where func(tx *gorm.DB)) (res *mo
 }
 
 // Create 创建
-func (t *TagService) Create(u *model.Tag) error {
+func (s *TagService) Create(u *model.Tag) error {
 	res := global.DB.Create(u).Error
 	return res
 }
-func (t *TagService) Delete(u *model.Tag) error {
+func (s *TagService) Delete(u *model.Tag) error {
 	return global.DB.Delete(u).Error
 }
 
 // Update 更新
-func (t *TagService) Update(u *model.Tag) error {
-	return global.DB.Model(u).Updates(u).Error
+func (s *TagService) Update(u *model.Tag) error {
+	return global.DB.Model(u).Select("*").Omit("created_at").Updates(u).Error
 }
