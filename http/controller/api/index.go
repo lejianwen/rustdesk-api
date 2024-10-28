@@ -54,10 +54,9 @@ func (i *Index) Heartbeat(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{})
 		return
 	}
-	//如果在一分钟以内则不更新
-	if time.Now().Unix()-peer.LastOnlineTime > 60 {
-		peer.LastOnlineTime = time.Now().Unix()
-		upp := &model.Peer{RowId: peer.RowId, LastOnlineTime: peer.LastOnlineTime}
+	//如果在40s以内则不更新
+	if time.Now().Unix()-peer.LastOnlineTime > 40 {
+		upp := &model.Peer{RowId: peer.RowId, LastOnlineTime: time.Now().Unix(), LastOnlineIp: c.ClientIP()}
 		service.AllService.PeerService.Update(upp)
 	}
 	c.JSON(http.StatusOK, gin.H{})
