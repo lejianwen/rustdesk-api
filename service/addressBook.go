@@ -130,6 +130,11 @@ func (s *AddressBookService) Update(u *model.AddressBook) error {
 	return global.DB.Model(u).Updates(u).Error
 }
 
+// UpdateByMap 更新
+func (s *AddressBookService) UpdateByMap(u *model.AddressBook, data map[string]interface{}) error {
+	return global.DB.Model(u).Updates(data).Error
+}
+
 // UpdateAll 更新
 func (s *AddressBookService) UpdateAll(u *model.AddressBook) error {
 	return global.DB.Model(u).Select("*").Omit("created_at").Updates(u).Error

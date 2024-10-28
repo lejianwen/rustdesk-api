@@ -91,3 +91,12 @@ func Values[K comparable, V any](m map[K]V) []V {
 	}
 	return values
 }
+
+func InArray(k string, arr []string) bool {
+	for _, v := range arr {
+		if k == v {
+			return true
+		}
+	}
+	return false
+}

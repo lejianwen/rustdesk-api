@@ -689,9 +689,9 @@ func (a *Ab) PeerDel(c *gin.Context) {
 // @Router /ab/peer/update/{guid} [put]
 // @Security BearerAuth
 func (a *Ab) PeerUpdate(c *gin.Context) {
-	//f := &gin.H{}
-	f := &requstform.PersonalAddressBookForm{}
-	err := c.ShouldBindJSON(f)
+	f := gin.H{}
+	//f := &requstform.PersonalAddressBookForm{}
+	err := c.ShouldBindJSON(&f)
 	if err != nil {
 		response.Error(c, response.TranslateMsg(c, "ParamsError")+err.Error())
 		return
@@ -709,17 +709,33 @@ func (a *Ab) PeerUpdate(c *gin.Context) {
 		response.Error(c, response.TranslateMsg(c, "NoAccess"))
 		return
 	}
-
 	//fmt.Println(f)
-	//return
-	ab := service.AllService.AddressBookService.InfoByUserIdAndIdAndCid(uid, f.Id, cid)
+	//判断f["Id"]是否存在
+	fid, ok := f["id"]
+	if !ok {
+		response.Error(c, response.TranslateMsg(c, "ParamsError"))
+		return
+	}
+	fidstr := fid.(string)
+
+	ab := service.AllService.AddressBookService.InfoByUserIdAndIdAndCid(uid, fidstr, cid)
 	if ab == nil || ab.RowId == 0 {
 		response.Error(c, response.TranslateMsg(c, "ItemNotFound"))
 		return
 	}
-	nab := f.ToAddressBook()
-	nab.RowId = ab.RowId
-	err = service.AllService.AddressBookService.Update(nab)
+	//允许的字段
+	allowUp := []string{"password", "hash", "tags", "alias"}
+	//f中的字段如果不在allowUp中，就删除
+	for k := range f {
+		if !utils.InArray(k, allowUp) {
+			delete(f, k)
+		}
+	}
+	//fmt.Println(f)
+	if tags, _ok := f["tags"]; _ok {
+		f["tags"], _ = json.Marshal(tags)
+	}
+	err = service.AllService.AddressBookService.UpdateByMap(ab, f)
 	if err != nil {
 		response.Error(c, response.TranslateMsg(c, "OperationFailed")+err.Error())
 		return
