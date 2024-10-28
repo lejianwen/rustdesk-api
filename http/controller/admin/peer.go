@@ -207,3 +207,21 @@ func (ct *Peer) BatchDelete(c *gin.Context) {
 	}
 	response.Success(c, nil)
 }
+
+func (ct *Peer) SimpleData(c *gin.Context) {
+	f := &admin.SimpleDataQuery{}
+	if err := c.ShouldBindJSON(f); err != nil {
+		response.Fail(c, 101, response.TranslateMsg(c, "ParamsError")+err.Error())
+		return
+	}
+	if len(f.Ids) == 0 {
+		response.Fail(c, 101, response.TranslateMsg(c, "ParamsError"))
+		return
+	}
+	res := service.AllService.PeerService.List(1, 99999, func(tx *gorm.DB) {
+		//可以公开的情报
+		tx.Select("id,version")
+		tx.Where("id in (?)", f.Ids)
+	})
+	response.Success(c, res)
+}
