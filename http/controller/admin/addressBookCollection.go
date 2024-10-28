@@ -4,30 +4,31 @@ import (
 	"Gwen/global"
 	"Gwen/http/request/admin"
 	"Gwen/http/response"
+	"Gwen/model"
 	"Gwen/service"
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 	"strconv"
 )
 
-type Tag struct {
+type AddressBookCollection struct {
 }
 
-// Detail 标签
-// @Tags 标签
-// @Summary 标签详情
-// @Description 标签详情
+// Detail 地址簿集合
+// @AddressBookCollections 地址簿集合
+// @Summary 地址簿集合详情
+// @Description 地址簿集合详情
 // @Accept  json
 // @Produce  json
 // @Param id path int true "ID"
-// @Success 200 {object} response.Response{data=model.Tag}
+// @Success 200 {object} response.Response{data=model.AddressBookCollection}
 // @Failure 500 {object} response.Response
-// @Router /admin/tag/detail/{id} [get]
+// @Router /admin/address_book_collection/detail/{id} [get]
 // @Security token
-func (ct *Tag) Detail(c *gin.Context) {
+func (abc *AddressBookCollection) Detail(c *gin.Context) {
 	id := c.Param("id")
 	iid, _ := strconv.Atoi(id)
-	t := service.AllService.TagService.InfoById(uint(iid))
+	t := service.AllService.AddressBookService.CollectionInfoById(uint(iid))
 	u := service.AllService.UserService.CurUser(c)
 	if !service.AllService.UserService.IsAdmin(u) && t.UserId != u.Id {
 		response.Fail(c, 101, response.TranslateMsg(c, "NoAccess"))
@@ -41,19 +42,19 @@ func (ct *Tag) Detail(c *gin.Context) {
 	return
 }
 
-// Create 创建标签
-// @Tags 标签
-// @Summary 创建标签
-// @Description 创建标签
+// Create 创建地址簿集合
+// @AddressBookCollections 地址簿集合
+// @Summary 创建地址簿集合
+// @Description 创建地址簿集合
 // @Accept  json
 // @Produce  json
-// @Param body body admin.TagForm true "标签信息"
-// @Success 200 {object} response.Response{data=model.Tag}
+// @Param body body model.AddressBookCollection true "地址簿集合信息"
+// @Success 200 {object} response.Response{data=model.AddressBookCollection}
 // @Failure 500 {object} response.Response
-// @Router /admin/tag/create [post]
+// @Router /admin/address_book_collection/create [post]
 // @Security token
-func (ct *Tag) Create(c *gin.Context) {
-	f := &admin.TagForm{}
+func (abc *AddressBookCollection) Create(c *gin.Context) {
+	f := &model.AddressBookCollection{}
 	if err := c.ShouldBindJSON(f); err != nil {
 		response.Fail(c, 101, response.TranslateMsg(c, "ParamsError")+err.Error())
 		return
@@ -63,12 +64,13 @@ func (ct *Tag) Create(c *gin.Context) {
 		response.Fail(c, 101, errList[0])
 		return
 	}
-	t := f.ToTag()
+	//t := f.ToAddressBookCollection()
+	t := f
 	u := service.AllService.UserService.CurUser(c)
 	if !service.AllService.UserService.IsAdmin(u) || t.UserId == 0 {
 		t.UserId = u.Id
 	}
-	err := service.AllService.TagService.Create(t)
+	err := service.AllService.AddressBookService.CreateCollection(t)
 	if err != nil {
 		response.Fail(c, 101, response.TranslateMsg(c, "OperationFailed")+err.Error())
 		return
@@ -77,21 +79,21 @@ func (ct *Tag) Create(c *gin.Context) {
 }
 
 // List 列表
-// @Tags 标签
-// @Summary 标签列表
-// @Description 标签列表
+// @AddressBookCollections 地址簿集合
+// @Summary 地址簿集合列表
+// @Description 地址簿集合列表
 // @Accept  json
 // @Produce  json
 // @Param page query int false "页码"
 // @Param page_size query int false "页大小"
 // @Param is_my query int false "是否是我的"
 // @Param user_id query int false "用户id"
-// @Success 200 {object} response.Response{data=model.TagList}
+// @Success 200 {object} response.Response{data=model.AddressBookCollectionList}
 // @Failure 500 {object} response.Response
-// @Router /admin/tag/list [get]
+// @Router /admin/address_book_collection/list [get]
 // @Security token
-func (ct *Tag) List(c *gin.Context) {
-	query := &admin.TagQuery{}
+func (abc *AddressBookCollection) List(c *gin.Context) {
+	query := &admin.AddressBookCollectionQuery{}
 	if err := c.ShouldBindQuery(query); err != nil {
 		response.Fail(c, 101, response.TranslateMsg(c, "ParamsError")+err.Error())
 		return
@@ -100,33 +102,27 @@ func (ct *Tag) List(c *gin.Context) {
 	if !service.AllService.UserService.IsAdmin(u) || query.IsMy == 1 {
 		query.UserId = int(u.Id)
 	}
-	res := service.AllService.TagService.List(query.Page, query.PageSize, func(tx *gorm.DB) {
-		tx.Preload("Collection", func(txc *gorm.DB) *gorm.DB {
-			return txc.Select("id,name")
-		})
+	res := service.AllService.AddressBookService.ListCollection(query.Page, query.PageSize, func(tx *gorm.DB) {
 		if query.UserId > 0 {
 			tx.Where("user_id = ?", query.UserId)
-		}
-		if query.CollectionId != nil && *query.CollectionId >= 0 {
-			tx.Where("collection_id = ?", query.CollectionId)
 		}
 	})
 	response.Success(c, res)
 }
 
 // Update 编辑
-// @Tags 标签
-// @Summary 标签编辑
-// @Description 标签编辑
+// @AddressBookCollections 地址簿集合
+// @Summary 地址簿集合编辑
+// @Description 地址簿集合编辑
 // @Accept  json
 // @Produce  json
-// @Param body body admin.TagForm true "标签信息"
-// @Success 200 {object} response.Response{data=model.Tag}
+// @Param body body model.AddressBookCollection true "地址簿集合信息"
+// @Success 200 {object} response.Response{data=model.AddressBookCollection}
 // @Failure 500 {object} response.Response
-// @Router /admin/tag/update [post]
+// @Router /admin/address_book_collection/update [post]
 // @Security token
-func (ct *Tag) Update(c *gin.Context) {
-	f := &admin.TagForm{}
+func (abc *AddressBookCollection) Update(c *gin.Context) {
+	f := &model.AddressBookCollection{}
 	if err := c.ShouldBindJSON(f); err != nil {
 		response.Fail(c, 101, response.TranslateMsg(c, "ParamsError")+err.Error())
 		return
@@ -140,13 +136,13 @@ func (ct *Tag) Update(c *gin.Context) {
 		response.Fail(c, 101, response.TranslateMsg(c, "ParamsError"))
 		return
 	}
-	t := f.ToTag()
+	t := f //f.ToAddressBookCollection()
 	u := service.AllService.UserService.CurUser(c)
 	if !service.AllService.UserService.IsAdmin(u) && t.UserId != u.Id {
 		response.Fail(c, 101, response.TranslateMsg(c, "NoAccess"))
 		return
 	}
-	err := service.AllService.TagService.Update(t)
+	err := service.AllService.AddressBookService.UpdateCollection(t)
 	if err != nil {
 		response.Fail(c, 101, response.TranslateMsg(c, "OperationFailed")+err.Error())
 		return
@@ -155,18 +151,18 @@ func (ct *Tag) Update(c *gin.Context) {
 }
 
 // Delete 删除
-// @Tags 标签
-// @Summary 标签删除
-// @Description 标签删除
+// @AddressBookCollections 地址簿集合
+// @Summary 地址簿集合删除
+// @Description 地址簿集合删除
 // @Accept  json
 // @Produce  json
-// @Param body body admin.TagForm true "标签信息"
+// @Param body body model.AddressBookCollection true "地址簿集合信息"
 // @Success 200 {object} response.Response
 // @Failure 500 {object} response.Response
-// @Router /admin/tag/delete [post]
+// @Router /admin/address_book_collection/delete [post]
 // @Security token
-func (ct *Tag) Delete(c *gin.Context) {
-	f := &admin.TagForm{}
+func (abc *AddressBookCollection) Delete(c *gin.Context) {
+	f := &model.AddressBookCollection{}
 	if err := c.ShouldBindJSON(f); err != nil {
 		response.Fail(c, 101, response.TranslateMsg(c, "ParamsError")+err.Error())
 		return
@@ -177,14 +173,14 @@ func (ct *Tag) Delete(c *gin.Context) {
 		response.Fail(c, 101, errList[0])
 		return
 	}
-	t := service.AllService.TagService.InfoById(f.Id)
+	t := service.AllService.AddressBookService.CollectionInfoById(f.Id)
 	u := service.AllService.UserService.CurUser(c)
 	if !service.AllService.UserService.IsAdmin(u) && t.UserId != u.Id {
 		response.Fail(c, 101, response.TranslateMsg(c, "NoAccess"))
 		return
 	}
 	if u.Id > 0 {
-		err := service.AllService.TagService.Delete(t)
+		err := service.AllService.AddressBookService.DeleteCollection(t)
 		if err == nil {
 			response.Success(c, nil)
 			return

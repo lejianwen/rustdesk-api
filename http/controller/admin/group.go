@@ -63,7 +63,7 @@ func (ct *Group) Create(c *gin.Context) {
 		response.Fail(c, 101, response.TranslateMsg(c, "OperationFailed")+err.Error())
 		return
 	}
-	response.Success(c, u)
+	response.Success(c, nil)
 }
 
 // List 列表

@@ -50,7 +50,7 @@ func (i *Index) Heartbeat(c *gin.Context) {
 		return
 	}
 	peer := service.AllService.PeerService.FindByUuid(info.Uuid)
-	if peer == nil {
+	if peer == nil || peer.RowId == 0 {
 		c.JSON(http.StatusOK, gin.H{})
 		return
 	}

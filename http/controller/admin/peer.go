@@ -59,13 +59,13 @@ func (ct *Peer) Create(c *gin.Context) {
 		response.Fail(c, 101, errList[0])
 		return
 	}
-	u := f.ToPeer()
-	err := service.AllService.PeerService.Create(u)
+	p := f.ToPeer()
+	err := service.AllService.PeerService.Create(p)
 	if err != nil {
 		response.Fail(c, 101, response.TranslateMsg(c, "OperationFailed")+err.Error())
 		return
 	}
-	response.Success(c, u)
+	response.Success(c, nil)
 }
 
 // List 列表

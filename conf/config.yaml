@@ -3,7 +3,7 @@ app:
   web-client: 1  # 1:启用 0:禁用
 gin:
   api-addr: "0.0.0.0:21114"
-  mode: "release" #release,debug,test
+  mode: "debug" #release,debug,test
   resources-path: 'resources'  #对外静态文件目录
   trust-proxy: ""
 gorm:
@@ -23,11 +23,11 @@ rustdesk:
   personal: 1
 logger:
   path: "./runtime/log.txt"
-  level: "warn" #trace,debug,info,warn,error,fatal
+  level: "debug" #trace,debug,info,warn,error,fatal
   report-caller: true
 proxy:
   enable: false
-  host: ""
+  host: "http://127.0.0.1:1080"
 redis:
   addr: "127.0.0.1:6379"
   password: ""

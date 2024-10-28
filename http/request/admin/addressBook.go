@@ -23,6 +23,7 @@ type AddressBookForm struct {
 	Online           bool     `json:"online"`
 	LoginName        string   `json:"loginName" `
 	SameServer       bool     `json:"sameServer"`
+	CollectionId     uint     `json:"collection_id"`
 }
 
 func (a AddressBookForm) ToAddressBook() *model.AddressBook {
@@ -46,6 +47,7 @@ func (a AddressBookForm) ToAddressBook() *model.AddressBook {
 		Online:           a.Online,
 		LoginName:        a.LoginName,
 		SameServer:       a.SameServer,
+		CollectionId:     a.CollectionId,
 	}
 
 }
@@ -72,17 +74,19 @@ func (a AddressBookForm) ToAddressBooks() []*model.AddressBook {
 			Online:           a.Online,
 			LoginName:        a.LoginName,
 			SameServer:       a.SameServer,
+			CollectionId:     a.CollectionId,
 		})
 	}
 	return abs
 }
 
 type AddressBookQuery struct {
-	UserId   int    `form:"user_id"`
-	IsMy     int    `form:"is_my"`
-	Username string `form:"username"`
-	Hostname string `form:"hostname"`
-	Id       string `form:"id"`
+	UserId       int    `form:"user_id"`
+	CollectionId *int   `form:"collection_id"`
+	IsMy         int    `form:"is_my"`
+	Username     string `form:"username"`
+	Hostname     string `form:"hostname"`
+	Id           string `form:"id"`
 	PageQuery
 }
 
@@ -101,4 +105,20 @@ func (sbwcf ShareByWebClientForm) ToShareRecord() *model.ShareRecord {
 		Password:     sbwcf.Password,
 		Expire:       sbwcf.Expire,
 	}
+}
+
+type AddressBookCollectionQuery struct {
+	UserId int `form:"user_id"`
+	IsMy   int `form:"is_my"`
+	PageQuery
+}
+
+type AddressBookCollectionSimpleListQuery struct {
+	UserIds []uint `form:"user_ids"`
+}
+type AddressBookCollectionRuleQuery struct {
+	UserId       int `form:"user_id"`
+	CollectionId int `form:"collection_id"`
+	IsMy         int `form:"is_my"`
+	PageQuery
 }

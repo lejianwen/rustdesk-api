@@ -28,6 +28,8 @@ func Init(g *gin.Engine) {
 	OauthBind(adg)
 	LoginLogBind(adg)
 	AuditBind(adg)
+	AddressBookCollectionBind(adg)
+	AddressBookCollectionRuleBind(adg)
 	rs := &admin.Rustdesk{}
 	adg.GET("/server-config", rs.ServerConfig)
 	adg.GET("/app-config", rs.AppConfig)
@@ -48,6 +50,7 @@ func UserBind(rg *gin.RouterGroup) {
 		aR.GET("/current", cont.Current)
 		aR.POST("/changeCurPwd", cont.ChangeCurPwd)
 		aR.POST("/myOauth", cont.MyOauth)
+		aR.POST("/groupUsers", cont.GroupUsers)
 	}
 	aRP := rg.Group("/user").Use(middleware.AdminPrivilege())
 	{
@@ -151,6 +154,29 @@ func AuditBind(rg *gin.RouterGroup) {
 	afR := rg.Group("/audit_file").Use(middleware.AdminPrivilege())
 	afR.GET("/list", cont.FileList)
 	afR.POST("/delete", cont.FileDelete)
+}
+func AddressBookCollectionBind(rg *gin.RouterGroup) {
+	aR := rg.Group("/address_book_collection")
+	{
+		cont := &admin.AddressBookCollection{}
+		aR.GET("/list", cont.List)
+		aR.GET("/detail/:id", cont.Detail)
+		aR.POST("/create", cont.Create)
+		aR.POST("/update", cont.Update)
+		aR.POST("/delete", cont.Delete)
+	}
+
+}
+func AddressBookCollectionRuleBind(rg *gin.RouterGroup) {
+	aR := rg.Group("/address_book_collection_rule")
+	{
+		cont := &admin.AddressBookCollectionRule{}
+		aR.GET("/list", cont.List)
+		aR.GET("/detail/:id", cont.Detail)
+		aR.POST("/create", cont.Create)
+		aR.POST("/update", cont.Update)
+		aR.POST("/delete", cont.Delete)
+	}
 }
 
 /*
