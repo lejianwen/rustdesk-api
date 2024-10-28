@@ -112,6 +112,7 @@ func PeerBind(rg *gin.RouterGroup) {
 		aR.POST("/create", cont.Create)
 		aR.POST("/update", cont.Update)
 		aR.POST("/delete", cont.Delete)
+		aR.POST("/simpleData", cont.SimpleData)
 
 		arp := aR.Use(middleware.AdminPrivilege())
 		arp.POST("/batchDelete", cont.BatchDelete)
