@@ -127,6 +127,11 @@ func (s *AddressBookService) Delete(u *model.AddressBook) error {
 
 // Update 更新
 func (s *AddressBookService) Update(u *model.AddressBook) error {
+	return global.DB.Model(u).Updates(u).Error
+}
+
+// UpdateAll 更新
+func (s *AddressBookService) UpdateAll(u *model.AddressBook) error {
 	return global.DB.Model(u).Select("*").Omit("created_at").Updates(u).Error
 }
 
