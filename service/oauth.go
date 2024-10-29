@@ -29,7 +29,6 @@ type OidcEndpoint struct {
 }
 
 type OauthService struct {
-	OidcEndpoint *OidcEndpoint
 }
 
 type GithubUserdata struct {
@@ -93,7 +92,6 @@ type OidcUserdata struct {
 	Email         string `json:"email"`
 	VerifiedEmail bool   `json:"email_verified"`
 	Name          string `json:"name"`
-	Picture       string `json:"picture"`
 	PrefferedUsername string `json:"preffered_username"`
 }
 
@@ -157,29 +155,28 @@ func (os *OauthService) BeginAuth(op string) (error error, code, url string) {
 }
 
 // Method to fetch OIDC configuration dynamically
-func (os *OauthService) FetchOIDCConfig(issuer string) error {
-	configURL := strings.TrimSuffix(issuer, "/") + "/.well-known/openid-configuration"
+func FetchOidcConfig(issuer string) (error, OidcEndpoint) {
+    configURL := strings.TrimSuffix(issuer, "/") + "/.well-known/openid-configuration"
 
-	// Get the HTTP client (with or without proxy based on configuration)
-	client := getHTTPClientWithProxy()
+    // Get the HTTP client (with or without proxy based on configuration)
+    client := getHTTPClientWithProxy()
 
-	resp, err := client.Get(configURL)
-	if err != nil {
-		return errors.New("failed to fetch OIDC configuration")
-	}
-	defer resp.Body.Close()
+    resp, err := client.Get(configURL)
+    if err != nil {
+        return errors.New("failed to fetch OIDC configuration"), OidcEndpoint{}
+    }
+    defer resp.Body.Close()
 
-	if resp.StatusCode != http.StatusOK {
-		return errors.New("OIDC configuration not found")
-	}
+    if resp.StatusCode != http.StatusOK {
+        return errors.New("OIDC configuration not found, status code: %d"), OidcEndpoint{}
+    }
 
-	var endpoint OidcEndpoint
-	if err := json.NewDecoder(resp.Body).Decode(&endpoint); err != nil {
-		return errors.New("failed to parse OIDC configuration")
-	}
+    var endpoint OidcEndpoint
+    if err := json.NewDecoder(resp.Body).Decode(&endpoint); err != nil {
+        return errors.New("failed to parse OIDC configuration"), OidcEndpoint{}
+    }
 
-	os.OidcEndpoint = &endpoint
-	return nil
+    return nil, endpoint
 }
 
 // GetOauthConfig retrieves the OAuth2 configuration based on the provider type
@@ -234,24 +231,22 @@ func (os *OauthService) getOidcConfig() (error, *oauth2.Config) {
 	}
 
 	// Set scopes
-	scopes := g.Scopes
+	scopes := strings.TrimSpace(g.Scopes)
 	if scopes == "" {
 		scopes = "openid,profile,email"
 	}
 	scopeList := strings.Split(scopes, ",")
-
-	// Fetch OIDC configuration
-	if err := os.FetchOIDCConfig(g.Issuer); err != nil {
+	err, endpoint := FetchOidcConfig(g.Issuer)
+	if err != nil {
 		return err, nil
 	}
-
 	return nil, &oauth2.Config{
 		ClientID:     g.ClientId,
 		ClientSecret: g.ClientSecret,
 		RedirectURL:  g.RedirectUrl,
 		Endpoint: oauth2.Endpoint{
-			AuthURL:  os.OidcEndpoint.AuthURL,
-			TokenURL: os.OidcEndpoint.TokenURL,
+			AuthURL:  endpoint.AuthURL,
+			TokenURL: endpoint.TokenURL,
 		},
 		Scopes: scopeList,
 	}
@@ -363,7 +358,6 @@ func (os *OauthService) OidcCallback(code string) (error error, userData *OidcUs
 	if err != nil {
 		return err, nil
 	}
-
 	// 使用代理配置创建 HTTP 客户端
 	httpClient := getHTTPClientWithProxy()
 	ctx := context.WithValue(context.Background(), oauth2.HTTPClient, httpClient)
@@ -377,7 +371,14 @@ func (os *OauthService) OidcCallback(code string) (error error, userData *OidcUs
 
 	// 使用带有代理的 HTTP 客户端获取用户信息
 	client := oauthConfig.Client(ctx, token)
-	resp, err := client.Get(os.OidcEndpoint.UserInfo)
+	g := os.InfoByOp(model.OauthTypeOidc)
+	err, endpoint := FetchOidcConfig(g.Issuer)
+	if err != nil {
+		global.Logger.Warn("failed fetching OIDC configuration: ", err)
+		error = errors.New("FetchOidcConfigError")
+		return
+	}
+	resp, err := client.Get(endpoint.UserInfo)
 	if err != nil {
 		global.Logger.Warn("failed getting user info: ", err)
 		error = errors.New("GetOauthUserInfoError")
@@ -413,8 +414,8 @@ func (os *OauthService) BindGoogleUser(email, username string, userId uint) erro
 	return os.BindOauthUser(model.OauthTypeGoogle, email, username, userId)
 }
 
-func (os *OauthService) BindOidcUser(openid, username string, userId uint) error {
-	return os.BindOauthUser(model.OauthTypeOidc, openid, username, userId)
+func (os *OauthService) BindOidcUser(sub, username string, userId uint) error {
+	return os.BindOauthUser(model.OauthTypeOidc, sub, username, userId)
 }
 
 func (os *OauthService) BindOauthUser(thirdType, openid, username string, userId uint) error {
