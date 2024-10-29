@@ -1,5 +1,8 @@
 services:
   rustdesk-api:
+    build: 
+      context: .
+      dockerfile: Dockerfile.dev
     image: lejianwen/rustdesk-api
     container_name: rustdesk-api
     environment:
@@ -11,5 +14,6 @@ services:
     ports:
       - 21114:21114
     volumes:
-      - /data/rustdesk/api:/app/data #将数据库挂载出来方便备份
+      - ./data/rustdesk/api:/app/data #将数据库挂载出来方便备份
     restart: unless-stopped
+    command: sleep infnite
