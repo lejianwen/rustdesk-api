@@ -2,7 +2,7 @@ package model
 
 type User struct {
 	IdModel
-	Username string     `json:"username" gorm:"default:'';not null;index,unique"`
+	Username string     `json:"username" gorm:"default:'';not null;uniqueIndex"`
 	Password string     `json:"-" gorm:"default:'';not null;"`
 	Nickname string     `json:"nickname" gorm:"default:'';not null;"`
 	Avatar   string     `json:"avatar" gorm:"default:'';not null;"`
