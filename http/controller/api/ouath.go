@@ -277,7 +277,7 @@ func (o *Oauth) OauthCallback(c *gin.Context) {
 				return
 			}
 			//绑定, user preffered_username as username
-			err = service.AllService.OauthService.BindOidcUser(userData.Sub, userData.PrefferedUsername, v.UserId)
+			err = service.AllService.OauthService.BindOidcUser(userData.Sub, userData.PreferredUsername, v.UserId)
 			if err != nil {
 				c.String(http.StatusInternalServerError, response.TranslateMsg(c, "BindFail"))
 				return
@@ -295,7 +295,7 @@ func (o *Oauth) OauthCallback(c *gin.Context) {
 				if !*oa.AutoRegister {
 					//c.String(http.StatusInternalServerError, "还未绑定用户，请先绑定")
 
-					v.ThirdName = userData.PrefferedUsername
+					v.ThirdName = userData.PreferredUsername
 					v.ThirdOpenId = userData.Sub
 					url := global.Config.Rustdesk.ApiServer + "/_admin/#/oauth/bind/" + cacheKey
 					c.Redirect(http.StatusFound, url)
@@ -303,7 +303,7 @@ func (o *Oauth) OauthCallback(c *gin.Context) {
 				}
 
 				//自动注册
-				u = service.AllService.UserService.RegisterByOidc(userData.PrefferedUsername, userData.Sub)
+				u = service.AllService.UserService.RegisterByOidc(userData.PreferredUsername, userData.Sub)
 				if u.Id == 0 {
 					c.String(http.StatusInternalServerError, response.TranslateMsg(c, "OauthRegisterFailed"))
 					return

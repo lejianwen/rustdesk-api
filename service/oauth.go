@@ -92,7 +92,7 @@ type OidcUserdata struct {
 	Email         string `json:"email"`
 	VerifiedEmail bool   `json:"email_verified"`
 	Name          string `json:"name"`
-	PrefferedUsername string `json:"preffered_username"`
+	PreferredUsername string `json:"preferred_username"`
 }
 
 type OauthCacheItem struct {

@@ -224,9 +224,9 @@ func (us *UserService) RegisterByGoogle(name string, email string) *model.User {
 	return us.RegisterByOauth(model.OauthTypeGoogle, name, email)
 }
 
-// RegisterByOidc 注册, use prefferedUsername as username, sub as openid
-func (us *UserService) RegisterByOidc(prefferedUsername string, sub string) *model.User {
-	return us.RegisterByOauth(model.OauthTypeOidc, prefferedUsername, sub)
+// RegisterByOidc 注册, use PreferredUsername as username, sub as openid
+func (us *UserService) RegisterByOidc(PreferredUsername string, sub string) *model.User {
+	return us.RegisterByOauth(model.OauthTypeOidc, PreferredUsername, sub)
 }
 
 // RegisterByOauth 注册
