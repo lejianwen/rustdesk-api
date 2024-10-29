@@ -140,6 +140,13 @@ func (o *Oauth) Unbind(c *gin.Context) {
 			return
 		}
 	}
+	if f.Op == model.OauthTypeOidc {
+		err = service.AllService.OauthService.UnBindOidcUser(u.Id)
+		if err != nil {
+			response.Fail(c, 101, response.TranslateMsg(c, "OperationFailed")+err.Error())
+			return
+		}
+	}
 
 	response.Success(c, nil)
 }

@@ -196,6 +196,11 @@ func (us *UserService) InfoByGoogleEmail(email string) *model.User {
 	return us.InfoByOauthId(model.OauthTypeGithub, email)
 }
 
+// InfoByOidcSub 根据oidc取用户信息
+func (us *UserService) InfoByOidcSub(sub string) *model.User {
+	return us.InfoByOauthId(model.OauthTypeOidc, sub)
+}
+
 // InfoByOauthId 根据oauth取用户信息
 func (us *UserService) InfoByOauthId(thirdType, uid string) *model.User {
 	ut := AllService.OauthService.UserThirdInfo(thirdType, uid)
@@ -217,6 +222,11 @@ func (us *UserService) RegisterByGithub(githubName string, githubId string) *mod
 // RegisterByGoogle 注册
 func (us *UserService) RegisterByGoogle(name string, email string) *model.User {
 	return us.RegisterByOauth(model.OauthTypeGoogle, name, email)
+}
+
+// RegisterByOidc 注册, use prefferedUsername as username, sub as openid
+func (us *UserService) RegisterByOidc(prefferedUsername string, sub string) *model.User {
+	return us.RegisterByOauth(model.OauthTypeOidc, prefferedUsername, sub)
 }
 
 // RegisterByOauth 注册

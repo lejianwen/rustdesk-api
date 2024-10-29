@@ -11,3 +11,10 @@ type GoogleOauth struct {
 	ClientSecret string `mapstructure:"client-secret"`
 	RedirectUrl  string `mapstructure:"redirect-url"`
 }
+
+type OidcOauth struct {
+	Issuer       string `mapstructure:"issuer"`
+	ClientId     string `mapstructure:"client-id"`
+	ClientSecret string `mapstructure:"client-secret"`
+	RedirectUrl  string `mapstructure:"redirect-url"`
+}
