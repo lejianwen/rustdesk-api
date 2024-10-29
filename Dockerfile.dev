@@ -1,0 +1,42 @@
+# Use build arguments for Go version and architecture
+ARG GO_VERSION=1.23.2
+ARG BUILDARCH
+
+# Stage 1: Build the Go application with swag
+FROM golang:${GO_VERSION} AS builder
+
+# Set up working directory
+WORKDIR /app
+
+# Install dependencies and copy the source code
+COPY go.mod ./
+RUN go install github.com/swaggo/swag/cmd/swag@latest
+RUN go mod download
+COPY . .
+
+#run the build script
+RUN chmod +x build.sh && ./build.sh
+
+# Stage 2: Prepare the final image
+FROM alpine:latest
+
+# Set up working directory
+WORKDIR /app
+
+# Install necessary dependencies
+RUN apk add --no-cache tzdata file
+
+# Copy the built application from the builder stage
+COPY --from=builder /app/release /app/
+
+# Ensure the binary is correctly built
+RUN file /app/apimain
+
+# Set up a volume for persistent data
+VOLUME /app/data
+
+# Expose the necessary port
+EXPOSE 21114
+
+# Define the command to run the application
+CMD ["app/apimain"]
