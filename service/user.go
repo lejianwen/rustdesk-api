@@ -221,20 +221,21 @@ func (us *UserService) RegisterByGoogle(name string, email string) *model.User {
 
 // RegisterByOauth 注册
 func (us *UserService) RegisterByOauth(thirdType, thirdName, uid string) *model.User {
+	global.Lock.Lock("registerByOauth")
+	defer global.Lock.UnLock("registerByOauth")
+	ut := AllService.OauthService.UserThirdInfo(thirdType, uid)
+	if ut.Id != 0 {
+		u := &model.User{}
+		global.DB.Where("id = ?", ut.UserId).First(u)
+		return u
+	}
+
 	tx := global.DB.Begin()
-	ut := &model.UserThird{
+	ut = &model.UserThird{
 		OpenId:    uid,
 		ThirdName: thirdName,
 		ThirdType: thirdType,
 	}
-	//global.DB.Where("open_id = ?", githubId).First(ut)
-	//这种情况不应该出现，如果出现说明有bug
-	//if ut.Id != 0 {
-	//	u := &model.User{}
-	//	global.DB.Where("id = ?", ut.UserId).First(u)
-	//	tx.Commit()
-	//	return u
-	//}
 
 	username := us.GenerateUsernameByOauth(thirdName)
 	u := &model.User{
@@ -242,6 +243,10 @@ func (us *UserService) RegisterByOauth(thirdType, thirdName, uid string) *model.
 		GroupId:  1,
 	}
 	global.DB.Create(u)
+	if u.Id == 0 {
+		tx.Rollback()
+		return u
+	}
 
 	ut.UserId = u.Id
 	global.DB.Create(ut)

@@ -51,30 +51,22 @@ func TestLocal_GetLock(t *testing.T) {
 func TestLocal_Lock(t *testing.T) {
 	l := NewLocal()
 	wg := sync.WaitGroup{}
-	wg.Add(3)
+	m := 10
+	wg.Add(m)
 	i := 0
-	go func() {
-		l.Lock("key")
-		fmt.Println("l1", i)
-		i++
-		l.UnLock("key")
-		wg.Done()
-	}()
-	go func() {
-		l.Lock("key")
-		fmt.Println("l2", i)
-		i++
-		l.UnLock("key")
-		wg.Done()
-	}()
-	go func() {
-		l.Lock("key")
-		fmt.Println("l3", i)
-		i++
-		l.UnLock("key")
-		wg.Done()
-	}()
+	for j := 0; j < m; j++ {
+		go func() {
+			l.Lock("key")
+			//fmt.Println(j, i)
+			i++
+			fmt.Println(j, i)
+			l.UnLock("key")
+			wg.Done()
+		}()
+	}
+
 	wg.Wait()
+	fmt.Println(i)
 
 }
 func TestSyncMap(t *testing.T) {
