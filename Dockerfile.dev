@@ -26,6 +26,19 @@ RUN CGO_ENABLED=1 GOOS=linux go build -a \
     -ldflags "-s -w --extldflags '-static -fpic'" \
     -installsuffix cgo -o release/apimain cmd/apimain.go
 
+# Stage 2: Frontend Build Stage (builder2)
+FROM node:18-alpine AS builder2
+
+# Set working directory
+WORKDIR /frontend
+
+RUN apk update && apk add git --no-cache
+
+# Clone the frontend repository
+RUN git clone https://github.com/lejianwen/rustdesk-api-web .
+
+# Install npm dependencies and build the frontend
+RUN npm install && npm run build
 
 # Stage 2: Final Image
 FROM alpine:latest
@@ -40,6 +53,9 @@ RUN apk add --no-cache tzdata file
 COPY --from=builder /app/release /app/
 COPY --from=builder /app/conf /app/conf/
 COPY --from=builder /app/resources /app/resources/
+COPY --from=builder /app/docs /app/docs/
+# Copy frontend build from builder2 stage
+COPY --from=builder2 /frontend/dist/ /app/resources/admin/
 
 # Ensure the binary is correctly built and linked
 RUN file /app/apimain && \
