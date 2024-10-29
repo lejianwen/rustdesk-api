@@ -1,36 +1,50 @@
 # Use build arguments for Go version and architecture
-ARG GO_VERSION=1.23.2
-ARG BUILDARCH
+ARG GO_VERSION=1.22
+ARG BUILDARCH=amd64
 
-# Stage 1: Build the Go application with swag
-FROM golang:${GO_VERSION} AS builder
+# Stage 1: Builder Stage
+# FROM golang:${GO_VERSION}-alpine AS builder
+FROM crazymax/xgo:${GO_VERSION} AS builder
 
 # Set up working directory
 WORKDIR /app
 
-# Install dependencies and copy the source code
-COPY go.mod ./
-RUN go install github.com/swaggo/swag/cmd/swag@latest
-RUN go mod download
+# Step 1: Copy the source code
 COPY . .
 
-#run the build script
-RUN chmod +x build.sh && ./build.sh
+# Step 2: Download dependencies
+RUN go mod tidy && go mod download
 
-# Stage 2: Prepare the final image
+
+# Step 3: Install swag and  Run the build script
+RUN go install github.com/swaggo/swag/cmd/swag@latest && \
+    swag init -g cmd/apimain.go --output docs/api --instanceName api --exclude http/controller/admin && \
+    swag init -g cmd/apimain.go --output docs/admin --instanceName admin --exclude http/controller/api
+
+# Build the Go application with CGO enabled and specified ldflags
+RUN CGO_ENABLED=1 GOOS=linux go build -a \
+    -ldflags "-s -w --extldflags '-static -fpic'" \
+    -installsuffix cgo -o release/apimain cmd/apimain.go
+
+
+# Stage 2: Final Image
 FROM alpine:latest
 
 # Set up working directory
 WORKDIR /app
 
-# Install necessary dependencies
+# Install necessary runtime dependencies
 RUN apk add --no-cache tzdata file
 
-# Copy the built application from the builder stage
+# Copy the built application and resources from the builder stage
 COPY --from=builder /app/release /app/
+COPY --from=builder /app/conf /app/conf/
+COPY --from=builder /app/resources /app/resources/
 
-# Ensure the binary is correctly built
-RUN file /app/apimain
+# Ensure the binary is correctly built and linked
+RUN file /app/apimain && \
+    mkdir -p /app/data && \
+    mkdir -p /app/runtime
 
 # Set up a volume for persistent data
 VOLUME /app/data
@@ -39,4 +53,4 @@ VOLUME /app/data
 EXPOSE 21114
 
 # Define the command to run the application
-CMD ["app/apimain"]
+CMD ["./apimain"]
