@@ -297,6 +297,7 @@ func (o *Oauth) OauthCallback(c *gin.Context) {
 
 					v.ThirdName = userData.PreferredUsername
 					v.ThirdOpenId = userData.Sub
+					v.ThirdEmail = userData.Email
 					url := global.Config.Rustdesk.ApiServer + "/_admin/#/oauth/bind/" + cacheKey
 					c.Redirect(http.StatusFound, url)
 					return
