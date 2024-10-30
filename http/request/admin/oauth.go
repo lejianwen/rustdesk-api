@@ -15,6 +15,8 @@ type UnBindOauthForm struct {
 type OauthForm struct {
 	Id           uint   `json:"id"`
 	Op           string `json:"op" validate:"required"`
+	Issuer	     string `json:"issuer" validate:"omitempty,url"`
+	Scopes	   	 string `json:"scopes" validate:"omitempty"`
 	ClientId     string `json:"client_id" validate:"required"`
 	ClientSecret string `json:"client_secret" validate:"required"`
 	RedirectUrl  string `json:"redirect_url" validate:"required"`
@@ -28,6 +30,8 @@ func (of *OauthForm) ToOauth() *model.Oauth {
 		ClientSecret: of.ClientSecret,
 		RedirectUrl:  of.RedirectUrl,
 		AutoRegister: of.AutoRegister,
+		Issuer:       of.Issuer,
+		Scopes:       of.Scopes,
 	}
 	oa.Id = of.Id
 	return oa

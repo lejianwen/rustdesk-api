@@ -1,0 +1,26 @@
+# Ignore Docker Compose configuration files
+docker-compose.yaml
+
+# Ignore development Dockerfile
+Dockerfile.dev
+
+# Ignore the data directory
+data/
+
+# Ignore version control system directories
+.git/
+
+# Ignore log and temporary files
+*.log
+*.tmp
+*.swp
+
+# Ignore editor/IDE configuration files
+.vscode/
+.idea/
+
+# Ignore binaries and build cache
+release/
+bin/
+*.exe
+*.out

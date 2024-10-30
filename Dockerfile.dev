@@ -1,0 +1,72 @@
+# Use build arguments for Go version and architecture
+ARG GO_VERSION=1.22
+ARG BUILDARCH=amd64
+
+# Stage 1: Builder Stage
+# FROM golang:${GO_VERSION}-alpine AS builder
+FROM crazymax/xgo:${GO_VERSION} AS builder
+
+# Set up working directory
+WORKDIR /app
+
+# Step 1: Copy the source code
+COPY . .
+
+# Step 2: Download dependencies
+RUN go mod tidy && go mod download
+
+
+# Step 3: Install swag and  Run the build script
+RUN go install github.com/swaggo/swag/cmd/swag@latest && \
+    swag init -g cmd/apimain.go --output docs/api --instanceName api --exclude http/controller/admin && \
+    swag init -g cmd/apimain.go --output docs/admin --instanceName admin --exclude http/controller/api
+
+# Build the Go application with CGO enabled and specified ldflags
+RUN CGO_ENABLED=1 GOOS=linux go build -a \
+    -ldflags "-s -w --extldflags '-static -fpic'" \
+    -installsuffix cgo -o release/apimain cmd/apimain.go
+
+# Stage 2: Frontend Build Stage (builder2)
+FROM node:18-alpine AS builder2
+
+# Set working directory
+WORKDIR /frontend
+
+RUN apk update && apk add git --no-cache
+
+# Clone the frontend repository
+RUN git clone https://github.com/lejianwen/rustdesk-api-web .
+
+# Install npm dependencies and build the frontend
+RUN npm install && npm run build
+
+# Stage 2: Final Image
+FROM alpine:latest
+
+# Set up working directory
+WORKDIR /app
+
+# Install necessary runtime dependencies
+RUN apk add --no-cache tzdata file
+
+# Copy the built application and resources from the builder stage
+COPY --from=builder /app/release /app/
+COPY --from=builder /app/conf /app/conf/
+COPY --from=builder /app/resources /app/resources/
+COPY --from=builder /app/docs /app/docs/
+# Copy frontend build from builder2 stage
+COPY --from=builder2 /frontend/dist/ /app/resources/admin/
+
+# Ensure the binary is correctly built and linked
+RUN file /app/apimain && \
+    mkdir -p /app/data && \
+    mkdir -p /app/runtime
+
+# Set up a volume for persistent data
+VOLUME /app/data
+
+# Expose the necessary port
+EXPOSE 21114
+
+# Define the command to run the application
+CMD ["./apimain"]

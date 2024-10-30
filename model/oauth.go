@@ -7,12 +7,15 @@ type Oauth struct {
 	ClientSecret string `json:"client_secret"`
 	RedirectUrl  string `json:"redirect_url"`
 	AutoRegister *bool  `json:"auto_register"`
+	Scopes       string `json:"scopes"`
+	Issuer	     string `json:"issuer"`
 	TimeModel
 }
 
 const (
 	OauthTypeGithub  = "github"
 	OauthTypeGoogle  = "google"
+	OauthTypeOidc    = "oidc"
 	OauthTypeWebauth = "webauth"
 )
 

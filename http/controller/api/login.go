@@ -92,6 +92,10 @@ func (l *Login) LoginOptions(c *gin.Context) {
 	if err == nil {
 		oauthOks = append(oauthOks, model.OauthTypeGoogle)
 	}
+	err, _ = service.AllService.OauthService.GetOauthConfig(model.OauthTypeOidc)
+	if err == nil {
+		oauthOks = append(oauthOks, model.OauthTypeOidc)
+	}
 	oauthOks = append(oauthOks, model.OauthTypeWebauth)
 	var oidcItems []map[string]string
 	for _, v := range oauthOks {
