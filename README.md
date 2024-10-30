@@ -19,7 +19,7 @@
     - 登录
     - 地址簿
     - 群组
-    - 授权登录，支持`github`和`google`登录，支持`web后台`授权登录
+    - 授权登录，支持`github`, `google` 和 `OIDC` 登录，支持`web后台`授权登录
     - i18n
 - Web Admin
     - 用户管理

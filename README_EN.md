@@ -18,7 +18,7 @@ desktop software that provides self-hosted solutions.
     - Login
     - Address Book
     - Groups
-    - Authorized login, supports `GitHub` and `Google` login, supports `web admin` authorized login
+    - Authorized login, supports `GitHub`, `Google` and `OIDC` login, supports `web admin` authorized login
     - i18n
 - Web Admin
     - User Management
