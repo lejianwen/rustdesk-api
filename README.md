@@ -19,7 +19,7 @@
     - 登录
     - 地址簿
     - 群组
-    - 授权登录，支持`github`和`google`登录，支持`web后台`授权登录
+    - 授权登录，支持`github`, `google` 和 `OIDC` 登录，支持`web后台`授权登录
     - i18n
 - Web Admin
     - 用户管理
@@ -92,7 +92,7 @@
 
 #### 登录
 
-- 添加了`github`和`google`授权登录，需要在后台配置好就可以用了，具体可看后台OAuth配置
+- 添加了`github`, `google` 以及`OIDC`授权登录，需要在后台配置好就可以用了，具体可看后台OAuth配置
 - 添加了web后台授权登录,点击后直接登录后台就自动登录客户端了
 
 ![pc_login](docs/pc_login.png)
@@ -124,8 +124,10 @@
 4. 可以直接打开webclient，方便使用；也可以分享给游客，游客可以直接通过webclient远程到设备
 
    ![web_webclient](docs/admin_webclient.png)
-5. Oauth,暂时只支持了`Github`和`Google`, 需要创建一个`OAuth App`，然后配置到后台
+5. Oauth,支持了`Github`, `Google` 以及 `OIDC`, 需要创建一个`OAuth App`，然后配置到后台
    ![web_admin_oauth](docs/web_admin_oauth.png)
+    - 对于`Google` 和 `Github`, `Issuer` 和 `Scopes`不需要填写.
+    - 对于`OIDC`, `Issuer`是必须的。`Scopes`是可选的，默认为 `openid,profile,email`. 确保可以获取 `sub`,`email` 和`preferred_username`
     - `github oauth app`在`Settings`->`Developer settings`->`OAuth Apps`->`New OAuth App`
       中创建,地址 [https://github.com/settings/developers](https://github.com/settings/developers)
     - `Authorization callback URL`填写`http://<your server[:port]>/api/oauth/callback`

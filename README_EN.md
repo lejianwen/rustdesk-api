@@ -18,7 +18,7 @@ desktop software that provides self-hosted solutions.
     - Login
     - Address Book
     - Groups
-    - Authorized login, supports `GitHub` and `Google` login, supports `web admin` authorized login
+    - Authorized login, supports `GitHub`, `Google` and `OIDC` login, supports `web admin` authorized login
     - i18n
 - Web Admin
     - User Management
@@ -93,7 +93,7 @@ Basic implementation of the PC client's primary interfaces.Supports the Personal
 
 #### Login
 
-- Added `GitHub` and `Google` login, which can be used after configuration in the admin panel. See the OAuth
+- Added `GitHub`, `Google` and `OIDC` login, which can be used after configuration in the admin panel. See the OAuth
   configuration section for details.
 - Added authorization login for the web admin panel.
 
@@ -128,9 +128,11 @@ installation are `admin` `admin`, please change the password immediately.
 4. You can directly launch the client or open the web client for convenience; you can also share it with guests, who can remotely access the device via the web client.
 
    ![web_webclient](docs/en_img/admin_webclient.png)
-5. OAuth support: Currently, `GitHub` and `Google`  is supported. You need to create an `OAuth App` and configure it in
+5. OAuth support: Currently, `GitHub`, `Google` and `OIDC`  are supported. You need to create an `OAuth App` and configure it in
    the admin panel.
    ![web_admin_oauth](docs/en_img/web_admin_oauth.png)
+    - For `Google` and `Github`, you don't need to fill the `Issuer` and `Scpoes`
+    - For `OIDC`, you must set the `Issuer`. And `Scopes` is optional which default is `openid,email,profile`, please make sure this `Oauth App` can access `sub`, `email` and `preferred_username`
     - Create a `GitHub OAuth App`
       at `Settings` -> `Developer settings` -> `OAuth Apps` -> `New OAuth App` [here](https://github.com/settings/developers).
     - Set the `Authorization callback URL` to `http://<your server[:port]>/api/oauth/callback`,

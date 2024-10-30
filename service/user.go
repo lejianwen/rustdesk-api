@@ -148,8 +148,18 @@ func (us *UserService) Create(u *model.User) error {
 func (us *UserService) Logout(u *model.User, token string) error {
 	return global.DB.Where("user_id = ? and token = ?", u.Id, token).Delete(&model.UserToken{}).Error
 }
+
+// Delete 删除用户和oauth信息
 func (us *UserService) Delete(u *model.User) error {
-	return global.DB.Delete(u).Error
+    // 删除用户
+    if err := global.DB.Delete(u).Error; err != nil {
+        return err
+    }
+    // 删除关联的 OAuth 信息
+    if err := AllService.OauthService.DeleteUserByUserId(u.Id); err != nil {
+        return err
+    }
+    return nil
 }
 
 // Update 更新
