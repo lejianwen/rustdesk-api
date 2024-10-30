@@ -3164,10 +3164,16 @@ const docTemplateadmin = `{
                 "id": {
                     "type": "integer"
                 },
+                "issuer": {
+                    "type": "string"
+                },
                 "op": {
                     "type": "string"
                 },
                 "redirect_url": {
+                    "type": "string"
+                },
+                "scopes": {
                     "type": "string"
                 }
             }
@@ -3749,10 +3755,16 @@ const docTemplateadmin = `{
                 "id": {
                     "type": "integer"
                 },
+                "issuer": {
+                    "type": "string"
+                },
                 "op": {
                     "type": "string"
                 },
                 "redirect_url": {
+                    "type": "string"
+                },
+                "scopes": {
                     "type": "string"
                 },
                 "updated_at": {
@@ -3793,6 +3805,9 @@ const docTemplateadmin = `{
                     "type": "string"
                 },
                 "id": {
+                    "type": "string"
+                },
+                "last_online_ip": {
                     "type": "string"
                 },
                 "last_online_time": {

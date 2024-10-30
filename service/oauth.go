@@ -15,9 +15,9 @@ import (
 	"net/http"
 	"net/url"
 	"strconv"
+	"strings"
 	"sync"
 	"time"
-	"strings"
 )
 
 // Define a struct to parse the .well-known/openid-configuration response
@@ -88,10 +88,10 @@ type GoogleUserdata struct {
 	VerifiedEmail bool   `json:"verified_email"`
 }
 type OidcUserdata struct {
-	Sub			  string `json:"sub"`
-	Email         string `json:"email"`
-	VerifiedEmail bool   `json:"email_verified"`
-	Name          string `json:"name"`
+	Sub               string `json:"sub"`
+	Email             string `json:"email"`
+	VerifiedEmail     bool   `json:"email_verified"`
+	Name              string `json:"name"`
 	PreferredUsername string `json:"preferred_username"`
 }
 
@@ -156,27 +156,27 @@ func (os *OauthService) BeginAuth(op string) (error error, code, url string) {
 
 // Method to fetch OIDC configuration dynamically
 func FetchOidcConfig(issuer string) (error, OidcEndpoint) {
-    configURL := strings.TrimSuffix(issuer, "/") + "/.well-known/openid-configuration"
+	configURL := strings.TrimSuffix(issuer, "/") + "/.well-known/openid-configuration"
 
-    // Get the HTTP client (with or without proxy based on configuration)
-    client := getHTTPClientWithProxy()
+	// Get the HTTP client (with or without proxy based on configuration)
+	client := getHTTPClientWithProxy()
 
-    resp, err := client.Get(configURL)
-    if err != nil {
-        return errors.New("failed to fetch OIDC configuration"), OidcEndpoint{}
-    }
-    defer resp.Body.Close()
+	resp, err := client.Get(configURL)
+	if err != nil {
+		return errors.New("failed to fetch OIDC configuration"), OidcEndpoint{}
+	}
+	defer resp.Body.Close()
 
-    if resp.StatusCode != http.StatusOK {
-        return errors.New("OIDC configuration not found, status code: %d"), OidcEndpoint{}
-    }
+	if resp.StatusCode != http.StatusOK {
+		return errors.New("OIDC configuration not found, status code: %d"), OidcEndpoint{}
+	}
 
-    var endpoint OidcEndpoint
-    if err := json.NewDecoder(resp.Body).Decode(&endpoint); err != nil {
-        return errors.New("failed to parse OIDC configuration"), OidcEndpoint{}
-    }
+	var endpoint OidcEndpoint
+	if err := json.NewDecoder(resp.Body).Decode(&endpoint); err != nil {
+		return errors.New("failed to parse OIDC configuration"), OidcEndpoint{}
+	}
 
-    return nil, endpoint
+	return nil, endpoint
 }
 
 // GetOauthConfig retrieves the OAuth2 configuration based on the provider type

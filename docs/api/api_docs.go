@@ -834,7 +834,7 @@ const docTemplateapi = `{
             }
         },
         "/login-options": {
-            "post": {
+            "get": {
                 "description": "登录选项",
                 "consumes": [
                     "application/json"
