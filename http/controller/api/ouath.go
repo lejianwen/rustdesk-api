@@ -32,7 +32,7 @@ func (o *Oauth) OidcAuth(c *gin.Context) {
 		response.Error(c, response.TranslateMsg(c, "ParamsError")+err.Error())
 		return
 	}
-	if f.Op != model.OauthTypeWebauth && f.Op != model.OauthTypeGoogle && f.Op != model.OauthTypeGithub {
+	if f.Op != model.OauthTypeWebauth && f.Op != model.OauthTypeGoogle && f.Op != model.OauthTypeGithub && f.Op != model.OauthTypeOidc {
 		response.Error(c, response.TranslateMsg(c, "ParamsError"))
 		return
 	}
@@ -254,6 +254,70 @@ func (o *Oauth) OauthCallback(c *gin.Context) {
 			return
 		}
 	}
+	if ty == model.OauthTypeOidc {
+		code := c.Query("code")
+		err, userData := service.AllService.OauthService.OidcCallback(code)
+		if err != nil {
+			c.String(http.StatusInternalServerError, response.TranslateMsg(c, "OauthFailed")+response.TranslateMsg(c, err.Error()))
+			return
+		}
+		//将空格替换成_
+		// OidcName := strings.Replace(userData.Name, " ", "_", -1)
+		if ac == service.OauthActionTypeBind {
+			//fmt.Println("bind", ty, userData)
+			utr := service.AllService.OauthService.UserThirdInfo(ty, userData.Sub)
+			if utr.UserId > 0 {
+				c.String(http.StatusInternalServerError, response.TranslateMsg(c, "OauthHasBindOtherUser"))
+				return
+			}
+			//绑定
+			u := service.AllService.UserService.InfoById(v.UserId)
+			if u == nil {
+				c.String(http.StatusInternalServerError, response.TranslateMsg(c, "ItemNotFound"))
+				return
+			}
+			//绑定, user preffered_username as username
+			err = service.AllService.OauthService.BindOidcUser(userData.Sub, userData.PreferredUsername, v.UserId)
+			if err != nil {
+				c.String(http.StatusInternalServerError, response.TranslateMsg(c, "BindFail"))
+				return
+			}
+			c.String(http.StatusOK, response.TranslateMsg(c, "BindSuccess"))
+			return
+		} else if ac == service.OauthActionTypeLogin {
+			if v.UserId != 0 {
+				c.String(http.StatusInternalServerError, response.TranslateMsg(c, "OauthHasBeenSuccess"))
+				return
+			}
+			u := service.AllService.UserService.InfoByOidcSub(userData.Sub)
+			if u == nil {
+				oa := service.AllService.OauthService.InfoByOp(ty)
+				if !*oa.AutoRegister {
+					//c.String(http.StatusInternalServerError, "还未绑定用户，请先绑定")
+
+					v.ThirdName = userData.PreferredUsername
+					v.ThirdOpenId = userData.Sub
+					v.ThirdEmail = userData.Email
+					url := global.Config.Rustdesk.ApiServer + "/_admin/#/oauth/bind/" + cacheKey
+					c.Redirect(http.StatusFound, url)
+					return
+				}
+
+				//自动注册
+				u = service.AllService.UserService.RegisterByOidc(userData.PreferredUsername, userData.Sub)
+				if u.Id == 0 {
+					c.String(http.StatusInternalServerError, response.TranslateMsg(c, "OauthRegisterFailed"))
+					return
+				}
+			}
+
+			v.UserId = u.Id
+			service.AllService.OauthService.SetOauthCache(cacheKey, v, 0)
+			c.String(http.StatusOK, response.TranslateMsg(c, "OauthSuccess"))
+			return
+		}
+	}
+
 	c.String(http.StatusInternalServerError, response.TranslateMsg(c, "SystemError"))
 
 }

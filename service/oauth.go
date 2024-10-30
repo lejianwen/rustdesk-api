@@ -17,7 +17,16 @@ import (
 	"strconv"
 	"sync"
 	"time"
+	"strings"
 )
+
+// Define a struct to parse the .well-known/openid-configuration response
+type OidcEndpoint struct {
+	Issuer   string `json:"issuer"`
+	AuthURL  string `json:"authorization_endpoint"`
+	TokenURL string `json:"token_endpoint"`
+	UserInfo string `json:"userinfo_endpoint"`
+}
 
 type OauthService struct {
 }
@@ -78,6 +87,14 @@ type GoogleUserdata struct {
 	Picture       string `json:"picture"`
 	VerifiedEmail bool   `json:"verified_email"`
 }
+type OidcUserdata struct {
+	Sub			  string `json:"sub"`
+	Email         string `json:"email"`
+	VerifiedEmail bool   `json:"email_verified"`
+	Name          string `json:"name"`
+	PreferredUsername string `json:"preferred_username"`
+}
+
 type OauthCacheItem struct {
 	UserId      uint   `json:"user_id"`
 	Id          string `json:"id"` //rustdesk的设备ID
@@ -137,35 +154,102 @@ func (os *OauthService) BeginAuth(op string) (error error, code, url string) {
 	return err, code, ""
 }
 
-// GetOauthConfig 获取配置
+// Method to fetch OIDC configuration dynamically
+func FetchOidcConfig(issuer string) (error, OidcEndpoint) {
+    configURL := strings.TrimSuffix(issuer, "/") + "/.well-known/openid-configuration"
+
+    // Get the HTTP client (with or without proxy based on configuration)
+    client := getHTTPClientWithProxy()
+
+    resp, err := client.Get(configURL)
+    if err != nil {
+        return errors.New("failed to fetch OIDC configuration"), OidcEndpoint{}
+    }
+    defer resp.Body.Close()
+
+    if resp.StatusCode != http.StatusOK {
+        return errors.New("OIDC configuration not found, status code: %d"), OidcEndpoint{}
+    }
+
+    var endpoint OidcEndpoint
+    if err := json.NewDecoder(resp.Body).Decode(&endpoint); err != nil {
+        return errors.New("failed to parse OIDC configuration"), OidcEndpoint{}
+    }
+
+    return nil, endpoint
+}
+
+// GetOauthConfig retrieves the OAuth2 configuration based on the provider type
 func (os *OauthService) GetOauthConfig(op string) (error, *oauth2.Config) {
-	if op == model.OauthTypeGithub {
-		g := os.InfoByOp(model.OauthTypeGithub)
-		if g.Id == 0 || g.ClientId == "" || g.ClientSecret == "" || g.RedirectUrl == "" {
-			return errors.New("ConfigNotFound"), nil
-		}
-		return nil, &oauth2.Config{
-			ClientID:     g.ClientId,
-			ClientSecret: g.ClientSecret,
-			RedirectURL:  g.RedirectUrl,
-			Endpoint:     github.Endpoint,
-			Scopes:       []string{"read:user", "user:email"},
-		}
+	switch op {
+	case model.OauthTypeGithub:
+		return os.getGithubConfig()
+	case model.OauthTypeGoogle:
+		return os.getGoogleConfig()
+	case model.OauthTypeOidc:
+		return os.getOidcConfig()
+	default:
+		return errors.New("unsupported OAuth type"), nil
 	}
-	if op == model.OauthTypeGoogle {
-		g := os.InfoByOp(model.OauthTypeGoogle)
-		if g.Id == 0 || g.ClientId == "" || g.ClientSecret == "" || g.RedirectUrl == "" {
-			return errors.New("ConfigNotFound"), nil
-		}
-		return nil, &oauth2.Config{
-			ClientID:     g.ClientId,
-			ClientSecret: g.ClientSecret,
-			RedirectURL:  g.RedirectUrl,
-			Endpoint:     google.Endpoint,
-			Scopes:       []string{"https://www.googleapis.com/auth/userinfo.profile", "https://www.googleapis.com/auth/userinfo.email"},
-		}
+}
+
+// Helper function to get GitHub OAuth2 configuration
+func (os *OauthService) getGithubConfig() (error, *oauth2.Config) {
+	g := os.InfoByOp(model.OauthTypeGithub)
+	if g.Id == 0 || g.ClientId == "" || g.ClientSecret == "" || g.RedirectUrl == "" {
+		return errors.New("ConfigNotFound"), nil
 	}
-	return errors.New("ConfigNotFound"), nil
+	return nil, &oauth2.Config{
+		ClientID:     g.ClientId,
+		ClientSecret: g.ClientSecret,
+		RedirectURL:  g.RedirectUrl,
+		Endpoint:     github.Endpoint,
+		Scopes:       []string{"read:user", "user:email"},
+	}
+}
+
+// Helper function to get Google OAuth2 configuration
+func (os *OauthService) getGoogleConfig() (error, *oauth2.Config) {
+	g := os.InfoByOp(model.OauthTypeGoogle)
+	if g.Id == 0 || g.ClientId == "" || g.ClientSecret == "" || g.RedirectUrl == "" {
+		return errors.New("ConfigNotFound"), nil
+	}
+	return nil, &oauth2.Config{
+		ClientID:     g.ClientId,
+		ClientSecret: g.ClientSecret,
+		RedirectURL:  g.RedirectUrl,
+		Endpoint:     google.Endpoint,
+		Scopes:       []string{"https://www.googleapis.com/auth/userinfo.profile", "https://www.googleapis.com/auth/userinfo.email"},
+	}
+}
+
+// Helper function to get OIDC OAuth2 configuration
+func (os *OauthService) getOidcConfig() (error, *oauth2.Config) {
+	g := os.InfoByOp(model.OauthTypeOidc)
+	if g.Id == 0 || g.ClientId == "" || g.ClientSecret == "" || g.RedirectUrl == "" || g.Issuer == "" {
+		return errors.New("ConfigNotFound"), nil
+	}
+
+	// Set scopes
+	scopes := strings.TrimSpace(g.Scopes)
+	if scopes == "" {
+		scopes = "openid,profile,email"
+	}
+	scopeList := strings.Split(scopes, ",")
+	err, endpoint := FetchOidcConfig(g.Issuer)
+	if err != nil {
+		return err, nil
+	}
+	return nil, &oauth2.Config{
+		ClientID:     g.ClientId,
+		ClientSecret: g.ClientSecret,
+		RedirectURL:  g.RedirectUrl,
+		Endpoint: oauth2.Endpoint{
+			AuthURL:  endpoint.AuthURL,
+			TokenURL: endpoint.TokenURL,
+		},
+		Scopes: scopeList,
+	}
 }
 
 func getHTTPClientWithProxy() *http.Client {
@@ -269,6 +353,53 @@ func (os *OauthService) GoogleCallback(code string) (error error, userData *Goog
 	return
 }
 
+func (os *OauthService) OidcCallback(code string) (error error, userData *OidcUserdata) {
+	err, oauthConfig := os.GetOauthConfig(model.OauthTypeOidc)
+	if err != nil {
+		return err, nil
+	}
+	// 使用代理配置创建 HTTP 客户端
+	httpClient := getHTTPClientWithProxy()
+	ctx := context.WithValue(context.Background(), oauth2.HTTPClient, httpClient)
+
+	token, err := oauthConfig.Exchange(ctx, code)
+	if err != nil {
+		global.Logger.Warn("oauthConfig.Exchange() failed: ", err)
+		error = errors.New("GetOauthTokenError")
+		return
+	}
+
+	// 使用带有代理的 HTTP 客户端获取用户信息
+	client := oauthConfig.Client(ctx, token)
+	g := os.InfoByOp(model.OauthTypeOidc)
+	err, endpoint := FetchOidcConfig(g.Issuer)
+	if err != nil {
+		global.Logger.Warn("failed fetching OIDC configuration: ", err)
+		error = errors.New("FetchOidcConfigError")
+		return
+	}
+	resp, err := client.Get(endpoint.UserInfo)
+	if err != nil {
+		global.Logger.Warn("failed getting user info: ", err)
+		error = errors.New("GetOauthUserInfoError")
+		return
+	}
+	defer func(Body io.ReadCloser) {
+		err := Body.Close()
+		if err != nil {
+			global.Logger.Warn("failed closing response body: ", err)
+		}
+	}(resp.Body)
+
+	// 解析用户信息
+	if err = json.NewDecoder(resp.Body).Decode(&userData); err != nil {
+		global.Logger.Warn("failed decoding user info: ", err)
+		error = errors.New("DecodeOauthUserInfoError")
+		return
+	}
+	return
+}
+
 func (os *OauthService) UserThirdInfo(op, openid string) *model.UserThird {
 	ut := &model.UserThird{}
 	global.DB.Where("open_id = ? and third_type = ?", openid, op).First(ut)
@@ -282,6 +413,11 @@ func (os *OauthService) BindGithubUser(openid, username string, userId uint) err
 func (os *OauthService) BindGoogleUser(email, username string, userId uint) error {
 	return os.BindOauthUser(model.OauthTypeGoogle, email, username, userId)
 }
+
+func (os *OauthService) BindOidcUser(sub, username string, userId uint) error {
+	return os.BindOauthUser(model.OauthTypeOidc, sub, username, userId)
+}
+
 func (os *OauthService) BindOauthUser(thirdType, openid, username string, userId uint) error {
 	utr := &model.UserThird{
 		OpenId:    openid,
@@ -297,6 +433,9 @@ func (os *OauthService) UnBindGithubUser(userid uint) error {
 }
 func (os *OauthService) UnBindGoogleUser(userid uint) error {
 	return os.UnBindThird(model.OauthTypeGoogle, userid)
+}
+func (os *OauthService) UnBindOidcUser(userid uint) error {
+	return os.UnBindThird(model.OauthTypeOidc, userid)
 }
 func (os *OauthService) UnBindThird(thirdType string, userid uint) error {
 	return global.DB.Where("user_id = ? and third_type = ?", userid, thirdType).Delete(&model.UserThird{}).Error
