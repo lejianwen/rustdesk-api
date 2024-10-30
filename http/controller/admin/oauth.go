@@ -102,7 +102,7 @@ func (o *Oauth) BindConfirm(c *gin.Context) {
 		return
 	}
 	u := service.AllService.UserService.CurUser(c)
-	err = service.AllService.OauthService.BindGithubUser(v.ThirdOpenId, v.ThirdOpenId, u.Id)
+	err = service.AllService.OauthService.BindOauthUser(v.Op, v.ThirdOpenId, v.ThirdName, u.Id)
 	if err != nil {
 		response.Fail(c, 101, response.TranslateMsg(c, "BindFail"))
 		return
