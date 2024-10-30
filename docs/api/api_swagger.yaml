@@ -715,7 +715,7 @@ paths:
       tags:
       - 登录
   /login-options:
-    post:
+    get:
       consumes:
       - application/json
       description: 登录选项
