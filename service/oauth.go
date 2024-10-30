@@ -441,6 +441,12 @@ func (os *OauthService) UnBindThird(thirdType string, userid uint) error {
 	return global.DB.Where("user_id = ? and third_type = ?", userid, thirdType).Delete(&model.UserThird{}).Error
 }
 
+// DeleteUserByUserId: When user is deleted, delete all third party bindings
+func (os *OauthService) DeleteUserByUserId(userid uint) error {
+	return global.DB.Where("user_id = ?", userid).Delete(&model.UserThird{}).Error
+}
+
+
 // InfoById 根据id取用户信息
 func (os *OauthService) InfoById(id uint) *model.Oauth {
 	u := &model.Oauth{}
