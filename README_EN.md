@@ -165,6 +165,7 @@ installation are `admin` `admin`, please change the password immediately.
 lang: "en"
 app:
   web-client: 1  # web client route 1:open 0:close  
+  register: false #register enable
 gin:
   api-addr: "0.0.0.0:21114"
   mode: "release"
