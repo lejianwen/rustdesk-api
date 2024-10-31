@@ -5,6 +5,8 @@ import (
 	"Gwen/http/request/admin"
 	"Gwen/http/response"
 	adResp "Gwen/http/response/admin"
+	apiReq "Gwen/http/request/api"
+	"Gwen/http/controller/api"
 	"Gwen/model"
 	"Gwen/service"
 	"fmt"
@@ -51,7 +53,7 @@ func (ct *Login) Login(c *gin.Context) {
 	ut := service.AllService.UserService.Login(u, &model.LoginLog{
 		UserId:   u.Id,
 		Client:   "webadmin",
-		Uuid:     "",
+		Uuid:     "", //must be empty
 		Ip:       c.ClientIP(),
 		Type:     "account",
 		Platform: f.Platform,
@@ -81,4 +83,87 @@ func (ct *Login) Logout(c *gin.Context) {
 		service.AllService.UserService.Logout(u, token.(string))
 	}
 	response.Success(c, nil)
+}
+
+
+// LoginOptions
+// @Tags 登录
+// @Summary 登录选项
+// @Description 登录选项
+// @Accept  json
+// @Produce  json
+// @Success 200 {object} []string
+// @Failure 500 {object} response.ErrorResponse
+// @Router /admin/login-options [post]
+// 直接调用/api/login的LoginOptions方法
+func (ct *Login) LoginOptions(c *gin.Context) {
+	l := &api.Login{}
+    l.LoginOptions(c)
+}
+
+
+// OidcAuth
+// @Tags Oauth
+// @Summary OidcAuth
+// @Description OidcAuth
+// @Accept  json
+// @Produce  json
+// @Router /admin/oidc/auth [post]
+func (ct *Login) OidcAuth(c *gin.Context) {
+	// o := &api.Oauth{}
+	// o.OidcAuth(c)
+	f := &apiReq.OidcAuthRequest{}
+	err := c.ShouldBindJSON(f)
+	if err != nil {
+		response.Fail(c, 101, response.TranslateMsg(c, "ParamsError")+err.Error())
+		return
+	}
+
+	err, code, url := service.AllService.OauthService.BeginAuth(f.Op)
+	if err != nil {
+		response.Error(c, response.TranslateMsg(c, err.Error()))
+		return
+	}
+
+	service.AllService.OauthService.SetOauthCache(code, &service.OauthCacheItem{
+		Action: service.OauthActionTypeLogin,
+		Op:     	f.Op,
+		Id: 		f.Id,
+		DeviceType: "webadmin",
+		// DeviceOs: ct.Platform(c),
+		DeviceOs: 	f.DeviceInfo.Os,
+		Uuid: 		f.Uuid,
+	}, 5*60)
+
+	response.Success(c, gin.H{
+		"code": code,
+		"url":  url,
+	})
+}
+
+
+
+// OidcAuthQuery
+// @Tags Oauth
+// @Summary OidcAuthQuery
+// @Description OidcAuthQuery
+// @Accept  json
+// @Produce  json
+// @Success 200 {object} response.Response{data=adResp.LoginPayload}
+// @Failure 500 {object} response.Response
+// @Router /admin/oidc/auth-query [get]
+func (ct *Login) OidcAuthQuery(c *gin.Context) {
+	o := &api.Oauth{}
+	u, ut := o.OidcAuthQueryPre(c)
+	if ut == nil {
+		return
+	}
+	fmt.Println("u:", u)
+	fmt.Println("ut:", ut)
+	response.Success(c, &adResp.LoginPayload{
+		Token:      ut.Token,
+		Username:   u.Username,
+		RouteNames: service.AllService.UserService.RouteNames(u),
+		Nickname:   u.Nickname,
+	})
 }

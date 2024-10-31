@@ -33,7 +33,6 @@ func Init(g *gin.Engine) {
 	rs := &admin.Rustdesk{}
 	adg.GET("/server-config", rs.ServerConfig)
 	adg.GET("/app-config", rs.AppConfig)
-
 	//访问静态文件
 	//g.StaticFS("/upload", http.Dir(global.Config.Gin.ResourcesPath+"/upload"))
 }
@@ -41,6 +40,9 @@ func LoginBind(rg *gin.RouterGroup) {
 	cont := &admin.Login{}
 	rg.POST("/login", cont.Login)
 	rg.POST("/logout", cont.Logout)
+	rg.GET("/login-options", cont.LoginOptions)
+	rg.POST("/oidc/auth", cont.OidcAuth)
+	rg.GET("/oidc/auth-query", cont.OidcAuthQuery)
 }
 
 func UserBind(rg *gin.RouterGroup) {

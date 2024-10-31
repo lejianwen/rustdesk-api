@@ -59,6 +59,59 @@ func (o *Oauth) OidcAuth(c *gin.Context) {
 	})
 }
 
+func (o *Oauth) OidcAuthQueryPre(c *gin.Context) (*model.User, *model.UserToken) {
+	var u *model.User
+	var ut *model.UserToken
+	q := &api.OidcAuthQuery{}
+
+	// 解析查询参数并处理错误
+	if err := c.ShouldBindQuery(q); err != nil {
+		response.Error(c, response.TranslateMsg(c, "ParamsError")+": "+err.Error())
+		return nil, nil
+	}
+
+	// 获取 OAuth 缓存
+	v := service.AllService.OauthService.GetOauthCache(q.Code)
+	if v == nil {
+		response.Error(c, response.TranslateMsg(c, "OauthExpired"))
+		return nil, nil
+	}
+
+	// 如果 UserId 为 0，说明还在授权中
+	if v.UserId == 0 {
+		c.JSON(http.StatusOK, gin.H{"message": "Authorization in progress"})
+		return nil, nil
+	}
+
+	// 获取用户信息
+	u = service.AllService.UserService.InfoById(v.UserId)
+	if u == nil {
+		response.Error(c, response.TranslateMsg(c, "UserNotFound"))
+		return nil, nil
+	}
+
+	// 删除 OAuth 缓存
+	service.AllService.OauthService.DeleteOauthCache(q.Code)
+
+	// 创建登录日志并生成用户令牌
+	ut = service.AllService.UserService.Login(u, &model.LoginLog{
+		UserId:   u.Id,
+		Client:   v.DeviceType,
+		Uuid:     v.Uuid,
+		Ip:       c.ClientIP(),
+		Type:     model.LoginLogTypeOauth,
+		Platform: v.DeviceOs,
+	})
+
+	if ut == nil {
+		response.Error(c, response.TranslateMsg(c, "LoginFailed"))
+		return nil, nil
+	}
+
+	// 返回用户令牌
+	return u, ut
+}
+
 // OidcAuthQuery
 // @Tags Oauth
 // @Summary OidcAuthQuery
@@ -69,33 +122,7 @@ func (o *Oauth) OidcAuth(c *gin.Context) {
 // @Failure 500 {object} response.ErrorResponse
 // @Router /oidc/auth-query [get]
 func (o *Oauth) OidcAuthQuery(c *gin.Context) {
-	q := &api.OidcAuthQuery{}
-	err := c.ShouldBindQuery(q)
-	if err != nil {
-		response.Error(c, response.TranslateMsg(c, "ParamsError")+err.Error())
-		return
-	}
-	v := service.AllService.OauthService.GetOauthCache(q.Code)
-	if v == nil {
-		response.Error(c, response.TranslateMsg(c, "OauthExpired"))
-		return
-	}
-	if v.UserId == 0 {
-		//正在授权
-		c.JSON(http.StatusOK, gin.H{})
-		return
-	}
-	u := service.AllService.UserService.InfoById(v.UserId)
-	//fmt.Println("auth success u", u)
-	service.AllService.OauthService.DeleteOauthCache(q.Code)
-	ut := service.AllService.UserService.Login(u, &model.LoginLog{
-		UserId:   u.Id,
-		Client:   v.DeviceType,
-		Uuid:     v.Uuid,
-		Ip:       c.ClientIP(),
-		Type:     model.LoginLogTypeOauth,
-		Platform: v.DeviceOs,
-	})
+	u, ut := o.OidcAuthQueryPre(c)
 	c.JSON(http.StatusOK, apiResp.LoginRes{
 		AccessToken: ut.Token,
 		Type:        "access_token",
@@ -129,6 +156,7 @@ func (o *Oauth) OauthCallback(c *gin.Context) {
 
 	ty := v.Op
 	ac := v.Action
+	var u *model.User
 	//fmt.Println("ty ac ", ty, ac)
 	if ty == model.OauthTypeGithub {
 		code := c.Query("code")
@@ -145,7 +173,7 @@ func (o *Oauth) OauthCallback(c *gin.Context) {
 				return
 			}
 			//绑定
-			u := service.AllService.UserService.InfoById(v.UserId)
+			u = service.AllService.UserService.InfoById(v.UserId)
 			if u == nil {
 				c.String(http.StatusInternalServerError, response.TranslateMsg(c, "ItemNotFound"))
 				return
@@ -164,7 +192,7 @@ func (o *Oauth) OauthCallback(c *gin.Context) {
 				c.String(http.StatusInternalServerError, response.TranslateMsg(c, "OauthHasBeenSuccess"))
 				return
 			}
-			u := service.AllService.UserService.InfoByGithubId(strconv.Itoa(userData.Id))
+			u = service.AllService.UserService.InfoByGithubId(strconv.Itoa(userData.Id))
 			if u == nil {
 				oa := service.AllService.OauthService.InfoByOp(ty)
 				if !*oa.AutoRegister {
@@ -184,15 +212,13 @@ func (o *Oauth) OauthCallback(c *gin.Context) {
 				}
 			}
 
-			v.UserId = u.Id
-			service.AllService.OauthService.SetOauthCache(cacheKey, v, 0)
-			c.String(http.StatusOK, response.TranslateMsg(c, "OauthSuccess"))
-			return
+			// v.UserId = u.Id
+			// service.AllService.OauthService.SetOauthCache(cacheKey, v, 0)
+			// c.String(http.StatusOK, response.TranslateMsg(c, "OauthSuccess"))
+			// return
 		}
 
-	}
-
-	if ty == model.OauthTypeGoogle {
+	} else if ty == model.OauthTypeGoogle {
 		code := c.Query("code")
 		err, userData := service.AllService.OauthService.GoogleCallback(code)
 		if err != nil {
@@ -209,7 +235,7 @@ func (o *Oauth) OauthCallback(c *gin.Context) {
 				return
 			}
 			//绑定
-			u := service.AllService.UserService.InfoById(v.UserId)
+			u = service.AllService.UserService.InfoById(v.UserId)
 			if u == nil {
 				c.String(http.StatusInternalServerError, response.TranslateMsg(c, "ItemNotFound"))
 				return
@@ -227,7 +253,7 @@ func (o *Oauth) OauthCallback(c *gin.Context) {
 				c.String(http.StatusInternalServerError, response.TranslateMsg(c, "OauthHasBeenSuccess"))
 				return
 			}
-			u := service.AllService.UserService.InfoByGoogleEmail(userData.Email)
+			u = service.AllService.UserService.InfoByGoogleEmail(userData.Email)
 			if u == nil {
 				oa := service.AllService.OauthService.InfoByOp(ty)
 				if !*oa.AutoRegister {
@@ -248,13 +274,12 @@ func (o *Oauth) OauthCallback(c *gin.Context) {
 				}
 			}
 
-			v.UserId = u.Id
-			service.AllService.OauthService.SetOauthCache(cacheKey, v, 0)
-			c.String(http.StatusOK, response.TranslateMsg(c, "OauthSuccess"))
-			return
+			// v.UserId = u.Id
+			// service.AllService.OauthService.SetOauthCache(cacheKey, v, 0)
+			// c.String(http.StatusOK, response.TranslateMsg(c, "OauthSuccess"))
+			// return
 		}
-	}
-	if ty == model.OauthTypeOidc {
+	} else if ty == model.OauthTypeOidc {
 		code := c.Query("code")
 		err, userData := service.AllService.OauthService.OidcCallback(code)
 		if err != nil {
@@ -271,7 +296,7 @@ func (o *Oauth) OauthCallback(c *gin.Context) {
 				return
 			}
 			//绑定
-			u := service.AllService.UserService.InfoById(v.UserId)
+			u = service.AllService.UserService.InfoById(v.UserId)
 			if u == nil {
 				c.String(http.StatusInternalServerError, response.TranslateMsg(c, "ItemNotFound"))
 				return
@@ -289,7 +314,7 @@ func (o *Oauth) OauthCallback(c *gin.Context) {
 				c.String(http.StatusInternalServerError, response.TranslateMsg(c, "OauthHasBeenSuccess"))
 				return
 			}
-			u := service.AllService.UserService.InfoByOidcSub(userData.Sub)
+			u = service.AllService.UserService.InfoByOidcSub(userData.Sub)
 			if u == nil {
 				oa := service.AllService.OauthService.InfoByOp(ty)
 				if !*oa.AutoRegister {
@@ -311,13 +336,35 @@ func (o *Oauth) OauthCallback(c *gin.Context) {
 				}
 			}
 
-			v.UserId = u.Id
-			service.AllService.OauthService.SetOauthCache(cacheKey, v, 0)
-			c.String(http.StatusOK, response.TranslateMsg(c, "OauthSuccess"))
-			return
+			// v.UserId = u.Id
+			// service.AllService.OauthService.SetOauthCache(cacheKey, v, 0)
+			// c.String(http.StatusOK, response.TranslateMsg(c, "OauthSuccess"))
+			// return
 		}
 	}
-
-	c.String(http.StatusInternalServerError, response.TranslateMsg(c, "SystemError"))
+	// 如果u为空，说明没有绑定用户
+	if u == nil {
+		c.String(http.StatusInternalServerError, response.TranslateMsg(c, "SystemError"))
+		return
+	}
+	// 认证成功，设置缓存
+	v.UserId = u.Id
+	service.AllService.OauthService.SetOauthCache(cacheKey, v, 0)
+	// 如果是webadmin，登录成功后跳转到webadmin
+	if v.DeviceType == "webadmin" {
+		service.AllService.UserService.Login(u, &model.LoginLog{
+			UserId:   u.Id,
+			Client:   "webadmin",
+			Uuid:     "",//must be empty
+			Ip:       c.ClientIP(),
+			Type:     "account",
+			Platform: v.DeviceOs,
+		})
+		url := global.Config.Rustdesk.ApiServer + "/_admin/#/"
+		c.Redirect(http.StatusFound, url)
+		return
+	}
+	c.String(http.StatusOK, response.TranslateMsg(c, "OauthSuccess"))
+	return
 
 }
