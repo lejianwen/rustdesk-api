@@ -119,3 +119,7 @@ other = "Default Group"
 description = "Share group"
 one = "Share Group"
 other = "Share Group"
+[RegisterClosed]
+description = "Register closed."
+one = "Register closed."
+other = "Register closed."

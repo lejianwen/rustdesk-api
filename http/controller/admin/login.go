@@ -103,7 +103,10 @@ func (ct *Login) LoginOptions(c *gin.Context) {
 	for _, v := range res.Oauths {
 		ops = append(ops, v.Op)
 	}
-	response.Success(c, ops)
+	response.Success(c, gin.H{
+		"ops":      ops,
+		"register": global.Config.App.Register,
+	})
 }
 
 // OidcAuth

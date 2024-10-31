@@ -121,3 +121,8 @@ other = "기본 그룹"
 description = "Share group."
 one = "공유 그룹"
 other = "공유 그룹"
+
+[RegisterClosed]
+description = "Register closed."
+one = "가입이 종료되었습니다."
+other = "가입이 종료되었습니다."

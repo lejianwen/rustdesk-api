@@ -17,7 +17,7 @@ func Init(g *gin.Engine) {
 
 	adg := g.Group("/api/admin")
 	LoginBind(adg)
-
+	adg.POST("/user/register", (&admin.User{}).Register)
 	adg.Use(middleware.AdminAuth())
 	//FileBind(adg)
 	UserBind(adg)

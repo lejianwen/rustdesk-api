@@ -15,7 +15,8 @@ const (
 )
 
 type App struct {
-	WebClient int `mapstructure:"web-client"`
+	WebClient int  `mapstructure:"web-client"`
+	Register  bool `mapstructure:"register"`
 }
 
 type Config struct {
