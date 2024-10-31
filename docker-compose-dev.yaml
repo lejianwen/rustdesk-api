@@ -3,6 +3,8 @@ services:
     build: 
       context: .
       dockerfile: Dockerfile.dev
+      args:
+        COUNTRY: CN
     # image: lejianwen/rustdesk-api
     container_name: rustdesk-api
     environment:
