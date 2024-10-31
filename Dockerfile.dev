@@ -4,7 +4,7 @@ ARG BUILDARCH=amd64
 
 # Stage 1: Builder Stage
 # FROM golang:${GO_VERSION}-alpine AS builder
-FROM crazymax/xgo:${GO_VERSION} AS builder
+FROM crazymax/xgo:${GO_VERSION} AS builder-backend
 
 # Set up working directory
 WORKDIR /app
@@ -27,7 +27,7 @@ RUN CGO_ENABLED=1 GOOS=linux go build -a \
     -installsuffix cgo -o release/apimain cmd/apimain.go
 
 # Stage 2: Frontend Build Stage (builder2)
-FROM node:18-alpine AS builder2
+FROM node:18-alpine AS builder-admin-frontend
 
 # Set working directory
 WORKDIR /frontend
@@ -50,12 +50,12 @@ WORKDIR /app
 RUN apk add --no-cache tzdata file
 
 # Copy the built application and resources from the builder stage
-COPY --from=builder /app/release /app/
-COPY --from=builder /app/conf /app/conf/
-COPY --from=builder /app/resources /app/resources/
-COPY --from=builder /app/docs /app/docs/
+COPY --from=builder-backend /app/release /app/
+COPY --from=builder-backend /app/conf /app/conf/
+COPY --from=builder-backend /app/resources /app/resources/
+COPY --from=builder-backend /app/docs /app/docs/
 # Copy frontend build from builder2 stage
-COPY --from=builder2 /frontend/dist/ /app/resources/admin/
+COPY --from=builder-admin-frontend /frontend/dist/ /app/resources/admin/
 
 # Ensure the binary is correctly built and linked
 RUN file /app/apimain && \
