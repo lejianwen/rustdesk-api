@@ -127,3 +127,8 @@ other = "Группа по умолчанию"
 description = "Share group."
 one = "Общая группа"
 other = "Общая группа"
+
+[RegisterClosed]
+description = "Register closed."
+one = "Регистрация закрыта."
+other = "Регистрация закрыта."

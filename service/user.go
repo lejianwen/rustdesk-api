@@ -323,3 +323,13 @@ func (us *UserService) FindLatestUserIdFromLoginLogByUuid(uuid string) uint {
 	global.DB.Where("uuid = ?", uuid).Order("id desc").First(llog)
 	return llog.UserId
 }
+
+func (us *UserService) Register(username string, password string) *model.User {
+	u := &model.User{
+		Username: username,
+		Password: us.EncryptPassword(password),
+		GroupId:  1,
+	}
+	global.DB.Create(u)
+	return u
+}

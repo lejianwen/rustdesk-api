@@ -121,3 +121,7 @@ other = "默认组"
 description = "Share group."
 one = "共享组"
 other = "共享组"
+[RegisterClosed]
+description = "Register closed."
+one = "注册已关闭。"
+other = "注册已关闭。"
