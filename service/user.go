@@ -70,6 +70,7 @@ func (us *UserService) Login(u *model.User, llog *model.LoginLog) *model.UserTok
 		ExpiredAt: time.Now().Add(time.Hour * 24 * 7).Unix(),
 	}
 	global.DB.Create(ut)
+	llog.UserTokenId = ut.UserId
 	global.DB.Create(llog)
 	if llog.Uuid != "" {
 		AllService.PeerService.UuidBindUserId(llog.Uuid, u.Id)
@@ -355,4 +356,28 @@ func (us *UserService) Register(username string, password string) *model.User {
 	}
 	global.DB.Create(u)
 	return u
+}
+
+func (us *UserService) TokenList(page uint, size uint, f func(tx *gorm.DB)) *model.UserTokenList {
+	res := &model.UserTokenList{}
+	res.Page = int64(page)
+	res.PageSize = int64(size)
+	tx := global.DB.Model(&model.UserToken{})
+	if f != nil {
+		f(tx)
+	}
+	tx.Count(&res.Total)
+	tx.Scopes(Paginate(page, size))
+	tx.Find(&res.UserTokens)
+	return res
+}
+
+func (us *UserService) TokenInfoById(id uint) *model.UserToken {
+	ut := &model.UserToken{}
+	global.DB.Where("id = ?", id).First(ut)
+	return ut
+}
+
+func (us *UserService) DeleteToken(l *model.UserToken) error {
+	return global.DB.Delete(l).Error
 }

@@ -1485,7 +1485,7 @@ const docTemplateadmin = `{
                 }
             }
         },
-        "/admin/loginLog/delete": {
+        "/admin/login_log/delete": {
             "post": {
                 "security": [
                     {
@@ -1530,7 +1530,7 @@ const docTemplateadmin = `{
                 }
             }
         },
-        "/admin/loginLog/detail/{id}": {
+        "/admin/login_log/detail/{id}": {
             "get": {
                 "security": [
                     {
@@ -1585,7 +1585,7 @@ const docTemplateadmin = `{
                 }
             }
         },
-        "/admin/loginLog/list": {
+        "/admin/login_log/list": {
             "get": {
                 "security": [
                     {
@@ -2215,6 +2215,12 @@ const docTemplateadmin = `{
                         "type": "string",
                         "description": "主机名",
                         "name": "hostname",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "uuids 用逗号分隔",
+                        "name": "uuids",
                         "in": "query"
                     }
                 ],
@@ -3087,6 +3093,117 @@ const docTemplateadmin = `{
                     }
                 }
             }
+        },
+        "/admin/user_token/delete": {
+            "post": {
+                "security": [
+                    {
+                        "token": []
+                    }
+                ],
+                "description": "登录凭证删除",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "登录凭证"
+                ],
+                "summary": "登录凭证删除",
+                "parameters": [
+                    {
+                        "description": "登录凭证信息",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.UserToken"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/user_token/list": {
+            "get": {
+                "security": [
+                    {
+                        "token": []
+                    }
+                ],
+                "description": "登录凭证列表",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "登录凭证"
+                ],
+                "summary": "登录凭证列表",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "页码",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "页大小",
+                        "name": "page_size",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "用户ID",
+                        "name": "user_id",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/model.UserTokenList"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -3801,6 +3918,9 @@ const docTemplateadmin = `{
                 "user_id": {
                     "type": "integer"
                 },
+                "user_token_id": {
+                    "type": "integer"
+                },
                 "uuid": {
                     "type": "string"
                 }
@@ -4055,6 +4175,49 @@ const docTemplateadmin = `{
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/model.User"
+                    }
+                },
+                "page": {
+                    "type": "integer"
+                },
+                "page_size": {
+                    "type": "integer"
+                },
+                "total": {
+                    "type": "integer"
+                }
+            }
+        },
+        "model.UserToken": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "expired_at": {
+                    "type": "integer"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "token": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                },
+                "user_id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "model.UserTokenList": {
+            "type": "object",
+            "properties": {
+                "list": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/model.UserToken"
                     }
                 },
                 "page": {

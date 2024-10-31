@@ -476,6 +476,8 @@ definitions:
         type: string
       user_id:
         type: integer
+      user_token_id:
+        type: integer
       uuid:
         type: string
     type: object
@@ -645,6 +647,34 @@ definitions:
       list:
         items:
           $ref: '#/definitions/model.User'
+        type: array
+      page:
+        type: integer
+      page_size:
+        type: integer
+      total:
+        type: integer
+    type: object
+  model.UserToken:
+    properties:
+      created_at:
+        type: string
+      expired_at:
+        type: integer
+      id:
+        type: integer
+      token:
+        type: string
+      updated_at:
+        type: string
+      user_id:
+        type: integer
+    type: object
+  model.UserTokenList:
+    properties:
+      list:
+        items:
+          $ref: '#/definitions/model.UserToken'
         type: array
       page:
         type: integer
@@ -1546,7 +1576,7 @@ paths:
       summary: 登录选项
       tags:
       - 登录
-  /admin/loginLog/delete:
+  /admin/login_log/delete:
     post:
       consumes:
       - application/json
@@ -1574,7 +1604,7 @@ paths:
       summary: 登录日志删除
       tags:
       - 登录日志
-  /admin/loginLog/detail/{id}:
+  /admin/login_log/detail/{id}:
     get:
       consumes:
       - application/json
@@ -1606,7 +1636,7 @@ paths:
       summary: 登录日志详情
       tags:
       - 登录日志
-  /admin/loginLog/list:
+  /admin/login_log/list:
     get:
       consumes:
       - application/json
@@ -1978,6 +2008,10 @@ paths:
       - description: 主机名
         in: query
         name: hostname
+        type: string
+      - description: uuids 用逗号分隔
+        in: query
+        name: uuids
         type: string
       produces:
       - application/json
@@ -2498,6 +2532,73 @@ paths:
       summary: 修改密码
       tags:
       - 用户
+  /admin/user_token/delete:
+    post:
+      consumes:
+      - application/json
+      description: 登录凭证删除
+      parameters:
+      - description: 登录凭证信息
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/model.UserToken'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - token: []
+      summary: 登录凭证删除
+      tags:
+      - 登录凭证
+  /admin/user_token/list:
+    get:
+      consumes:
+      - application/json
+      description: 登录凭证列表
+      parameters:
+      - description: 页码
+        in: query
+        name: page
+        type: integer
+      - description: 页大小
+        in: query
+        name: page_size
+        type: integer
+      - description: 用户ID
+        in: query
+        name: user_id
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.UserTokenList'
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - token: []
+      summary: 登录凭证列表
+      tags:
+      - 登录凭证
 securityDefinitions:
   BearerAuth:
     in: header

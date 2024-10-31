@@ -38,6 +38,7 @@ type PeerQuery struct {
 	TimeAgo  int    `json:"time_ago" form:"time_ago"`
 	Id       string `json:"id" form:"id"`
 	Hostname string `json:"hostname" form:"hostname"`
+	Uuids    string `json:"uuids" form:"uuids"`
 }
 
 type SimpleDataQuery struct {

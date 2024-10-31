@@ -11,3 +11,7 @@ type LoginLogQuery struct {
 	IsMy   int `form:"is_my"`
 	PageQuery
 }
+type LoginTokenQuery struct {
+	UserId int `form:"user_id"`
+	PageQuery
+}

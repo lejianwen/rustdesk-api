@@ -53,10 +53,10 @@ func (ct *Login) Login(c *gin.Context) {
 
 	ut := service.AllService.UserService.Login(u, &model.LoginLog{
 		UserId:   u.Id,
-		Client:   "webadmin",
+		Client:   model.LoginLogClientWebAdmin,
 		Uuid:     "", //must be empty
 		Ip:       c.ClientIP(),
-		Type:     "account",
+		Type:     model.LoginLogTypeAccount,
 		Platform: f.Platform,
 	})
 

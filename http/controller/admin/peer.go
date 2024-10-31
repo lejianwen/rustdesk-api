@@ -79,6 +79,7 @@ func (ct *Peer) Create(c *gin.Context) {
 // @Param time_ago query int false "时间"
 // @Param id query string false "ID"
 // @Param hostname query string false "主机名"
+// @Param uuids query string false "uuids 用逗号分隔"
 // @Success 200 {object} response.Response{data=model.PeerList}
 // @Failure 500 {object} response.Response
 // @Router /admin/peer/list [get]
@@ -103,6 +104,9 @@ func (ct *Peer) List(c *gin.Context) {
 		}
 		if query.Hostname != "" {
 			tx.Where("hostname like ?", "%"+query.Hostname+"%")
+		}
+		if query.Uuids != "" {
+			tx.Where("uuid in (?)", query.Uuids)
 		}
 	})
 	response.Success(c, res)

@@ -23,7 +23,7 @@ type LoginLog struct {
 // @Param id path int true "ID"
 // @Success 200 {object} response.Response{data=model.LoginLog}
 // @Failure 500 {object} response.Response
-// @Router /admin/loginLog/detail/{id} [get]
+// @Router /admin/login_log/detail/{id} [get]
 // @Security token
 func (ct *LoginLog) Detail(c *gin.Context) {
 	id := c.Param("id")
@@ -48,7 +48,7 @@ func (ct *LoginLog) Detail(c *gin.Context) {
 // @Param user_id query int false "用户ID"
 // @Success 200 {object} response.Response{data=model.LoginLogList}
 // @Failure 500 {object} response.Response
-// @Router /admin/loginLog/list [get]
+// @Router /admin/login_log/list [get]
 // @Security token
 func (ct *LoginLog) List(c *gin.Context) {
 	query := &admin.LoginLogQuery{}
@@ -78,7 +78,7 @@ func (ct *LoginLog) List(c *gin.Context) {
 // @Param body body model.LoginLog true "登录日志信息"
 // @Success 200 {object} response.Response
 // @Failure 500 {object} response.Response
-// @Router /admin/loginLog/delete [post]
+// @Router /admin/login_log/delete [post]
 // @Security token
 func (ct *LoginLog) Delete(c *gin.Context) {
 	f := &model.LoginLog{}
