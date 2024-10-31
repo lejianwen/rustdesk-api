@@ -30,6 +30,7 @@ func Init(g *gin.Engine) {
 	AuditBind(adg)
 	AddressBookCollectionBind(adg)
 	AddressBookCollectionRuleBind(adg)
+	UserTokenBind(adg)
 	rs := &admin.Rustdesk{}
 	adg.GET("/server-config", rs.ServerConfig)
 	adg.GET("/app-config", rs.AppConfig)
@@ -180,6 +181,12 @@ func AddressBookCollectionRuleBind(rg *gin.RouterGroup) {
 		aR.POST("/update", cont.Update)
 		aR.POST("/delete", cont.Delete)
 	}
+}
+func UserTokenBind(rg *gin.RouterGroup) {
+	aR := rg.Group("/user_token").Use(middleware.AdminPrivilege())
+	cont := &admin.UserToken{}
+	aR.GET("/list", cont.List)
+	aR.POST("/delete", cont.Delete)
 }
 
 /*

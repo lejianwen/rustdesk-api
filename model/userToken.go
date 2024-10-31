@@ -7,3 +7,8 @@ type UserToken struct {
 	ExpiredAt int64  `json:"expired_at" gorm:"default:0;not null;"`
 	TimeModel
 }
+
+type UserTokenList struct {
+	UserTokens []UserToken `json:"list"`
+	Pagination
+}
