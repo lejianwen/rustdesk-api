@@ -1,6 +1,9 @@
 services:
   rustdesk-api:
-    image: lejianwen/rustdesk-api
+    build: 
+      context: .
+      dockerfile: Dockerfile.dev
+    # image: lejianwen/rustdesk-api
     container_name: rustdesk-api
     environment:
       - TZ=Asia/Shanghai
@@ -11,7 +14,7 @@ services:
     ports:
       - 21114:21114
     volumes:
-      - ./data/rustdesk/api:/app/data # database
-      # - ./conf:/app/conf # config
+      - ./data/rustdesk/api:/app/data #将数据库挂载出来方便备份
+      - ./conf:/app/conf # config
       # - ./resources:/app/resources # 静态资源
     restart: unless-stopped

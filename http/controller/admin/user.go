@@ -5,6 +5,7 @@ import (
 	"Gwen/http/request/admin"
 	"Gwen/http/response"
 	adResp "Gwen/http/response/admin"
+	"Gwen/model"
 	"Gwen/service"
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
@@ -326,4 +327,41 @@ func (ct *User) GroupUsers(c *gin.Context) {
 		data = append(data, gup)
 	}
 	response.Success(c, data)
+}
+
+// Register
+func (ct *User) Register(c *gin.Context) {
+	if !global.Config.App.Register {
+		response.Fail(c, 101, response.TranslateMsg(c, "RegisterClosed"))
+		return
+	}
+	f := &admin.RegisterForm{}
+	if err := c.ShouldBindJSON(f); err != nil {
+		response.Fail(c, 101, response.TranslateMsg(c, "ParamsError")+err.Error())
+		return
+	}
+	errList := global.Validator.ValidStruct(c, f)
+	if len(errList) > 0 {
+		response.Fail(c, 101, errList[0])
+		return
+	}
+	u := service.AllService.UserService.Register(f.Username, f.Password)
+	if u == nil || u.Id == 0 {
+		response.Fail(c, 101, response.TranslateMsg(c, "OperationFailed"))
+		return
+	}
+	// 注册成功后自动登录
+	ut := service.AllService.UserService.Login(u, &model.LoginLog{
+		UserId: u.Id,
+		Client: model.LoginLogClientWebAdmin,
+		Uuid:   "",
+		Ip:     c.ClientIP(),
+		Type:   model.LoginLogTypeAccount,
+	})
+	response.Success(c, &adResp.LoginPayload{
+		Token:      ut.Token,
+		Username:   u.Username,
+		RouteNames: service.AllService.UserService.RouteNames(u),
+		Nickname:   u.Nickname,
+	})
 }

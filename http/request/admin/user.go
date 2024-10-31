@@ -59,3 +59,9 @@ type GroupUsersQuery struct {
 	IsMy   int  `json:"is_my"`
 	UserId uint `json:"user_id"`
 }
+
+type RegisterForm struct {
+	Username        string `json:"username" validate:"required,gte=4,lte=10"`
+	Password        string `json:"password" validate:"required,gte=4,lte=20"`
+	ConfirmPassword string `json:"confirm_password" validate:"required,gte=4,lte=20"`
+}

@@ -105,9 +105,13 @@ definitions:
         type: string
       id:
         type: integer
+      issuer:
+        type: string
       op:
         type: string
       redirect_url:
+        type: string
+      scopes:
         type: string
     required:
     - client_id
@@ -500,9 +504,13 @@ definitions:
         type: string
       id:
         type: integer
+      issuer:
+        type: string
       op:
         type: string
       redirect_url:
+        type: string
+      scopes:
         type: string
       updated_at:
         type: string
@@ -529,6 +537,8 @@ definitions:
       hostname:
         type: string
       id:
+        type: string
+      last_online_ip:
         type: string
       last_online_time:
         type: integer
@@ -642,6 +652,11 @@ definitions:
         type: integer
       total:
         type: integer
+    type: object
+  response.ErrorResponse:
+    properties:
+      error:
+        type: string
     type: object
   response.Response:
     properties:
@@ -1510,6 +1525,27 @@ paths:
       summary: 登录
       tags:
       - 登录
+  /admin/login-options:
+    post:
+      consumes:
+      - application/json
+      description: 登录选项
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              type: string
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      summary: 登录选项
+      tags:
+      - 登录
   /admin/loginLog/delete:
     post:
       consumes:
@@ -1787,6 +1823,41 @@ paths:
       security:
       - token: []
       summary: Oauth编辑
+      tags:
+      - Oauth
+  /admin/oidc/auth:
+    post:
+      consumes:
+      - application/json
+      description: OidcAuth
+      produces:
+      - application/json
+      responses: {}
+      summary: OidcAuth
+      tags:
+      - Oauth
+  /admin/oidc/auth-query:
+    get:
+      consumes:
+      - application/json
+      description: OidcAuthQuery
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/admin.LoginPayload'
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: OidcAuthQuery
       tags:
       - Oauth
   /admin/peer/create:
