@@ -196,6 +196,7 @@ proxy:
 | TZ                                 | 时区                                   | Asia/Shanghai               |
 | RUSTDESK_API_LANG                  | 语言                                   | `en`,`zh-CN`                |
 | RUSTDESK_API_APP_WEB_CLIENT        | 是否启用web-client; 1:启用,0:不启用; 默认启用     | 1                           |
+| RUSTDESK_API_APP_REGISTER          | 是否开启注册; `true`, `false`  默认`false`   | `false`                     |
 | -----GIN配置-----                    | ----------                           | ----------                  |
 | RUSTDESK_API_GIN_TRUST_PROXY       | 信任的代理IP列表，以`,`分割，默认信任所有              | 192.168.1.2,192.168.1.3     |
 | -----------GORM配置----------------  | ------------------------------------ | --------------------------- |
