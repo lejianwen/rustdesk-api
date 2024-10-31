@@ -324,6 +324,29 @@ func (us *UserService) FindLatestUserIdFromLoginLogByUuid(uuid string) uint {
 	return llog.UserId
 }
 
+// IsPasswordEmptyById 根据用户id判断密码是否为空，主要用于第三方登录的自动注册
+func (us *UserService) IsPasswordEmptyById(id uint) bool {
+	u := &model.User{}
+	if global.DB.Where("id = ?", id).First(u).Error != nil {
+		return false
+	}
+	return u.Password == ""
+}
+
+// IsPasswordEmptyByUsername 根据用户id判断密码是否为空，主要用于第三方登录的自动注册
+func (us *UserService) IsPasswordEmptyByUsername(username string) bool {
+	u := &model.User{}
+	if global.DB.Where("username = ?", username).First(u).Error != nil {
+		return false
+	}
+	return u.Password == ""
+}
+
+// IsPasswordEmptyByUser 判断密码是否为空，主要用于第三方登录的自动注册
+func (us *UserService) IsPasswordEmptyByUser(u *model.User) bool {
+	return us.IsPasswordEmptyById(u.Id)
+}
+
 func (us *UserService) Register(username string, password string) *model.User {
 	u := &model.User{
 		Username: username,
