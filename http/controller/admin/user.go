@@ -247,10 +247,14 @@ func (ct *User) ChangeCurPwd(c *gin.Context) {
 		return
 	}
 	u := service.AllService.UserService.CurUser(c)
-	oldPwd := service.AllService.UserService.EncryptPassword(f.OldPassword)
-	if u.Password != oldPwd {
-		response.Fail(c, 101, response.TranslateMsg(c, "OldPasswordError"))
-		return
+	// If the password is not empty, the old password is verified
+	// otherwise, the old password is not verified
+	if !service.AllService.UserService.IsPasswordEmptyByUser(u) {
+		oldPwd := service.AllService.UserService.EncryptPassword(f.OldPassword)
+		if u.Password != oldPwd {
+			response.Fail(c, 101, response.TranslateMsg(c, "OldPasswordError"))
+			return
+		}
 	}
 	err := service.AllService.UserService.UpdatePassword(u, f.NewPassword)
 	if err != nil {
