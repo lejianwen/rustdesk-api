@@ -2,15 +2,16 @@ package admin
 
 import (
 	"Gwen/global"
+	"Gwen/http/controller/api"
 	"Gwen/http/request/admin"
+	apiReq "Gwen/http/request/api"
 	"Gwen/http/response"
 	adResp "Gwen/http/response/admin"
-	apiReq "Gwen/http/request/api"
-	"Gwen/http/controller/api"
 	"Gwen/model"
 	"Gwen/service"
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"gorm.io/gorm"
 )
 
 type Login struct {
@@ -85,7 +86,6 @@ func (ct *Login) Logout(c *gin.Context) {
 	response.Success(c, nil)
 }
 
-
 // LoginOptions
 // @Tags 登录
 // @Summary 登录选项
@@ -95,12 +95,16 @@ func (ct *Login) Logout(c *gin.Context) {
 // @Success 200 {object} []string
 // @Failure 500 {object} response.ErrorResponse
 // @Router /admin/login-options [post]
-// 直接调用/api/login的LoginOptions方法
 func (ct *Login) LoginOptions(c *gin.Context) {
-	l := &api.Login{}
-    l.LoginOptions(c)
+	res := service.AllService.OauthService.List(1, 100, func(tx *gorm.DB) {
+		tx.Select("op").Order("id")
+	})
+	var ops []string
+	for _, v := range res.Oauths {
+		ops = append(ops, v.Op)
+	}
+	response.Success(c, ops)
 }
-
 
 // OidcAuth
 // @Tags Oauth
@@ -126,13 +130,13 @@ func (ct *Login) OidcAuth(c *gin.Context) {
 	}
 
 	service.AllService.OauthService.SetOauthCache(code, &service.OauthCacheItem{
-		Action: service.OauthActionTypeLogin,
-		Op:     	f.Op,
-		Id: 		f.Id,
+		Action:     service.OauthActionTypeLogin,
+		Op:         f.Op,
+		Id:         f.Id,
 		DeviceType: "webadmin",
 		// DeviceOs: ct.Platform(c),
-		DeviceOs: 	f.DeviceInfo.Os,
-		Uuid: 		f.Uuid,
+		DeviceOs: f.DeviceInfo.Os,
+		Uuid:     f.Uuid,
 	}, 5*60)
 
 	response.Success(c, gin.H{
@@ -140,8 +144,6 @@ func (ct *Login) OidcAuth(c *gin.Context) {
 		"url":  url,
 	})
 }
-
-
 
 // OidcAuthQuery
 // @Tags Oauth
@@ -158,8 +160,8 @@ func (ct *Login) OidcAuthQuery(c *gin.Context) {
 	if ut == nil {
 		return
 	}
-	fmt.Println("u:", u)
-	fmt.Println("ut:", ut)
+	//fmt.Println("u:", u)
+	//fmt.Println("ut:", ut)
 	response.Success(c, &adResp.LoginPayload{
 		Token:      ut.Token,
 		Username:   u.Username,

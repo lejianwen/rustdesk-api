@@ -253,6 +253,7 @@ func (os *OauthService) getOidcConfig() (error, *oauth2.Config) {
 }
 
 func getHTTPClientWithProxy() *http.Client {
+	//todo add timeout
 	if global.Config.Proxy.Enable {
 		if global.Config.Proxy.Host == "" {
 			global.Logger.Warn("Proxy is enabled but proxy host is empty.")
@@ -445,7 +446,6 @@ func (os *OauthService) UnBindThird(thirdType string, userid uint) error {
 func (os *OauthService) DeleteUserByUserId(userid uint) error {
 	return global.DB.Where("user_id = ?", userid).Delete(&model.UserThird{}).Error
 }
-
 
 // InfoById 根据id取用户信息
 func (os *OauthService) InfoById(id uint) *model.Oauth {

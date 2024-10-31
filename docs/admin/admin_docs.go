@@ -1453,6 +1453,38 @@ const docTemplateadmin = `{
                 }
             }
         },
+        "/admin/login-options": {
+            "post": {
+                "description": "登录选项",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "登录"
+                ],
+                "summary": "登录选项",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/admin/loginLog/delete": {
             "post": {
                 "security": [
@@ -1907,6 +1939,63 @@ const docTemplateadmin = `{
                                     "properties": {
                                         "data": {
                                             "$ref": "#/definitions/model.OauthList"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/oidc/auth": {
+            "post": {
+                "description": "OidcAuth",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Oauth"
+                ],
+                "summary": "OidcAuth",
+                "responses": {}
+            }
+        },
+        "/admin/oidc/auth-query": {
+            "get": {
+                "description": "OidcAuthQuery",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Oauth"
+                ],
+                "summary": "OidcAuthQuery",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/admin.LoginPayload"
                                         }
                                     }
                                 }
@@ -3976,6 +4065,14 @@ const docTemplateadmin = `{
                 },
                 "total": {
                     "type": "integer"
+                }
+            }
+        },
+        "response.ErrorResponse": {
+            "type": "object",
+            "properties": {
+                "error": {
+                    "type": "string"
                 }
             }
         },
