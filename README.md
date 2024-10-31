@@ -159,6 +159,7 @@
 lang: "en"
 app:
   web-client: 1  # 1:启用 0:禁用
+  register: false #是否开启注册
 gin:
   api-addr: "0.0.0.0:21114"
   mode: "release"
