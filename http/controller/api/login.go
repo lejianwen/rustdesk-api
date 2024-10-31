@@ -81,7 +81,7 @@ func (l *Login) Login(c *gin.Context) {
 // @Produce  json
 // @Success 200 {object} []string
 // @Failure 500 {object} response.ErrorResponse
-// @Router /login-options [post]
+// @Router /login-options [get]
 func (l *Login) LoginOptions(c *gin.Context) {
 	oauthOks := []string{}
 	err, _ := service.AllService.OauthService.GetOauthConfig(model.OauthTypeGithub)

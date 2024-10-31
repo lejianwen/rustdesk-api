@@ -151,15 +151,34 @@ func (us *UserService) Logout(u *model.User, token string) error {
 
 // Delete 删除用户和oauth信息
 func (us *UserService) Delete(u *model.User) error {
-    // 删除用户
-    if err := global.DB.Delete(u).Error; err != nil {
-        return err
-    }
-    // 删除关联的 OAuth 信息
-    if err := AllService.OauthService.DeleteUserByUserId(u.Id); err != nil {
-        return err
-    }
-    return nil
+	tx := global.DB.Begin()
+	// 删除用户
+	if err := tx.Delete(u).Error; err != nil {
+		tx.Rollback()
+		return err
+	}
+	// 删除关联的 OAuth 信息
+	if err := tx.Where("user_id = ?", u.Id).Delete(&model.UserThird{}).Error; err != nil {
+		tx.Rollback()
+		return err
+	}
+	//  删除关联的ab
+	if err := tx.Where("user_id = ?", u.Id).Delete(&model.AddressBook{}).Error; err != nil {
+		tx.Rollback()
+		return err
+	}
+	//  删除关联的abc
+	if err := tx.Where("user_id = ?", u.Id).Delete(&model.AddressBookCollection{}).Error; err != nil {
+		tx.Rollback()
+		return err
+	}
+	//  删除关联的abcr
+	if err := tx.Where("user_id = ?", u.Id).Delete(&model.AddressBookCollectionRule{}).Error; err != nil {
+		tx.Rollback()
+		return err
+	}
+	tx.Commit()
+	return nil
 }
 
 // Update 更新
@@ -262,14 +281,14 @@ func (us *UserService) RegisterByOauth(thirdType, thirdName, uid string) *model.
 		Username: username,
 		GroupId:  1,
 	}
-	global.DB.Create(u)
+	tx.Create(u)
 	if u.Id == 0 {
 		tx.Rollback()
 		return u
 	}
 
 	ut.UserId = u.Id
-	global.DB.Create(ut)
+	tx.Create(ut)
 
 	tx.Commit()
 	return u
@@ -328,3 +347,12 @@ func (us *UserService) IsPasswordEmptyByUser(u *model.User) bool {
 	return us.IsPasswordEmptyById(u.Id)
 }
 
+func (us *UserService) Register(username string, password string) *model.User {
+	u := &model.User{
+		Username: username,
+		Password: us.EncryptPassword(password),
+		GroupId:  1,
+	}
+	global.DB.Create(u)
+	return u
+}

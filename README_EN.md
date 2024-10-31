@@ -165,6 +165,7 @@ installation are `admin` `admin`, please change the password immediately.
 lang: "en"
 app:
   web-client: 1  # web client route 1:open 0:close  
+  register: false #register enable
 gin:
   api-addr: "0.0.0.0:21114"
   mode: "release"
@@ -202,6 +203,7 @@ The prefix for variable names is `RUSTDESK_API`. If environment variables exist,
 | TZ                                 | timezone                                                  | Asia/Shanghai                 |
 | RUSTDESK_API_LANG                  | Language                                                  | `en`,`zh-CN`                  |
 | RUSTDESK_API_APP_WEB_CLIENT        | web client on/off; 1: on, 0 off, deault 1                 | 1                             |
+| RUSTDESK_API_APP_REGISTER          | register enable; `true`, `false`; default:`false`         | `false`                       |
 | ----- GIN Configuration -----      | ---------------------------------------                   | ----------------------------- |
 | RUSTDESK_API_GIN_TRUST_PROXY       | Trusted proxy IPs, separated by commas.                   | 192.168.1.2,192.168.1.3       |
 | ----- GORM Configuration -----     | ---------------------------------------                   | ----------------------------- |
