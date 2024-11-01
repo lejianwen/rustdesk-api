@@ -32,12 +32,6 @@ func (o *Oauth) OidcAuth(c *gin.Context) {
 	}
 
 	oauthService := service.AllService.OauthService
-	err = oauthService.ValidateOauthProvider(f.Op)
-	if err != nil {
-		response.Error(c, response.TranslateMsg(c, err.Error()))
-		return
-	}
-
 	var code string
 	var url string
 	err, code, url = oauthService.BeginAuth(f.Op)
