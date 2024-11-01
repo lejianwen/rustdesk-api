@@ -361,6 +361,7 @@ func (ct *User) Register(c *gin.Context) {
 	response.Success(c, &adResp.LoginPayload{
 		Token:      ut.Token,
 		Username:   u.Username,
+		Email:	  	u.Email,
 		RouteNames: service.AllService.UserService.RouteNames(u),
 		Nickname:   u.Nickname,
 	})
