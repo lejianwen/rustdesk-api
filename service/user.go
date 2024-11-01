@@ -76,6 +76,7 @@ func (us *UserService) Login(u *model.User, llog *model.LoginLog) *model.UserTok
 		UserId:    	u.Id,
 		Token:     	token,
 		DeviceUuid: llog.Uuid,
+		DeviceId:   llog.DeviceId,
 		ExpiredAt: 	time.Now().Add(time.Hour * 24 * 7).Unix(),
 	}
 	global.DB.Create(ut)
