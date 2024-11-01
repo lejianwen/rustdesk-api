@@ -73,9 +73,10 @@ func (us *UserService) GenerateToken(u *model.User) string {
 func (us *UserService) Login(u *model.User, llog *model.LoginLog) *model.UserToken {
 	token := us.GenerateToken(u)
 	ut := &model.UserToken{
-		UserId:    u.Id,
-		Token:     token,
-		ExpiredAt: time.Now().Add(time.Hour * 24 * 7).Unix(),
+		UserId:    	u.Id,
+		Token:     	token,
+		DeviceUuid: llog.Uuid,
+		ExpiredAt: 	time.Now().Add(time.Hour * 24 * 7).Unix(),
 	}
 	global.DB.Create(ut)
 	llog.UserTokenId = ut.UserId
@@ -153,9 +154,27 @@ func (us *UserService) Create(u *model.User) error {
 	return res
 }
 
-// Logout 退出登录
+// GetUuidByToken 根据token和user取uuid
+func (us *UserService) GetUuidByToken(u *model.User, token string) string {
+	ut := &model.UserToken{}
+	err :=global.DB.Where("user_id = ? and token = ?", u.Id, token).First(ut).Error
+	if err != nil {
+		return ""
+	}
+	return ut.DeviceUuid
+}
+
+// Logout 退出登录 -> 删除token, 解绑uuid
 func (us *UserService) Logout(u *model.User, token string) error {
-	return global.DB.Where("user_id = ? and token = ?", u.Id, token).Delete(&model.UserToken{}).Error
+	uuid := us.GetUuidByToken(u, token)
+	err := global.DB.Where("user_id = ? and token = ?", u.Id, token).Delete(&model.UserToken{}).Error
+	if err != nil {
+		return err
+	}
+	if uuid != "" {
+		AllService.PeerService.UuidUnbindUserId(uuid, u.Id)
+	}
+	return nil
 }
 
 // Delete 删除用户和oauth信息

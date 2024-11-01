@@ -26,12 +26,27 @@ func (ps *PeerService) InfoByRowId(id uint) *model.Peer {
 	return p
 }
 
+// FindByUserIdAndUuid 根据用户id和uuid查找peer
+func (ps *PeerService) FindByUserIdAndUuid(uuid string,userId uint) *model.Peer {
+	p := &model.Peer{}
+	global.DB.Where("uuid = ? and user_id = ?", uuid, userId).First(p)
+	return p
+}
+
 // UuidBindUserId 绑定用户id
 func (ps *PeerService) UuidBindUserId(uuid string, userId uint) {
 	peer := ps.FindByUuid(uuid)
 	if peer.RowId > 0 {
 		peer.UserId = userId
 		ps.Update(peer)
+	}
+}
+
+// UuidUnbindUserId 解绑用户id, 用于用户注销
+func (ps *PeerService) UuidUnbindUserId(uuid string, userId uint) {
+	peer := ps.FindByUserIdAndUuid(uuid, userId)
+	if peer.RowId > 0 {
+		global.DB.Model(peer).Update("user_id", 0)
 	}
 }
 
