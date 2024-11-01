@@ -12,17 +12,19 @@ WORKDIR /app
 # Step 1: Copy the source code
 COPY . .
 
+# use --mount=type=cache,target=/go/pkg/mod to cache the go mod
 # Step 2: Download dependencies
-RUN go mod tidy && go mod download
+RUN --mount=type=cache,target=/go/pkg/mod \
+    go mod tidy && go mod download && go install github.com/swaggo/swag/cmd/swag@latest
 
-
-# Step 3: Install swag and  Run the build script
-RUN go install github.com/swaggo/swag/cmd/swag@latest && \
+# Step 3: Run swag build script
+RUN --mount=type=cache,target=/go/pkg/mod \
     swag init -g cmd/apimain.go --output docs/api --instanceName api --exclude http/controller/admin && \
-    swag init -g cmd/apimain.go --output docs/admin --instanceName admin --exclude http/controller/api
+    swag init -g cmd/apimain.go --output docs/admin --instanceName admin --exclude http/controller/api 
 
-# Build the Go application with CGO enabled and specified ldflags
-RUN CGO_ENABLED=1 GOOS=linux go build -a \
+# Step 4: Build the Go application with CGO enabled and specified ldflags
+RUN --mount=type=cache,target=/go/pkg/mod \
+    CGO_ENABLED=1 GOOS=linux go build -a \
     -ldflags "-s -w --extldflags '-static -fpic'" \
     -installsuffix cgo -o release/apimain cmd/apimain.go
 
@@ -32,13 +34,24 @@ FROM node:18-alpine AS builder-admin-frontend
 # Set working directory
 WORKDIR /frontend
 
-RUN apk update && apk add git --no-cache
+ARG COUNTRY
+# Install required tools without caching index to minimize image size
+RUN if [ "$COUNTRY" = "CN" ] ; then \
+        echo "It is in China, updating the repositories"; \
+        sed -i 's#https\?://dl-cdn.alpinelinux.org/alpine#https://mirrors.tuna.tsinghua.edu.cn/alpine#g' /etc/apk/repositories; \
+    fi && \
+    apk update && apk add --no-cache git
 
 # Clone the frontend repository
 RUN git clone https://github.com/lejianwen/rustdesk-api-web .
 
-# Install npm dependencies and build the frontend
-RUN npm install && npm run build
+# Install required tools without caching index to minimize image size
+RUN if [ "$COUNTRY" = "CN" ] ; then \
+        echo "It is in China, updating NPM_CONFIG_REGISTRY"; \
+        export NPM_CONFIG_REGISTRY="https://mirrors.huaweicloud.com/repository/npm/"; \
+    fi && \
+    npm install && npm run build
+
 
 # Stage 2: Final Image
 FROM alpine:latest
@@ -47,7 +60,13 @@ FROM alpine:latest
 WORKDIR /app
 
 # Install necessary runtime dependencies
-RUN apk add --no-cache tzdata file
+# Install required tools without caching index to minimize image size
+ARG COUNTRY
+RUN if [ "$COUNTRY" = "CN" ] ; then \
+        echo "It is in China, updating the repositories"; \
+        sed -i 's#https\?://dl-cdn.alpinelinux.org/alpine#https://mirrors.tuna.tsinghua.edu.cn/alpine#g' /etc/apk/repositories; \
+    fi && \
+    apk update && apk add --no-cache tzdata file
 
 # Copy the built application and resources from the builder stage
 COPY --from=builder-backend /app/release /app/

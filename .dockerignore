@@ -1,8 +1,11 @@
 # Ignore Docker Compose configuration files
 docker-compose.yaml
+docker-compose-dev.yaml
 
 # Ignore development Dockerfile
+Dockerfile
 Dockerfile.dev
+docker-dev.sh
 
 # Ignore the data directory
 data/
