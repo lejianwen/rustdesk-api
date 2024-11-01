@@ -65,6 +65,7 @@ type GroupUsersQuery struct {
 
 type RegisterForm struct {
 	Username        string `json:"username" validate:"required,gte=4,lte=10"`
+	Email           string `json:"email" validate:"required,email"`
 	Password        string `json:"password" validate:"required,gte=4,lte=20"`
 	ConfirmPassword string `json:"confirm_password" validate:"required,gte=4,lte=20"`
 }
