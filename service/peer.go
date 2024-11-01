@@ -77,6 +77,18 @@ func (ps *PeerService) List(page, pageSize uint, where func(tx *gorm.DB)) (res *
 	return
 }
 
+// ListFilterByUserId 根据用户id过滤Peer列表
+func (ps *PeerService) ListFilterByUserId(page, pageSize uint, where func(tx *gorm.DB), userId uint) (res *model.PeerList) {
+	userWhere := func(tx *gorm.DB) {
+		tx.Where("user_id = ?", userId)
+		// 如果还有额外的筛选条件，执行它
+		if where != nil {
+			where(tx)
+		}
+	}
+	return ps.List(page, pageSize, userWhere)
+}
+
 // Create 创建
 func (ps *PeerService) Create(u *model.Peer) error {
 	res := global.DB.Create(u).Error

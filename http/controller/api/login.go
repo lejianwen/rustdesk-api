@@ -60,7 +60,7 @@ func (l *Login) Login(c *gin.Context) {
 	ut := service.AllService.UserService.Login(u, &model.LoginLog{
 		UserId:   u.Id,
 		Client:   f.DeviceInfo.Type,
-		DeviceId:       f.Id,
+		DeviceId: f.Id,
 		Uuid:     f.Uuid,
 		Ip:       c.ClientIP(),
 		Type:     model.LoginLogTypeAccount,
