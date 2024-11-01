@@ -155,6 +155,10 @@ func (os *OauthService) FetchOidcEndpointByOp(op string) (error, OidcEndpoint) {
 
 // GetOauthConfig retrieves the OAuth2 configuration based on the provider name
 func (os *OauthService) GetOauthConfig(op string) (err error, oauthType string, oauthConfig *oauth2.Config) {
+	err = os.ValidateOauthProvider(op)
+	if err != nil {
+		return err, "", nil
+	}
 	err, oauthType, oauthConfig = os.getOauthConfigGeneral(op)
 	if err != nil {
 		return err, oauthType, nil
