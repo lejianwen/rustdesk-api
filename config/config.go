@@ -63,6 +63,7 @@ func Init(rowVal interface{}) *viper.Viper {
 	if err := v.Unmarshal(rowVal); err != nil {
 		fmt.Println(err)
 	}
+	LoadKeyFile(&rowVal.(*Config).Rustdesk)
 	return v
 }
 

@@ -20,7 +20,8 @@ rustdesk:
   id-server: "192.168.1.66:21116"
   relay-server: "192.168.1.66:21117"
   api-server: "http://127.0.0.1:21114"
-  key: "123456789"
+  key: ""
+  key-file: "./conf/data/id_ed25519.pub"
   personal: 1
 logger:
   path: "./runtime/log.txt"
