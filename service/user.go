@@ -21,9 +21,17 @@ func (us *UserService) InfoById(id uint) *model.User {
 	global.DB.Where("id = ?", id).First(u)
 	return u
 }
+// InfoByUsername 根据用户名取用户信息
 func (us *UserService) InfoByUsername(un string) *model.User {
 	u := &model.User{}
 	global.DB.Where("username = ?", un).First(u)
+	return u
+}
+
+// InfoByEmail 根据邮箱取用户信息
+func (us *UserService) InfoByEmail(email string) *model.User {
+	u := &model.User{}
+	global.DB.Where("email = ?", email).First(u)
 	return u
 }
 
@@ -216,24 +224,9 @@ func (us *UserService) RouteNames(u *model.User) []string {
 	return adResp.UserRouteNames
 }
 
-// InfoByGithubId 根据githubid取用户信息
-func (us *UserService) InfoByGithubId(githubId string) *model.User {
-	return us.InfoByOauthId(model.OauthTypeGithub, githubId)
-}
-
-// InfoByGoogleEmail 根据googleid取用户信息
-func (us *UserService) InfoByGoogleEmail(email string) *model.User {
-	return us.InfoByOauthId(model.OauthTypeGithub, email)
-}
-
-// InfoByOidcSub 根据oidc取用户信息
-func (us *UserService) InfoByOidcSub(sub string) *model.User {
-	return us.InfoByOauthId(model.OauthTypeOidc, sub)
-}
-
-// InfoByOauthId 根据oauth取用户信息
-func (us *UserService) InfoByOauthId(thirdType, uid string) *model.User {
-	ut := AllService.OauthService.UserThirdInfo(thirdType, uid)
+// InfoByOauthId 根据oauth的name和openId取用户信息
+func (us *UserService) InfoByOauthId(op string, openId string) *model.User {
+	ut := AllService.OauthService.UserThirdInfo(op, openId)
 	if ut.Id == 0 {
 		return nil
 	}
@@ -244,55 +237,40 @@ func (us *UserService) InfoByOauthId(thirdType, uid string) *model.User {
 	return u
 }
 
-// RegisterByGithub 注册
-func (us *UserService) RegisterByGithub(githubName string, githubId string) *model.User {
-	return us.RegisterByOauth(model.OauthTypeGithub, githubName, githubId)
-}
-
-// RegisterByGoogle 注册
-func (us *UserService) RegisterByGoogle(name string, email string) *model.User {
-	return us.RegisterByOauth(model.OauthTypeGoogle, name, email)
-}
-
-// RegisterByOidc 注册, use PreferredUsername as username, sub as openid
-func (us *UserService) RegisterByOidc(PreferredUsername string, sub string) *model.User {
-	return us.RegisterByOauth(model.OauthTypeOidc, PreferredUsername, sub)
-}
-
 // RegisterByOauth 注册
-func (us *UserService) RegisterByOauth(thirdType, thirdName, uid string) *model.User {
+func (us *UserService) RegisterByOauth(oauthUser *model.OauthUser , op string) *model.User {
 	global.Lock.Lock("registerByOauth")
 	defer global.Lock.UnLock("registerByOauth")
-	ut := AllService.OauthService.UserThirdInfo(thirdType, uid)
+	ut := AllService.OauthService.UserThirdInfo(op, oauthUser.OpenId)
 	if ut.Id != 0 {
-		u := &model.User{}
-		global.DB.Where("id = ?", ut.UserId).First(u)
-		return u
+		return us.InfoById(ut.UserId)
 	}
-
+	//check if this email has been registered 
+	email := oauthUser.Email
+	oauthType := AllService.OauthService.GetTypeByOp(op)
+	user := us.InfoByEmail(email)
 	tx := global.DB.Begin()
-	ut = &model.UserThird{
-		OpenId:    uid,
-		ThirdName: thirdName,
-		ThirdType: thirdType,
+	if user.Id != 0 {
+		ut.FromOauthUser(user.Id, oauthUser, oauthType, op)
+	} else {
+		ut = &model.UserThird{}
+		ut.FromOauthUser(0, oauthUser, oauthType, op)
+		usernameUnique := us.GenerateUsernameByOauth(oauthUser.Username)
+		user := &model.User{
+			Username: usernameUnique,
+			GroupId:  1,
+		}
+		oauthUser.ToUser(user, false)
+		tx.Create(user)
+		if user.Id == 0 {
+			tx.Rollback()
+			return user
+		}
+		ut.UserId = user.Id
 	}
-
-	username := us.GenerateUsernameByOauth(thirdName)
-	u := &model.User{
-		Username: username,
-		GroupId:  1,
-	}
-	tx.Create(u)
-	if u.Id == 0 {
-		tx.Rollback()
-		return u
-	}
-
-	ut.UserId = u.Id
 	tx.Create(ut)
-
 	tx.Commit()
-	return u
+	return user
 }
 
 // GenerateUsernameByOauth 生成用户名
@@ -314,7 +292,7 @@ func (us *UserService) UserThirdsByUserId(userId uint) (res []*model.UserThird) 
 
 func (us *UserService) UserThirdInfo(userId uint, op string) *model.UserThird {
 	ut := &model.UserThird{}
-	global.DB.Where("user_id = ? and third_type = ?", userId, op).First(ut)
+	global.DB.Where("user_id = ? and op = ?", userId, op).First(ut)
 	return ut
 }
 

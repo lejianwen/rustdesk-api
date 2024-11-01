@@ -286,10 +286,10 @@ func (ct *User) MyOauth(c *gin.Context) {
 	var res []*adResp.UserOauthItem
 	for _, oa := range oal.Oauths {
 		item := &adResp.UserOauthItem{
-			ThirdType: oa.Op,
+			Op: oa.Op,
 		}
 		for _, ut := range uts {
-			if ut.ThirdType == oa.Op {
+			if ut.Op == oa.Op {
 				item.Status = 1
 				break
 			}

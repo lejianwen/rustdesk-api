@@ -63,6 +63,8 @@ func (ct *Login) Login(c *gin.Context) {
 	response.Success(c, &adResp.LoginPayload{
 		Token:      ut.Token,
 		Username:   u.Username,
+		Email:      u.Email,
+		Avatar:     u.Avatar,
 		RouteNames: service.AllService.UserService.RouteNames(u),
 		Nickname:   u.Nickname,
 	})
