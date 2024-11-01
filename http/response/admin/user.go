@@ -12,7 +12,7 @@ type LoginPayload struct {
 }
 
 var UserRouteNames = []string{
-	"MyTagList", "MyAddressBookList", "MyInfo", "MyAddressBookCollection",
+	"MyTagList", "MyAddressBookList", "MyInfo", "MyAddressBookCollection", "MyPeer",
 }
 var AdminRouteNames = []string{"*"}
 
