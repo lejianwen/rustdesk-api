@@ -4,6 +4,8 @@ import "Gwen/model"
 
 type LoginPayload struct {
 	Username   string   `json:"username"`
+	Email	   string   `json:"email"`
+	Avatar	   string   `json:"avatar"`
 	Token      string   `json:"token"`
 	RouteNames []string `json:"route_names"`
 	Nickname   string   `json:"nickname"`
@@ -15,8 +17,8 @@ var UserRouteNames = []string{
 var AdminRouteNames = []string{"*"}
 
 type UserOauthItem struct {
-	ThirdType string `json:"third_type"`
-	Status    int    `json:"status"`
+	Op 			string `json:"op"`
+	Status    	int    `json:"status"`
 }
 
 type GroupUsersPayload struct {
