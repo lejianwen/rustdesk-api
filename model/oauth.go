@@ -54,7 +54,7 @@ func (ou *OauthUser) ToUser(user *User, overideUsername bool) {
 	}
 	user.Email = ou.Email
 	user.Nickname = ou.Name
-
+	user.Avatar = ou.Picture
 }
 
 
