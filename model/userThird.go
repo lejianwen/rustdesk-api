@@ -1,5 +1,9 @@
 package model
 
+import (
+	"strings"
+)
+
 type UserThird struct {
 	IdModel
 	UserId     		uint   `	json:"user_id" gorm:"not null;index"`
@@ -16,4 +20,6 @@ func (u *UserThird) FromOauthUser(userId uint, oauthUser *OauthUser, oauthType s
 	u.OauthUser 		= *oauthUser
 	u.OauthType 		= oauthType
 	u.Op 				= op
+	// make sure email is lower case
+	u.Email 			= strings.ToLower(u.Email)
 }
