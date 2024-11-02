@@ -11,7 +11,6 @@ import (
 	"Gwen/service"
 	"fmt"
 	"github.com/gin-gonic/gin"
-	"gorm.io/gorm"
 )
 
 type Login struct {
@@ -91,13 +90,7 @@ func (ct *Login) Logout(c *gin.Context) {
 // @Failure 500 {object} response.ErrorResponse
 // @Router /admin/login-options [post]
 func (ct *Login) LoginOptions(c *gin.Context) {
-	res := service.AllService.OauthService.List(1, 100, func(tx *gorm.DB) {
-		tx.Select("op").Order("id")
-	})
-	var ops []string
-	for _, v := range res.Oauths {
-		ops = append(ops, v.Op)
-	}
+	ops := service.AllService.OauthService.GetOauthProviders()
 	response.Success(c, gin.H{
 		"ops":      ops,
 		"register": global.Config.App.Register,
