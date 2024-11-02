@@ -33,13 +33,13 @@ func (of *OauthForm) ToOauth() *model.Oauth {
 	if op == "" {
 		switch of.OauthType {
 		case model.OauthTypeGithub:
-			of.Op = "GitHub"
+			of.Op = model.OauthNameGithub
 		case model.OauthTypeGoogle:
-			of.Op = "Google"
+			of.Op = model.OauthNameGoogle
 		case model.OauthTypeOidc:
-			of.Op = "OIDC"
+			of.Op = model.OauthNameOidc
 		case model.OauthTypeWebauth:
-			of.Op = "WebAuth"
+			of.Op = model.OauthNameWebauth
 		default:
 			of.Op = of.OauthType
 		}
