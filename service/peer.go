@@ -94,16 +94,40 @@ func (ps *PeerService) Create(u *model.Peer) error {
 	res := global.DB.Create(u).Error
 	return res
 }
+
+// Delete 删除, 同时也应该删除token
 func (ps *PeerService) Delete(u *model.Peer) error {
-	return global.DB.Delete(u).Error
+	uuid := u.Uuid
+	err := global.DB.Delete(u).Error
+	if err != nil {
+		return err
+	}
+	// 删除token
+	return AllService.UserService.FlushTokenByUuid(uuid)
 }
 
-// BatchDelete
+// GetUuidListByIDs 根据ids获取uuid列表
+func (ps *PeerService) GetUuidListByIDs(ids []uint) ([]string, error) {
+	var uuids []string
+	err := global.DB.Model(&model.Peer{}).
+		Where("row_id in (?)", ids).
+		Pluck("uuid", &uuids).Error
+	return uuids, err
+}
+
+// BatchDelete 批量删除, 同时也应该删除token
 func (ps *PeerService) BatchDelete(ids []uint) error {
-	return global.DB.Where("row_id in (?)", ids).Delete(&model.Peer{}).Error
+	uuids, err := ps.GetUuidListByIDs(ids)
+	err = global.DB.Where("row_id in (?)", ids).Delete(&model.Peer{}).Error
+	if err != nil {
+		return err
+	}
+	// 删除token
+	return AllService.UserService.FlushTokenByUuids(uuids)
 }
 
 // Update 更新
 func (ps *PeerService) Update(u *model.Peer) error {
 	return global.DB.Model(u).Updates(u).Error
 }
+
