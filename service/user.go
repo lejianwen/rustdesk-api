@@ -11,7 +11,6 @@ import (
 	"strconv"
 	"time"
 	"strings"
-	"fmt"
 )
 
 type UserService struct {
@@ -378,9 +377,10 @@ func (us *UserService) IsPasswordEmptyByUser(u *model.User) bool {
 }
 
 // Register 注册
-func (us *UserService) Register(username string, password string) *model.User {
+func (us *UserService) Register(username string, email string, password string) *model.User {
 	u := &model.User{
 		Username: username,
+		Email:    email,
 		Password: us.EncryptPassword(password),
 		GroupId:  1,
 	}
