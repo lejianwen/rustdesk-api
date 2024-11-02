@@ -192,7 +192,7 @@ func (ct *Peer) Delete(c *gin.Context) {
 // @Param body body admin.PeerBatchDeleteForm true "设备id"
 // @Success 200 {object} response.Response
 // @Failure 500 {object} response.Response
-// @Router /admin/peer/delete [post]
+// @Router /admin/peer/batchDelete [post]
 // @Security token
 func (ct *Peer) BatchDelete(c *gin.Context) {
 	f := &admin.PeerBatchDeleteForm{}

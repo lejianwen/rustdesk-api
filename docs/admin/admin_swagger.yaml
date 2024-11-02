@@ -903,9 +903,9 @@ paths:
     post:
       consumes:
       - application/json
-      description: 创建地址簿集合
+      description: 创建地址簿名称
       parameters:
-      - description: 地址簿集合信息
+      - description: 地址簿名称信息
         in: body
         name: body
         required: true
@@ -929,14 +929,16 @@ paths:
             $ref: '#/definitions/response.Response'
       security:
       - token: []
-      summary: 创建地址簿集合
+      summary: 创建地址簿名称
+      tags:
+      - 地址簿名称
   /admin/address_book_collection/delete:
     post:
       consumes:
       - application/json
-      description: 地址簿集合删除
+      description: 地址簿名称删除
       parameters:
-      - description: 地址簿集合信息
+      - description: 地址簿名称信息
         in: body
         name: body
         required: true
@@ -955,12 +957,14 @@ paths:
             $ref: '#/definitions/response.Response'
       security:
       - token: []
-      summary: 地址簿集合删除
+      summary: 地址簿名称删除
+      tags:
+      - 地址簿名称
   /admin/address_book_collection/detail/{id}:
     get:
       consumes:
       - application/json
-      description: 地址簿集合详情
+      description: 地址簿名称详情
       parameters:
       - description: ID
         in: path
@@ -985,12 +989,14 @@ paths:
             $ref: '#/definitions/response.Response'
       security:
       - token: []
-      summary: 地址簿集合详情
+      summary: 地址簿名称详情
+      tags:
+      - 地址簿名称
   /admin/address_book_collection/list:
     get:
       consumes:
       - application/json
-      description: 地址簿集合列表
+      description: 地址簿名称列表
       parameters:
       - description: 页码
         in: query
@@ -1026,14 +1032,16 @@ paths:
             $ref: '#/definitions/response.Response'
       security:
       - token: []
-      summary: 地址簿集合列表
+      summary: 地址簿名称列表
+      tags:
+      - 地址簿名称
   /admin/address_book_collection/update:
     post:
       consumes:
       - application/json
-      description: 地址簿集合编辑
+      description: 地址簿名称编辑
       parameters:
-      - description: 地址簿集合信息
+      - description: 地址簿名称信息
         in: body
         name: body
         required: true
@@ -1057,14 +1065,16 @@ paths:
             $ref: '#/definitions/response.Response'
       security:
       - token: []
-      summary: 地址簿集合编辑
+      summary: 地址簿名称编辑
+      tags:
+      - 地址簿名称
   /admin/address_book_collection_rule/create:
     post:
       consumes:
       - application/json
-      description: 创建地址簿集合规则
+      description: 创建地址簿规则
       parameters:
-      - description: 地址簿集合规则信息
+      - description: 地址簿规则信息
         in: body
         name: body
         required: true
@@ -1088,14 +1098,16 @@ paths:
             $ref: '#/definitions/response.Response'
       security:
       - token: []
-      summary: 创建地址簿集合规则
+      summary: 创建地址簿规则
+      tags:
+      - 地址簿规则
   /admin/address_book_collection_rule/delete:
     post:
       consumes:
       - application/json
-      description: 地址簿集合规则删除
+      description: 地址簿规则删除
       parameters:
-      - description: 地址簿集合规则信息
+      - description: 地址簿规则信息
         in: body
         name: body
         required: true
@@ -1114,12 +1126,14 @@ paths:
             $ref: '#/definitions/response.Response'
       security:
       - token: []
-      summary: 地址簿集合规则删除
+      summary: 地址簿规则删除
+      tags:
+      - 地址簿规则
   /admin/address_book_collection_rule/detail/{id}:
     get:
       consumes:
       - application/json
-      description: 地址簿集合规则详情
+      description: 地址簿规则详情
       parameters:
       - description: ID
         in: path
@@ -1144,12 +1158,14 @@ paths:
             $ref: '#/definitions/response.Response'
       security:
       - token: []
-      summary: 地址簿集合规则详情
+      summary: 地址簿规则详情
+      tags:
+      - 地址簿规则
   /admin/address_book_collection_rule/list:
     get:
       consumes:
       - application/json
-      description: 地址簿集合规则列表
+      description: 地址簿规则列表
       parameters:
       - description: 页码
         in: query
@@ -1189,14 +1205,16 @@ paths:
             $ref: '#/definitions/response.Response'
       security:
       - token: []
-      summary: 地址簿集合规则列表
+      summary: 地址簿规则列表
+      tags:
+      - 地址簿规则
   /admin/address_book_collection_rule/update:
     post:
       consumes:
       - application/json
-      description: 地址簿集合规则编辑
+      description: 地址簿规则编辑
       parameters:
-      - description: 地址簿集合规则信息
+      - description: 地址簿规则信息
         in: body
         name: body
         required: true
@@ -1220,7 +1238,9 @@ paths:
             $ref: '#/definitions/response.Response'
       security:
       - token: []
-      summary: 地址簿集合规则编辑
+      summary: 地址簿规则编辑
+      tags:
+      - 地址簿规则
   /admin/app-config:
     get:
       consumes:
@@ -1890,6 +1910,34 @@ paths:
       summary: OidcAuthQuery
       tags:
       - Oauth
+  /admin/peer/batchDelete:
+    post:
+      consumes:
+      - application/json
+      description: 批量设备删除
+      parameters:
+      - description: 设备id
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/admin.PeerBatchDeleteForm'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - token: []
+      summary: 批量设备删除
+      tags:
+      - 设备
   /admin/peer/create:
     post:
       consumes:
@@ -1927,14 +1975,14 @@ paths:
     post:
       consumes:
       - application/json
-      description: 批量设备删除
+      description: 设备删除
       parameters:
-      - description: 设备id
+      - description: 设备信息
         in: body
         name: body
         required: true
         schema:
-          $ref: '#/definitions/admin.PeerBatchDeleteForm'
+          $ref: '#/definitions/admin.PeerForm'
       produces:
       - application/json
       responses:
@@ -1948,7 +1996,7 @@ paths:
             $ref: '#/definitions/response.Response'
       security:
       - token: []
-      summary: 批量设备删除
+      summary: 设备删除
       tags:
       - 设备
   /admin/peer/detail/{id}:

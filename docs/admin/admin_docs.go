@@ -353,17 +353,20 @@ const docTemplateadmin = `{
                         "token": []
                     }
                 ],
-                "description": "创建地址簿集合",
+                "description": "创建地址簿名称",
                 "consumes": [
                     "application/json"
                 ],
                 "produces": [
                     "application/json"
                 ],
-                "summary": "创建地址簿集合",
+                "tags": [
+                    "地址簿名称"
+                ],
+                "summary": "创建地址簿名称",
                 "parameters": [
                     {
-                        "description": "地址簿集合信息",
+                        "description": "地址簿名称信息",
                         "name": "body",
                         "in": "body",
                         "required": true,
@@ -407,17 +410,20 @@ const docTemplateadmin = `{
                         "token": []
                     }
                 ],
-                "description": "地址簿集合删除",
+                "description": "地址簿名称删除",
                 "consumes": [
                     "application/json"
                 ],
                 "produces": [
                     "application/json"
                 ],
-                "summary": "地址簿集合删除",
+                "tags": [
+                    "地址簿名称"
+                ],
+                "summary": "地址簿名称删除",
                 "parameters": [
                     {
-                        "description": "地址簿集合信息",
+                        "description": "地址簿名称信息",
                         "name": "body",
                         "in": "body",
                         "required": true,
@@ -449,14 +455,17 @@ const docTemplateadmin = `{
                         "token": []
                     }
                 ],
-                "description": "地址簿集合详情",
+                "description": "地址簿名称详情",
                 "consumes": [
                     "application/json"
                 ],
                 "produces": [
                     "application/json"
                 ],
-                "summary": "地址簿集合详情",
+                "tags": [
+                    "地址簿名称"
+                ],
+                "summary": "地址簿名称详情",
                 "parameters": [
                     {
                         "type": "integer",
@@ -501,14 +510,17 @@ const docTemplateadmin = `{
                         "token": []
                     }
                 ],
-                "description": "地址簿集合列表",
+                "description": "地址簿名称列表",
                 "consumes": [
                     "application/json"
                 ],
                 "produces": [
                     "application/json"
                 ],
-                "summary": "地址簿集合列表",
+                "tags": [
+                    "地址簿名称"
+                ],
+                "summary": "地址簿名称列表",
                 "parameters": [
                     {
                         "type": "integer",
@@ -570,17 +582,20 @@ const docTemplateadmin = `{
                         "token": []
                     }
                 ],
-                "description": "地址簿集合编辑",
+                "description": "地址簿名称编辑",
                 "consumes": [
                     "application/json"
                 ],
                 "produces": [
                     "application/json"
                 ],
-                "summary": "地址簿集合编辑",
+                "tags": [
+                    "地址簿名称"
+                ],
+                "summary": "地址簿名称编辑",
                 "parameters": [
                     {
-                        "description": "地址簿集合信息",
+                        "description": "地址簿名称信息",
                         "name": "body",
                         "in": "body",
                         "required": true,
@@ -624,17 +639,20 @@ const docTemplateadmin = `{
                         "token": []
                     }
                 ],
-                "description": "创建地址簿集合规则",
+                "description": "创建地址簿规则",
                 "consumes": [
                     "application/json"
                 ],
                 "produces": [
                     "application/json"
                 ],
-                "summary": "创建地址簿集合规则",
+                "tags": [
+                    "地址簿规则"
+                ],
+                "summary": "创建地址簿规则",
                 "parameters": [
                     {
-                        "description": "地址簿集合规则信息",
+                        "description": "地址簿规则信息",
                         "name": "body",
                         "in": "body",
                         "required": true,
@@ -678,17 +696,20 @@ const docTemplateadmin = `{
                         "token": []
                     }
                 ],
-                "description": "地址簿集合规则删除",
+                "description": "地址簿规则删除",
                 "consumes": [
                     "application/json"
                 ],
                 "produces": [
                     "application/json"
                 ],
-                "summary": "地址簿集合规则删除",
+                "tags": [
+                    "地址簿规则"
+                ],
+                "summary": "地址簿规则删除",
                 "parameters": [
                     {
-                        "description": "地址簿集合规则信息",
+                        "description": "地址簿规则信息",
                         "name": "body",
                         "in": "body",
                         "required": true,
@@ -720,14 +741,17 @@ const docTemplateadmin = `{
                         "token": []
                     }
                 ],
-                "description": "地址簿集合规则详情",
+                "description": "地址簿规则详情",
                 "consumes": [
                     "application/json"
                 ],
                 "produces": [
                     "application/json"
                 ],
-                "summary": "地址簿集合规则详情",
+                "tags": [
+                    "地址簿规则"
+                ],
+                "summary": "地址簿规则详情",
                 "parameters": [
                     {
                         "type": "integer",
@@ -772,14 +796,17 @@ const docTemplateadmin = `{
                         "token": []
                     }
                 ],
-                "description": "地址簿集合规则列表",
+                "description": "地址簿规则列表",
                 "consumes": [
                     "application/json"
                 ],
                 "produces": [
                     "application/json"
                 ],
-                "summary": "地址簿集合规则列表",
+                "tags": [
+                    "地址簿规则"
+                ],
+                "summary": "地址簿规则列表",
                 "parameters": [
                     {
                         "type": "integer",
@@ -847,17 +874,20 @@ const docTemplateadmin = `{
                         "token": []
                     }
                 ],
-                "description": "地址簿集合规则编辑",
+                "description": "地址簿规则编辑",
                 "consumes": [
                     "application/json"
                 ],
                 "produces": [
                     "application/json"
                 ],
-                "summary": "地址簿集合规则编辑",
+                "tags": [
+                    "地址簿规则"
+                ],
+                "summary": "地址簿规则编辑",
                 "parameters": [
                     {
-                        "description": "地址簿集合规则信息",
+                        "description": "地址簿规则信息",
                         "name": "body",
                         "in": "body",
                         "required": true,
@@ -2011,6 +2041,51 @@ const docTemplateadmin = `{
                 }
             }
         },
+        "/admin/peer/batchDelete": {
+            "post": {
+                "security": [
+                    {
+                        "token": []
+                    }
+                ],
+                "description": "批量设备删除",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "设备"
+                ],
+                "summary": "批量设备删除",
+                "parameters": [
+                    {
+                        "description": "设备id",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/admin.PeerBatchDeleteForm"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
         "/admin/peer/create": {
             "post": {
                 "security": [
@@ -2075,7 +2150,7 @@ const docTemplateadmin = `{
                         "token": []
                     }
                 ],
-                "description": "批量设备删除",
+                "description": "设备删除",
                 "consumes": [
                     "application/json"
                 ],
@@ -2085,15 +2160,15 @@ const docTemplateadmin = `{
                 "tags": [
                     "设备"
                 ],
-                "summary": "批量设备删除",
+                "summary": "设备删除",
                 "parameters": [
                     {
-                        "description": "设备id",
+                        "description": "设备信息",
                         "name": "body",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/admin.PeerBatchDeleteForm"
+                            "$ref": "#/definitions/admin.PeerForm"
                         }
                     }
                 ],
