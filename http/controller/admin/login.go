@@ -60,14 +60,7 @@ func (ct *Login) Login(c *gin.Context) {
 		Platform: f.Platform,
 	})
 
-	response.Success(c, &adResp.LoginPayload{
-		Token:      ut.Token,
-		Username:   u.Username,
-		Email:      u.Email,
-		Avatar:     u.Avatar,
-		RouteNames: service.AllService.UserService.RouteNames(u),
-		Nickname:   u.Nickname,
-	})
+	responseLoginSuccess(c, u, ut.Token)
 }
 
 // Logout 登出
@@ -165,12 +158,14 @@ func (ct *Login) OidcAuthQuery(c *gin.Context) {
 	if ut == nil {
 		return
 	}
-	//fmt.Println("u:", u)
-	//fmt.Println("ut:", ut)
-	response.Success(c, &adResp.LoginPayload{
-		Token:      ut.Token,
-		Username:   u.Username,
-		RouteNames: service.AllService.UserService.RouteNames(u),
-		Nickname:   u.Nickname,
-	})
+	responseLoginSuccess(c, u, ut.Token)
+}
+
+
+func responseLoginSuccess(c *gin.Context, u *model.User, token string) {
+	lp := &adResp.LoginPayload{}
+	lp.FromUser(u)
+	lp.Token = token
+	lp.RouteNames = service.AllService.UserService.RouteNames(u)
+	response.Success(c, lp)
 }

@@ -11,6 +11,13 @@ type LoginPayload struct {
 	Nickname   string   `json:"nickname"`
 }
 
+func (lp *LoginPayload) FromUser(user *model.User) {
+	lp.Username = user.Username
+	lp.Email = user.Email
+	lp.Avatar = user.Avatar
+	lp.Nickname = user.Nickname
+}
+
 var UserRouteNames = []string{
 	"MyTagList", "MyAddressBookList", "MyInfo", "MyAddressBookCollection", "MyPeer",
 }
