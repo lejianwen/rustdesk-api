@@ -207,6 +207,11 @@ func (us *UserService) Delete(u *model.User) error {
 		return err
 	}
 	tx.Commit()
+	// 删除关联的peer
+	if err := AllService.PeerService.EraseUserId(u.Id); err != nil {
+		tx.Rollback()
+		return err
+	}
 	return nil
 }
 
