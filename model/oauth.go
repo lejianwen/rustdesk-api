@@ -13,6 +13,18 @@ const (
 	OauthTypeWebauth string = "webauth"
 )
 
+const (
+	OauthNameGithub  string = "GitHub"
+	OauthNameGoogle  string = "Google"
+	OauthNameOidc    string = "OIDC"
+	OauthNameWebauth string = "WebAuth"
+)
+
+const (
+	UserEndpointGithub  string = "https://api.github.com/user"
+	UserEndpointGoogle  string = "https://www.googleapis.com/oauth2/v3/userinfo"
+	UserEndpointOidc    string = ""
+)
 
 type Oauth struct {
 	IdModel
@@ -33,6 +45,7 @@ type OauthUser struct {
 	Username 		string 	`json:"username"`
 	Email  			string 	`json:"email"`
 	VerifiedEmail 	bool 	`json:"verified_email,omitempty"`
+	Picture			string 	`json:"picture,omitempty"`
 }
 
 func (ou *OauthUser) ToUser(user *User, overideUsername bool) {
@@ -56,6 +69,7 @@ type OidcUser struct {
 	Sub               string `json:"sub"`
 	VerifiedEmail     bool   `json:"email_verified"`
 	PreferredUsername string `json:"preferred_username"`
+	Picture		   	  string `json:"picture"`
 }
 
 func (ou *OidcUser) ToOauthUser() *OauthUser {
@@ -65,6 +79,7 @@ func (ou *OidcUser) ToOauthUser() *OauthUser {
 		Username: 		ou.PreferredUsername,
 		Email:  		ou.Email,
 		VerifiedEmail: 	ou.VerifiedEmail,
+		Picture:		ou.Picture,
 	}
 }
 
@@ -84,6 +99,7 @@ func (gu *GoogleUser) ToOauthUser() *OauthUser {
 		Username: 		gu.GivenName,
 		Email:  		gu.Email,
 		VerifiedEmail: 	gu.VerifiedEmail,
+		Picture:		gu.Picture,
 	}	
 }
 
@@ -92,6 +108,8 @@ type GithubUser struct {
 	OauthUserBase
 	Id                int         `json:"id"`
 	Login             string      `json:"login"`
+	AvatarUrl         string      `json:"avatar_url"`
+	VerifiedEmail	  bool        `json:"verified_email"`
 }
 
 func (gu *GithubUser) ToOauthUser() *OauthUser {
@@ -100,7 +118,7 @@ func (gu *GithubUser) ToOauthUser() *OauthUser {
 		Name:   		gu.Name,
 		Username: 		gu.Login,
 		Email:  		gu.Email,
-		VerifiedEmail: 	true,
+		VerifiedEmail: 	gu.VerifiedEmail,
 	}
 }
 
