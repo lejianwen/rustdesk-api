@@ -83,7 +83,7 @@ func (us *UserService) Login(u *model.User, llog *model.LoginLog) *model.UserTok
 	llog.UserTokenId = ut.UserId
 	global.DB.Create(llog)
 	if llog.Uuid != "" {
-		AllService.PeerService.UuidBindUserId(llog.Uuid, u.Id)
+		AllService.PeerService.UuidBindUserId(llog.DeviceId, llog.Uuid, u.Id)
 	}
 	return ut
 }
