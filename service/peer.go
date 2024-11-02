@@ -58,6 +58,11 @@ func (ps *PeerService) UuidUnbindUserId(uuid string, userId uint) {
 	}
 }
 
+// EraseUserId 清除用户id, 用于用户删除
+func (ps *PeerService) EraseUserId(userId uint) error {
+	return global.DB.Model(&model.Peer{}).Where("user_id = ?", userId).Update("user_id", 0).Error
+}
+
 // ListByUserIds 根据用户id取列表
 func (ps *PeerService) ListByUserIds(userIds []uint, page, pageSize uint) (res *model.PeerList) {
 	res = &model.PeerList{}
