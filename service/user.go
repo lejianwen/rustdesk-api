@@ -10,6 +10,8 @@ import (
 	"math/rand"
 	"strconv"
 	"time"
+	"strings"
+	"fmt"
 )
 
 type UserService struct {
@@ -150,6 +152,8 @@ func (us *UserService) CheckUserEnable(u *model.User) bool {
 
 // Create 创建
 func (us *UserService) Create(u *model.User) error {
+	// The initial username should be formatted, and the username should be unique
+	u.Username = us.formatUsername(u.Username)
 	u.Password = us.EncryptPassword(u.Password)
 	res := global.DB.Create(u).Error
 	return res
@@ -282,7 +286,17 @@ func (us *UserService) RegisterByOauth(oauthUser *model.OauthUser , op string) *
 	}
 	//check if this email has been registered 
 	email := oauthUser.Email
-	oauthType := AllService.OauthService.GetTypeByOp(op)
+	err, oauthType := AllService.OauthService.GetTypeByOp(op)
+	if err != nil {
+		return nil
+	}
+	// if email is empty, use username and op as email
+	if email == "" {
+		email = oauthUser.Username + "@" + op
+	} 
+	email = strings.ToLower(email)
+	// update email to oauthUser, in case it contain upper case
+	oauthUser.Email = email
 	user := us.InfoByEmail(email)
 	tx := global.DB.Begin()
 	if user.Id != 0 {
@@ -290,8 +304,10 @@ func (us *UserService) RegisterByOauth(oauthUser *model.OauthUser , op string) *
 	} else {
 		ut = &model.UserThird{}
 		ut.FromOauthUser(0, oauthUser, oauthType, op)
-		usernameUnique := us.GenerateUsernameByOauth(oauthUser.Username)
-		user := &model.User{
+		// The initial username should be formatted
+		username := us.formatUsername(oauthUser.Username)
+		usernameUnique := us.GenerateUsernameByOauth(username)
+		user = &model.User{
 			Username: usernameUnique,
 			GroupId:  1,
 		}
@@ -361,6 +377,7 @@ func (us *UserService) IsPasswordEmptyByUser(u *model.User) bool {
 	return us.IsPasswordEmptyById(u.Id)
 }
 
+// Register 注册
 func (us *UserService) Register(username string, password string) *model.User {
 	u := &model.User{
 		Username: username,
@@ -393,4 +410,11 @@ func (us *UserService) TokenInfoById(id uint) *model.UserToken {
 
 func (us *UserService) DeleteToken(l *model.UserToken) error {
 	return global.DB.Delete(l).Error
+}
+
+// Helper functions, used for formatting username
+func (us *UserService) formatUsername(username string) string {
+	username = strings.ReplaceAll(username, " ", "")
+	username = strings.ToLower(username)
+	return username
 }
