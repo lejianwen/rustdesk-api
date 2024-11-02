@@ -34,11 +34,19 @@ func (ps *PeerService) FindByUserIdAndUuid(uuid string,userId uint) *model.Peer 
 }
 
 // UuidBindUserId 绑定用户id
-func (ps *PeerService) UuidBindUserId(uuid string, userId uint) {
+func (ps *PeerService) UuidBindUserId(deviceId string, uuid string, userId uint) {
 	peer := ps.FindByUuid(uuid)
+	// 如果存在则更新
 	if peer.RowId > 0 {
 		peer.UserId = userId
 		ps.Update(peer)
+	} else {
+		// 不存在则创建
+		global.DB.Create(&model.Peer{
+			Id: 		deviceId,
+			Uuid:     	uuid,
+			UserId:   	userId,
+		})
 	}
 }
 
