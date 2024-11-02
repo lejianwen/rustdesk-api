@@ -15,9 +15,9 @@ type AddressBookCollectionRule struct {
 }
 
 // List 列表
-// @AddressBookCollectionRule 地址簿集合规则
-// @Summary 地址簿集合规则列表
-// @Description 地址簿集合规则列表
+// @Tags 地址簿规则
+// @Summary 地址簿规则列表
+// @Description 地址簿规则列表
 // @Accept  json
 // @Produce  json
 // @Param page query int false "页码"
@@ -51,10 +51,10 @@ func (abcr *AddressBookCollectionRule) List(c *gin.Context) {
 	response.Success(c, res)
 }
 
-// Detail 地址簿集合规则
-// @AddressBookCollectionRule 地址簿集合规则
-// @Summary 地址簿集合规则详情
-// @Description 地址簿集合规则详情
+// Detail 地址簿规则
+// @Tags 地址簿规则
+// @Summary 地址簿规则详情
+// @Description 地址簿规则详情
 // @Accept  json
 // @Produce  json
 // @Param id path int true "ID"
@@ -79,13 +79,13 @@ func (abcr *AddressBookCollectionRule) Detail(c *gin.Context) {
 	return
 }
 
-// Create 创建地址簿集合规则
-// @AddressBookCollectionRule 地址簿集合规则
-// @Summary 创建地址簿集合规则
-// @Description 创建地址簿集合规则
+// Create 创建地址簿规则
+// @Tags 地址簿规则
+// @Summary 创建地址簿规则
+// @Description 创建地址簿规则
 // @Accept  json
 // @Produce  json
-// @Param body body model.AddressBookCollectionRule true "地址簿集合规则信息"
+// @Param body body model.AddressBookCollectionRule true "地址簿规则信息"
 // @Success 200 {object} response.Response{data=model.AddressBookCollection}
 // @Failure 500 {object} response.Response
 // @Router /admin/address_book_collection_rule/create [post]
@@ -169,12 +169,12 @@ func (abcr *AddressBookCollectionRule) CheckForm(u *model.User, t *model.Address
 }
 
 // Update 编辑
-// @AddressBookCollectionRule 地址簿集合规则
-// @Summary 地址簿集合规则编辑
-// @Description 地址簿集合规则编辑
+// @Tags 地址簿规则
+// @Summary 地址簿规则编辑
+// @Description 地址簿规则编辑
 // @Accept  json
 // @Produce  json
-// @Param body body model.AddressBookCollectionRule true "地址簿集合规则信息"
+// @Param body body model.AddressBookCollectionRule true "地址簿规则信息"
 // @Success 200 {object} response.Response{data=model.AddressBookCollection}
 // @Failure 500 {object} response.Response
 // @Router /admin/address_book_collection_rule/update [post]
@@ -210,12 +210,12 @@ func (abcr *AddressBookCollectionRule) Update(c *gin.Context) {
 }
 
 // Delete 删除
-// @AddressBookCollectionRule 地址簿集合规则
-// @Summary 地址簿集合规则删除
-// @Description 地址簿集合规则删除
+// @Tags 地址簿规则
+// @Summary 地址簿规则删除
+// @Description 地址簿规则删除
 // @Accept  json
 // @Produce  json
-// @Param body body model.AddressBookCollectionRule true "地址簿集合规则信息"
+// @Param body body model.AddressBookCollectionRule true "地址簿规则信息"
 // @Success 200 {object} response.Response
 // @Failure 500 {object} response.Response
 // @Router /admin/address_book_collection_rule/delete [post]

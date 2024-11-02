@@ -108,6 +108,8 @@ func AddressBookBind(rg *gin.RouterGroup) {
 }
 func PeerBind(rg *gin.RouterGroup) {
 	aR := rg.Group("/peer")
+	aR.POST("/simpleData", (&admin.Peer{}).SimpleData)
+	aR.Use(middleware.AdminPrivilege())
 	{
 		cont := &admin.Peer{}
 		aR.GET("/list", cont.List)
@@ -115,10 +117,7 @@ func PeerBind(rg *gin.RouterGroup) {
 		aR.POST("/create", cont.Create)
 		aR.POST("/update", cont.Update)
 		aR.POST("/delete", cont.Delete)
-		aR.POST("/simpleData", cont.SimpleData)
-
-		arp := aR.Use(middleware.AdminPrivilege())
-		arp.POST("/batchDelete", cont.BatchDelete)
+		aR.POST("/batchDelete", cont.BatchDelete)
 	}
 }
 

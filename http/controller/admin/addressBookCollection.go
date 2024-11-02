@@ -14,10 +14,10 @@ import (
 type AddressBookCollection struct {
 }
 
-// Detail 地址簿集合
-// @AddressBookCollections 地址簿集合
-// @Summary 地址簿集合详情
-// @Description 地址簿集合详情
+// Detail 地址簿名称
+// @Tags 地址簿名称
+// @Summary 地址簿名称详情
+// @Description 地址簿名称详情
 // @Accept  json
 // @Produce  json
 // @Param id path int true "ID"
@@ -42,13 +42,13 @@ func (abc *AddressBookCollection) Detail(c *gin.Context) {
 	return
 }
 
-// Create 创建地址簿集合
-// @AddressBookCollections 地址簿集合
-// @Summary 创建地址簿集合
-// @Description 创建地址簿集合
+// Create 创建地址簿名称
+// @Tags 地址簿名称
+// @Summary 创建地址簿名称
+// @Description 创建地址簿名称
 // @Accept  json
 // @Produce  json
-// @Param body body model.AddressBookCollection true "地址簿集合信息"
+// @Param body body model.AddressBookCollection true "地址簿名称信息"
 // @Success 200 {object} response.Response{data=model.AddressBookCollection}
 // @Failure 500 {object} response.Response
 // @Router /admin/address_book_collection/create [post]
@@ -79,9 +79,9 @@ func (abc *AddressBookCollection) Create(c *gin.Context) {
 }
 
 // List 列表
-// @AddressBookCollections 地址簿集合
-// @Summary 地址簿集合列表
-// @Description 地址簿集合列表
+// @Tags 地址簿名称
+// @Summary 地址簿名称列表
+// @Description 地址簿名称列表
 // @Accept  json
 // @Produce  json
 // @Param page query int false "页码"
@@ -111,12 +111,12 @@ func (abc *AddressBookCollection) List(c *gin.Context) {
 }
 
 // Update 编辑
-// @AddressBookCollections 地址簿集合
-// @Summary 地址簿集合编辑
-// @Description 地址簿集合编辑
+// @Tags 地址簿名称
+// @Summary 地址簿名称编辑
+// @Description 地址簿名称编辑
 // @Accept  json
 // @Produce  json
-// @Param body body model.AddressBookCollection true "地址簿集合信息"
+// @Param body body model.AddressBookCollection true "地址簿名称信息"
 // @Success 200 {object} response.Response{data=model.AddressBookCollection}
 // @Failure 500 {object} response.Response
 // @Router /admin/address_book_collection/update [post]
@@ -151,12 +151,12 @@ func (abc *AddressBookCollection) Update(c *gin.Context) {
 }
 
 // Delete 删除
-// @AddressBookCollections 地址簿集合
-// @Summary 地址簿集合删除
-// @Description 地址簿集合删除
+// @Tags 地址簿名称
+// @Summary 地址簿名称删除
+// @Description 地址簿名称删除
 // @Accept  json
 // @Produce  json
-// @Param body body model.AddressBookCollection true "地址簿集合信息"
+// @Param body body model.AddressBookCollection true "地址簿名称信息"
 // @Success 200 {object} response.Response
 // @Failure 500 {object} response.Response
 // @Router /admin/address_book_collection/delete [post]
