@@ -391,7 +391,7 @@ func (ct *User) Register(c *gin.Context) {
 		response.Fail(c, 101, errList[0])
 		return
 	}
-	u := service.AllService.UserService.Register(f.Username, f.Password)
+	u := service.AllService.UserService.Register(f.Username, f.Email, f.Password)
 	if u == nil || u.Id == 0 {
 		response.Fail(c, 101, response.TranslateMsg(c, "OperationFailed"))
 		return
