@@ -42,8 +42,11 @@ RUN if [ "$COUNTRY" = "CN" ] ; then \
     fi && \
     apk update && apk add --no-cache git
 
+ARG FREONTEND_GIT_REPO=https://github.com/lejianwen/rustdesk-api-web.git
+ARG FRONTEND_GIT_BRANCH=master
 # Clone the frontend repository
-RUN git clone https://github.com/lejianwen/rustdesk-api-web .
+
+RUN git clone -b $FRONTEND_GIT_BRANCH $FREONTEND_GIT_REPO .
 
 # Install required tools without caching index to minimize image size
 RUN if [ "$COUNTRY" = "CN" ] ; then \

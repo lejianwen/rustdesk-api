@@ -5,6 +5,8 @@ services:
       dockerfile: Dockerfile.dev
       args:
         COUNTRY: CN
+        FREONTEND_GIT_REPO: https://github.com/lejianwen/rustdesk-api-web.git
+        FRONTEND_GIT_BRANCH: master
     # image: lejianwen/rustdesk-api
     container_name: rustdesk-api
     environment:
