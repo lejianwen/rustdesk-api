@@ -227,10 +227,10 @@ func (us *UserService) Delete(u *model.User) error {
 func (us *UserService) Update(u *model.User) error {
 	currentUser := us.InfoById(u.Id)
 	// 如果当前用户是管理员并且 IsAdmin 不为空，进行检查
-	if currentUser.IsAdmin != nil && *currentUser.IsAdmin {
+	if us.IsAdmin(currentUser) {
 		adminCount := us.getAdminUserCount()
 		// 如果这是唯一的管理员，确保不能禁用或取消管理员权限
-		if adminCount <= 1 && (u.IsAdmin == nil || !*u.IsAdmin || u.Status == model.COMMON_STATUS_DISABLED) {
+		if adminCount <= 1 && ( !us.IsAdmin(u) || u.Status == model.COMMON_STATUS_DISABLED) {
 			return errors.New("The last admin user cannot be disabled or demoted")
 		}
 	}
