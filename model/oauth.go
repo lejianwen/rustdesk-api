@@ -119,6 +119,7 @@ func (gu *GithubUser) ToOauthUser() *OauthUser {
 		Username: 		gu.Login,
 		Email:  		gu.Email,
 		VerifiedEmail: 	gu.VerifiedEmail,
+		Picture:		gu.AvatarUrl,
 	}
 }
 
