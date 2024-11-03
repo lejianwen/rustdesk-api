@@ -208,9 +208,9 @@ func (o *Oauth) OauthCallback(c *gin.Context) {
 			}
 
 			//自动注册
-			user = service.AllService.UserService.RegisterByOauth(oauthUser, op)
-			if user.Id == 0 {
-				c.String(http.StatusInternalServerError, response.TranslateMsg(c, "OauthRegisterFailed"))
+			err, user = service.AllService.UserService.RegisterByOauth(oauthUser, op)
+			if err != nil {
+				c.String(http.StatusInternalServerError, response.TranslateMsg(c, err.Error()))
 				return
 			}
 		}

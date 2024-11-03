@@ -11,6 +11,7 @@ import (
 	"strconv"
 	"time"
 	"strings"
+	"errors"
 )
 
 type UserService struct {
@@ -276,18 +277,18 @@ func (us *UserService) InfoByOauthId(op string, openId string) *model.User {
 }
 
 // RegisterByOauth 注册
-func (us *UserService) RegisterByOauth(oauthUser *model.OauthUser , op string) *model.User {
+func (us *UserService) RegisterByOauth(oauthUser *model.OauthUser , op string) (error, *model.User) {
 	global.Lock.Lock("registerByOauth")
 	defer global.Lock.UnLock("registerByOauth")
 	ut := AllService.OauthService.UserThirdInfo(op, oauthUser.OpenId)
 	if ut.Id != 0 {
-		return us.InfoById(ut.UserId)
+		return nil, us.InfoById(ut.UserId)
 	}
 	//check if this email has been registered 
 	email := oauthUser.Email
 	err, oauthType := AllService.OauthService.GetTypeByOp(op)
 	if err != nil {
-		return nil
+		return err, nil
 	}
 	// if email is empty, use username and op as email
 	if email == "" {
@@ -314,13 +315,13 @@ func (us *UserService) RegisterByOauth(oauthUser *model.OauthUser , op string) *
 		tx.Create(user)
 		if user.Id == 0 {
 			tx.Rollback()
-			return user
+			return errors.New("OauthRegisterFailed"), user
 		}
 		ut.UserId = user.Id
 	}
 	tx.Create(ut)
 	tx.Commit()
-	return user
+	return nil, user
 }
 
 // GenerateUsernameByOauth 生成用户名
