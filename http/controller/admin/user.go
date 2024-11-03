@@ -3,6 +3,7 @@ package admin
 import (
 	"Gwen/global"
 	"Gwen/http/request/admin"
+	"Gwen/http/controller/api"
 	"Gwen/http/response"
 	adResp "Gwen/http/response/admin"
 	"Gwen/model"
@@ -335,6 +336,7 @@ func (ct *User) Register(c *gin.Context) {
 		response.Fail(c, 101, response.TranslateMsg(c, "RegisterClosed"))
 		return
 	}
+	clientIp := api.GetRealIp(c)
 	f := &admin.RegisterForm{}
 	if err := c.ShouldBindJSON(f); err != nil {
 		response.Fail(c, 101, response.TranslateMsg(c, "ParamsError")+err.Error())
@@ -355,7 +357,7 @@ func (ct *User) Register(c *gin.Context) {
 		UserId: u.Id,
 		Client: model.LoginLogClientWebAdmin,
 		Uuid:   "",
-		Ip:     c.ClientIP(),
+		Ip:     clientIp,
 		Type:   model.LoginLogTypeAccount,
 	})
 	response.Success(c, &adResp.LoginPayload{

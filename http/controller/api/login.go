@@ -30,15 +30,16 @@ func (l *Login) Login(c *gin.Context) {
 	f := &api.LoginForm{}
 	err := c.ShouldBindJSON(f)
 	//fmt.Println(f)
+	clientIp := GetRealIp(c)
 	if err != nil {
-		global.Logger.Warn(fmt.Sprintf("Login Fail: %s %s %s", "ParamsError", c.RemoteIP(), c.ClientIP()))
+		global.Logger.Warn(fmt.Sprintf("Login Fail: %s %s %s", "ParamsError", c.RemoteIP(), clientIp))
 		response.Error(c, response.TranslateMsg(c, "ParamsError")+err.Error())
 		return
 	}
 
 	errList := global.Validator.ValidStruct(c, f)
 	if len(errList) > 0 {
-		global.Logger.Warn(fmt.Sprintf("Login Fail: %s %s %s", "ParamsError", c.RemoteIP(), c.ClientIP()))
+		global.Logger.Warn(fmt.Sprintf("Login Fail: %s %s %s", "ParamsError", c.RemoteIP(), clientIp))
 		response.Error(c, errList[0])
 		return
 	}
@@ -46,7 +47,7 @@ func (l *Login) Login(c *gin.Context) {
 	u := service.AllService.UserService.InfoByUsernamePassword(f.Username, f.Password)
 
 	if u.Id == 0 {
-		global.Logger.Warn(fmt.Sprintf("Login Fail: %s %s %s", "UsernameOrPasswordError", c.RemoteIP(), c.ClientIP()))
+		global.Logger.Warn(fmt.Sprintf("Login Fail: %s %s %s", "UsernameOrPasswordError", c.RemoteIP(), clientIp))
 		response.Error(c, response.TranslateMsg(c, "UsernameOrPasswordError"))
 		return
 	}
@@ -61,7 +62,7 @@ func (l *Login) Login(c *gin.Context) {
 		UserId:   u.Id,
 		Client:   f.DeviceInfo.Type,
 		Uuid:     f.Uuid,
-		Ip:       c.ClientIP(),
+		Ip:       clientIp,
 		Type:     model.LoginLogTypeAccount,
 		Platform: f.DeviceInfo.Os,
 	})

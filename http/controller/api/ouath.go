@@ -64,7 +64,7 @@ func (o *Oauth) OidcAuthQueryPre(c *gin.Context) (*model.User, *model.UserToken)
 	var u *model.User
 	var ut *model.UserToken
 	q := &api.OidcAuthQuery{}
-
+	clientIp := GetRealIp(c)
 	// 解析查询参数并处理错误
 	if err := c.ShouldBindQuery(q); err != nil {
 		response.Error(c, response.TranslateMsg(c, "ParamsError")+": "+err.Error())
@@ -99,7 +99,7 @@ func (o *Oauth) OidcAuthQueryPre(c *gin.Context) (*model.User, *model.UserToken)
 		UserId:   u.Id,
 		Client:   v.DeviceType,
 		Uuid:     v.Uuid,
-		Ip:       c.ClientIP(),
+		Ip:       clientIp,
 		Type:     model.LoginLogTypeOauth,
 		Platform: v.DeviceOs,
 	})

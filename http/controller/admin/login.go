@@ -31,22 +31,23 @@ type Login struct {
 func (ct *Login) Login(c *gin.Context) {
 	f := &admin.Login{}
 	err := c.ShouldBindJSON(f)
+	clientIp := api.GetRealIp(c)
 	if err != nil {
-		global.Logger.Warn(fmt.Sprintf("Login Fail: %s %s %s", "ParamsError", c.RemoteIP(), c.ClientIP()))
+		global.Logger.Warn(fmt.Sprintf("Login Fail: %s %s %s", "ParamsError", c.RemoteIP(), clientIp))
 		response.Fail(c, 101, response.TranslateMsg(c, "ParamsError")+err.Error())
 		return
 	}
 
 	errList := global.Validator.ValidStruct(c, f)
 	if len(errList) > 0 {
-		global.Logger.Warn(fmt.Sprintf("Login Fail: %s %s %s", "ParamsError", c.RemoteIP(), c.ClientIP()))
+		global.Logger.Warn(fmt.Sprintf("Login Fail: %s %s %s", "ParamsError", c.RemoteIP(), clientIp))
 		response.Fail(c, 101, errList[0])
 		return
 	}
 	u := service.AllService.UserService.InfoByUsernamePassword(f.Username, f.Password)
 
 	if u.Id == 0 {
-		global.Logger.Warn(fmt.Sprintf("Login Fail: %s %s %s", "UsernameOrPasswordError", c.RemoteIP(), c.ClientIP()))
+		global.Logger.Warn(fmt.Sprintf("Login Fail: %s %s %s", "UsernameOrPasswordError", c.RemoteIP(), clientIp))
 		response.Fail(c, 101, response.TranslateMsg(c, "UsernameOrPasswordError"))
 		return
 	}
@@ -55,7 +56,7 @@ func (ct *Login) Login(c *gin.Context) {
 		UserId:   u.Id,
 		Client:   model.LoginLogClientWebAdmin,
 		Uuid:     "", //must be empty
-		Ip:       c.ClientIP(),
+		Ip:       clientIp,
 		Type:     model.LoginLogTypeAccount,
 		Platform: f.Platform,
 	})

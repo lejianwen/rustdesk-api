@@ -58,14 +58,14 @@ func (i *Index) Heartbeat(c *gin.Context) {
 	}
 	//如果在40s以内则不更新
 	if time.Now().Unix()-peer.LastOnlineTime > 40 {
-		upp := &model.Peer{RowId: peer.RowId, LastOnlineTime: time.Now().Unix(), LastOnlineIp: getRealIp(c)}
+		upp := &model.Peer{RowId: peer.RowId, LastOnlineTime: time.Now().Unix(), LastOnlineIp: GetRealIp(c)}
 		service.AllService.PeerService.Update(upp)
 	}
 	c.JSON(http.StatusOK, gin.H{})
 }
 
 // Helper function: Get the real IP address of the client
-func getRealIp(c *gin.Context) string {
+func GetRealIp(c *gin.Context) string {
 	// 获取自定义 IP 头配置
 	ipHeader := strings.TrimSpace(global.Config.Misc.IpHeader)
 	// 使用 "go" 表示直接通过 c.ClientIP() 获取 IP
