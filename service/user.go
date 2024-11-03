@@ -184,6 +184,10 @@ func (us *UserService) Logout(u *model.User, token string) error {
 
 // Delete 删除用户和oauth信息
 func (us *UserService) Delete(u *model.User) error {
+	userCount := us.getAdminUserCount()
+	if userCount <= 1 {
+		return errors.New("The last admin user cannot be deleted")
+	}
 	tx := global.DB.Begin()
 	// 删除用户
 	if err := tx.Delete(u).Error; err != nil {
@@ -221,6 +225,15 @@ func (us *UserService) Delete(u *model.User) error {
 
 // Update 更新
 func (us *UserService) Update(u *model.User) error {
+	currentUser := us.InfoById(u.Id)
+	// 如果当前用户是管理员并且 IsAdmin 不为空，进行检查
+	if currentUser.IsAdmin != nil && *currentUser.IsAdmin {
+		adminCount := us.getAdminUserCount()
+		// 如果这是唯一的管理员，确保不能禁用或取消管理员权限
+		if adminCount <= 1 && (u.IsAdmin == nil || !*u.IsAdmin || u.Status == model.COMMON_STATUS_DISABLED) {
+			return errors.New("The last admin user cannot be disabled or demoted")
+		}
+	}
 	return global.DB.Model(u).Updates(u).Error
 }
 
@@ -418,4 +431,18 @@ func (us *UserService) formatUsername(username string) string {
 	username = strings.ReplaceAll(username, " ", "")
 	username = strings.ToLower(username)
 	return username
+}
+
+//  Helper functions, getUserCount
+func (us *UserService) getUserCount() int64 {
+	var count int64
+	global.DB.Model(&model.User{}).Count(&count)
+	return count
+}
+
+// helper functions, getAdminUserCount
+func (us *UserService) getAdminUserCount() int64 {
+	var count int64
+	global.DB.Model(&model.User{}).Where("is_admin = ?", true).Count(&count)
+	return count
 }
