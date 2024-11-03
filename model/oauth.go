@@ -2,9 +2,10 @@ package model
 
 import (
 	"strconv"
-	"fmt"
+	"strings"
 )
 
+const OIDC_DEFAULT_SCOPES = "openid,profile,email"
 
 const (
 	OauthTypeGithub  string = "github"
@@ -57,50 +58,45 @@ func (ou *OauthUser) ToUser(user *User, overideUsername bool) {
 	user.Avatar = ou.Picture
 }
 
-
 type OauthUserBase struct {
 	Name  string `json:"name"`
 	Email string `json:"email"`
 }
-
 
 type OidcUser struct {
 	OauthUserBase
 	Sub               string `json:"sub"`
 	VerifiedEmail     bool   `json:"email_verified"`
 	PreferredUsername string `json:"preferred_username"`
-	Picture		   	  string `json:"picture"`
+	Picture           string `json:"picture"`
 }
 
 func (ou *OidcUser) ToOauthUser() *OauthUser {
+	var username string
+	// 使用 PreferredUsername，如果不存在，降级到 Email 前缀
+	if ou.PreferredUsername != "" {
+		username = ou.PreferredUsername
+	} else {
+		username = strings.ToLower(strings.Split(ou.Email, "@")[0])
+	}
+
 	return &OauthUser{
-		OpenId: 		ou.Sub,
-		Name:   		ou.Name,
-		Username: 		ou.PreferredUsername,
-		Email:  		ou.Email,
-		VerifiedEmail: 	ou.VerifiedEmail,
-		Picture:		ou.Picture,
+		OpenId:        ou.Sub,
+		Name:          ou.Name,
+		Username:      username,
+		Email:         ou.Email,
+		VerifiedEmail: ou.VerifiedEmail,
+		Picture:       ou.Picture,
 	}
 }
 
 type GoogleUser struct {
-	OauthUserBase
-	FamilyName    string `json:"family_name"`
-	GivenName     string `json:"given_name"`
-	Id            string `json:"id"`
-	Picture       string `json:"picture"`
-	VerifiedEmail bool   `json:"verified_email"`
+	OidcUser
 }
 
+// GoogleUser 使用特定的 Username 规则来调用 ToOauthUser
 func (gu *GoogleUser) ToOauthUser() *OauthUser {
-	return &OauthUser{
-		OpenId: 		gu.Id,
-		Name:   		fmt.Sprintf("%s %s", gu.GivenName, gu.FamilyName),
-		Username: 		gu.GivenName,
-		Email:  		gu.Email,
-		VerifiedEmail: 	gu.VerifiedEmail,
-		Picture:		gu.Picture,
-	}	
+	return gu.OidcUser.ToOauthUser()
 }
 
 
@@ -113,10 +109,11 @@ type GithubUser struct {
 }
 
 func (gu *GithubUser) ToOauthUser() *OauthUser {
+	username := strings.ToLower(gu.Login)
 	return &OauthUser{
 		OpenId: 		strconv.Itoa(gu.Id),
 		Name:   		gu.Name,
-		Username: 		gu.Login,
+		Username: 		username,
 		Email:  		gu.Email,
 		VerifiedEmail: 	gu.VerifiedEmail,
 		Picture:		gu.AvatarUrl,

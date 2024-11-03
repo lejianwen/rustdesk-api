@@ -170,7 +170,7 @@ func (os *OauthService) GetOauthConfig(op string) (err error, oauthInfo *model.O
 		oauthConfig.Scopes = []string{"read:user", "user:email"}
 	case model.OauthTypeGoogle:
 		oauthConfig.Endpoint = google.Endpoint
-		oauthConfig.Scopes = []string{"https://www.googleapis.com/auth/userinfo.profile", "https://www.googleapis.com/auth/userinfo.email"}
+		oauthConfig.Scopes = os.constructScopes(model.OIDC_DEFAULT_SCOPES)
 	case model.OauthTypeOidc:
 		var endpoint OidcEndpoint
 		err, endpoint = os.FetchOidcEndpoint(oauthInfo.Issuer)
@@ -374,7 +374,7 @@ func (os *OauthService) getScopesByOp(op string) []string {
 func (os *OauthService) constructScopes(scopes string) []string {
     scopes = strings.TrimSpace(scopes)
     if scopes == "" {
-        scopes = "openid,profile,email"
+        scopes = model.OIDC_DEFAULT_SCOPES
     }
     return strings.Split(scopes, ",")
 }
