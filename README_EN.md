@@ -224,6 +224,8 @@ The prefix for variable names is `RUSTDESK_API`. If environment variables exist,
 | ---- PROXY -----                   | ---------------                                           | ----------                    |
 | RUSTDESK_API_PROXY_ENABLE          | proxy_enable :`false`, `true`                             | `false`                       |
 | RUSTDESK_API_PROXY_HOST            | proxy_host                                                | `http://127.0.0.1:1080`       |
+| ----MISC-----                      | ---------------                                           | ----------                    |
+| RUSTDESK_API_MISC_IP_HEADER        | The real client IP from header                            | X-Fowarded-For                |
 
 ### Installation Steps
 

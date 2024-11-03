@@ -5,13 +5,14 @@ services:
       dockerfile: Dockerfile.dev
       args:
         COUNTRY: CN
-    # image: lejianwen/rustdesk-api
+    image: rustdesk-api:dev
     container_name: rustdesk-api
     environment:
       - TZ=Asia/Shanghai
       - RUSTDESK_API_RUSTDESK_ID_SERVER=192.168.1.66:21116
       - RUSTDESK_API_RUSTDESK_RELAY_SERVER=192.168.1.66:21117
       - RUSTDESK_API_RUSTDESK_API_SERVER=http://127.0.0.1:21114
+      - RUSTDESK_API_MISC_IP_HEADER="X-Fowarded-For"
       - RUSTDESK_API_RUSTDESK_KEY=123456789
     ports:
       - 21114:21114

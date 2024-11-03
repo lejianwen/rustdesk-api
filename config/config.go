@@ -32,6 +32,7 @@ type Config struct {
 	Jwt      Jwt
 	Rustdesk Rustdesk
 	Proxy    Proxy
+	Misc	 Misc
 }
 
 // Init 初始化配置

@@ -50,3 +50,5 @@ oss:
 jwt:
   private-key: "./conf/jwt_pri.pem"
   expire-duration: 360000
+misc:
+  ip-header: "X-Forwarded-For"

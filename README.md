@@ -218,6 +218,9 @@ proxy:
 | ----PROXY配置-----                   | ---------------                      | ----------                  |
 | RUSTDESK_API_PROXY_ENABLE          | 是否启用代理:`false`, `true`               | `false`                     |
 | RUSTDESK_API_PROXY_HOST            | 代理地址                                 | `http://127.0.0.1:1080`     |
+| ----杂项配置-----                   | ---------------                      | ----------                  |
+| RUSTDESK_API_MISC_IP_HEADER        | 读取真实客户端的IP头                   | X-Fowarded-For                     |
+
 
 
 ### 运行
