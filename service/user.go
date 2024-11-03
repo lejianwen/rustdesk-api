@@ -185,7 +185,7 @@ func (us *UserService) Logout(u *model.User, token string) error {
 // Delete 删除用户和oauth信息
 func (us *UserService) Delete(u *model.User) error {
 	userCount := us.getAdminUserCount()
-	if userCount <= 1 {
+	if userCount <= 1 && us.IsAdmin(u) {
 		return errors.New("The last admin user cannot be deleted")
 	}
 	tx := global.DB.Begin()
