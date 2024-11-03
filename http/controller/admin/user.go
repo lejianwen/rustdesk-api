@@ -217,12 +217,7 @@ func (ct *User) Current(c *gin.Context) {
 	u := service.AllService.UserService.CurUser(c)
 	token, _ := c.Get("token")
 	t := token.(string)
-	response.Success(c, &adResp.LoginPayload{
-		Token:      t,
-		Username:   u.Username,
-		RouteNames: service.AllService.UserService.RouteNames(u),
-		Nickname:   u.Nickname,
-	})
+	responseLoginSuccess(c, u, t)
 }
 
 // ChangeCurPwd 修改当前用户密码
@@ -404,11 +399,5 @@ func (ct *User) Register(c *gin.Context) {
 		Ip:     c.ClientIP(),
 		Type:   model.LoginLogTypeAccount,
 	})
-	response.Success(c, &adResp.LoginPayload{
-		Token:      ut.Token,
-		Username:   u.Username,
-		Email:	  	u.Email,
-		RouteNames: service.AllService.UserService.RouteNames(u),
-		Nickname:   u.Nickname,
-	})
+	responseLoginSuccess(c, u, ut.Token)
 }
