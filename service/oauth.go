@@ -9,7 +9,7 @@ import (
 	"errors"
 	"golang.org/x/oauth2"
 	"golang.org/x/oauth2/github"
-	"golang.org/x/oauth2/google"
+	// "golang.org/x/oauth2/google"
 	"gorm.io/gorm"
 	// "io"
 	"net/http"
@@ -69,16 +69,6 @@ func (oa *OauthCacheItem) UpdateFromOauthUser(oauthUser *model.OauthUser) {
 	oa.Username = oauthUser.Username
 	oa.Name = oauthUser.Name
 	oa.Email = oauthUser.Email
-}
-
-// Validate the oauth type
-func (os *OauthService) ValidateOauthType(oauthType string) error {
-	switch oauthType {
-	case model.OauthTypeGithub, model.OauthTypeGoogle, model.OauthTypeOidc, model.OauthTypeWebauth:
-		return nil
-	default:
-		return errors.New("invalid Oauth type")
-	}
 }
 
 
@@ -160,7 +150,7 @@ func (os *OauthService) GetOauthConfig(op string) (err error, oauthInfo *model.O
 	}
 	// Maybe should validate the oauthConfig here
 	oauthType := oauthInfo.OauthType
-	err = os.ValidateOauthType(oauthType)
+	err = model.ValidateOauthType(oauthType)
 	if err != nil {
 		return err, nil, nil
 	}
@@ -168,10 +158,7 @@ func (os *OauthService) GetOauthConfig(op string) (err error, oauthInfo *model.O
 	case model.OauthTypeGithub:
 		oauthConfig.Endpoint = github.Endpoint
 		oauthConfig.Scopes = []string{"read:user", "user:email"}
-	case model.OauthTypeGoogle:
-		oauthConfig.Endpoint = google.Endpoint
-		oauthConfig.Scopes = os.constructScopes(model.OIDC_DEFAULT_SCOPES)
-	case model.OauthTypeOidc:
+	case model.OauthTypeOidc, model.OauthTypeGoogle:
 		var endpoint OidcEndpoint
 		err, endpoint = os.FetchOidcEndpoint(oauthInfo.Issuer)
 		if err != nil {
@@ -272,14 +259,6 @@ func (os *OauthService) githubCallback(oauthConfig *oauth2.Config, code string) 
 	return nil, user.ToOauthUser()
 }
 
-// googleCallback google回调
-func (os *OauthService) googleCallback(oauthConfig *oauth2.Config, code string) (error, *model.OauthUser) {
-	var user = &model.GoogleUser{}
-	if err, _ := os.callbackBase(oauthConfig, code, model.UserEndpointGoogle, user); err != nil {
-		return err, nil
-	}
-	return nil, user.ToOauthUser()
-}
 
 // oidcCallback oidc回调, 通过code获取用户信息
 func (os *OauthService) oidcCallback(oauthConfig *oauth2.Config, code string, userInfoEndpoint string) (error, *model.OauthUser,) {
@@ -303,9 +282,7 @@ func (os *OauthService) Callback(code string, op string) (err error, oauthUser *
 	switch oauthType {
     case model.OauthTypeGithub:
         err, oauthUser = os.githubCallback(oauthConfig, code)
-    case model.OauthTypeGoogle:
-        err, oauthUser = os.googleCallback(oauthConfig, code)
-    case model.OauthTypeOidc:
+    case model.OauthTypeOidc, model.OauthTypeGoogle:
 		err, endpoint := os.FetchOidcEndpoint(oauthInfo.Issuer)
 		if err != nil {
 			return err, nil
@@ -422,6 +399,10 @@ func (os *OauthService) IsOauthProviderExist(op string) bool {
 
 // Create 创建
 func (os *OauthService) Create(oauthInfo *model.Oauth) error {
+	err := oauthInfo.FormatOauthInfo()
+	if err != nil {
+		return err
+	}
 	res := global.DB.Create(oauthInfo).Error
 	return res
 }
@@ -431,6 +412,10 @@ func (os *OauthService) Delete(oauthInfo *model.Oauth) error {
 
 // Update 更新
 func (os *OauthService) Update(oauthInfo *model.Oauth) error {
+	err := oauthInfo.FormatOauthInfo()
+	if err != nil {
+		return err
+	}
 	return global.DB.Model(oauthInfo).Updates(oauthInfo).Error
 }
 

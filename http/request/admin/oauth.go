@@ -2,7 +2,6 @@ package admin
 
 import (
 	"Gwen/model"
-	"strings"
 )
 
 type BindOauthForm struct {
@@ -28,22 +27,6 @@ type OauthForm struct {
 }
 
 func (of *OauthForm) ToOauth() *model.Oauth {
-	op := strings.ToLower(of.Op)
-	op = strings.TrimSpace(op)
-	if op == "" {
-		switch of.OauthType {
-		case model.OauthTypeGithub:
-			of.Op = model.OauthNameGithub
-		case model.OauthTypeGoogle:
-			of.Op = model.OauthNameGoogle
-		case model.OauthTypeOidc:
-			of.Op = model.OauthNameOidc
-		case model.OauthTypeWebauth:
-			of.Op = model.OauthNameWebauth
-		default:
-			of.Op = of.OauthType
-		}
-	}
 	oa := &model.Oauth{
 		Op:           of.Op,
 		OauthType:	  of.OauthType,

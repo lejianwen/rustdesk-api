@@ -3,16 +3,28 @@ package model
 import (
 	"strconv"
 	"strings"
+	"errors"
 )
 
 const OIDC_DEFAULT_SCOPES = "openid,profile,email"
 
 const (
+	// make sure the value shouldbe lowercase
 	OauthTypeGithub  string = "github"
 	OauthTypeGoogle  string = "google"
 	OauthTypeOidc    string = "oidc"
 	OauthTypeWebauth string = "webauth"
 )
+
+// Validate the oauth type
+func ValidateOauthType(oauthType string) error {
+	switch oauthType {
+	case OauthTypeGithub, OauthTypeGoogle, OauthTypeOidc, OauthTypeWebauth:
+		return nil
+	default:
+		return errors.New("invalid Oauth type")
+	}
+}
 
 const (
 	OauthNameGithub  string = "GitHub"
@@ -23,8 +35,7 @@ const (
 
 const (
 	UserEndpointGithub  string = "https://api.github.com/user"
-	UserEndpointGoogle  string = "https://www.googleapis.com/oauth2/v3/userinfo"
-	UserEndpointOidc    string = ""
+	IssuerGoogle 		string = "https://accounts.google.com"
 )
 
 type Oauth struct {
@@ -38,6 +49,40 @@ type Oauth struct {
 	Scopes       string 	`json:"scopes"`
 	Issuer	     string 	`json:"issuer"`
 	TimeModel
+}
+
+
+
+// Helper function to format oauth info, it's used in the update and create method
+func (oa *Oauth) FormatOauthInfo() error {
+	oauthType := strings.TrimSpace(oa.OauthType)
+	err := ValidateOauthType(oa.OauthType)
+	if err != nil {
+		return err
+	}
+	// check if the op is empty, set the default value
+	op := strings.TrimSpace(oa.Op)
+	if op == "" {
+		switch oauthType {
+		case OauthTypeGithub:
+			oa.Op = OauthNameGithub
+		case OauthTypeGoogle:
+			oa.Op = OauthNameGoogle
+		case OauthTypeOidc:
+			oa.Op = OauthNameOidc
+		case OauthTypeWebauth:
+			oa.Op = OauthNameWebauth
+		default:
+			oa.Op = oauthType
+		}
+	}
+	// check the issuer, if the oauth type is google and the issuer is empty, set the issuer to the default value
+	issuer := strings.TrimSpace(oa.Issuer)
+	// If the oauth type is google and the issuer is empty, set the issuer to the default value 
+	if oauthType == OauthTypeGoogle && issuer == "" {
+		oa.Issuer = IssuerGoogle
+	}
+	return nil
 }
 
 type OauthUser struct {
@@ -88,15 +133,6 @@ func (ou *OidcUser) ToOauthUser() *OauthUser {
 		VerifiedEmail: ou.VerifiedEmail,
 		Picture:       ou.Picture,
 	}
-}
-
-type GoogleUser struct {
-	OidcUser
-}
-
-// GoogleUser 使用特定的 Username 规则来调用 ToOauthUser
-func (gu *GoogleUser) ToOauthUser() *OauthUser {
-	return gu.OidcUser.ToOauthUser()
 }
 
 
