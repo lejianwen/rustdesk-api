@@ -11,7 +11,6 @@ import (
 	"Gwen/service"
 	"fmt"
 	"github.com/gin-gonic/gin"
-	"gorm.io/gorm"
 )
 
 type Login struct {
@@ -61,12 +60,7 @@ func (ct *Login) Login(c *gin.Context) {
 		Platform: f.Platform,
 	})
 
-	response.Success(c, &adResp.LoginPayload{
-		Token:      ut.Token,
-		Username:   u.Username,
-		RouteNames: service.AllService.UserService.RouteNames(u),
-		Nickname:   u.Nickname,
-	})
+	responseLoginSuccess(c, u, ut.Token)
 }
 
 // Logout 登出
@@ -97,13 +91,7 @@ func (ct *Login) Logout(c *gin.Context) {
 // @Failure 500 {object} response.ErrorResponse
 // @Router /admin/login-options [post]
 func (ct *Login) LoginOptions(c *gin.Context) {
-	res := service.AllService.OauthService.List(1, 100, func(tx *gorm.DB) {
-		tx.Select("op").Order("id")
-	})
-	var ops []string
-	for _, v := range res.Oauths {
-		ops = append(ops, v.Op)
-	}
+	ops := service.AllService.OauthService.GetOauthProviders()
 	response.Success(c, gin.H{
 		"ops":      ops,
 		"register": global.Config.App.Register,
@@ -164,12 +152,14 @@ func (ct *Login) OidcAuthQuery(c *gin.Context) {
 	if ut == nil {
 		return
 	}
-	//fmt.Println("u:", u)
-	//fmt.Println("ut:", ut)
-	response.Success(c, &adResp.LoginPayload{
-		Token:      ut.Token,
-		Username:   u.Username,
-		RouteNames: service.AllService.UserService.RouteNames(u),
-		Nickname:   u.Nickname,
-	})
+	responseLoginSuccess(c, u, ut.Token)
+}
+
+
+func responseLoginSuccess(c *gin.Context, u *model.User, token string) {
+	lp := &adResp.LoginPayload{}
+	lp.FromUser(u)
+	lp.Token = token
+	lp.RouteNames = service.AllService.UserService.RouteNames(u)
+	response.Success(c, lp)
 }
