@@ -11,14 +11,19 @@ import (
 	"golang.org/x/oauth2/github"
 	"golang.org/x/oauth2/google"
 	"gorm.io/gorm"
-	"io"
+	// "io"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
 	"sync"
 	"time"
+	"fmt"
 )
+
+
+type OauthService struct {
+}
 
 // Define a struct to parse the .well-known/openid-configuration response
 type OidcEndpoint struct {
@@ -26,73 +31,6 @@ type OidcEndpoint struct {
 	AuthURL  string `json:"authorization_endpoint"`
 	TokenURL string `json:"token_endpoint"`
 	UserInfo string `json:"userinfo_endpoint"`
-}
-
-type OauthService struct {
-}
-
-type GithubUserdata struct {
-	AvatarUrl         string      `json:"avatar_url"`
-	Bio               string      `json:"bio"`
-	Blog              string      `json:"blog"`
-	Collaborators     int         `json:"collaborators"`
-	Company           interface{} `json:"company"`
-	CreatedAt         time.Time   `json:"created_at"`
-	DiskUsage         int         `json:"disk_usage"`
-	Email             interface{} `json:"email"`
-	EventsUrl         string      `json:"events_url"`
-	Followers         int         `json:"followers"`
-	FollowersUrl      string      `json:"followers_url"`
-	Following         int         `json:"following"`
-	FollowingUrl      string      `json:"following_url"`
-	GistsUrl          string      `json:"gists_url"`
-	GravatarId        string      `json:"gravatar_id"`
-	Hireable          interface{} `json:"hireable"`
-	HtmlUrl           string      `json:"html_url"`
-	Id                int         `json:"id"`
-	Location          interface{} `json:"location"`
-	Login             string      `json:"login"`
-	Name              string      `json:"name"`
-	NodeId            string      `json:"node_id"`
-	NotificationEmail interface{} `json:"notification_email"`
-	OrganizationsUrl  string      `json:"organizations_url"`
-	OwnedPrivateRepos int         `json:"owned_private_repos"`
-	Plan              struct {
-		Collaborators int    `json:"collaborators"`
-		Name          string `json:"name"`
-		PrivateRepos  int    `json:"private_repos"`
-		Space         int    `json:"space"`
-	} `json:"plan"`
-	PrivateGists      int    `json:"private_gists"`
-	PublicGists       int    `json:"public_gists"`
-	PublicRepos       int    `json:"public_repos"`
-	ReceivedEventsUrl string `json:"received_events_url"`
-	ReposUrl          string `json:"repos_url"`
-	SiteAdmin         bool   `json:"site_admin"`
-	StarredUrl        string `json:"starred_url"`
-	SubscriptionsUrl  string `json:"subscriptions_url"`
-	TotalPrivateRepos int    `json:"total_private_repos"`
-	//TwitterUsername         interface{} `json:"twitter_username"`
-	TwoFactorAuthentication bool      `json:"two_factor_authentication"`
-	Type                    string    `json:"type"`
-	UpdatedAt               time.Time `json:"updated_at"`
-	Url                     string    `json:"url"`
-}
-type GoogleUserdata struct {
-	Email         string `json:"email"`
-	FamilyName    string `json:"family_name"`
-	GivenName     string `json:"given_name"`
-	Id            string `json:"id"`
-	Name          string `json:"name"`
-	Picture       string `json:"picture"`
-	VerifiedEmail bool   `json:"verified_email"`
-}
-type OidcUserdata struct {
-	Sub               string `json:"sub"`
-	Email             string `json:"email"`
-	VerifiedEmail     bool   `json:"email_verified"`
-	Name              string `json:"name"`
-	PreferredUsername string `json:"preferred_username"`
 }
 
 type OauthCacheItem struct {
@@ -104,9 +42,19 @@ type OauthCacheItem struct {
 	DeviceName  string `json:"device_name"`
 	DeviceOs    string `json:"device_os"`
 	DeviceType  string `json:"device_type"`
-	ThirdOpenId string `json:"third_open_id"`
-	ThirdName   string `json:"third_name"`
-	ThirdEmail  string `json:"third_email"`
+	OpenId 		string `json:"open_id"`
+	Username	string `json:"username"`
+	Name   		string `json:"name"`
+	Email  		string `json:"email"`
+}
+
+func (oci *OauthCacheItem) ToOauthUser() *model.OauthUser {
+	return &model.OauthUser{
+		OpenId: oci.OpenId,
+		Username: oci.Username,
+		Name: oci.Name,
+		Email: oci.Email,
+	}
 }
 
 var OauthCache = &sync.Map{}
@@ -115,6 +63,24 @@ const (
 	OauthActionTypeLogin = "login"
 	OauthActionTypeBind  = "bind"
 )
+
+func (oa *OauthCacheItem) UpdateFromOauthUser(oauthUser *model.OauthUser) {
+	oa.OpenId = oauthUser.OpenId
+	oa.Username = oauthUser.Username
+	oa.Name = oauthUser.Name
+	oa.Email = oauthUser.Email
+}
+
+// Validate the oauth type
+func (os *OauthService) ValidateOauthType(oauthType string) error {
+	switch oauthType {
+	case model.OauthTypeGithub, model.OauthTypeGoogle, model.OauthTypeOidc, model.OauthTypeWebauth:
+		return nil
+	default:
+		return errors.New("invalid Oauth type")
+	}
+}
+
 
 func (os *OauthService) GetOauthCache(key string) *OauthCacheItem {
 	v, ok := OauthCache.Load(key)
@@ -140,22 +106,21 @@ func (os *OauthService) DeleteOauthCache(key string) {
 
 func (os *OauthService) BeginAuth(op string) (error error, code, url string) {
 	code = utils.RandomString(10) + strconv.FormatInt(time.Now().Unix(), 10)
-
-	if op == model.OauthTypeWebauth {
+	if op == string(model.OauthTypeWebauth) {
 		url = global.Config.Rustdesk.ApiServer + "/_admin/#/oauth/" + code
 		//url = "http://localhost:8888/_admin/#/oauth/" + code
 		return nil, code, url
 	}
-	err, conf := os.GetOauthConfig(op)
+	err, _, oauthConfig := os.GetOauthConfig(op)
 	if err == nil {
-		return err, code, conf.AuthCodeURL(code)
+		return err, code, oauthConfig.AuthCodeURL(code)
 	}
 
 	return err, code, ""
 }
 
 // Method to fetch OIDC configuration dynamically
-func FetchOidcConfig(issuer string) (error, OidcEndpoint) {
+func (os *OauthService) FetchOidcEndpoint(issuer string) (error, OidcEndpoint) {
 	configURL := strings.TrimSuffix(issuer, "/") + "/.well-known/openid-configuration"
 
 	// Get the HTTP client (with or without proxy based on configuration)
@@ -179,76 +144,61 @@ func FetchOidcConfig(issuer string) (error, OidcEndpoint) {
 	return nil, endpoint
 }
 
-// GetOauthConfig retrieves the OAuth2 configuration based on the provider type
-func (os *OauthService) GetOauthConfig(op string) (error, *oauth2.Config) {
-	switch op {
-	case model.OauthTypeGithub:
-		return os.getGithubConfig()
-	case model.OauthTypeGoogle:
-		return os.getGoogleConfig()
-	case model.OauthTypeOidc:
-		return os.getOidcConfig()
-	default:
-		return errors.New("unsupported OAuth type"), nil
+func (os *OauthService) FetchOidcEndpointByOp(op string) (error, OidcEndpoint) {
+	oauthInfo := os.InfoByOp(op)
+	if oauthInfo.Issuer == "" {
+		return errors.New("issuer is empty"), OidcEndpoint{}
 	}
+	return os.FetchOidcEndpoint(oauthInfo.Issuer)
 }
 
-// Helper function to get GitHub OAuth2 configuration
-func (os *OauthService) getGithubConfig() (error, *oauth2.Config) {
-	g := os.InfoByOp(model.OauthTypeGithub)
-	if g.Id == 0 || g.ClientId == "" || g.ClientSecret == "" || g.RedirectUrl == "" {
-		return errors.New("ConfigNotFound"), nil
-	}
-	return nil, &oauth2.Config{
-		ClientID:     g.ClientId,
-		ClientSecret: g.ClientSecret,
-		RedirectURL:  g.RedirectUrl,
-		Endpoint:     github.Endpoint,
-		Scopes:       []string{"read:user", "user:email"},
-	}
-}
-
-// Helper function to get Google OAuth2 configuration
-func (os *OauthService) getGoogleConfig() (error, *oauth2.Config) {
-	g := os.InfoByOp(model.OauthTypeGoogle)
-	if g.Id == 0 || g.ClientId == "" || g.ClientSecret == "" || g.RedirectUrl == "" {
-		return errors.New("ConfigNotFound"), nil
-	}
-	return nil, &oauth2.Config{
-		ClientID:     g.ClientId,
-		ClientSecret: g.ClientSecret,
-		RedirectURL:  g.RedirectUrl,
-		Endpoint:     google.Endpoint,
-		Scopes:       []string{"https://www.googleapis.com/auth/userinfo.profile", "https://www.googleapis.com/auth/userinfo.email"},
-	}
-}
-
-// Helper function to get OIDC OAuth2 configuration
-func (os *OauthService) getOidcConfig() (error, *oauth2.Config) {
-	g := os.InfoByOp(model.OauthTypeOidc)
-	if g.Id == 0 || g.ClientId == "" || g.ClientSecret == "" || g.RedirectUrl == "" || g.Issuer == "" {
-		return errors.New("ConfigNotFound"), nil
-	}
-
-	// Set scopes
-	scopes := strings.TrimSpace(g.Scopes)
-	if scopes == "" {
-		scopes = "openid,profile,email"
-	}
-	scopeList := strings.Split(scopes, ",")
-	err, endpoint := FetchOidcConfig(g.Issuer)
+// GetOauthConfig retrieves the OAuth2 configuration based on the provider name
+func (os *OauthService) GetOauthConfig(op string) (err error, oauthInfo *model.Oauth, oauthConfig *oauth2.Config) {
+	err, oauthInfo, oauthConfig = os.getOauthConfigGeneral(op)
 	if err != nil {
-		return err, nil
+		return err, nil, nil
 	}
-	return nil, &oauth2.Config{
-		ClientID:     g.ClientId,
-		ClientSecret: g.ClientSecret,
-		RedirectURL:  g.RedirectUrl,
-		Endpoint: oauth2.Endpoint{
-			AuthURL:  endpoint.AuthURL,
-			TokenURL: endpoint.TokenURL,
-		},
-		Scopes: scopeList,
+	// Maybe should validate the oauthConfig here
+	oauthType := oauthInfo.OauthType
+	err = os.ValidateOauthType(oauthType)
+	if err != nil {
+		return err, nil, nil
+	}
+	switch oauthType {
+	case model.OauthTypeGithub:
+		oauthConfig.Endpoint = github.Endpoint
+		oauthConfig.Scopes = []string{"read:user", "user:email"}
+	case model.OauthTypeGoogle:
+		oauthConfig.Endpoint = google.Endpoint
+		oauthConfig.Scopes = os.constructScopes(model.OIDC_DEFAULT_SCOPES)
+	case model.OauthTypeOidc:
+		var endpoint OidcEndpoint
+		err, endpoint = os.FetchOidcEndpoint(oauthInfo.Issuer)
+		if err != nil {
+			return err, nil, nil
+		}
+		oauthConfig.Endpoint = oauth2.Endpoint{AuthURL:  endpoint.AuthURL,TokenURL: endpoint.TokenURL,}
+		oauthConfig.Scopes = os.constructScopes(oauthInfo.Scopes)
+	default:
+		return errors.New("unsupported OAuth type"), nil, nil
+	}
+	return nil, oauthInfo, oauthConfig
+}
+
+// GetOauthConfig retrieves the OAuth2 configuration based on the provider name
+func (os *OauthService) getOauthConfigGeneral(op string) (err error, oauthInfo *model.Oauth, oauthConfig *oauth2.Config) {
+	oauthInfo = os.InfoByOp(op)
+	if oauthInfo.Id == 0 || oauthInfo.ClientId == "" || oauthInfo.ClientSecret == "" {
+		return errors.New("ConfigNotFound"), nil, nil
+	}
+	// If the redirect URL is empty, use the default redirect URL
+	if oauthInfo.RedirectUrl == "" {
+		oauthInfo.RedirectUrl = global.Config.Rustdesk.ApiServer + "/api/oidc/callback"
+	}
+	return nil, oauthInfo, &oauth2.Config{
+		ClientID:     oauthInfo.ClientId,
+		ClientSecret: oauthInfo.ClientSecret,
+		RedirectURL:  oauthInfo.RedirectUrl,
 	}
 }
 
@@ -272,194 +222,163 @@ func getHTTPClientWithProxy() *http.Client {
 	return http.DefaultClient
 }
 
-func (os *OauthService) GithubCallback(code string) (error error, userData *GithubUserdata) {
-	err, oauthConfig := os.GetOauthConfig(model.OauthTypeGithub)
-	if err != nil {
-		return err, nil
-	}
+func (os *OauthService) callbackBase(oauthConfig *oauth2.Config, code string, userEndpoint string, userData interface{}) (err error, client *http.Client) {
 
-	// 使用代理配置创建 HTTP 客户端
+	// 设置代理客户端
 	httpClient := getHTTPClientWithProxy()
 	ctx := context.WithValue(context.Background(), oauth2.HTTPClient, httpClient)
 
-	token, err := oauthConfig.Exchange(ctx, code)
+	// 使用 code 换取 token
+	var token *oauth2.Token
+	token, err = oauthConfig.Exchange(ctx, code)
 	if err != nil {
 		global.Logger.Warn("oauthConfig.Exchange() failed: ", err)
-		error = errors.New("GetOauthTokenError")
-		return
+		return errors.New("GetOauthTokenError"), nil
 	}
 
-	// 使用带有代理的 HTTP 客户端获取用户信息
-	client := oauthConfig.Client(ctx, token)
-	resp, err := client.Get("https://api.github.com/user")
+	// 获取用户信息
+	client = oauthConfig.Client(ctx, token)
+	resp, err := client.Get(userEndpoint)
 	if err != nil {
 		global.Logger.Warn("failed getting user info: ", err)
-		error = errors.New("GetOauthUserInfoError")
-		return
+		return errors.New("GetOauthUserInfoError"), nil
 	}
-	defer func(Body io.ReadCloser) {
-		err := Body.Close()
-		if err != nil {
-			global.Logger.Warn("failed closing response body: ", err)
+	defer func() {
+		if closeErr := resp.Body.Close(); closeErr != nil {
+			global.Logger.Warn("failed closing response body: ", closeErr)
 		}
-	}(resp.Body)
+	}()
 
 	// 解析用户信息
-	if err = json.NewDecoder(resp.Body).Decode(&userData); err != nil {
+	if err = json.NewDecoder(resp.Body).Decode(userData); err != nil {
 		global.Logger.Warn("failed decoding user info: ", err)
-		error = errors.New("DecodeOauthUserInfoError")
-		return
+		return errors.New("DecodeOauthUserInfoError"), nil
 	}
-	return
+
+	return nil, client
 }
 
-func (os *OauthService) GoogleCallback(code string) (error error, userData *GoogleUserdata) {
-	err, oauthConfig := os.GetOauthConfig(model.OauthTypeGoogle)
+// githubCallback github回调
+func (os *OauthService) githubCallback(oauthConfig *oauth2.Config, code string) (error, *model.OauthUser) {
+	var user = &model.GithubUser{}
+	err, client := os.callbackBase(oauthConfig, code, model.UserEndpointGithub, user)
 	if err != nil {
 		return err, nil
 	}
-
-	// 使用代理配置创建 HTTP 客户端
-	httpClient := getHTTPClientWithProxy()
-	ctx := context.WithValue(context.Background(), oauth2.HTTPClient, httpClient)
-
-	token, err := oauthConfig.Exchange(ctx, code)
-	if err != nil {
-		global.Logger.Warn("oauthConfig.Exchange() failed: ", err)
-		error = errors.New("GetOauthTokenError")
-		return
-	}
-
-	// 使用带有代理的 HTTP 客户端获取用户信息
-	client := oauthConfig.Client(ctx, token)
-	resp, err := client.Get("https://www.googleapis.com/oauth2/v2/userinfo")
-	if err != nil {
-		global.Logger.Warn("failed getting user info: ", err)
-		error = errors.New("GetOauthUserInfoError")
-		return
-	}
-	defer func(Body io.ReadCloser) {
-		err := Body.Close()
-		if err != nil {
-			global.Logger.Warn("failed closing response body: ", err)
-		}
-	}(resp.Body)
-
-	// 解析用户信息
-	if err = json.NewDecoder(resp.Body).Decode(&userData); err != nil {
-		global.Logger.Warn("failed decoding user info: ", err)
-		error = errors.New("DecodeOauthUserInfoError")
-		return
-	}
-	return
-}
-
-func (os *OauthService) OidcCallback(code string) (error error, userData *OidcUserdata) {
-	err, oauthConfig := os.GetOauthConfig(model.OauthTypeOidc)
+	err = os.getGithubPrimaryEmail(client, user)
 	if err != nil {
 		return err, nil
 	}
-	// 使用代理配置创建 HTTP 客户端
-	httpClient := getHTTPClientWithProxy()
-	ctx := context.WithValue(context.Background(), oauth2.HTTPClient, httpClient)
-
-	token, err := oauthConfig.Exchange(ctx, code)
-	if err != nil {
-		global.Logger.Warn("oauthConfig.Exchange() failed: ", err)
-		error = errors.New("GetOauthTokenError")
-		return
-	}
-
-	// 使用带有代理的 HTTP 客户端获取用户信息
-	client := oauthConfig.Client(ctx, token)
-	g := os.InfoByOp(model.OauthTypeOidc)
-	err, endpoint := FetchOidcConfig(g.Issuer)
-	if err != nil {
-		global.Logger.Warn("failed fetching OIDC configuration: ", err)
-		error = errors.New("FetchOidcConfigError")
-		return
-	}
-	resp, err := client.Get(endpoint.UserInfo)
-	if err != nil {
-		global.Logger.Warn("failed getting user info: ", err)
-		error = errors.New("GetOauthUserInfoError")
-		return
-	}
-	defer func(Body io.ReadCloser) {
-		err := Body.Close()
-		if err != nil {
-			global.Logger.Warn("failed closing response body: ", err)
-		}
-	}(resp.Body)
-
-	// 解析用户信息
-	if err = json.NewDecoder(resp.Body).Decode(&userData); err != nil {
-		global.Logger.Warn("failed decoding user info: ", err)
-		error = errors.New("DecodeOauthUserInfoError")
-		return
-	}
-	return
+	return nil, user.ToOauthUser()
 }
 
-func (os *OauthService) UserThirdInfo(op, openid string) *model.UserThird {
+// googleCallback google回调
+func (os *OauthService) googleCallback(oauthConfig *oauth2.Config, code string) (error, *model.OauthUser) {
+	var user = &model.GoogleUser{}
+	if err, _ := os.callbackBase(oauthConfig, code, model.UserEndpointGoogle, user); err != nil {
+		return err, nil
+	}
+	return nil, user.ToOauthUser()
+}
+
+// oidcCallback oidc回调, 通过code获取用户信息
+func (os *OauthService) oidcCallback(oauthConfig *oauth2.Config, code string, userInfoEndpoint string) (error, *model.OauthUser,) {
+	var user = &model.OidcUser{}
+	if err, _ := os.callbackBase(oauthConfig, code, userInfoEndpoint, user); err != nil {
+		return err, nil
+	}
+	return nil, user.ToOauthUser()
+}
+
+// Callback: Get user information by code and op(Oauth provider)
+func (os *OauthService) Callback(code string, op string) (err error, oauthUser *model.OauthUser) {
+	var oauthInfo *model.Oauth
+	var oauthConfig *oauth2.Config
+	err, oauthInfo, oauthConfig = os.GetOauthConfig(op)
+	// oauthType is already validated in GetOauthConfig
+	if err != nil {
+		return err, nil
+	}
+	oauthType := oauthInfo.OauthType
+	switch oauthType {
+    case model.OauthTypeGithub:
+        err, oauthUser = os.githubCallback(oauthConfig, code)
+    case model.OauthTypeGoogle:
+        err, oauthUser = os.googleCallback(oauthConfig, code)
+    case model.OauthTypeOidc:
+		err, endpoint := os.FetchOidcEndpoint(oauthInfo.Issuer)
+		if err != nil {
+			return err, nil
+		}
+        err, oauthUser = os.oidcCallback(oauthConfig, code, endpoint.UserInfo)
+    default:
+        return errors.New("unsupported OAuth type"), nil
+    }
+    return err, oauthUser
+}
+
+
+func (os *OauthService) UserThirdInfo(op string, openId string) *model.UserThird {
 	ut := &model.UserThird{}
-	global.DB.Where("open_id = ? and third_type = ?", openid, op).First(ut)
+	global.DB.Where("open_id = ? and op = ?", openId, op).First(ut)
 	return ut
 }
 
-func (os *OauthService) BindGithubUser(openid, username string, userId uint) error {
-	return os.BindOauthUser(model.OauthTypeGithub, openid, username, userId)
-}
-
-func (os *OauthService) BindGoogleUser(email, username string, userId uint) error {
-	return os.BindOauthUser(model.OauthTypeGoogle, email, username, userId)
-}
-
-func (os *OauthService) BindOidcUser(sub, username string, userId uint) error {
-	return os.BindOauthUser(model.OauthTypeOidc, sub, username, userId)
-}
-
-func (os *OauthService) BindOauthUser(thirdType, openid, username string, userId uint) error {
-	utr := &model.UserThird{
-		OpenId:    openid,
-		ThirdType: thirdType,
-		ThirdName: username,
-		UserId:    userId,
+// BindOauthUser: Bind third party account
+func (os *OauthService) BindOauthUser(userId uint, oauthUser *model.OauthUser, op string) error {
+	utr := &model.UserThird{}
+	err, oauthType := os.GetTypeByOp(op)
+	if err != nil {
+		return err
 	}
+	utr.FromOauthUser(userId, oauthUser, oauthType, op)
 	return global.DB.Create(utr).Error
 }
 
-func (os *OauthService) UnBindGithubUser(userid uint) error {
-	return os.UnBindThird(model.OauthTypeGithub, userid)
+// UnBindOauthUser: Unbind third party account
+func (os *OauthService) UnBindOauthUser(userId uint, op string) error {
+	return os.UnBindThird(op, userId)
 }
-func (os *OauthService) UnBindGoogleUser(userid uint) error {
-	return os.UnBindThird(model.OauthTypeGoogle, userid)
-}
-func (os *OauthService) UnBindOidcUser(userid uint) error {
-	return os.UnBindThird(model.OauthTypeOidc, userid)
-}
-func (os *OauthService) UnBindThird(thirdType string, userid uint) error {
-	return global.DB.Where("user_id = ? and third_type = ?", userid, thirdType).Delete(&model.UserThird{}).Error
+
+// UnBindThird: Unbind third party account
+func (os *OauthService) UnBindThird(op string, userId uint) error {
+	return global.DB.Where("user_id = ? and op = ?", userId, op).Delete(&model.UserThird{}).Error
 }
 
 // DeleteUserByUserId: When user is deleted, delete all third party bindings
-func (os *OauthService) DeleteUserByUserId(userid uint) error {
-	return global.DB.Where("user_id = ?", userid).Delete(&model.UserThird{}).Error
+func (os *OauthService) DeleteUserByUserId(userId uint) error {
+	return global.DB.Where("user_id = ?", userId).Delete(&model.UserThird{}).Error
 }
 
-// InfoById 根据id取用户信息
+// InfoById 根据id获取Oauth信息
 func (os *OauthService) InfoById(id uint) *model.Oauth {
-	u := &model.Oauth{}
-	global.DB.Where("id = ?", id).First(u)
-	return u
+	oauthInfo := &model.Oauth{}
+	global.DB.Where("id = ?", id).First(oauthInfo)
+	return oauthInfo
 }
 
-// InfoByOp 根据op取用户信息
+// InfoByOp 根据op获取Oauth信息
 func (os *OauthService) InfoByOp(op string) *model.Oauth {
-	u := &model.Oauth{}
-	global.DB.Where("op = ?", op).First(u)
-	return u
+	oauthInfo := &model.Oauth{}
+	global.DB.Where("op = ?", op).First(oauthInfo)
+	return oauthInfo
 }
+
+// Helper function to get scopes by operation
+func (os *OauthService) getScopesByOp(op string) []string {
+    scopes := os.InfoByOp(op).Scopes
+	return os.constructScopes(scopes)
+}
+
+// Helper function to construct scopes
+func (os *OauthService) constructScopes(scopes string) []string {
+    scopes = strings.TrimSpace(scopes)
+    if scopes == "" {
+        scopes = model.OIDC_DEFAULT_SCOPES
+    }
+    return strings.Split(scopes, ",")
+}
+
 func (os *OauthService) List(page, pageSize uint, where func(tx *gorm.DB)) (res *model.OauthList) {
 	res = &model.OauthList{}
 	res.Page = int64(page)
@@ -474,16 +393,87 @@ func (os *OauthService) List(page, pageSize uint, where func(tx *gorm.DB)) (res 
 	return
 }
 
+// GetTypeByOp 根据op获取OauthType
+func (os *OauthService) GetTypeByOp(op string) (error, string) {
+	oauthInfo := &model.Oauth{}
+	if global.DB.Where("op = ?", op).First(oauthInfo).Error != nil {
+		return fmt.Errorf("OAuth provider with op '%s' not found", op), ""
+	}
+	return nil, oauthInfo.OauthType
+}
+
+// ValidateOauthProvider 验证Oauth提供者是否正确
+func (os *OauthService) ValidateOauthProvider(op string) error {
+	if !os.IsOauthProviderExist(op) {
+		return fmt.Errorf("OAuth provider with op '%s' not found", op)
+	}
+	return nil
+}
+
+// IsOauthProviderExist 验证Oauth提供者是否存在
+func (os *OauthService) IsOauthProviderExist(op string) bool {
+	oauthInfo := &model.Oauth{}
+	// 使用 Gorm 的 Take 方法查找符合条件的记录
+	if err := global.DB.Where("op = ?", op).Take(oauthInfo).Error; err != nil {
+		return false
+	}
+	return true
+}
+
 // Create 创建
-func (os *OauthService) Create(u *model.Oauth) error {
-	res := global.DB.Create(u).Error
+func (os *OauthService) Create(oauthInfo *model.Oauth) error {
+	res := global.DB.Create(oauthInfo).Error
 	return res
 }
-func (os *OauthService) Delete(u *model.Oauth) error {
-	return global.DB.Delete(u).Error
+func (os *OauthService) Delete(oauthInfo *model.Oauth) error {
+	return global.DB.Delete(oauthInfo).Error
 }
 
 // Update 更新
-func (os *OauthService) Update(u *model.Oauth) error {
-	return global.DB.Model(u).Updates(u).Error
+func (os *OauthService) Update(oauthInfo *model.Oauth) error {
+	return global.DB.Model(oauthInfo).Updates(oauthInfo).Error
+}
+
+// GetOauthProviders 获取所有的provider
+func (os *OauthService) GetOauthProviders() []string {
+	var res []string
+	global.DB.Model(&model.Oauth{}).Pluck("op", &res)
+	return res
+}
+
+// getGithubPrimaryEmail: Get the primary email of the user from Github
+func (os *OauthService) getGithubPrimaryEmail(client *http.Client, githubUser *model.GithubUser) error {
+	// the client is already set with the token
+	resp, err := client.Get("https://api.github.com/user/emails")
+	if err != nil {
+		return fmt.Errorf("failed to fetch emails: %w", err)
+	}
+	defer resp.Body.Close()
+
+	// check the response status code
+	if resp.StatusCode != http.StatusOK {
+		return fmt.Errorf("failed to fetch emails: %s", resp.Status)
+	}
+
+	// decode the response
+	var emails []struct {
+		Email    string `json:"email"`
+		Primary  bool   `json:"primary"`
+		Verified bool   `json:"verified"`
+	}
+
+	if err := json.NewDecoder(resp.Body).Decode(&emails); err != nil {
+		return fmt.Errorf("failed to decode response: %w", err)
+	}
+
+	// find the primary verified email
+	for _, e := range emails {
+		if e.Primary && e.Verified {
+			githubUser.Email = e.Email
+			githubUser.VerifiedEmail = e.Verified
+			return nil
+		}
+	}
+
+	return fmt.Errorf("no primary verified email found")
 }

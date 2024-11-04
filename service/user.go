@@ -10,6 +10,8 @@ import (
 	"math/rand"
 	"strconv"
 	"time"
+	"strings"
+	"errors"
 )
 
 type UserService struct {
@@ -21,9 +23,17 @@ func (us *UserService) InfoById(id uint) *model.User {
 	global.DB.Where("id = ?", id).First(u)
 	return u
 }
+// InfoByUsername 根据用户名取用户信息
 func (us *UserService) InfoByUsername(un string) *model.User {
 	u := &model.User{}
 	global.DB.Where("username = ?", un).First(u)
+	return u
+}
+
+// InfoByEmail 根据邮箱取用户信息
+func (us *UserService) InfoByEmail(email string) *model.User {
+	u := &model.User{}
+	global.DB.Where("email = ?", email).First(u)
 	return u
 }
 
@@ -65,15 +75,17 @@ func (us *UserService) GenerateToken(u *model.User) string {
 func (us *UserService) Login(u *model.User, llog *model.LoginLog) *model.UserToken {
 	token := us.GenerateToken(u)
 	ut := &model.UserToken{
-		UserId:    u.Id,
-		Token:     token,
-		ExpiredAt: time.Now().Add(time.Hour * 24 * 7).Unix(),
+		UserId:    	u.Id,
+		Token:     	token,
+		DeviceUuid: llog.Uuid,
+		DeviceId:   llog.DeviceId,
+		ExpiredAt: 	time.Now().Add(time.Hour * 24 * 7).Unix(),
 	}
 	global.DB.Create(ut)
 	llog.UserTokenId = ut.UserId
 	global.DB.Create(llog)
 	if llog.Uuid != "" {
-		AllService.PeerService.UuidBindUserId(llog.Uuid, u.Id)
+		AllService.PeerService.UuidBindUserId(llog.DeviceId, llog.Uuid, u.Id)
 	}
 	return ut
 }
@@ -140,18 +152,42 @@ func (us *UserService) CheckUserEnable(u *model.User) bool {
 
 // Create 创建
 func (us *UserService) Create(u *model.User) error {
+	// The initial username should be formatted, and the username should be unique
+	u.Username = us.formatUsername(u.Username)
 	u.Password = us.EncryptPassword(u.Password)
 	res := global.DB.Create(u).Error
 	return res
 }
 
-// Logout 退出登录
+// GetUuidByToken 根据token和user取uuid
+func (us *UserService) GetUuidByToken(u *model.User, token string) string {
+	ut := &model.UserToken{}
+	err :=global.DB.Where("user_id = ? and token = ?", u.Id, token).First(ut).Error
+	if err != nil {
+		return ""
+	}
+	return ut.DeviceUuid
+}
+
+// Logout 退出登录 -> 删除token, 解绑uuid
 func (us *UserService) Logout(u *model.User, token string) error {
-	return global.DB.Where("user_id = ? and token = ?", u.Id, token).Delete(&model.UserToken{}).Error
+	uuid := us.GetUuidByToken(u, token)
+	err := global.DB.Where("user_id = ? and token = ?", u.Id, token).Delete(&model.UserToken{}).Error
+	if err != nil {
+		return err
+	}
+	if uuid != "" {
+		AllService.PeerService.UuidUnbindUserId(uuid, u.Id)
+	}
+	return nil
 }
 
 // Delete 删除用户和oauth信息
 func (us *UserService) Delete(u *model.User) error {
+	userCount := us.getAdminUserCount()
+	if userCount <= 1 && us.IsAdmin(u) {
+		return errors.New("The last admin user cannot be deleted")
+	}
 	tx := global.DB.Begin()
 	// 删除用户
 	if err := tx.Delete(u).Error; err != nil {
@@ -179,17 +215,41 @@ func (us *UserService) Delete(u *model.User) error {
 		return err
 	}
 	tx.Commit()
+	// 删除关联的peer
+	if err := AllService.PeerService.EraseUserId(u.Id); err != nil {
+		tx.Rollback()
+		return err
+	}
 	return nil
 }
 
 // Update 更新
 func (us *UserService) Update(u *model.User) error {
+	currentUser := us.InfoById(u.Id)
+	// 如果当前用户是管理员并且 IsAdmin 不为空，进行检查
+	if us.IsAdmin(currentUser) {
+		adminCount := us.getAdminUserCount()
+		// 如果这是唯一的管理员，确保不能禁用或取消管理员权限
+		if adminCount <= 1 && ( !us.IsAdmin(u) || u.Status == model.COMMON_STATUS_DISABLED) {
+			return errors.New("The last admin user cannot be disabled or demoted")
+		}
+	}
 	return global.DB.Model(u).Updates(u).Error
 }
 
 // FlushToken 清空token
 func (us *UserService) FlushToken(u *model.User) error {
 	return global.DB.Where("user_id = ?", u.Id).Delete(&model.UserToken{}).Error
+}
+
+// FlushTokenByUuid 清空token
+func (us *UserService) FlushTokenByUuid(uuid string) error {
+	return global.DB.Where("device_uuid = ?", uuid).Delete(&model.UserToken{}).Error
+}
+
+// FlushTokenByUuids 清空token
+func (us *UserService) FlushTokenByUuids(uuids []string) error {
+	return global.DB.Where("device_uuid in (?)", uuids).Delete(&model.UserToken{}).Error
 }
 
 // UpdatePassword 更新密码
@@ -216,24 +276,9 @@ func (us *UserService) RouteNames(u *model.User) []string {
 	return adResp.UserRouteNames
 }
 
-// InfoByGithubId 根据githubid取用户信息
-func (us *UserService) InfoByGithubId(githubId string) *model.User {
-	return us.InfoByOauthId(model.OauthTypeGithub, githubId)
-}
-
-// InfoByGoogleEmail 根据googleid取用户信息
-func (us *UserService) InfoByGoogleEmail(email string) *model.User {
-	return us.InfoByOauthId(model.OauthTypeGithub, email)
-}
-
-// InfoByOidcSub 根据oidc取用户信息
-func (us *UserService) InfoByOidcSub(sub string) *model.User {
-	return us.InfoByOauthId(model.OauthTypeOidc, sub)
-}
-
-// InfoByOauthId 根据oauth取用户信息
-func (us *UserService) InfoByOauthId(thirdType, uid string) *model.User {
-	ut := AllService.OauthService.UserThirdInfo(thirdType, uid)
+// InfoByOauthId 根据oauth的name和openId取用户信息
+func (us *UserService) InfoByOauthId(op string, openId string) *model.User {
+	ut := AllService.OauthService.UserThirdInfo(op, openId)
 	if ut.Id == 0 {
 		return nil
 	}
@@ -244,55 +289,52 @@ func (us *UserService) InfoByOauthId(thirdType, uid string) *model.User {
 	return u
 }
 
-// RegisterByGithub 注册
-func (us *UserService) RegisterByGithub(githubName string, githubId string) *model.User {
-	return us.RegisterByOauth(model.OauthTypeGithub, githubName, githubId)
-}
-
-// RegisterByGoogle 注册
-func (us *UserService) RegisterByGoogle(name string, email string) *model.User {
-	return us.RegisterByOauth(model.OauthTypeGoogle, name, email)
-}
-
-// RegisterByOidc 注册, use PreferredUsername as username, sub as openid
-func (us *UserService) RegisterByOidc(PreferredUsername string, sub string) *model.User {
-	return us.RegisterByOauth(model.OauthTypeOidc, PreferredUsername, sub)
-}
-
 // RegisterByOauth 注册
-func (us *UserService) RegisterByOauth(thirdType, thirdName, uid string) *model.User {
+func (us *UserService) RegisterByOauth(oauthUser *model.OauthUser , op string) (error, *model.User) {
 	global.Lock.Lock("registerByOauth")
 	defer global.Lock.UnLock("registerByOauth")
-	ut := AllService.OauthService.UserThirdInfo(thirdType, uid)
+	ut := AllService.OauthService.UserThirdInfo(op, oauthUser.OpenId)
 	if ut.Id != 0 {
-		u := &model.User{}
-		global.DB.Where("id = ?", ut.UserId).First(u)
-		return u
+		return nil, us.InfoById(ut.UserId)
 	}
-
+	//check if this email has been registered 
+	email := oauthUser.Email
+	err, oauthType := AllService.OauthService.GetTypeByOp(op)
+	if err != nil {
+		return err, nil
+	}
+	// if email is empty, use username and op as email
+	if email == "" {
+		email = oauthUser.Username + "@" + op
+	} 
+	email = strings.ToLower(email)
+	// update email to oauthUser, in case it contain upper case
+	oauthUser.Email = email
+	user := us.InfoByEmail(email)
 	tx := global.DB.Begin()
-	ut = &model.UserThird{
-		OpenId:    uid,
-		ThirdName: thirdName,
-		ThirdType: thirdType,
+	if user.Id != 0 {
+		ut.FromOauthUser(user.Id, oauthUser, oauthType, op)
+	} else {
+		ut = &model.UserThird{}
+		ut.FromOauthUser(0, oauthUser, oauthType, op)
+		// The initial username should be formatted
+		username := us.formatUsername(oauthUser.Username)
+		usernameUnique := us.GenerateUsernameByOauth(username)
+		user = &model.User{
+			Username: usernameUnique,
+			GroupId:  1,
+		}
+		oauthUser.ToUser(user, false)
+		tx.Create(user)
+		if user.Id == 0 {
+			tx.Rollback()
+			return errors.New("OauthRegisterFailed"), user
+		}
+		ut.UserId = user.Id
 	}
-
-	username := us.GenerateUsernameByOauth(thirdName)
-	u := &model.User{
-		Username: username,
-		GroupId:  1,
-	}
-	tx.Create(u)
-	if u.Id == 0 {
-		tx.Rollback()
-		return u
-	}
-
-	ut.UserId = u.Id
 	tx.Create(ut)
-
 	tx.Commit()
-	return u
+	return nil, user
 }
 
 // GenerateUsernameByOauth 生成用户名
@@ -314,7 +356,7 @@ func (us *UserService) UserThirdsByUserId(userId uint) (res []*model.UserThird) 
 
 func (us *UserService) UserThirdInfo(userId uint, op string) *model.UserThird {
 	ut := &model.UserThird{}
-	global.DB.Where("user_id = ? and third_type = ?", userId, op).First(ut)
+	global.DB.Where("user_id = ? and op = ?", userId, op).First(ut)
 	return ut
 }
 
@@ -348,9 +390,11 @@ func (us *UserService) IsPasswordEmptyByUser(u *model.User) bool {
 	return us.IsPasswordEmptyById(u.Id)
 }
 
-func (us *UserService) Register(username string, password string) *model.User {
+// Register 注册
+func (us *UserService) Register(username string, email string, password string) *model.User {
 	u := &model.User{
 		Username: username,
+		Email:    email,
 		Password: us.EncryptPassword(password),
 		GroupId:  1,
 	}
@@ -380,4 +424,25 @@ func (us *UserService) TokenInfoById(id uint) *model.UserToken {
 
 func (us *UserService) DeleteToken(l *model.UserToken) error {
 	return global.DB.Delete(l).Error
+}
+
+// Helper functions, used for formatting username
+func (us *UserService) formatUsername(username string) string {
+	username = strings.ReplaceAll(username, " ", "")
+	username = strings.ToLower(username)
+	return username
+}
+
+//  Helper functions, getUserCount
+func (us *UserService) getUserCount() int64 {
+	var count int64
+	global.DB.Model(&model.User{}).Count(&count)
+	return count
+}
+
+// helper functions, getAdminUserCount
+func (us *UserService) getAdminUserCount() int64 {
+	var count int64
+	global.DB.Model(&model.User{}).Where("is_admin = ?", true).Count(&count)
+	return count
 }

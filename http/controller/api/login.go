@@ -60,6 +60,7 @@ func (l *Login) Login(c *gin.Context) {
 	ut := service.AllService.UserService.Login(u, &model.LoginLog{
 		UserId:   u.Id,
 		Client:   f.DeviceInfo.Type,
+		DeviceId: f.Id,
 		Uuid:     f.Uuid,
 		Ip:       c.ClientIP(),
 		Type:     model.LoginLogTypeAccount,
@@ -83,22 +84,10 @@ func (l *Login) Login(c *gin.Context) {
 // @Failure 500 {object} response.ErrorResponse
 // @Router /login-options [get]
 func (l *Login) LoginOptions(c *gin.Context) {
-	oauthOks := []string{}
-	err, _ := service.AllService.OauthService.GetOauthConfig(model.OauthTypeGithub)
-	if err == nil {
-		oauthOks = append(oauthOks, model.OauthTypeGithub)
-	}
-	err, _ = service.AllService.OauthService.GetOauthConfig(model.OauthTypeGoogle)
-	if err == nil {
-		oauthOks = append(oauthOks, model.OauthTypeGoogle)
-	}
-	err, _ = service.AllService.OauthService.GetOauthConfig(model.OauthTypeOidc)
-	if err == nil {
-		oauthOks = append(oauthOks, model.OauthTypeOidc)
-	}
-	oauthOks = append(oauthOks, model.OauthTypeWebauth)
+	ops := service.AllService.OauthService.GetOauthProviders()
+	ops = append(ops, model.OauthTypeWebauth)
 	var oidcItems []map[string]string
-	for _, v := range oauthOks {
+	for _, v := range ops {
 		oidcItems = append(oidcItems, map[string]string{"name": v})
 	}
 	common, err := json.Marshal(oidcItems)
@@ -108,7 +97,7 @@ func (l *Login) LoginOptions(c *gin.Context) {
 	}
 	var res []string
 	res = append(res, "common-oidc/"+string(common))
-	for _, v := range oauthOks {
+	for _, v := range ops {
 		res = append(res, "oidc/"+v)
 	}
 	c.JSON(http.StatusOK, res)
