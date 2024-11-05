@@ -161,6 +161,9 @@ func DatabaseAutoUpdate() {
 				}
 			}
 		}
+		if v.Version < 246 {
+			db.Exec("update oauths set issuer = 'https://accounts.google.com' where op = 'google' and issuer is null")
+		}
 	}
 
 }
