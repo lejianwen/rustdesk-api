@@ -34,7 +34,7 @@ type LoginForm struct {
 	Id         string            `json:"id"  label:"id"`
 	Type       string            `json:"type"  label:"type"`
 	Uuid       string            `json:"uuid"  label:"uuid"`
-	Username   string            `json:"username" validate:"required,gte=4,lte=10" label:"用户名"`
+	Username   string            `json:"username" validate:"required,gte=2,lte=10" label:"用户名"`
 	Password   string            `json:"password,omitempty" validate:"gte=4,lte=20" label:"密码"`
 }
 
