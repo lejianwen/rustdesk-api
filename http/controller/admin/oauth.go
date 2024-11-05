@@ -180,15 +180,18 @@ func (o *Oauth) Create(c *gin.Context) {
 		response.Fail(c, 101, errList[0])
 		return
 	}
-
-	ex := service.AllService.OauthService.InfoByOp(f.Op)
+	u := f.ToOauth()
+	err := u.FormatOauthInfo()
+	if err != nil {
+		response.Fail(c, 101, response.TranslateMsg(c, "ParamsError")+err.Error())
+		return
+	}
+	ex := service.AllService.OauthService.InfoByOp(u.Op)
 	if ex.Id > 0 {
 		response.Fail(c, 101, response.TranslateMsg(c, "ItemExists"))
 		return
 	}
-
-	u := f.ToOauth()
-	err := service.AllService.OauthService.Create(u)
+	err = service.AllService.OauthService.Create(u)
 	if err != nil {
 		response.Fail(c, 101, response.TranslateMsg(c, "OperationFailed")+err.Error())
 		return

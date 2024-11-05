@@ -5,13 +5,13 @@ import (
 	adResp "Gwen/http/response/admin"
 	"Gwen/model"
 	"Gwen/utils"
+	"errors"
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 	"math/rand"
 	"strconv"
-	"time"
 	"strings"
-	"errors"
+	"time"
 )
 
 type UserService struct {
@@ -23,6 +23,7 @@ func (us *UserService) InfoById(id uint) *model.User {
 	global.DB.Where("id = ?", id).First(u)
 	return u
 }
+
 // InfoByUsername 根据用户名取用户信息
 func (us *UserService) InfoByUsername(un string) *model.User {
 	u := &model.User{}
@@ -75,11 +76,11 @@ func (us *UserService) GenerateToken(u *model.User) string {
 func (us *UserService) Login(u *model.User, llog *model.LoginLog) *model.UserToken {
 	token := us.GenerateToken(u)
 	ut := &model.UserToken{
-		UserId:    	u.Id,
-		Token:     	token,
+		UserId:     u.Id,
+		Token:      token,
 		DeviceUuid: llog.Uuid,
 		DeviceId:   llog.DeviceId,
-		ExpiredAt: 	time.Now().Add(time.Hour * 24 * 7).Unix(),
+		ExpiredAt:  time.Now().Add(time.Hour * 24 * 7).Unix(),
 	}
 	global.DB.Create(ut)
 	llog.UserTokenId = ut.UserId
@@ -162,7 +163,7 @@ func (us *UserService) Create(u *model.User) error {
 // GetUuidByToken 根据token和user取uuid
 func (us *UserService) GetUuidByToken(u *model.User, token string) string {
 	ut := &model.UserToken{}
-	err :=global.DB.Where("user_id = ? and token = ?", u.Id, token).First(ut).Error
+	err := global.DB.Where("user_id = ? and token = ?", u.Id, token).First(ut).Error
 	if err != nil {
 		return ""
 	}
@@ -214,12 +215,12 @@ func (us *UserService) Delete(u *model.User) error {
 		tx.Rollback()
 		return err
 	}
-	tx.Commit()
 	// 删除关联的peer
 	if err := AllService.PeerService.EraseUserId(u.Id); err != nil {
 		tx.Rollback()
 		return err
 	}
+	tx.Commit()
 	return nil
 }
 
@@ -230,7 +231,7 @@ func (us *UserService) Update(u *model.User) error {
 	if us.IsAdmin(currentUser) {
 		adminCount := us.getAdminUserCount()
 		// 如果这是唯一的管理员，确保不能禁用或取消管理员权限
-		if adminCount <= 1 && ( !us.IsAdmin(u) || u.Status == model.COMMON_STATUS_DISABLED) {
+		if adminCount <= 1 && (!us.IsAdmin(u) || u.Status == model.COMMON_STATUS_DISABLED) {
 			return errors.New("The last admin user cannot be disabled or demoted")
 		}
 	}
@@ -290,48 +291,49 @@ func (us *UserService) InfoByOauthId(op string, openId string) *model.User {
 }
 
 // RegisterByOauth 注册
-func (us *UserService) RegisterByOauth(oauthUser *model.OauthUser , op string) (error, *model.User) {
+func (us *UserService) RegisterByOauth(oauthUser *model.OauthUser, op string) (error, *model.User) {
 	global.Lock.Lock("registerByOauth")
 	defer global.Lock.UnLock("registerByOauth")
 	ut := AllService.OauthService.UserThirdInfo(op, oauthUser.OpenId)
 	if ut.Id != 0 {
 		return nil, us.InfoById(ut.UserId)
 	}
-	//check if this email has been registered 
-	email := oauthUser.Email
 	err, oauthType := AllService.OauthService.GetTypeByOp(op)
 	if err != nil {
 		return err, nil
 	}
-	// if email is empty, use username and op as email
-	if email == "" {
-		email = oauthUser.Username + "@" + op
-	} 
-	email = strings.ToLower(email)
-	// update email to oauthUser, in case it contain upper case
-	oauthUser.Email = email
-	user := us.InfoByEmail(email)
-	tx := global.DB.Begin()
-	if user.Id != 0 {
-		ut.FromOauthUser(user.Id, oauthUser, oauthType, op)
-	} else {
-		ut = &model.UserThird{}
-		ut.FromOauthUser(0, oauthUser, oauthType, op)
-		// The initial username should be formatted
-		username := us.formatUsername(oauthUser.Username)
-		usernameUnique := us.GenerateUsernameByOauth(username)
-		user = &model.User{
-			Username: usernameUnique,
-			GroupId:  1,
+	//check if this email has been registered
+	email := oauthUser.Email
+	// only email is not empty
+	if email != "" {
+		email = strings.ToLower(email)
+		// update email to oauthUser, in case it contain upper case
+		oauthUser.Email = email
+		user := us.InfoByEmail(email)
+		if user.Id != 0 {
+			ut.FromOauthUser(user.Id, oauthUser, oauthType, op)
+			global.DB.Create(ut)
+			return nil, user
 		}
-		oauthUser.ToUser(user, false)
-		tx.Create(user)
-		if user.Id == 0 {
-			tx.Rollback()
-			return errors.New("OauthRegisterFailed"), user
-		}
-		ut.UserId = user.Id
 	}
+
+	tx := global.DB.Begin()
+	ut = &model.UserThird{}
+	ut.FromOauthUser(0, oauthUser, oauthType, op)
+	// The initial username should be formatted
+	username := us.formatUsername(oauthUser.Username)
+	usernameUnique := us.GenerateUsernameByOauth(username)
+	user := &model.User{
+		Username: usernameUnique,
+		GroupId:  1,
+	}
+	oauthUser.ToUser(user, false)
+	tx.Create(user)
+	if user.Id == 0 {
+		tx.Rollback()
+		return errors.New("OauthRegisterFailed"), user
+	}
+	ut.UserId = user.Id
 	tx.Create(ut)
 	tx.Commit()
 	return nil, user
@@ -433,7 +435,7 @@ func (us *UserService) formatUsername(username string) string {
 	return username
 }
 
-//  Helper functions, getUserCount
+// Helper functions, getUserCount
 func (us *UserService) getUserCount() int64 {
 	var count int64
 	global.DB.Model(&model.User{}).Count(&count)

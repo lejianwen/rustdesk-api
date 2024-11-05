@@ -1,9 +1,9 @@
 package model
 
 import (
+	"errors"
 	"strconv"
 	"strings"
-	"errors"
 )
 
 const OIDC_DEFAULT_SCOPES = "openid,profile,email"
@@ -27,31 +27,22 @@ func ValidateOauthType(oauthType string) error {
 }
 
 const (
-	OauthNameGithub  string = "GitHub"
-	OauthNameGoogle  string = "Google"
-	OauthNameOidc    string = "OIDC"
-	OauthNameWebauth string = "WebAuth"
-)
-
-const (
-	UserEndpointGithub  string = "https://api.github.com/user"
-	IssuerGoogle 		string = "https://accounts.google.com"
+	UserEndpointGithub string = "https://api.github.com/user"
+	IssuerGoogle       string = "https://accounts.google.com"
 )
 
 type Oauth struct {
 	IdModel
-	Op           string 	`json:"op"`
-	OauthType    string 	`json:"oauth_type"`
-	ClientId     string 	`json:"client_id"`
-	ClientSecret string 	`json:"client_secret"`
-	RedirectUrl  string 	`json:"redirect_url"`
-	AutoRegister *bool  	`json:"auto_register"`
-	Scopes       string 	`json:"scopes"`
-	Issuer	     string 	`json:"issuer"`
+	Op           string `json:"op"`
+	OauthType    string `json:"oauth_type"`
+	ClientId     string `json:"client_id"`
+	ClientSecret string `json:"client_secret"`
+	RedirectUrl  string `json:"redirect_url"`
+	AutoRegister *bool  `json:"auto_register"`
+	Scopes       string `json:"scopes"`
+	Issuer       string `json:"issuer"`
 	TimeModel
 }
-
-
 
 // Helper function to format oauth info, it's used in the update and create method
 func (oa *Oauth) FormatOauthInfo() error {
@@ -60,25 +51,20 @@ func (oa *Oauth) FormatOauthInfo() error {
 	if err != nil {
 		return err
 	}
+	switch oauthType {
+	case OauthTypeGithub:
+		oa.Op = OauthTypeGithub
+	case OauthTypeGoogle:
+		oa.Op = OauthTypeGoogle
+	}
 	// check if the op is empty, set the default value
 	op := strings.TrimSpace(oa.Op)
-	if op == "" {
-		switch oauthType {
-		case OauthTypeGithub:
-			oa.Op = OauthNameGithub
-		case OauthTypeGoogle:
-			oa.Op = OauthNameGoogle
-		case OauthTypeOidc:
-			oa.Op = OauthNameOidc
-		case OauthTypeWebauth:
-			oa.Op = OauthNameWebauth
-		default:
-			oa.Op = oauthType
-		}
+	if op == "" && oauthType == OauthTypeOidc {
+		oa.Op = OauthTypeOidc
 	}
 	// check the issuer, if the oauth type is google and the issuer is empty, set the issuer to the default value
 	issuer := strings.TrimSpace(oa.Issuer)
-	// If the oauth type is google and the issuer is empty, set the issuer to the default value 
+	// If the oauth type is google and the issuer is empty, set the issuer to the default value
 	if oauthType == OauthTypeGoogle && issuer == "" {
 		oa.Issuer = IssuerGoogle
 	}
@@ -86,12 +72,12 @@ func (oa *Oauth) FormatOauthInfo() error {
 }
 
 type OauthUser struct {
-	OpenId 			string 	`json:"open_id" gorm:"not null;index"`
-	Name   			string 	`json:"name"`
-	Username 		string 	`json:"username"`
-	Email  			string 	`json:"email"`
-	VerifiedEmail 	bool 	`json:"verified_email,omitempty"`
-	Picture			string 	`json:"picture,omitempty"`
+	OpenId        string `json:"open_id" gorm:"not null;index"`
+	Name          string `json:"name"`
+	Username      string `json:"username"`
+	Email         string `json:"email"`
+	VerifiedEmail bool   `json:"verified_email,omitempty"`
+	Picture       string `json:"picture,omitempty"`
 }
 
 func (ou *OauthUser) ToUser(user *User, overideUsername bool) {
@@ -122,7 +108,7 @@ func (ou *OidcUser) ToOauthUser() *OauthUser {
 	if ou.PreferredUsername != "" {
 		username = ou.PreferredUsername
 	} else {
-		username = strings.ToLower(strings.Split(ou.Email, "@")[0])
+		username = strings.ToLower(ou.Email)
 	}
 
 	return &OauthUser{
@@ -135,28 +121,25 @@ func (ou *OidcUser) ToOauthUser() *OauthUser {
 	}
 }
 
-
 type GithubUser struct {
 	OauthUserBase
-	Id                int         `json:"id"`
-	Login             string      `json:"login"`
-	AvatarUrl         string      `json:"avatar_url"`
-	VerifiedEmail	  bool        `json:"verified_email"`
+	Id            int    `json:"id"`
+	Login         string `json:"login"`
+	AvatarUrl     string `json:"avatar_url"`
+	VerifiedEmail bool   `json:"verified_email"`
 }
 
 func (gu *GithubUser) ToOauthUser() *OauthUser {
 	username := strings.ToLower(gu.Login)
 	return &OauthUser{
-		OpenId: 		strconv.Itoa(gu.Id),
-		Name:   		gu.Name,
-		Username: 		username,
-		Email:  		gu.Email,
-		VerifiedEmail: 	gu.VerifiedEmail,
-		Picture:		gu.AvatarUrl,
+		OpenId:        strconv.Itoa(gu.Id),
+		Name:          gu.Name,
+		Username:      username,
+		Email:         gu.Email,
+		VerifiedEmail: gu.VerifiedEmail,
+		Picture:       gu.AvatarUrl,
 	}
 }
-
-
 
 type OauthList struct {
 	Oauths []*Oauth `json:"list"`

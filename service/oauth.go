@@ -12,15 +12,14 @@ import (
 	// "golang.org/x/oauth2/google"
 	"gorm.io/gorm"
 	// "io"
+	"fmt"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
 	"sync"
 	"time"
-	"fmt"
 )
-
 
 type OauthService struct {
 }
@@ -34,26 +33,26 @@ type OidcEndpoint struct {
 }
 
 type OauthCacheItem struct {
-	UserId      uint   `json:"user_id"`
-	Id          string `json:"id"` //rustdesk的设备ID
-	Op          string `json:"op"`
-	Action      string `json:"action"`
-	Uuid        string `json:"uuid"`
-	DeviceName  string `json:"device_name"`
-	DeviceOs    string `json:"device_os"`
-	DeviceType  string `json:"device_type"`
-	OpenId 		string `json:"open_id"`
-	Username	string `json:"username"`
-	Name   		string `json:"name"`
-	Email  		string `json:"email"`
+	UserId     uint   `json:"user_id"`
+	Id         string `json:"id"` //rustdesk的设备ID
+	Op         string `json:"op"`
+	Action     string `json:"action"`
+	Uuid       string `json:"uuid"`
+	DeviceName string `json:"device_name"`
+	DeviceOs   string `json:"device_os"`
+	DeviceType string `json:"device_type"`
+	OpenId     string `json:"open_id"`
+	Username   string `json:"username"`
+	Name       string `json:"name"`
+	Email      string `json:"email"`
 }
 
 func (oci *OauthCacheItem) ToOauthUser() *model.OauthUser {
 	return &model.OauthUser{
-		OpenId: oci.OpenId,
+		OpenId:   oci.OpenId,
 		Username: oci.Username,
-		Name: oci.Name,
-		Email: oci.Email,
+		Name:     oci.Name,
+		Email:    oci.Email,
 	}
 }
 
@@ -64,13 +63,12 @@ const (
 	OauthActionTypeBind  = "bind"
 )
 
-func (oa *OauthCacheItem) UpdateFromOauthUser(oauthUser *model.OauthUser) {
-	oa.OpenId = oauthUser.OpenId
-	oa.Username = oauthUser.Username
-	oa.Name = oauthUser.Name
-	oa.Email = oauthUser.Email
+func (oci *OauthCacheItem) UpdateFromOauthUser(oauthUser *model.OauthUser) {
+	oci.OpenId = oauthUser.OpenId
+	oci.Username = oauthUser.Username
+	oci.Name = oauthUser.Name
+	oci.Email = oauthUser.Email
 }
-
 
 func (os *OauthService) GetOauthCache(key string) *OauthCacheItem {
 	v, ok := OauthCache.Load(key)
@@ -164,7 +162,7 @@ func (os *OauthService) GetOauthConfig(op string) (err error, oauthInfo *model.O
 		if err != nil {
 			return err, nil, nil
 		}
-		oauthConfig.Endpoint = oauth2.Endpoint{AuthURL:  endpoint.AuthURL,TokenURL: endpoint.TokenURL,}
+		oauthConfig.Endpoint = oauth2.Endpoint{AuthURL: endpoint.AuthURL, TokenURL: endpoint.TokenURL}
 		oauthConfig.Scopes = os.constructScopes(oauthInfo.Scopes)
 	default:
 		return errors.New("unsupported OAuth type"), nil, nil
@@ -259,9 +257,8 @@ func (os *OauthService) githubCallback(oauthConfig *oauth2.Config, code string) 
 	return nil, user.ToOauthUser()
 }
 
-
 // oidcCallback oidc回调, 通过code获取用户信息
-func (os *OauthService) oidcCallback(oauthConfig *oauth2.Config, code string, userInfoEndpoint string) (error, *model.OauthUser,) {
+func (os *OauthService) oidcCallback(oauthConfig *oauth2.Config, code string, userInfoEndpoint string) (error, *model.OauthUser) {
 	var user = &model.OidcUser{}
 	if err, _ := os.callbackBase(oauthConfig, code, userInfoEndpoint, user); err != nil {
 		return err, nil
@@ -280,20 +277,19 @@ func (os *OauthService) Callback(code string, op string) (err error, oauthUser *
 	}
 	oauthType := oauthInfo.OauthType
 	switch oauthType {
-    case model.OauthTypeGithub:
-        err, oauthUser = os.githubCallback(oauthConfig, code)
-    case model.OauthTypeOidc, model.OauthTypeGoogle:
+	case model.OauthTypeGithub:
+		err, oauthUser = os.githubCallback(oauthConfig, code)
+	case model.OauthTypeOidc, model.OauthTypeGoogle:
 		err, endpoint := os.FetchOidcEndpoint(oauthInfo.Issuer)
 		if err != nil {
 			return err, nil
 		}
-        err, oauthUser = os.oidcCallback(oauthConfig, code, endpoint.UserInfo)
-    default:
-        return errors.New("unsupported OAuth type"), nil
-    }
-    return err, oauthUser
+		err, oauthUser = os.oidcCallback(oauthConfig, code, endpoint.UserInfo)
+	default:
+		return errors.New("unsupported OAuth type"), nil
+	}
+	return err, oauthUser
 }
-
 
 func (os *OauthService) UserThirdInfo(op string, openId string) *model.UserThird {
 	ut := &model.UserThird{}
@@ -343,17 +339,17 @@ func (os *OauthService) InfoByOp(op string) *model.Oauth {
 
 // Helper function to get scopes by operation
 func (os *OauthService) getScopesByOp(op string) []string {
-    scopes := os.InfoByOp(op).Scopes
+	scopes := os.InfoByOp(op).Scopes
 	return os.constructScopes(scopes)
 }
 
 // Helper function to construct scopes
 func (os *OauthService) constructScopes(scopes string) []string {
-    scopes = strings.TrimSpace(scopes)
-    if scopes == "" {
-        scopes = model.OIDC_DEFAULT_SCOPES
-    }
-    return strings.Split(scopes, ",")
+	scopes = strings.TrimSpace(scopes)
+	if scopes == "" {
+		scopes = model.OIDC_DEFAULT_SCOPES
+	}
+	return strings.Split(scopes, ",")
 }
 
 func (os *OauthService) List(page, pageSize uint, where func(tx *gorm.DB)) (res *model.OauthList) {

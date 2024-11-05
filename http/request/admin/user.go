@@ -5,15 +5,15 @@ import (
 )
 
 type UserForm struct {
-	Id       uint   			`json:"id"`
-	Username string 			`json:"username" validate:"required,gte=4,lte=10"`
-	Email	 string           	`json:"email" validate:"required,email"`
+	Id       uint   `json:"id"`
+	Username string `json:"username" validate:"required,gte=4,lte=10"`
+	Email    string `json:"email"` //validate:"required,email" email不强制
 	//Password string           `json:"password" validate:"required,gte=4,lte=20"`
-	Nickname string           	`json:"nickname"`
-	Avatar   string           	`json:"avatar"`
-	GroupId  uint             	`json:"group_id" validate:"required"`
-	IsAdmin  *bool            	`json:"is_admin" `
-	Status   model.StatusCode 	`json:"status" validate:"required,gte=0"`
+	Nickname string           `json:"nickname"`
+	Avatar   string           `json:"avatar"`
+	GroupId  uint             `json:"group_id" validate:"required"`
+	IsAdmin  *bool            `json:"is_admin" `
+	Status   model.StatusCode `json:"status" validate:"required,gte=0"`
 }
 
 func (uf *UserForm) FromUser(user *model.User) *UserForm {
