@@ -5,7 +5,6 @@ import (
 	"Gwen/http/request/admin"
 	adminReq "Gwen/http/request/admin"
 	"Gwen/http/response"
-	"Gwen/model"
 	"Gwen/service"
 	"github.com/gin-gonic/gin"
 	"strconv"
@@ -96,21 +95,23 @@ func (o *Oauth) BindConfirm(c *gin.Context) {
 		response.Fail(c, 101, response.TranslateMsg(c, "ParamsError"))
 		return
 	}
-	v := service.AllService.OauthService.GetOauthCache(j.Code)
-	if v == nil {
+	oauthService := service.AllService.OauthService
+	oauthCache := oauthService.GetOauthCache(j.Code)
+	if oauthCache == nil {
 		response.Fail(c, 101, response.TranslateMsg(c, "OauthExpired"))
 		return
 	}
-	u := service.AllService.UserService.CurUser(c)
-	err = service.AllService.OauthService.BindOauthUser(v.Op, v.ThirdOpenId, v.ThirdName, u.Id)
+	oauthUser := oauthCache.ToOauthUser()
+	user := service.AllService.UserService.CurUser(c)
+	err = oauthService.BindOauthUser(user.Id, oauthUser, oauthCache.Op)
 	if err != nil {
 		response.Fail(c, 101, response.TranslateMsg(c, "BindFail"))
 		return
 	}
 
-	v.UserId = u.Id
-	service.AllService.OauthService.SetOauthCache(j.Code, v, 0)
-	response.Success(c, v)
+	oauthCache.UserId = user.Id
+	oauthService.SetOauthCache(j.Code, oauthCache, 0)
+	response.Success(c, oauthCache)
 }
 
 func (o *Oauth) Unbind(c *gin.Context) {
@@ -126,28 +127,11 @@ func (o *Oauth) Unbind(c *gin.Context) {
 		response.Fail(c, 101, response.TranslateMsg(c, "ItemNotFound"))
 		return
 	}
-	if f.Op == model.OauthTypeGithub {
-		err = service.AllService.OauthService.UnBindGithubUser(u.Id)
-		if err != nil {
-			response.Fail(c, 101, response.TranslateMsg(c, "OperationFailed")+err.Error())
-			return
-		}
+	err = service.AllService.OauthService.UnBindOauthUser(u.Id, f.Op)
+	if err != nil {
+		response.Fail(c, 101, response.TranslateMsg(c, "OperationFailed")+err.Error())
+		return
 	}
-	if f.Op == model.OauthTypeGoogle {
-		err = service.AllService.OauthService.UnBindGoogleUser(u.Id)
-		if err != nil {
-			response.Fail(c, 101, response.TranslateMsg(c, "OperationFailed")+err.Error())
-			return
-		}
-	}
-	if f.Op == model.OauthTypeOidc {
-		err = service.AllService.OauthService.UnBindOidcUser(u.Id)
-		if err != nil {
-			response.Fail(c, 101, response.TranslateMsg(c, "OperationFailed")+err.Error())
-			return
-		}
-	}
-
 	response.Success(c, nil)
 }
 

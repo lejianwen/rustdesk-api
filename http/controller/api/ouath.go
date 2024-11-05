@@ -9,8 +9,6 @@ import (
 	"Gwen/service"
 	"github.com/gin-gonic/gin"
 	"net/http"
-	"strconv"
-	"strings"
 )
 
 type Oauth struct {
@@ -32,13 +30,11 @@ func (o *Oauth) OidcAuth(c *gin.Context) {
 		response.Error(c, response.TranslateMsg(c, "ParamsError")+err.Error())
 		return
 	}
-	//fmt.Println(f)
-	if f.Op != model.OauthTypeWebauth && f.Op != model.OauthTypeGoogle && f.Op != model.OauthTypeGithub && f.Op != model.OauthTypeOidc {
-		response.Error(c, response.TranslateMsg(c, "ParamsError"))
-		return
-	}
 
-	err, code, url := service.AllService.OauthService.BeginAuth(f.Op)
+	oauthService := service.AllService.OauthService
+	var code string
+	var url string
+	err, code, url = oauthService.BeginAuth(f.Op)
 	if err != nil {
 		response.Error(c, response.TranslateMsg(c, err.Error()))
 		return
@@ -98,6 +94,7 @@ func (o *Oauth) OidcAuthQueryPre(c *gin.Context) (*model.User, *model.UserToken)
 	ut = service.AllService.UserService.Login(u, &model.LoginLog{
 		UserId:   u.Id,
 		Client:   v.DeviceType,
+		DeviceId: v.Id,
 		Uuid:     v.Uuid,
 		Ip:       c.ClientIP(),
 		Type:     model.LoginLogTypeOauth,
@@ -149,70 +146,43 @@ func (o *Oauth) OauthCallback(c *gin.Context) {
 		c.String(http.StatusInternalServerError, response.TranslateParamMsg(c, "ParamIsEmpty", "state"))
 		return
 	}
-
 	cacheKey := state
+	oauthService := service.AllService.OauthService
 	//从缓存中获取
-	v := service.AllService.OauthService.GetOauthCache(cacheKey)
-	if v == nil {
+	oauthCache := oauthService.GetOauthCache(cacheKey)
+	if oauthCache == nil {
 		c.String(http.StatusInternalServerError, response.TranslateMsg(c, "OauthExpired"))
 		return
 	}
-
-	ty := v.Op
-	ac := v.Action
-	var u *model.User
-	openid := ""
-	thirdName := ""
-	//fmt.Println("ty ac ", ty, ac)
-
-	if ty == model.OauthTypeGithub {
-		code := c.Query("code")
-		err, userData := service.AllService.OauthService.GithubCallback(code)
-		if err != nil {
-			c.String(http.StatusInternalServerError, response.TranslateMsg(c, "OauthFailed")+response.TranslateMsg(c, err.Error()))
-			return
-		}
-		openid = strconv.Itoa(userData.Id)
-		thirdName = userData.Login
-	} else if ty == model.OauthTypeGoogle {
-		code := c.Query("code")
-		err, userData := service.AllService.OauthService.GoogleCallback(code)
-		if err != nil {
-			c.String(http.StatusInternalServerError, response.TranslateMsg(c, "OauthFailed")+response.TranslateMsg(c, err.Error()))
-			return
-		}
-		openid = userData.Email
-		//将空格替换成_
-		thirdName = strings.Replace(userData.Name, " ", "_", -1)
-	} else if ty == model.OauthTypeOidc {
-		code := c.Query("code")
-		err, userData := service.AllService.OauthService.OidcCallback(code)
-		if err != nil {
-			c.String(http.StatusInternalServerError, response.TranslateMsg(c, "OauthFailed")+response.TranslateMsg(c, err.Error()))
-			return
-		}
-		openid = userData.Sub
-		thirdName = userData.PreferredUsername
-	} else {
-		c.String(http.StatusInternalServerError, response.TranslateMsg(c, "ParamsError"))
+	op := oauthCache.Op
+	action := oauthCache.Action
+	var user *model.User
+	// 获取用户信息
+	code := c.Query("code")
+	err, oauthUser := oauthService.Callback(code, op)
+	if err != nil {
+		c.String(http.StatusInternalServerError, response.TranslateMsg(c, "OauthFailed")+response.TranslateMsg(c, err.Error()))
 		return
 	}
-	if ac == service.OauthActionTypeBind {
+	userId := oauthCache.UserId
+	openid := oauthUser.OpenId
+	if action == service.OauthActionTypeBind {
 
 		//fmt.Println("bind", ty, userData)
-		utr := service.AllService.OauthService.UserThirdInfo(ty, openid)
+		// 检查此openid是否已经绑定过
+		utr := oauthService.UserThirdInfo(op, openid)
 		if utr.UserId > 0 {
 			c.String(http.StatusInternalServerError, response.TranslateMsg(c, "OauthHasBindOtherUser"))
 			return
 		}
 		//绑定
-		u = service.AllService.UserService.InfoById(v.UserId)
-		if u == nil {
+		user = service.AllService.UserService.InfoById(userId)
+		if user == nil {
 			c.String(http.StatusInternalServerError, response.TranslateMsg(c, "ItemNotFound"))
 			return
 		}
 		//绑定
-		err := service.AllService.OauthService.BindOauthUser(ty, openid, thirdName, v.UserId)
+		err := oauthService.BindOauthUser(userId, oauthUser, op)
 		if err != nil {
 			c.String(http.StatusInternalServerError, response.TranslateMsg(c, "BindFail"))
 			return
@@ -220,42 +190,41 @@ func (o *Oauth) OauthCallback(c *gin.Context) {
 		c.String(http.StatusOK, response.TranslateMsg(c, "BindSuccess"))
 		return
 
-	} else if ac == service.OauthActionTypeLogin {
+	} else if action == service.OauthActionTypeLogin {
 		//登录
-		if v.UserId != 0 {
+		if userId != 0 {
 			c.String(http.StatusInternalServerError, response.TranslateMsg(c, "OauthHasBeenSuccess"))
 			return
 		}
-		u = service.AllService.UserService.InfoByGithubId(openid)
-		if u == nil {
-			oa := service.AllService.OauthService.InfoByOp(ty)
-			if !*oa.AutoRegister {
+		user = service.AllService.UserService.InfoByOauthId(op, openid)
+		if user == nil {
+			oauthConfig := oauthService.InfoByOp(op)
+			if !*oauthConfig.AutoRegister {
 				//c.String(http.StatusInternalServerError, "还未绑定用户，请先绑定")
-				v.ThirdName = thirdName
-				v.ThirdOpenId = openid
+				oauthCache.UpdateFromOauthUser(oauthUser)
 				url := global.Config.Rustdesk.ApiServer + "/_admin/#/oauth/bind/" + cacheKey
 				c.Redirect(http.StatusFound, url)
 				return
 			}
 
 			//自动注册
-			u = service.AllService.UserService.RegisterByOauth(ty, thirdName, openid)
-			if u.Id == 0 {
-				c.String(http.StatusInternalServerError, response.TranslateMsg(c, "OauthRegisterFailed"))
+			err, user = service.AllService.UserService.RegisterByOauth(oauthUser, op)
+			if err != nil {
+				c.String(http.StatusInternalServerError, response.TranslateMsg(c, err.Error()))
 				return
 			}
 		}
-		v.UserId = u.Id
-		service.AllService.OauthService.SetOauthCache(cacheKey, v, 0)
+		oauthCache.UserId = user.Id
+		oauthService.SetOauthCache(cacheKey, oauthCache, 0)
 		// 如果是webadmin，登录成功后跳转到webadmin
-		if v.DeviceType == "webadmin" {
+		if oauthCache.DeviceType == "webadmin" {
 			/*service.AllService.UserService.Login(u, &model.LoginLog{
 				UserId:   u.Id,
 				Client:   "webadmin",
 				Uuid:     "", //must be empty
 				Ip:       c.ClientIP(),
 				Type:     model.LoginLogTypeOauth,
-				Platform: v.DeviceOs,
+				Platform: oauthService.DeviceOs,
 			})*/
 			url := global.Config.Rustdesk.ApiServer + "/_admin/#/"
 			c.Redirect(http.StatusFound, url)

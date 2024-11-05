@@ -29,6 +29,7 @@ type UserPayload struct {
 
 func (up *UserPayload) FromUser(user *model.User) *UserPayload {
 	up.Name = user.Username
+	up.Email = user.Email
 	up.IsAdmin = user.IsAdmin
 	up.Status = int(user.Status)
 	up.Info = map[string]interface{}{}

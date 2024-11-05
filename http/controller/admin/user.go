@@ -10,6 +10,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 	"strconv"
+	"time"
 )
 
 type User struct {
@@ -216,12 +217,7 @@ func (ct *User) Current(c *gin.Context) {
 	u := service.AllService.UserService.CurUser(c)
 	token, _ := c.Get("token")
 	t := token.(string)
-	response.Success(c, &adResp.LoginPayload{
-		Token:      t,
-		Username:   u.Username,
-		RouteNames: service.AllService.UserService.RouteNames(u),
-		Nickname:   u.Nickname,
-	})
+	responseLoginSuccess(c, u, t)
 }
 
 // ChangeCurPwd 修改当前用户密码
@@ -286,16 +282,61 @@ func (ct *User) MyOauth(c *gin.Context) {
 	var res []*adResp.UserOauthItem
 	for _, oa := range oal.Oauths {
 		item := &adResp.UserOauthItem{
-			ThirdType: oa.Op,
+			Op: oa.Op,
 		}
 		for _, ut := range uts {
-			if ut.ThirdType == oa.Op {
+			if ut.Op == oa.Op {
 				item.Status = 1
 				break
 			}
 		}
 		res = append(res, item)
 	}
+	response.Success(c, res)
+}
+
+// List 列表
+// @Tags 设备
+// @Summary 设备列表
+// @Description 设备列表
+// @Accept  json
+// @Produce  json
+// @Param page query int false "页码"
+// @Param page_size query int false "页大小"
+// @Param time_ago query int false "时间"
+// @Param id query string false "ID"
+// @Param hostname query string false "主机名"
+// @Param uuids query string false "uuids 用逗号分隔"
+// @Success 200 {object} response.Response{data=model.PeerList}
+// @Failure 500 {object} response.Response
+// @Router /admin/user/myPeer [get]
+// @Security token
+func (ct *User) MyPeer(c *gin.Context) {
+	query := &admin.PeerQuery{}
+	if err := c.ShouldBindQuery(query); err != nil {
+		response.Fail(c, 101, response.TranslateMsg(c, "ParamsError")+err.Error())
+		return
+	}
+	u := service.AllService.UserService.CurUser(c)
+	res := service.AllService.PeerService.ListFilterByUserId(query.Page, query.PageSize, func(tx *gorm.DB) {
+		if query.TimeAgo > 0 {
+			lt := time.Now().Unix() - int64(query.TimeAgo)
+			tx.Where("last_online_time < ?", lt)
+		}
+		if query.TimeAgo < 0 {
+			lt := time.Now().Unix() + int64(query.TimeAgo)
+			tx.Where("last_online_time > ?", lt)
+		}
+		if query.Id != "" {
+			tx.Where("id like ?", "%"+query.Id+"%")
+		}
+		if query.Hostname != "" {
+			tx.Where("hostname like ?", "%"+query.Hostname+"%")
+		}
+		if query.Uuids != "" {
+			tx.Where("uuid in (?)", query.Uuids)
+		}
+	}, u.Id)
 	response.Success(c, res)
 }
 
@@ -345,7 +386,7 @@ func (ct *User) Register(c *gin.Context) {
 		response.Fail(c, 101, errList[0])
 		return
 	}
-	u := service.AllService.UserService.Register(f.Username, f.Password)
+	u := service.AllService.UserService.Register(f.Username, f.Email, f.Password)
 	if u == nil || u.Id == 0 {
 		response.Fail(c, 101, response.TranslateMsg(c, "OperationFailed"))
 		return
@@ -358,10 +399,5 @@ func (ct *User) Register(c *gin.Context) {
 		Ip:     c.ClientIP(),
 		Type:   model.LoginLogTypeAccount,
 	})
-	response.Success(c, &adResp.LoginPayload{
-		Token:      ut.Token,
-		Username:   u.Username,
-		RouteNames: service.AllService.UserService.RouteNames(u),
-		Nickname:   u.Nickname,
-	})
+	responseLoginSuccess(c, u, ut.Token)
 }
