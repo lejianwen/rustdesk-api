@@ -217,8 +217,8 @@ func (us *UserService) Delete(u *model.User) error {
 	}
 	tx.Commit()
 	// 删除关联的peer
-	if err := AllService.PeerService.EraseUserId(u.Id); err != nil {
-		return err
+	return AllService.PeerService.EraseUserId(u.Id); err != nil {
+		return errors.New("User deleted successfully, but failed to unlink peer.")
 	}
 	return nil
 }
