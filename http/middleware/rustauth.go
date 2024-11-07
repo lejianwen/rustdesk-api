@@ -28,7 +28,7 @@ func RustAuth() gin.HandlerFunc {
 		//这里只是简单的提取
 		token = token[7:]
 		//验证token
-		user := service.AllService.UserService.InfoByAccessToken(token)
+		user, ut := service.AllService.UserService.InfoByAccessToken(token)
 		if user.Id == 0 {
 			c.JSON(401, gin.H{
 				"error": "Unauthorized",
@@ -46,6 +46,9 @@ func RustAuth() gin.HandlerFunc {
 
 		c.Set("curUser", user)
 		c.Set("token", token)
+
+		service.AllService.UserService.AutoRefreshAccessToken(ut)
+
 		c.Next()
 	}
 }

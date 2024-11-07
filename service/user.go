@@ -53,18 +53,18 @@ func (us *UserService) InfoByUsernamePassword(username, password string) *model.
 }
 
 // InfoByAccesstoken 根据accesstoken取用户信息
-func (us *UserService) InfoByAccessToken(token string) *model.User {
+func (us *UserService) InfoByAccessToken(token string) (*model.User, *model.UserToken) {
 	u := &model.User{}
 	ut := &model.UserToken{}
 	global.DB.Where("token = ?", token).First(ut)
 	if ut.Id == 0 {
-		return u
+		return u, ut
 	}
 	if ut.ExpiredAt < time.Now().Unix() {
-		return u
+		return u, ut
 	}
 	global.DB.Where("id = ?", ut.UserId).First(u)
-	return u
+	return u, ut
 }
 
 // GenerateToken 生成token
@@ -217,8 +217,9 @@ func (us *UserService) Delete(u *model.User) error {
 	}
 	tx.Commit()
 	// 删除关联的peer
-	return AllService.PeerService.EraseUserId(u.Id); err != nil {
-		return errors.New("User deleted successfully, but failed to unlink peer.")
+	if err := AllService.PeerService.EraseUserId(u.Id); err != nil {
+		global.Logger.Warn("User deleted successfully, but failed to unlink peer.")
+		return nil
 	}
 	return nil
 }
@@ -446,4 +447,14 @@ func (us *UserService) getAdminUserCount() int64 {
 	var count int64
 	global.DB.Model(&model.User{}).Where("is_admin = ?", true).Count(&count)
 	return count
+}
+
+func (us *UserService) RefreshAccessToken(ut *model.UserToken) {
+	ut.ExpiredAt = time.Now().Add(time.Hour * 24 * 7).Unix()
+	global.DB.Model(ut).Update("expired_at", ut.ExpiredAt)
+}
+func (us *UserService) AutoRefreshAccessToken(ut *model.UserToken) {
+	if ut.ExpiredAt-time.Now().Unix() < 86400 {
+		us.RefreshAccessToken(ut)
+	}
 }

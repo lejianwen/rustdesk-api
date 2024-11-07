@@ -17,7 +17,7 @@ func AdminAuth() gin.HandlerFunc {
 			c.Abort()
 			return
 		}
-		user := service.AllService.UserService.InfoByAccessToken(token)
+		user, ut := service.AllService.UserService.InfoByAccessToken(token)
 		if user.Id == 0 {
 			response.Fail(c, 403, "请先登录")
 			c.Abort()
@@ -26,6 +26,8 @@ func AdminAuth() gin.HandlerFunc {
 
 		c.Set("curUser", user)
 		c.Set("token", token)
+		//如果时间小于1天,token自动续期
+		service.AllService.UserService.AutoRefreshAccessToken(ut)
 
 		c.Next()
 	}
