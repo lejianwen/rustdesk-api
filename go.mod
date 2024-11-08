@@ -16,6 +16,7 @@ require (
 	github.com/google/uuid v1.1.2
 	github.com/nicksnyder/go-i18n/v2 v2.4.0
 	github.com/sirupsen/logrus v1.8.1
+	github.com/spf13/cobra v1.8.1
 	github.com/spf13/viper v1.9.0
 	github.com/swaggo/files v1.0.1
 	github.com/swaggo/gin-swagger v1.6.0
@@ -28,7 +29,6 @@ require (
 )
 
 require (
-	cloud.google.com/go/compute/metadata v0.5.1 // indirect
 	github.com/KyleBanks/depth v1.2.1 // indirect
 	github.com/PuerkitoBio/purell v1.1.1 // indirect
 	github.com/PuerkitoBio/urlesc v0.0.0-20170810143723-de5bf2ad4578 // indirect
@@ -44,6 +44,7 @@ require (
 	github.com/go-sql-driver/mysql v1.7.0 // indirect
 	github.com/goccy/go-json v0.10.0 // indirect
 	github.com/hashicorp/hcl v1.0.0 // indirect
+	github.com/inconshreveable/mousetrap v1.1.0 // indirect
 	github.com/jinzhu/inflection v1.0.0 // indirect
 	github.com/jinzhu/now v1.1.5 // indirect
 	github.com/josharian/intern v1.0.0 // indirect

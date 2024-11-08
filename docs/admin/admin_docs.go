@@ -3067,6 +3067,90 @@ const docTemplateadmin = `{
                 }
             }
         },
+        "/admin/user/myPeer": {
+            "get": {
+                "security": [
+                    {
+                        "token": []
+                    }
+                ],
+                "description": "设备列表",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "设备"
+                ],
+                "summary": "设备列表",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "页码",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "页大小",
+                        "name": "page_size",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "时间",
+                        "name": "time_ago",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "ID",
+                        "name": "id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "主机名",
+                        "name": "hostname",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "uuids 用逗号分隔",
+                        "name": "uuids",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/model.PeerList"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
         "/admin/user/update": {
             "post": {
                 "security": [
@@ -3407,6 +3491,12 @@ const docTemplateadmin = `{
         "admin.LoginPayload": {
             "type": "object",
             "properties": {
+                "avatar": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
                 "nickname": {
                     "type": "string"
                 },
@@ -3429,7 +3519,7 @@ const docTemplateadmin = `{
             "required": [
                 "client_id",
                 "client_secret",
-                "op",
+                "oauth_type",
                 "redirect_url"
             ],
             "properties": {
@@ -3446,6 +3536,9 @@ const docTemplateadmin = `{
                     "type": "integer"
                 },
                 "issuer": {
+                    "type": "string"
+                },
+                "oauth_type": {
                     "type": "string"
                 },
                 "op": {
@@ -3567,6 +3660,10 @@ const docTemplateadmin = `{
                 "avatar": {
                     "type": "string"
                 },
+                "email": {
+                    "description": "validate:\"required,email\" email不强制",
+                    "type": "string"
+                },
                 "group_id": {
                     "type": "integer"
                 },
@@ -3591,18 +3688,18 @@ const docTemplateadmin = `{
                 "username": {
                     "type": "string",
                     "maxLength": 10,
-                    "minLength": 4
+                    "minLength": 2
                 }
             }
         },
         "admin.UserOauthItem": {
             "type": "object",
             "properties": {
+                "op": {
+                    "type": "string"
+                },
                 "status": {
                     "type": "integer"
-                },
-                "third_type": {
-                    "type": "string"
                 }
             }
         },
@@ -3973,6 +4070,9 @@ const docTemplateadmin = `{
                 "created_at": {
                     "type": "string"
                 },
+                "device_id": {
+                    "type": "string"
+                },
                 "id": {
                     "type": "integer"
                 },
@@ -4040,6 +4140,9 @@ const docTemplateadmin = `{
                     "type": "integer"
                 },
                 "issuer": {
+                    "type": "string"
+                },
+                "oauth_type": {
                     "type": "string"
                 },
                 "op": {
@@ -4220,6 +4323,9 @@ const docTemplateadmin = `{
                 "created_at": {
                     "type": "string"
                 },
+                "email": {
+                    "type": "string"
+                },
                 "group_id": {
                     "type": "integer"
                 },
@@ -4267,6 +4373,12 @@ const docTemplateadmin = `{
             "type": "object",
             "properties": {
                 "created_at": {
+                    "type": "string"
+                },
+                "device_id": {
+                    "type": "string"
+                },
+                "device_uuid": {
                     "type": "string"
                 },
                 "expired_at": {
