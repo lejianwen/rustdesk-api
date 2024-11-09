@@ -27,7 +27,7 @@ func (ps *PeerService) InfoByRowId(id uint) *model.Peer {
 }
 
 // FindByUserIdAndUuid 根据用户id和uuid查找peer
-func (ps *PeerService) FindByUserIdAndUuid(uuid string,userId uint) *model.Peer {
+func (ps *PeerService) FindByUserIdAndUuid(uuid string, userId uint) *model.Peer {
 	p := &model.Peer{}
 	global.DB.Where("uuid = ? and user_id = ?", uuid, userId).First(p)
 	return p
@@ -42,11 +42,13 @@ func (ps *PeerService) UuidBindUserId(deviceId string, uuid string, userId uint)
 		ps.Update(peer)
 	} else {
 		// 不存在则创建
-		global.DB.Create(&model.Peer{
-			Id: 		deviceId,
-			Uuid:     	uuid,
-			UserId:   	userId,
-		})
+		/*if deviceId != "" {
+			global.DB.Create(&model.Peer{
+				Id:     deviceId,
+				Uuid:   uuid,
+				UserId: userId,
+			})
+		}*/
 	}
 }
 
@@ -143,4 +145,3 @@ func (ps *PeerService) BatchDelete(ids []uint) error {
 func (ps *PeerService) Update(u *model.Peer) error {
 	return global.DB.Model(u).Updates(u).Error
 }
-
