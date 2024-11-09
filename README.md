@@ -39,6 +39,8 @@
     - 自动获取ID服务器和KEY
     - 自动获取地址簿
     - 游客通过临时分享链接直接远程到设备
+- CLI
+    - 重置管理员密码
 
 ## 使用前准备
 
@@ -146,6 +148,17 @@
 1. 后台文档 `<youer server[:port]>/admin/swagger/index.html`
 2. PC端文档 `<youer server[:port]>/swagger/index.html`
    ![api_swag](docs/api_swag.png)
+
+### CLI
+```bash
+# 查看帮助
+./apimain -h
+```
+
+#### 重置管理员密码
+```bash
+./apimain reset-admin-pwd <pwd>
+```
 
 ## 安装与运行
 
