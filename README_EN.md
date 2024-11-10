@@ -38,7 +38,8 @@ desktop software that provides self-hosted solutions.
     - Automatically obtain ID server and KEY
     - Automatically obtain address book
     - Visitors are remotely to the device via a temporary sharing link
-
+- CLI
+    - Reset admin password
 ## Prerequisites
 
 ### [Rustdesk](https://github.com/rustdesk/rustdesk)
@@ -152,6 +153,17 @@ installation are `admin` `admin`, please change the password immediately.
 1. Admin panel docs: `<your server[:port]>/admin/swagger/index.html`
 2. PC client docs: `<your server[:port]>/swagger/index.html`
    ![api_swag](docs/api_swag.png)
+
+### CLI
+```bash
+# help
+./apimain -h
+```
+
+#### Reset admin password
+```bash
+./apimain reset-admin-pwd <pwd>
+```
 
 ## Installation and Setup
 

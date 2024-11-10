@@ -17,13 +17,14 @@ import (
 )
 
 var (
-	DB        *gorm.DB
-	Logger    *logrus.Logger
-	Config    config.Config
-	Viper     *viper.Viper
-	Redis     *redis.Client
-	Cache     cache.Handler
-	Validator struct {
+	DB         *gorm.DB
+	Logger     *logrus.Logger
+	ConfigPath string = ""
+	Config     config.Config
+	Viper      *viper.Viper
+	Redis      *redis.Client
+	Cache      cache.Handler
+	Validator  struct {
 		Validate    *validator.Validate
 		UT          *ut.UniversalTranslator
 		VTrans      ut.Translator

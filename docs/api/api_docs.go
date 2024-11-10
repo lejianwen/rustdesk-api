@@ -1365,7 +1365,7 @@ const docTemplateapi = `{
                 "username": {
                     "type": "string",
                     "maxLength": 10,
-                    "minLength": 4
+                    "minLength": 2
                 },
                 "uuid": {
                     "type": "string"

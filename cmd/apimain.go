@@ -14,6 +14,9 @@ import (
 	"fmt"
 	"github.com/go-redis/redis/v8"
 	"github.com/nicksnyder/go-i18n/v2/i18n"
+	"github.com/spf13/cobra"
+	"os"
+	"strconv"
 )
 
 // @title 管理系统API
@@ -26,9 +29,79 @@ import (
 // @securitydefinitions.apikey BearerAuth
 // @in header
 // @name Authorization
+
+var rootCmd = &cobra.Command{
+	Use:   "apimain",
+	Short: "RUSTDESK API SERVER",
+	PersistentPreRun: func(cmd *cobra.Command, args []string) {
+		InitGlobal()
+	},
+	Run: func(cmd *cobra.Command, args []string) {
+		//gin
+		http.ApiInit()
+	},
+}
+
+var resetPwdCmd = &cobra.Command{
+	Use:     "reset-admin-pwd [pwd]",
+	Example: "reset-admin-pwd 123456",
+	Short:   "Reset Admin Password",
+	Args:    cobra.ExactArgs(1),
+	Run: func(cmd *cobra.Command, args []string) {
+		pwd := args[0]
+		admin := service.AllService.UserService.InfoById(1)
+		err := service.AllService.UserService.UpdatePassword(admin, pwd)
+		if err != nil {
+			fmt.Printf("reset password fail! %v \n", err)
+			return
+		}
+		fmt.Printf("reset password success! \n")
+	},
+}
+var resetUserPwdCmd = &cobra.Command{
+	Use:     "reset-pwd [userId] [pwd]",
+	Example: "reset-pwd 2 123456",
+	Short:   "Reset User Password",
+	Args:    cobra.ExactArgs(2),
+	Run: func(cmd *cobra.Command, args []string) {
+		userId := args[0]
+		pwd := args[1]
+		uid, err := strconv.Atoi(userId)
+		if err != nil {
+			fmt.Printf("userId must be int! \n")
+			return
+		}
+		if uid <= 0 {
+			fmt.Printf("userId must be greater than 0! \n")
+			return
+		}
+		u := service.AllService.UserService.InfoById(uint(uid))
+		err = service.AllService.UserService.UpdatePassword(u, pwd)
+		if err != nil {
+			fmt.Printf("reset password fail! %v \n", err)
+			return
+		}
+		fmt.Printf("reset password success! \n")
+	},
+}
+
+func init() {
+	rootCmd.PersistentFlags().StringVarP(&global.ConfigPath, "config", "c", "./conf/config.yaml", "choose config file")
+	rootCmd.AddCommand(resetPwdCmd, resetUserPwdCmd)
+}
 func main() {
+	if err := rootCmd.Execute(); err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
+}
+
+func InitGlobal() {
 	//配置解析
-	global.Viper = config.Init(&global.Config)
+	global.Viper = config.Init(&global.Config, global.ConfigPath)
+
+	//从配置文件中加载密钥
+	config.LoadKeyFile(&global.Config.Rustdesk)
 
 	//日志
 	global.Logger = logger.New(&logger.Config{
@@ -94,12 +167,7 @@ func main() {
 
 	//locker
 	global.Lock = lock.NewLocal()
-
-	//gin
-	http.ApiInit()
-
 }
-
 func DatabaseAutoUpdate() {
 	version := 246
 

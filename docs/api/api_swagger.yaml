@@ -69,7 +69,7 @@ definitions:
         type: string
       username:
         maxLength: 10
-        minLength: 4
+        minLength: 2
         type: string
       uuid:
         type: string

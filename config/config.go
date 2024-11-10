@@ -1,7 +1,6 @@
 package config
 
 import (
-	"flag"
 	"fmt"
 	"github.com/fsnotify/fsnotify"
 	"github.com/spf13/viper"
@@ -35,18 +34,15 @@ type Config struct {
 }
 
 // Init 初始化配置
-func Init(rowVal interface{}) *viper.Viper {
-	var config string
-	flag.StringVar(&config, "c", "", "choose config file.")
-	flag.Parse()
-	if config == "" { // 优先级: 命令行 > 默认值
-		config = DefaultConfig
+func Init(rowVal interface{}, path string) *viper.Viper {
+	if path == "" {
+		path = DefaultConfig
 	}
-	v := viper.New()
+	v := viper.GetViper()
 	v.AutomaticEnv()
 	v.SetEnvKeyReplacer(strings.NewReplacer(".", "_", "-", "_"))
 	v.SetEnvPrefix("RUSTDESK_API")
-	v.SetConfigFile(config)
+	v.SetConfigFile(path)
 	v.SetConfigType("yaml")
 	err := v.ReadInConfig()
 	if err != nil {
@@ -63,7 +59,7 @@ func Init(rowVal interface{}) *viper.Viper {
 	if err := v.Unmarshal(rowVal); err != nil {
 		fmt.Println(err)
 	}
-	LoadKeyFile(&rowVal.(*Config).Rustdesk)
+
 	return v
 }
 
