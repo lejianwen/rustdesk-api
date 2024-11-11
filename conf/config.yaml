@@ -2,6 +2,10 @@ lang: "zh-CN"
 app:
   web-client: 1  # 1:启用 0:禁用
   register: false #是否开启注册
+admin:
+  title: "RustDesk Api Admin"
+  hello-file: "./conf/hello.html"  #优先使用file
+  hello: "👏 你好 <strong>{{username}}</strong>, 欢迎使用 RustDesk Api Admin。 <a href='https://github.com/lejianwen/rustdesk-api' target='_blank'>Github</a>"
 gin:
   api-addr: "0.0.0.0:21114"
   mode: "release" #release,debug,test

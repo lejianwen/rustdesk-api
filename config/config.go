@@ -17,10 +17,15 @@ type App struct {
 	WebClient int  `mapstructure:"web-client"`
 	Register  bool `mapstructure:"register"`
 }
-
+type Admin struct {
+	Title     string `mapstructure:"title"`
+	Hello     string `mapstructure:"hello"`
+	HelloFile string `mapstructure:"hello-file"`
+}
 type Config struct {
 	Lang     string `mapstructure:"lang"`
 	App      App
+	Admin    Admin
 	Gorm     Gorm
 	Mysql    Mysql
 	Gin      Gin
