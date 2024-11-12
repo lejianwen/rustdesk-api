@@ -958,7 +958,214 @@ const docTemplateadmin = `{
                 }
             }
         },
+        "/admin/audit_conn/batchDelete": {
+            "post": {
+                "security": [
+                    {
+                        "token": []
+                    }
+                ],
+                "description": "链接日志批量删除",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "链接日志"
+                ],
+                "summary": "链接日志批量删除",
+                "parameters": [
+                    {
+                        "description": "链接日志",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/admin.AuditConnLogIds"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
         "/admin/audit_conn/delete": {
+            "post": {
+                "security": [
+                    {
+                        "token": []
+                    }
+                ],
+                "description": "链接日志删除",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "链接日志"
+                ],
+                "summary": "链接日志删除",
+                "parameters": [
+                    {
+                        "description": "链接日志信息",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.AuditConn"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/audit_conn/list": {
+            "get": {
+                "security": [
+                    {
+                        "token": []
+                    }
+                ],
+                "description": "链接日志列表",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "链接日志"
+                ],
+                "summary": "链接日志列表",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "页码",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "页大小",
+                        "name": "page_size",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "目标设备",
+                        "name": "peer_id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "来源设备",
+                        "name": "from_peer",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/model.AuditConnList"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/audit_file/batchDelete": {
+            "post": {
+                "security": [
+                    {
+                        "token": []
+                    }
+                ],
+                "description": "文件日志批量删除",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "文件日志"
+                ],
+                "summary": "文件日志批量删除",
+                "parameters": [
+                    {
+                        "description": "文件日志",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/admin.AuditFileLogIds"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/audit_file/delete": {
             "post": {
                 "security": [
                     {
@@ -1003,7 +1210,7 @@ const docTemplateadmin = `{
                 }
             }
         },
-        "/admin/audit_conn/list": {
+        "/admin/audit_file/list": {
             "get": {
                 "security": [
                     {
@@ -1064,6 +1271,108 @@ const docTemplateadmin = `{
                                     }
                                 }
                             ]
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/config/admin": {
+            "get": {
+                "security": [
+                    {
+                        "token": []
+                    }
+                ],
+                "description": "ADMIN服务配置",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "ADMIN"
+                ],
+                "summary": "ADMIN服务配置",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/config/app": {
+            "get": {
+                "security": [
+                    {
+                        "token": []
+                    }
+                ],
+                "description": "APP服务配置",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "ADMIN"
+                ],
+                "summary": "APP服务配置",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/config/server": {
+            "get": {
+                "security": [
+                    {
+                        "token": []
+                    }
+                ],
+                "description": "服务配置,给webclient提供api-server",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "ADMIN"
+                ],
+                "summary": "RUSTDESK服务配置",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
                         }
                     },
                     "500": {
@@ -1522,7 +1831,7 @@ const docTemplateadmin = `{
                         "token": []
                     }
                 ],
-                "description": "登录日志删除",
+                "description": "登录日志批量删除",
                 "consumes": [
                     "application/json"
                 ],
@@ -1532,15 +1841,15 @@ const docTemplateadmin = `{
                 "tags": [
                     "登录日志"
                 ],
-                "summary": "登录日志删除",
+                "summary": "登录日志批量删除",
                 "parameters": [
                     {
-                        "description": "登录日志信息",
+                        "description": "登录日志",
                         "name": "body",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/model.LoginLog"
+                            "$ref": "#/definitions/admin.LoginLogIds"
                         }
                     }
                 ],
@@ -3074,7 +3383,7 @@ const docTemplateadmin = `{
                         "token": []
                     }
                 ],
-                "description": "设备列表",
+                "description": "我的设备列表",
                 "consumes": [
                     "application/json"
                 ],
@@ -3084,7 +3393,7 @@ const docTemplateadmin = `{
                 "tags": [
                     "设备"
                 ],
-                "summary": "设备列表",
+                "summary": "我的设备列表",
                 "parameters": [
                     {
                         "type": "integer",
@@ -3452,6 +3761,34 @@ const docTemplateadmin = `{
                 }
             }
         },
+        "admin.AuditConnLogIds": {
+            "type": "object",
+            "required": [
+                "ids"
+            ],
+            "properties": {
+                "ids": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                }
+            }
+        },
+        "admin.AuditFileLogIds": {
+            "type": "object",
+            "required": [
+                "ids"
+            ],
+            "properties": {
+                "ids": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                }
+            }
+        },
         "admin.ChangeCurPasswordForm": {
             "type": "object",
             "required": [
@@ -3485,6 +3822,20 @@ const docTemplateadmin = `{
                 },
                 "type": {
                     "type": "integer"
+                }
+            }
+        },
+        "admin.LoginLogIds": {
+            "type": "object",
+            "required": [
+                "ids"
+            ],
+            "properties": {
+                "ids": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
                 }
             }
         },

@@ -15,3 +15,7 @@ type LoginTokenQuery struct {
 	UserId int `form:"user_id"`
 	PageQuery
 }
+
+type LoginLogIds struct {
+	Ids []uint `json:"ids" validate:"required"`
+}

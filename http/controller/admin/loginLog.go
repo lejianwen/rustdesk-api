@@ -109,3 +109,34 @@ func (ct *LoginLog) Delete(c *gin.Context) {
 	}
 	response.Fail(c, 101, response.TranslateMsg(c, "ItemNotFound"))
 }
+
+// BatchDelete 删除
+// @Tags 登录日志
+// @Summary 登录日志批量删除
+// @Description 登录日志批量删除
+// @Accept  json
+// @Produce  json
+// @Param body body admin.LoginLogIds true "登录日志"
+// @Success 200 {object} response.Response
+// @Failure 500 {object} response.Response
+// @Router /admin/login_log/delete [post]
+// @Security token
+func (ct *LoginLog) BatchDelete(c *gin.Context) {
+	f := &admin.LoginLogIds{}
+	if err := c.ShouldBindJSON(f); err != nil {
+		response.Fail(c, 101, response.TranslateMsg(c, "ParamsError")+err.Error())
+		return
+	}
+	if len(f.Ids) == 0 {
+		response.Fail(c, 101, response.TranslateMsg(c, "ParamsError"))
+		return
+	}
+
+	err := service.AllService.LoginLogService.BatchDelete(f.Ids)
+	if err == nil {
+		response.Success(c, nil)
+		return
+	}
+	response.Fail(c, 101, err.Error())
+	return
+}

@@ -154,15 +154,18 @@ func LoginLogBind(rg *gin.RouterGroup) {
 	cont := &admin.LoginLog{}
 	aR.GET("/list", cont.List)
 	aR.POST("/delete", cont.Delete)
+	aR.POST("/batchDelete", cont.BatchDelete)
 }
 func AuditBind(rg *gin.RouterGroup) {
 	cont := &admin.Audit{}
 	aR := rg.Group("/audit_conn").Use(middleware.AdminPrivilege())
 	aR.GET("/list", cont.ConnList)
 	aR.POST("/delete", cont.ConnDelete)
+	aR.POST("/batchDelete", cont.BatchConnDelete)
 	afR := rg.Group("/audit_file").Use(middleware.AdminPrivilege())
 	afR.GET("/list", cont.FileList)
 	afR.POST("/delete", cont.FileDelete)
+	afR.POST("/batchDelete", cont.BatchFileDelete)
 }
 func AddressBookCollectionBind(rg *gin.RouterGroup) {
 	aR := rg.Group("/address_book_collection")

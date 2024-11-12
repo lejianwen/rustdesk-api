@@ -43,3 +43,7 @@ func (us *LoginLogService) Delete(u *model.LoginLog) error {
 func (us *LoginLogService) Update(u *model.LoginLog) error {
 	return global.DB.Model(u).Updates(u).Error
 }
+
+func (us *LoginLogService) BatchDelete(ids []uint) error {
+	return global.DB.Where("id in (?)", ids).Delete(&model.LoginLog{}).Error
+}
