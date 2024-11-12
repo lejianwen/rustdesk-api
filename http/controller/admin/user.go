@@ -295,10 +295,10 @@ func (ct *User) MyOauth(c *gin.Context) {
 	response.Success(c, res)
 }
 
-// List 列表
+// MyPeer 列表
 // @Tags 设备
-// @Summary 设备列表
-// @Description 设备列表
+// @Summary 我的设备列表
+// @Description 我的设备列表
 // @Accept  json
 // @Produce  json
 // @Param page query int false "页码"

@@ -81,6 +81,37 @@ func (a *Audit) ConnDelete(c *gin.Context) {
 	response.Fail(c, 101, response.TranslateMsg(c, "ItemNotFound"))
 }
 
+// BatchConnDelete 删除
+// @Tags 链接日志
+// @Summary 链接日志批量删除
+// @Description 链接日志批量删除
+// @Accept  json
+// @Produce  json
+// @Param body body admin.AuditConnLogIds true "链接日志"
+// @Success 200 {object} response.Response
+// @Failure 500 {object} response.Response
+// @Router /admin/audit_conn/batchDelete [post]
+// @Security token
+func (a *Audit) BatchConnDelete(c *gin.Context) {
+	f := &admin.AuditConnLogIds{}
+	if err := c.ShouldBindJSON(f); err != nil {
+		response.Fail(c, 101, response.TranslateMsg(c, "ParamsError")+err.Error())
+		return
+	}
+	if len(f.Ids) == 0 {
+		response.Fail(c, 101, response.TranslateMsg(c, "ParamsError"))
+		return
+	}
+
+	err := service.AllService.AuditService.BatchDeleteAuditConn(f.Ids)
+	if err == nil {
+		response.Success(c, nil)
+		return
+	}
+	response.Fail(c, 101, err.Error())
+	return
+}
+
 // FileList 列表
 // @Tags 文件日志
 // @Summary 文件日志列表
@@ -93,7 +124,7 @@ func (a *Audit) ConnDelete(c *gin.Context) {
 // @Param from_peer query int false "来源设备"
 // @Success 200 {object} response.Response{data=model.AuditFileList}
 // @Failure 500 {object} response.Response
-// @Router /admin/audit_conn/list [get]
+// @Router /admin/audit_file/list [get]
 // @Security token
 func (a *Audit) FileList(c *gin.Context) {
 	query := &admin.AuditQuery{}
@@ -122,7 +153,7 @@ func (a *Audit) FileList(c *gin.Context) {
 // @Param body body model.AuditFile true "文件日志信息"
 // @Success 200 {object} response.Response
 // @Failure 500 {object} response.Response
-// @Router /admin/audit_conn/delete [post]
+// @Router /admin/audit_file/delete [post]
 // @Security token
 func (a *Audit) FileDelete(c *gin.Context) {
 	f := &model.AuditFile{}
@@ -147,4 +178,35 @@ func (a *Audit) FileDelete(c *gin.Context) {
 		return
 	}
 	response.Fail(c, 101, response.TranslateMsg(c, "ItemNotFound"))
+}
+
+// BatchFileDelete 删除
+// @Tags 文件日志
+// @Summary 文件日志批量删除
+// @Description 文件日志批量删除
+// @Accept  json
+// @Produce  json
+// @Param body body admin.AuditFileLogIds true "文件日志"
+// @Success 200 {object} response.Response
+// @Failure 500 {object} response.Response
+// @Router /admin/audit_file/batchDelete [post]
+// @Security token
+func (a *Audit) BatchFileDelete(c *gin.Context) {
+	f := &admin.AuditFileLogIds{}
+	if err := c.ShouldBindJSON(f); err != nil {
+		response.Fail(c, 101, response.TranslateMsg(c, "ParamsError")+err.Error())
+		return
+	}
+	if len(f.Ids) == 0 {
+		response.Fail(c, 101, response.TranslateMsg(c, "ParamsError"))
+		return
+	}
+
+	err := service.AllService.AuditService.BatchDeleteAuditFile(f.Ids)
+	if err == nil {
+		response.Success(c, nil)
+		return
+	}
+	response.Fail(c, 101, err.Error())
+	return
 }

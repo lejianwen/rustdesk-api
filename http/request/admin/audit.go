@@ -5,3 +5,10 @@ type AuditQuery struct {
 	FromPeer string `form:"from_peer"`
 	PageQuery
 }
+
+type AuditConnLogIds struct {
+	Ids []uint `json:"ids" validate:"required"`
+}
+type AuditFileLogIds struct {
+	Ids []uint `json:"ids" validate:"required"`
+}

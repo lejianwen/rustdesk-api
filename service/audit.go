@@ -85,3 +85,11 @@ func (as *AuditService) DeleteAuditFile(u *model.AuditFile) error {
 func (as *AuditService) UpdateAuditFile(u *model.AuditFile) error {
 	return global.DB.Model(u).Updates(u).Error
 }
+
+func (as *AuditService) BatchDeleteAuditConn(ids []uint) error {
+	return global.DB.Where("id in (?)", ids).Delete(&model.AuditConn{}).Error
+}
+
+func (as *AuditService) BatchDeleteAuditFile(ids []uint) error {
+	return global.DB.Where("id in (?)", ids).Delete(&model.AuditFile{}).Error
+}

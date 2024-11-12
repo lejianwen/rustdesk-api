@@ -57,6 +57,24 @@ definitions:
     required:
     - id
     type: object
+  admin.AuditConnLogIds:
+    properties:
+      ids:
+        items:
+          type: integer
+        type: array
+    required:
+    - ids
+    type: object
+  admin.AuditFileLogIds:
+    properties:
+      ids:
+        items:
+          type: integer
+        type: array
+    required:
+    - ids
+    type: object
   admin.ChangeCurPasswordForm:
     properties:
       new_password:
@@ -81,6 +99,15 @@ definitions:
         type: integer
     required:
     - name
+    type: object
+  admin.LoginLogIds:
+    properties:
+      ids:
+        items:
+          type: integer
+        type: array
+    required:
+    - ids
     type: object
   admin.LoginPayload:
     properties:
@@ -1281,7 +1308,134 @@ paths:
       summary: APP服务配置
       tags:
       - ADMIN
+  /admin/audit_conn/batchDelete:
+    post:
+      consumes:
+      - application/json
+      description: 链接日志批量删除
+      parameters:
+      - description: 链接日志
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/admin.AuditConnLogIds'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - token: []
+      summary: 链接日志批量删除
+      tags:
+      - 链接日志
   /admin/audit_conn/delete:
+    post:
+      consumes:
+      - application/json
+      description: 链接日志删除
+      parameters:
+      - description: 链接日志信息
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/model.AuditConn'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - token: []
+      summary: 链接日志删除
+      tags:
+      - 链接日志
+  /admin/audit_conn/list:
+    get:
+      consumes:
+      - application/json
+      description: 链接日志列表
+      parameters:
+      - description: 页码
+        in: query
+        name: page
+        type: integer
+      - description: 页大小
+        in: query
+        name: page_size
+        type: integer
+      - description: 目标设备
+        in: query
+        name: peer_id
+        type: integer
+      - description: 来源设备
+        in: query
+        name: from_peer
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.AuditConnList'
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - token: []
+      summary: 链接日志列表
+      tags:
+      - 链接日志
+  /admin/audit_file/batchDelete:
+    post:
+      consumes:
+      - application/json
+      description: 文件日志批量删除
+      parameters:
+      - description: 文件日志
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/admin.AuditFileLogIds'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - token: []
+      summary: 文件日志批量删除
+      tags:
+      - 文件日志
+  /admin/audit_file/delete:
     post:
       consumes:
       - application/json
@@ -1309,7 +1463,7 @@ paths:
       summary: 文件日志删除
       tags:
       - 文件日志
-  /admin/audit_conn/list:
+  /admin/audit_file/list:
     get:
       consumes:
       - application/json
@@ -1352,6 +1506,69 @@ paths:
       summary: 文件日志列表
       tags:
       - 文件日志
+  /admin/config/admin:
+    get:
+      consumes:
+      - application/json
+      description: ADMIN服务配置
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - token: []
+      summary: ADMIN服务配置
+      tags:
+      - ADMIN
+  /admin/config/app:
+    get:
+      consumes:
+      - application/json
+      description: APP服务配置
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - token: []
+      summary: APP服务配置
+      tags:
+      - ADMIN
+  /admin/config/server:
+    get:
+      consumes:
+      - application/json
+      description: 服务配置,给webclient提供api-server
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - token: []
+      summary: RUSTDESK服务配置
+      tags:
+      - ADMIN
   /admin/file/oss_token:
     get:
       consumes:
@@ -1619,14 +1836,14 @@ paths:
     post:
       consumes:
       - application/json
-      description: 登录日志删除
+      description: 登录日志批量删除
       parameters:
-      - description: 登录日志信息
+      - description: 登录日志
         in: body
         name: body
         required: true
         schema:
-          $ref: '#/definitions/model.LoginLog'
+          $ref: '#/definitions/admin.LoginLogIds'
       produces:
       - application/json
       responses:
@@ -1640,7 +1857,7 @@ paths:
             $ref: '#/definitions/response.Response'
       security:
       - token: []
-      summary: 登录日志删除
+      summary: 登录日志批量删除
       tags:
       - 登录日志
   /admin/login_log/detail/{id}:
@@ -2542,7 +2759,7 @@ paths:
     get:
       consumes:
       - application/json
-      description: 设备列表
+      description: 我的设备列表
       parameters:
       - description: 页码
         in: query
@@ -2586,7 +2803,7 @@ paths:
             $ref: '#/definitions/response.Response'
       security:
       - token: []
-      summary: 设备列表
+      summary: 我的设备列表
       tags:
       - 设备
   /admin/user/update:
