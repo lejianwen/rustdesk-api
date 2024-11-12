@@ -216,7 +216,7 @@ The prefix for variable names is `RUSTDESK_API`. If environment variables exist,
 | RUSTDESK_API_LANG                  | Language                                                                | `en`,`zh-CN`                  |
 | RUSTDESK_API_APP_WEB_CLIENT        | web client on/off; 1: on, 0 off, deault 1                               | 1                             |
 | RUSTDESK_API_APP_REGISTER          | register enable; `true`, `false`; default:`false`                       | `false`                       |
-| -----ADMIN Configuration-----      | ----------                                                              | ----------                    |
+| ----- ADMIN Configuration-----     | ----------                                                              | ----------                    |
 | RUSTDESK_API_ADMIN_TITLE           | Admin Title                                                             | `RustDesk Api Admin`          |
 | RUSTDESK_API_ADMIN_HELLO           | Admin welcome message, you can use `html`                               |                               |
 | RUSTDESK_API_ADMIN_HELLO_FILE      | Admin welcome message file,<br>will override `RUSTDESK_API_ADMIN_HELLO` | `./conf/admin/hello.html`     |
