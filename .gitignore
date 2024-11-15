@@ -1,6 +1,8 @@
 .idea
 runtime/*
-!runtime/cache/.gitignore
+!runtime
+!runtime/cache
+!runtime/cache/.gitkeep
 go.sum
 resources/*
 !resources/public/upload/.gitignore
