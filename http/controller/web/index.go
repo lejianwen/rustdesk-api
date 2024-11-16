@@ -17,6 +17,8 @@ func (i *Index) ConfigJs(c *gin.Context) {
 
 	tmp := `
 localStorage.setItem('api-server', "` + apiServer + `")
+const ws2_prefix = 'wc-'
+localStorage.setItem(ws2_prefix+'api-server', "` + apiServer + `")
 `
 	c.String(200, tmp)
 }

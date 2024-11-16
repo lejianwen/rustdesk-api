@@ -85,3 +85,23 @@ func (i *WebClient) SharedPeer(c *gin.Context) {
 		"peer":      pp,
 	})
 }
+
+// ServerConfigV2 服务配置
+// @Tags WEBCLIENT_V2
+// @Summary 服务配置
+// @Description 服务配置,给webclient提供api-server
+// @Accept  json
+// @Produce  json
+// @Success 200 {object} response.Response
+// @Failure 500 {object} response.Response
+// @Router /server-config [get]
+// @Security token
+func (i *WebClient) ServerConfigV2(c *gin.Context) {
+	response.Success(
+		c,
+		gin.H{
+			"id_server": global.Config.Rustdesk.IdServer,
+			"key":       global.Config.Rustdesk.Key,
+		},
+	)
+}
