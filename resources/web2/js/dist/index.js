@@ -1,4 +1,4 @@
-import {getServerConf} from `./ljw.js?v=3`
+import {getServerConf} from "./ljw.js?v=3"
 import {F as $t, J as Yt, L as Re, l as P4, m as r, P as ua, s as Xt, z as H4} from "./vendor.js?v=0b990c6e";
 
 var Zt = Object.defineProperty;
