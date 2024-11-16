@@ -753,12 +753,22 @@ function getDefaultUri(isRelay: Boolean = false): string {
   const host = localStorage.getItem("custom-rendezvous-server");
   return getrUriFromRs(host || HOST, isRelay);
 }
+/*
+function isHttps() {
+  return window.location.protocol === "https:"
+}
+
+function domain(uri: string) {
+    return uri.indexOf(":") > 0 ? uri.split(":")[0] : uri
+}*/
 
 function getrUriFromRs(
   uri: string,
   isRelay: Boolean = false,
   roffset: number = 0
 ): string {
+    //v2
+  //if (isHttps()) return "wss://" + domain(uri) + "/ws/" + (isRelay ? "relay" : "id");
   if (uri.indexOf(":") > 0) {
     const tmp = uri.split(":");
     const port = parseInt(tmp[1]);
