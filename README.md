@@ -39,6 +39,7 @@
     - 自动获取ID服务器和KEY
     - 自动获取地址簿
     - 游客通过临时分享链接直接远程到设备
+    - v2 Preview
 - CLI
     - 重置管理员密码
 
@@ -142,6 +143,11 @@
    ![webclient_conf](docs/webclient_conf.png)
 3. 登录后，会自动同步ID服务器和KEY
 4. 登录后，会将地址簿自动保存到web client中，方便使用
+5. 现已支持`v2 Preview`，访问路径是`/webclient2`
+   ![webclientv2](./docs/webclientv2.png)
+6. `v2 preview` 部署 
+   - 如果是通过`443`端口的`https`部署，必须配置反向代理，可以参考[官方文档](https://rustdesk.com/docs/en/self-host/rustdesk-server-pro/faq/#8-add-websocket-secure-wss-support-for-the-id-server-and-relay-server-to-enable-secure-communication-for-the-web-client)
+   - 如果是`http`或者其他的`https`端口部署，则和`v1`一样，配置好`21118`,`21119`即可
 
 ### 自动化文档: 使用 Swag 生成 API 文档，方便开发者理解和使用 API。
 
