@@ -1,6 +1,6 @@
 window._gwen = {}
 window._gwen.kv = {}
-const apiserver = localStorage.getItem('api-server')
+const apiserver = localStorage.getItem('wc-api-server')
 
 function stringToUint8Array(str) {
     var arr = [];

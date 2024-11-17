@@ -1,4 +1,4 @@
-import {getServerConf} from "./ljw.js?v=3"
+import {getServerConf} from "./ljw.js?v=4"
 import {F as $t, J as Yt, L as Re, l as P4, m as r, P as ua, s as Xt, z as H4} from "./vendor.js?v=0b990c6e";
 
 var Zt = Object.defineProperty;
@@ -38987,22 +38987,30 @@ function S4(u = !1) {
 }
 
 function z4(u, e = !1, i = 0) {
-    if (vn()) return "wss://" + kn(u) + "/ws/" + (e ? "relay" : "id");
-    if (u.indexOf(":") > 0) {
-        const o = u.split(":"), a = parseInt(o[1]);
-        u = o[0] + ":" + (a + (e ? i || 3 : 2))
+    const p = vn() ? "wss://" : "ws://"
+    const domain = uriDomain(u)
+    const uriport = uriPort(u)
+    if (vn() && (!uriport || uriport == '443')){
+        return p + domain + "/ws/" + (e ? "relay" : "id");
+    }
+
+    if (uriport) {
+        const a = parseInt(uriport);
+        u = domain + ":" + (a + (e ? i || 3 : 2))
     } else u += ":" + (Pt + (e ? 3 : 2));
-    return "ws://" + u
+    return p + u
 }
 
 function vn() {
     return window.location.protocol === "https:"
 }
 
-function kn(u) {
+function uriDomain(u) {
     return u.indexOf(":") > 0 ? u.split(":")[0] : u
 }
-
+function uriPort(u){
+    return u.indexOf(":") > 0 ? u.split(":")[1] : ''
+}
 const $i = (u, e, i) => e && u.type == "SharedAb" ? Z(Gu([u.value, i.salt])) === Z(e) : !1,
     ut = (u, e) => e && u.type == "PersonalAb" ? Z(u.value) === Z(e) : !1;
 
