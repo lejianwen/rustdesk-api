@@ -147,6 +147,12 @@ installation are `admin` `admin`, please change the password immediately.
    ![webclient_conf](docs/webclient_conf.png)
 3. After logging in, the ID server and key will be automatically synced.
 4. The address book will also be automatically saved to the web client for convenient use.
+5. Now supports `v2 Preview`, accessible at `/webclient2`
+   ![webclientv2](./docs/webclientv2.png)
+6. `v2 preview` deployment
+   - If deploying via `https` on port `443`, you must configure a reverse proxy. Refer to the [official documentation](https://rustdesk.com/docs/en/self-host/rustdesk-server-pro/faq/#8-add-websocket-secure-wss-support-for-the-id-server-and-relay-server-to-enable-secure-communication-for-the-web-client)
+   - If deploying via `http` or other `https` ports, configure `21118` and `21119` as with `v1`
+
 
 ### Automated Documentation : API documentation is generated using Swag, making it easier for developers to understand and use the API.
 
