@@ -1,5 +1,6 @@
 window._gwen = {}
 window._gwen.kv = {}
+const storage_prefix = 'wc-'
 const apiserver = localStorage.getItem('wc-api-server')
 
 function stringToUint8Array(str) {
@@ -23,10 +24,10 @@ function getQueryVariable() {
 
 getQueryVariable()
 
-const id = window._gwen.kv.id || ''
+/*const id = window._gwen.kv.id || ''
 if (id) {
-    localStorage.setItem('remote-id', id)
-}
+    localStorage.setItem(storage_prefix+'option:local:last_remote_id', id)
+}*/
 const share_token = window._gwen.kv.share_token || ''
 if (share_token) {
     fetch(apiserver + "/api/shared-peer", {
@@ -37,14 +38,15 @@ if (share_token) {
         body: JSON.stringify({share_token})
     }).then(res => res.json()).then(res => {
         if (res.code === 0) {
-            localStorage.setItem('custom-rendezvous-server', res.data.id_server)
-            localStorage.setItem('key', res.data.key)
-            const peer = res.data.peer
-            localStorage.setItem('remote-id', peer.info.id)
-            peer.tmppwd = stringToUint8Array(window.atob(peer.tmppwd)).toString()
-            const oldPeers = JSON.parse(localStorage.getItem('peers')) || {}
-            oldPeers[peer.info.id] = peer
-            localStorage.setItem('peers', JSON.stringify(oldPeers))
+            localStorage.setItem(storage_prefix + 'custom-rendezvous-server', res.data.id_server)
+            localStorage.setItem(storage_prefix + 'key', res.data.key)
+            const peer = res.data.peer || {}
+            /*const s = {
+                id: peer.info.id,
+                password: peer.tmppwd,
+            }*/
+            //修改location
+            window.location.href = `/webclient2/#/${peer.info.id}?password=${peer.tmppwd}`
         }
     })
 }
@@ -55,7 +57,7 @@ export function getServerConf(token) {
     if (!token) {
         return
     }
-    const prefix = 'wc-'
+
     console.log('getServerConf', token)
     if (fetching) {
         return
@@ -71,9 +73,9 @@ export function getServerConf(token) {
     ).then(res => res.json()).then(res => {
         fetching = false
         if (res.code === 0) {
-            if (!localStorage.getItem(prefix + 'custom-rendezvous-server') || !localStorage.getItem('key')) {
-                localStorage.setItem(prefix + 'custom-rendezvous-server', res.data.id_server)
-                localStorage.setItem(prefix + 'key', res.data.key)
+            if (!localStorage.getItem(storage_prefix + 'custom-rendezvous-server') || !localStorage.getItem('key')) {
+                localStorage.setItem(storage_prefix + 'custom-rendezvous-server', res.data.id_server)
+                localStorage.setItem(storage_prefix + 'key', res.data.key)
             }
         }
     }).catch(_ => {
