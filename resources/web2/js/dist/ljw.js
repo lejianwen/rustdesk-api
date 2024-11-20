@@ -58,7 +58,7 @@ export function getServerConf(token) {
         return
     }
 
-    console.log('getServerConf', token)
+    // console.log('getServerConf', token)
     if (fetching) {
         return
     }
