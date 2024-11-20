@@ -39047,7 +39047,7 @@ async function hn(u) {
         let l = [], E = [];
         for (let c = 0; c < e.length; c++) {
             const C = 1 << 7 - c % 8;
-            (s[c / 8] & C) === C ? l.push(e[c]) : E.push(e[c])
+            (s[Math.floor(c / 8)] & C) === C ? l.push(e[c]) : E.push(e[c])
         }
         et(l, E), o.close();
         return
