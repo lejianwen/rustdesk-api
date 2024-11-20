@@ -38990,7 +38990,7 @@ function z4(u, e = !1, i = 0) {
     const p = vn() ? "wss://" : "ws://"
     const domain = uriDomain(u)
     const uriport = uriPort(u)
-    if (vn() && (!uriport || uriport == '443')){
+    if (vn() && (!uriport)){
         return p + domain + "/ws/" + (e ? "relay" : "id");
     }
 
