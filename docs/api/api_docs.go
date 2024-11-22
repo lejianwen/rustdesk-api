@@ -1056,7 +1056,7 @@ const docTemplateapi = `{
                     "application/json"
                 ],
                 "tags": [
-                    "WEBCLIENT"
+                    "WEBCLIENT_V2"
                 ],
                 "summary": "服务配置",
                 "responses": {
