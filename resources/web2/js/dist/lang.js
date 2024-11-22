@@ -696,7 +696,8 @@ export const lang = {
         Download: "",
         "Upload folder": "",
         "Upload files": "",
-        "Clipboard is synchronized": ""
+        "Clipboard is synchronized": "",
+        "Update client clipboard": ""
     }, hr: {
         Status: "Status",
         "Your Desktop": "Va\u0161a radna povr\u0161ina",
@@ -1357,7 +1358,8 @@ Mo\u017Eete se povezati s drugim ure\u0111ajima, ali se drugi ure\u0111aji ne mo
         Download: "",
         "Upload folder": "",
         "Upload files": "",
-        "Clipboard is synchronized": ""
+        "Clipboard is synchronized": "",
+        "Update client clipboard": ""
     }, th: {
         Status: "\u0E2A\u0E16\u0E32\u0E19\u0E30",
         "Your Desktop": "\u0E2B\u0E19\u0E49\u0E32\u0E08\u0E2D\u0E02\u0E2D\u0E07\u0E04\u0E38\u0E13",
@@ -2010,7 +2012,8 @@ Mo\u017Eete se povezati s drugim ure\u0111ajima, ali se drugi ure\u0111aji ne mo
         Download: "",
         "Upload folder": "",
         "Upload files": "",
-        "Clipboard is synchronized": ""
+        "Clipboard is synchronized": "",
+        "Update client clipboard": ""
     }, ru: {
         Status: "\u0421\u0442\u0430\u0442\u0443\u0441",
         "Your Desktop": "\u0412\u0430\u0448 \u0440\u0430\u0431\u043E\u0447\u0438\u0439 \u0441\u0442\u043E\u043B",
@@ -2678,7 +2681,8 @@ Mo\u017Eete se povezati s drugim ure\u0111ajima, ali se drugi ure\u0111aji ne mo
         Download: "\u0421\u043A\u0430\u0447\u0430\u0442\u044C",
         "Upload folder": "\u0417\u0430\u0433\u0440\u0443\u0437\u0438\u0442\u044C \u043F\u0430\u043F\u043A\u0443",
         "Upload files": "\u0417\u0430\u0433\u0440\u0443\u0437\u0438\u0442\u044C \u0444\u0430\u0439\u043B\u044B",
-        "Clipboard is synchronized": "\u0411\u0443\u0444\u0435\u0440 \u043E\u0431\u043C\u0435\u043D\u0430 \u0441\u0438\u043D\u0445\u0440\u043E\u043D\u0438\u0437\u0438\u0440\u043E\u0432\u0430\u043D"
+        "Clipboard is synchronized": "\u0411\u0443\u0444\u0435\u0440 \u043E\u0431\u043C\u0435\u043D\u0430 \u0441\u0438\u043D\u0445\u0440\u043E\u043D\u0438\u0437\u0438\u0440\u043E\u0432\u0430\u043D",
+        "Update client clipboard": "\u041E\u0431\u043D\u043E\u0432\u0438\u0442\u044C \u0431\u0443\u0444\u0435\u0440 \u043E\u0431\u043C\u0435\u043D\u0430 \u043A\u043B\u0438\u0435\u043D\u0442\u0430"
     }, eu: {
         Status: "Egoera",
         "Your Desktop": "Zure mahaigaina",
@@ -3344,7 +3348,8 @@ Beste gailuetara konekta zaitezke, baina beste gailu batzuk ezin dira zure gailu
         Download: "",
         "Upload folder": "",
         "Upload files": "",
-        "Clipboard is synchronized": ""
+        "Clipboard is synchronized": "",
+        "Update client clipboard": ""
     }, el: {
         Status: "\u039A\u03B1\u03C4\u03AC\u03C3\u03C4\u03B1\u03C3\u03B7",
         "Your Desktop": "\u039F \u03C3\u03C4\u03B1\u03B8\u03BC\u03CC\u03C2 \u03B5\u03C1\u03B3\u03B1\u03C3\u03AF\u03B1\u03C2 \u03C3\u03B1\u03C2",
@@ -4002,7 +4007,8 @@ Beste gailuetara konekta zaitezke, baina beste gailu batzuk ezin dira zure gailu
         Download: "",
         "Upload folder": "",
         "Upload files": "",
-        "Clipboard is synchronized": ""
+        "Clipboard is synchronized": "",
+        "Update client clipboard": ""
     }, et: {
         Status: "",
         "Your Desktop": "",
@@ -4660,7 +4666,8 @@ Kui soovid juurdep\xE4\xE4su seadmele avalikus serveris, sisesta "<id>@public", 
         Download: "",
         "Upload folder": "",
         "Upload files": "",
-        "Clipboard is synchronized": ""
+        "Clipboard is synchronized": "",
+        "Update client clipboard": ""
     }, sl: {
         Status: "Stanje",
         "Your Desktop": "Va\u0161e namizje",
@@ -5325,7 +5332,8 @@ Lahko se pove\u017Eete na druge naprave, druge naprave pa se k vam ne morejo pov
         Download: "",
         "Upload folder": "",
         "Upload files": "",
-        "Clipboard is synchronized": ""
+        "Clipboard is synchronized": "",
+        "Update client clipboard": ""
     }, ko: {
         Status: "\uC0C1\uD0DC",
         "Your Desktop": "\uB0B4 \uB370\uC2A4\uD06C\uD0D1",
@@ -5690,7 +5698,7 @@ Lahko se pove\u017Eete na druge naprave, druge naprave pa se k vam ne morejo pov
         Recording: "\uB179\uD654",
         Directory: "\uACBD\uB85C",
         "Automatically record incoming sessions": "\uB4E4\uC5B4\uC624\uB294 \uC138\uC158\uC744 \uC790\uB3D9\uC73C\uB85C \uB179\uD654",
-        "Automatically record outgoing sessions": "",
+        "Automatically record outgoing sessions": "\uB098\uAC00\uB294 \uC138\uC158\uC744 \uC790\uB3D9\uC73C\uB85C \uB179\uD654",
         Change: "\uBCC0\uACBD",
         "Start session recording": "\uC138\uC158 \uB179\uD654 \uC2DC\uC791",
         "Stop session recording": "\uC138\uC158 \uB179\uD654 \uC911\uC9C0",
@@ -5986,7 +5994,8 @@ Lahko se pove\u017Eete na druge naprave, druge naprave pa se k vam ne morejo pov
         Download: "\uB2E4\uC6B4\uB85C\uB4DC",
         "Upload folder": "\uD3F4\uB354 \uC5C5\uB85C\uB4DC",
         "Upload files": "\uD30C\uC77C \uC5C5\uB85C\uB4DC",
-        "Clipboard is synchronized": "\uD074\uB9BD\uBCF4\uB4DC\uAC00 \uB3D9\uAE30\uD654\uB428"
+        "Clipboard is synchronized": "\uD074\uB9BD\uBCF4\uB4DC\uAC00 \uB3D9\uAE30\uD654\uB428",
+        "Update client clipboard": ""
     }, lv: {
         Status: "Statuss",
         "Your Desktop": "J\u016Bsu darbvirsma",
@@ -6653,7 +6662,8 @@ Ja v\u0113laties piek\u013C\u016Bt ier\u012Bcei publiskaj\u0101 server\u012B, l\
         Download: "Lejupiel\u0101d\u0113t",
         "Upload folder": "Aug\u0161upiel\u0101d\u0113t mapi",
         "Upload files": "Aug\u0161upiel\u0101d\u0113t failus",
-        "Clipboard is synchronized": "Starpliktuve ir sinhroniz\u0113ta"
+        "Clipboard is synchronized": "Starpliktuve ir sinhroniz\u0113ta",
+        "Update client clipboard": ""
     }, pl: {
         Status: "Status",
         "Your Desktop": "Tw\xF3j pulpit",
@@ -7319,7 +7329,8 @@ Je\u015Bli chcesz uzyska\u0107 dost\u0119p do urz\u0105dzenia na serwerze public
         Download: "Pobierz",
         "Upload folder": "Wy\u015Blij folder",
         "Upload files": "Wy\u015Blij pliki",
-        "Clipboard is synchronized": "Schowek jest zsynchronizowany"
+        "Clipboard is synchronized": "Schowek jest zsynchronizowany",
+        "Update client clipboard": ""
     }, pt_PT: {
         Status: "Estado",
         "Your Desktop": "Ambiente de Trabalho",
@@ -7972,7 +7983,8 @@ Je\u015Bli chcesz uzyska\u0107 dost\u0119p do urz\u0105dzenia na serwerze public
         Download: "",
         "Upload folder": "",
         "Upload files": "",
-        "Clipboard is synchronized": ""
+        "Clipboard is synchronized": "",
+        "Update client clipboard": ""
     }, id: {
         Status: "Status",
         "Your Desktop": "Layar Utama",
@@ -8637,7 +8649,8 @@ Untuk mengakses perangkat di server publik, cukup masukkan "<id>@public", tanpa 
         Download: "",
         "Upload folder": "",
         "Upload files": "",
-        "Clipboard is synchronized": ""
+        "Clipboard is synchronized": "",
+        "Update client clipboard": ""
     }, ptbr: {
         Status: "Status",
         "Your Desktop": "Seu Computador",
@@ -9300,7 +9313,8 @@ Voc\xEA pode se conectar a outros dispositivos, mas eles n\xE3o podem se conecta
         Download: "",
         "Upload folder": "",
         "Upload files": "",
-        "Clipboard is synchronized": ""
+        "Clipboard is synchronized": "",
+        "Update client clipboard": ""
     }, ja: {
         Status: "\u72B6\u614B",
         "Your Desktop": "\u3042\u306A\u305F\u306E\u30B3\u30F3\u30D4\u30E5\u30FC\u30BF\u30FC",
@@ -9964,7 +9978,8 @@ QR\u30B3\u30FC\u30C9\u3092\u30B9\u30AD\u30E3\u30F3\u3057\u3001\u30A2\u30D7\u30EA
         Download: "",
         "Upload folder": "",
         "Upload files": "",
-        "Clipboard is synchronized": ""
+        "Clipboard is synchronized": "",
+        "Update client clipboard": ""
     }, he: {
         Status: "",
         "Your Desktop": "",
@@ -10625,7 +10640,8 @@ QR\u30B3\u30FC\u30C9\u3092\u30B9\u30AD\u30E3\u30F3\u3057\u3001\u30A2\u30D7\u30EA
         Download: "",
         "Upload folder": "",
         "Upload files": "",
-        "Clipboard is synchronized": ""
+        "Clipboard is synchronized": "",
+        "Update client clipboard": ""
     }, bg: {
         Status: "\u041F\u043E\u043B\u043E\u0436\u0435\u043D\u0438\u0435",
         "Your Desktop": "\u0412\u0430\u0448\u0430\u0442\u0430 \u0440\u0430\u0431\u043E\u0442\u043D\u0430 \u0441\u0440\u0435\u0434\u0430",
@@ -11285,7 +11301,8 @@ QR\u30B3\u30FC\u30C9\u3092\u30B9\u30AD\u30E3\u30F3\u3057\u3001\u30A2\u30D7\u30EA
         Download: "",
         "Upload folder": "",
         "Upload files": "",
-        "Clipboard is synchronized": ""
+        "Clipboard is synchronized": "",
+        "Update client clipboard": ""
     }, fa: {
         Status: "\u0648\u0636\u0639\u06CC\u062A",
         "Your Desktop": "\u062F\u0633\u06A9\u062A\u0627\u067E \u0634\u0645\u0627",
@@ -11947,7 +11964,8 @@ QR\u30B3\u30FC\u30C9\u3092\u30B9\u30AD\u30E3\u30F3\u3057\u3001\u30A2\u30D7\u30EA
         Download: "",
         "Upload folder": "",
         "Upload files": "",
-        "Clipboard is synchronized": ""
+        "Clipboard is synchronized": "",
+        "Update client clipboard": ""
     }, README: {"ENG-KEY": "translation"}, de: {
         Status: "Status",
         "Your Desktop": "Ihr Desktop",
@@ -12312,7 +12330,7 @@ QR\u30B3\u30FC\u30C9\u3092\u30B9\u30AD\u30E3\u30F3\u3057\u3001\u30A2\u30D7\u30EA
         Recording: "Aufnahme",
         Directory: "Verzeichnis",
         "Automatically record incoming sessions": "Eingehende Sitzungen automatisch aufzeichnen",
-        "Automatically record outgoing sessions": "",
+        "Automatically record outgoing sessions": "Ausgehende Sitzungen automatisch aufzeichnen",
         Change: "\xC4ndern",
         "Start session recording": "Sitzungsaufzeichnung starten",
         "Stop session recording": "Sitzungsaufzeichnung beenden",
@@ -12617,7 +12635,8 @@ Wenn Sie auf ein Ger\xE4t auf einem \xF6ffentlichen Server zugreifen wollen, geb
         Download: "Herunterladen",
         "Upload folder": "Ordner hochladen",
         "Upload files": "Dateien hochladen",
-        "Clipboard is synchronized": "Zwischenablage ist synchronisiert"
+        "Clipboard is synchronized": "Zwischenablage ist synchronisiert",
+        "Update client clipboard": "Client-Zwischenablage aktualisieren"
     }, kz: {
         Status: "\u041A\u04AF\u0439",
         "Your Desktop": "\u0421\u0456\u0437\u0434\u0456\u04A3 \u0416\u04B1\u043C\u044B\u0441 \u04AF\u0441\u0442\u0435\u043B\u0456\u04A3\u0456\u0437",
@@ -13270,7 +13289,8 @@ Wenn Sie auf ein Ger\xE4t auf einem \xF6ffentlichen Server zugreifen wollen, geb
         Download: "",
         "Upload folder": "",
         "Upload files": "",
-        "Clipboard is synchronized": ""
+        "Clipboard is synchronized": "",
+        "Update client clipboard": ""
     }, da: {
         Status: "Status",
         "Your Desktop": "Dit skrivebord",
@@ -13936,7 +13956,8 @@ Du kan forbinde til andre enheder, men andre enheder kan ikke forbinde til din e
         Download: "",
         "Upload folder": "",
         "Upload files": "",
-        "Clipboard is synchronized": ""
+        "Clipboard is synchronized": "",
+        "Update client clipboard": ""
     }, nb: {
         Status: "Status",
         "Your Desktop": "Ditt skrivebord",
@@ -14589,7 +14610,8 @@ Du kan forbinde til andre enheder, men andre enheder kan ikke forbinde til din e
         Download: "",
         "Upload folder": "",
         "Upload files": "",
-        "Clipboard is synchronized": ""
+        "Clipboard is synchronized": "",
+        "Update client clipboard": ""
     }, be: {
         Status: "\u0421\u0442\u0430\u0442\u0443\u0441",
         "Your Desktop": "\u0412\u0430\u0448 \u043F\u0440\u0430\u0446\u043E\u045E\u043D\u044B \u0441\u0442\u043E\u043B",
@@ -15251,7 +15273,8 @@ Du kan forbinde til andre enheder, men andre enheder kan ikke forbinde til din e
         Download: "",
         "Upload folder": "",
         "Upload files": "",
-        "Clipboard is synchronized": ""
+        "Clipboard is synchronized": "",
+        "Update client clipboard": ""
     }, ca: {
         Status: "Estat",
         "Your Desktop": "Aquest ordinador",
@@ -15916,7 +15939,8 @@ Si voleu accedir a un dispositiu en un servidor p\xFAblic, no cal que inseriu la
         Download: "",
         "Upload folder": "",
         "Upload files": "",
-        "Clipboard is synchronized": ""
+        "Clipboard is synchronized": "",
+        "Update client clipboard": ""
     }, eo: {
         Status: "Stato",
         "Your Desktop": "Via aparato",
@@ -16569,7 +16593,8 @@ Si voleu accedir a un dispositiu en un servidor p\xFAblic, no cal que inseriu la
         Download: "",
         "Upload folder": "",
         "Upload files": "",
-        "Clipboard is synchronized": ""
+        "Clipboard is synchronized": "",
+        "Update client clipboard": ""
     }, ro: {
         Status: "Stare",
         "Your Desktop": "Desktopul t\u0103u",
@@ -17224,7 +17249,8 @@ Hai s\u0103-\u021Bi g\u0103sim pe cineva cu care s\u0103 te conectezi, iar apoi 
         Download: "",
         "Upload folder": "",
         "Upload files": "",
-        "Clipboard is synchronized": ""
+        "Clipboard is synchronized": "",
+        "Update client clipboard": ""
     }, tr: {
         Status: "Durum",
         "Your Desktop": "Sizin Masa\xFCst\xFCn\xFCz",
@@ -17879,7 +17905,8 @@ Ba\u011Flanacak ve favorilere eklemek i\xE7in birini bulal\u0131m!`,
         Download: "",
         "Upload folder": "",
         "Upload files": "",
-        "Clipboard is synchronized": ""
+        "Clipboard is synchronized": "",
+        "Update client clipboard": ""
     }, vn: {
         Status: "Tr\u1EA1ng th\xE1i hi\u1EC7n t\u1EA1i",
         "Your Desktop": "Desktop c\u1EE7a b\u1EA1n",
@@ -18535,7 +18562,8 @@ H\xE3y t\xECm ai \u0111\xF3 \u0111\u1EC3 k\u1EBFt n\u1ED1i c\xF9ng v\xE0 th\xEAm
         Download: "",
         "Upload folder": "",
         "Upload files": "",
-        "Clipboard is synchronized": ""
+        "Clipboard is synchronized": "",
+        "Update client clipboard": ""
     }, cn: {
         Status: "\u72B6\u6001",
         "Your Desktop": "\u4F60\u7684\u684C\u9762",
@@ -19200,7 +19228,8 @@ H\xE3y t\xECm ai \u0111\xF3 \u0111\u1EC3 k\u1EBFt n\u1ED1i c\xF9ng v\xE0 th\xEAm
         Download: "\u4E0B\u8F7D",
         "Upload folder": "\u4E0A\u4F20\u6587\u4EF6\u5939",
         "Upload files": "\u4E0A\u4F20\u6587\u4EF6",
-        "Clipboard is synchronized": "\u526A\u8D34\u677F\u5DF2\u540C\u6B65"
+        "Clipboard is synchronized": "\u526A\u8D34\u677F\u5DF2\u540C\u6B65",
+        "Update client clipboard": "\u66F4\u65B0\u5BA2\u6237\u7AEF\u7684\u7C98\u8D34\u677F"
     }, ar: {
         Status: "\u0627\u0644\u062D\u0627\u0644\u0629",
         "Your Desktop": "\u0633\u0637\u062D \u0645\u0643\u062A\u0628\u0643",
@@ -19855,7 +19884,8 @@ H\xE3y t\xECm ai \u0111\xF3 \u0111\u1EC3 k\u1EBFt n\u1ED1i c\xF9ng v\xE0 th\xEAm
         Download: "",
         "Upload folder": "",
         "Upload files": "",
-        "Clipboard is synchronized": ""
+        "Clipboard is synchronized": "",
+        "Update client clipboard": ""
     }, it: {
         Status: "Stato",
         "Your Desktop": "Questo desktop",
@@ -20537,7 +20567,8 @@ Se vuoi accedere ad un dispositivo in un server pubblico, inserisci "<id>@public
         Download: "Download",
         "Upload folder": "Cartella upload",
         "Upload files": "File upload",
-        "Clipboard is synchronized": "Gli appunti sono sincronizzati"
+        "Clipboard is synchronized": "Gli appunti sono sincronizzati",
+        "Update client clipboard": "Aggiorna appunti client"
     }, sk: {
         Status: "Stav",
         "Your Desktop": "Va\u0161a plocha",
@@ -21201,7 +21232,8 @@ M\xF4\u017Eete sa pripoji\u0165 k in\xFDm zariadeniam, ale in\xE9 zariadenia sa 
         Download: "",
         "Upload folder": "",
         "Upload files": "",
-        "Clipboard is synchronized": ""
+        "Clipboard is synchronized": "",
+        "Update client clipboard": ""
     }, es: {
         Status: "Estado",
         "Your Desktop": "Tu escritorio",
@@ -21869,7 +21901,8 @@ Si quieres accedder a un dispositivo en un servidor p\xFAblico, por favor, intro
         Download: "Descarga",
         "Upload folder": "Subir carpeta",
         "Upload files": "Subir archivos",
-        "Clipboard is synchronized": "Portapapeles sincronizado"
+        "Clipboard is synchronized": "Portapapeles sincronizado",
+        "Update client clipboard": ""
     }, sr: {
         Status: "Status",
         "Your Desktop": "Va\u0161a radna povr\u0161ina",
@@ -22522,7 +22555,8 @@ Si quieres accedder a un dispositivo en un servidor p\xFAblico, por favor, intro
         Download: "",
         "Upload folder": "",
         "Upload files": "",
-        "Clipboard is synchronized": ""
+        "Clipboard is synchronized": "",
+        "Update client clipboard": ""
     }, hu: {
         Status: "\xC1llapot",
         "Your Desktop": "Saj\xE1t asztal",
@@ -23192,7 +23226,8 @@ Ha egy nyilv\xE1nos szerveren l\xE9v\u0151 eszk\xF6zh\xF6z szeretne hozz\xE1f\xE
         Download: "Let\xF6lt\xE9s",
         "Upload folder": "Mappa felt\xF6lt\xE9se",
         "Upload files": "F\xE1jlok felt\xF6lt\xE9se",
-        "Clipboard is synchronized": "A v\xE1g\xF3lap szinkroniz\xE1lva van"
+        "Clipboard is synchronized": "A v\xE1g\xF3lap szinkroniz\xE1lva van",
+        "Update client clipboard": ""
     }, tw: {
         Status: "\u72C0\u614B",
         "Your Desktop": "\u60A8\u7684\u684C\u9762",
@@ -23200,7 +23235,7 @@ Ha egy nyilv\xE1nos szerveren l\xE9v\u0151 eszk\xF6zh\xF6z szeretne hozz\xE1f\xE
         Password: "\u5BC6\u78BC",
         Ready: "\u5C31\u7DD2",
         Established: "\u5DF2\u5EFA\u7ACB",
-        connecting_status: "\u6B63\u5728\u9023\u7DDA\u5230 RustDesk \u7DB2\u8DEF ...",
+        connecting_status: "\u6B63\u5728\u9023\u7DDA\u5230 RustDesk \u7DB2\u8DEF...",
         "Enable service": "\u555F\u7528\u670D\u52D9",
         "Start service": "\u555F\u52D5\u670D\u52D9",
         "Service is running": "\u670D\u52D9\u6B63\u5728\u57F7\u884C",
@@ -23238,7 +23273,7 @@ Ha egy nyilv\xE1nos szerveren l\xE9v\u0151 eszk\xF6zh\xF6z szeretne hozz\xE1f\xE
         Website: "\u7DB2\u7AD9",
         About: "\u95DC\u65BC",
         Slogan_tip: "\u5728\u9019\u500B\u6DF7\u6C8C\u7684\u4E16\u754C\u4E2D\u7528\u5FC3\u88FD\u4F5C\uFF01",
-        "Privacy Statement": "\u96B1\u79C1\u6B0A\u8072\u660E",
+        "Privacy Statement": "\u96B1\u79C1\u6B0A\u5BA3\u544A",
         Mute: "\u975C\u97F3",
         "Build Date": "\u5EFA\u69CB\u65E5\u671F",
         Version: "\u7248\u672C",
@@ -23269,12 +23304,12 @@ Ha egy nyilv\xE1nos szerveren l\xE9v\u0151 eszk\xF6zh\xF6z szeretne hozz\xE1f\xE
         "Connection Error": "\u9023\u7DDA\u932F\u8AA4",
         Error: "\u932F\u8AA4",
         "Reset by the peer": "\u5C0D\u65B9\u91CD\u8A2D\u4E86\u9023\u7DDA",
-        "Connecting...": "\u6B63\u5728\u9023\u7DDA ...",
+        "Connecting...": "\u6B63\u5728\u9023\u7DDA...",
         "Connection in progress. Please wait.": "\u6B63\u5728\u9023\u7DDA\uFF0C\u8ACB\u7A0D\u5019\u3002",
         "Please try 1 minute later": "\u8ACB\u65BC 1 \u5206\u9418\u5F8C\u518D\u8A66",
         "Login Error": "\u767B\u5165\u932F\u8AA4",
         Successful: "\u6210\u529F",
-        "Connected, waiting for image...": "\u5DF2\u9023\u7DDA\uFF0C\u7B49\u5F85\u756B\u9762\u50B3\u8F38 ...",
+        "Connected, waiting for image...": "\u5DF2\u9023\u7DDA\uFF0C\u7B49\u5F85\u756B\u9762\u50B3\u8F38...",
         Name: "\u540D\u7A31",
         Type: "\u985E\u578B",
         Modified: "\u4FEE\u6539\u6642\u9593",
@@ -23300,9 +23335,9 @@ Ha egy nyilv\xE1nos szerveren l\xE9v\u0151 eszk\xF6zh\xF6z szeretne hozz\xE1f\xE
         "Are you sure you want to delete the file of this directory?": "\u60A8\u78BA\u5B9A\u8981\u522A\u9664\u6B64\u8CC7\u6599\u593E\u4E2D\u7684\u6A94\u6848\u55CE\uFF1F",
         "Do this for all conflicts": "\u5957\u7528\u5230\u5176\u4ED6\u885D\u7A81",
         "This is irreversible!": "\u6B64\u64CD\u4F5C\u4E0D\u53EF\u9006\uFF01",
-        Deleting: "\u6B63\u5728\u522A\u9664 ...",
+        Deleting: "\u6B63\u5728\u522A\u9664...",
         files: "\u6A94\u6848",
-        Waiting: "\u6B63\u5728\u7B49\u5019 ...",
+        Waiting: "\u6B63\u5728\u7B49\u5019...",
         Finished: "\u5DF2\u5B8C\u6210",
         Speed: "\u901F\u5EA6",
         "Custom Image Quality": "\u81EA\u8A02\u756B\u9762\u54C1\u8CEA",
@@ -23313,8 +23348,8 @@ Ha egy nyilv\xE1nos szerveren l\xE9v\u0151 eszk\xF6zh\xF6z szeretne hozz\xE1f\xE
         Original: "\u539F\u59CB",
         Shrink: "\u7E2E\u6E1B",
         Stretch: "\u5EF6\u5C55",
-        Scrollbar: "\u6EFE\u52D5\u689D",
-        ScrollAuto: "\u81EA\u52D5\u6EFE\u52D5",
+        Scrollbar: "\u6372\u52D5\u689D",
+        ScrollAuto: "\u81EA\u52D5\u6372\u52D5",
         "Good image quality": "\u6700\u4F73\u5316\u756B\u9762\u54C1\u8CEA",
         Balanced: "\u5E73\u8861",
         "Optimize reaction time": "\u6700\u4F73\u5316\u53CD\u61C9\u6642\u9593",
@@ -23343,9 +23378,9 @@ Ha egy nyilv\xE1nos szerveren l\xE9v\u0151 eszk\xF6zh\xF6z szeretne hozz\xE1f\xE
         "Click to download": "\u9EDE\u9078\u4EE5\u4E0B\u8F09",
         "Click to update": "\u9EDE\u9078\u4EE5\u66F4\u65B0",
         Configure: "\u8A2D\u5B9A",
-        config_acc: "\u70BA\u4E86\u9060\u7AEF\u63A7\u5236\u60A8\u7684\u684C\u9762\uFF0C\u60A8\u9700\u8981\u6388\u4E88 RustDesk\u300C\u5354\u52A9\u5DE5\u5177\u300D\u6B0A\u9650\u3002",
+        config_acc: "\u70BA\u4E86\u9060\u7AEF\u63A7\u5236\u60A8\u7684\u684C\u9762\uFF0C\u60A8\u9700\u8981\u6388\u4E88 RustDesk\u300C\u7121\u969C\u7919\u529F\u80FD\u300D\u6B0A\u9650\u3002",
         config_screen: "\u70BA\u4E86\u9060\u7AEF\u5B58\u53D6\u60A8\u7684\u684C\u9762\uFF0C\u60A8\u9700\u8981\u6388\u4E88 RustDesk\u300C\u87A2\u5E55\u9304\u88FD\u300D\u6B0A\u9650\u3002",
-        "Installing ...": "\u6B63\u5728\u5B89\u88DD ...",
+        "Installing ...": "\u6B63\u5728\u5B89\u88DD...",
         Install: "\u5B89\u88DD",
         Installation: "\u5B89\u88DD",
         "Installation Path": "\u5B89\u88DD\u8DEF\u5F91",
@@ -23354,16 +23389,16 @@ Ha egy nyilv\xE1nos szerveren l\xE9v\u0151 eszk\xF6zh\xF6z szeretne hozz\xE1f\xE
         agreement_tip: "\u958B\u59CB\u5B89\u88DD\u5373\u8868\u793A\u60A8\u63A5\u53D7\u6388\u6B0A\u689D\u6B3E\u3002",
         "Accept and Install": "\u63A5\u53D7\u4E26\u5B89\u88DD",
         "End-user license agreement": "\u7D42\u7AEF\u4F7F\u7528\u8005\u6388\u6B0A\u5408\u7D04",
-        "Generating ...": "\u6B63\u5728\u7522\u751F ...",
+        "Generating ...": "\u6B63\u5728\u7522\u751F...",
         "Your installation is lower version.": "\u60A8\u5B89\u88DD\u7684\u7248\u672C\u904E\u820A\u3002",
         not_close_tcp_tip: "\u5728\u4F7F\u7528\u901A\u9053\u6642\u8ACB\u4E0D\u8981\u95DC\u9589\u6B64\u8996\u7A97",
-        "Listening ...": "\u6B63\u5728\u7B49\u5F85\u901A\u9053\u9023\u7DDA ...",
+        "Listening ...": "\u6B63\u5728\u7B49\u5F85\u901A\u9053\u9023\u7DDA...",
         "Remote Host": "\u9060\u7AEF\u4E3B\u6A5F",
         "Remote Port": "\u9060\u7AEF\u9023\u63A5\u57E0",
         Action: "\u64CD\u4F5C",
         Add: "\u65B0\u589E",
         "Local Port": "\u672C\u6A5F\u9023\u63A5\u57E0",
-        "Local Address": "\u672C\u6A5F\u5730\u5740",
+        "Local Address": "\u672C\u6A5F\u4F4D\u5740",
         "Change Local Port": "\u4FEE\u6539\u672C\u6A5F\u9023\u63A5\u57E0",
         setup_server_tip: "\u82E5\u60A8\u9700\u8981\u66F4\u5FEB\u7684\u9023\u7DDA\u901F\u5EA6\uFF0C\u60A8\u53EF\u4EE5\u9078\u64C7\u81EA\u884C\u5EFA\u7ACB\u4F3A\u670D\u5668",
         "Too short, at least 6 characters.": "\u904E\u77ED\uFF0C\u81F3\u5C11\u9700\u8981 6 \u500B\u5B57\u5143\u3002",
@@ -23380,8 +23415,8 @@ Ha egy nyilv\xE1nos szerveren l\xE9v\u0151 eszk\xF6zh\xF6z szeretne hozz\xE1f\xE
         "Relayed and unencrypted connection": "\u4E2D\u7E7C\u4E14\u672A\u52A0\u5BC6\u7684\u9023\u7DDA",
         "Enter Remote ID": "\u8F38\u5165\u9060\u7AEF ID",
         "Enter your password": "\u8F38\u5165\u60A8\u7684\u5BC6\u78BC",
-        "Logging in...": "\u6B63\u5728\u767B\u5165 ...",
-        "Enable RDP session sharing": "\u555F\u7528 RDP \u5DE5\u4F5C\u968E\u6BB5\u5171\u4EAB",
+        "Logging in...": "\u6B63\u5728\u767B\u5165...",
+        "Enable RDP session sharing": "\u555F\u7528 RDP \u5DE5\u4F5C\u968E\u6BB5\u5206\u4EAB",
         "Auto Login": "\u81EA\u52D5\u767B\u5165 (\u53EA\u5728\u60A8\u8A2D\u5B9A\u300C\u5DE5\u4F5C\u968E\u6BB5\u7D50\u675F\u5F8C\u9396\u5B9A\u300D\u6642\u6709\u6548)",
         "Enable direct IP access": "\u555F\u7528 IP \u76F4\u63A5\u5B58\u53D6",
         Rename: "\u91CD\u65B0\u547D\u540D",
@@ -23409,9 +23444,9 @@ Ha egy nyilv\xE1nos szerveren l\xE9v\u0151 eszk\xF6zh\xF6z szeretne hozz\xE1f\xE
         Login: "\u767B\u5165",
         Verify: "\u9A57\u8B49",
         "Remember me": "\u8A18\u4F4F\u6211",
-        "Trust this device": "\u4FE1\u4EFB\u6B64\u88DD\u7F6E",
+        "Trust this device": "\u4FE1\u4EFB\u9019\u90E8\u88DD\u7F6E",
         "Verification code": "\u9A57\u8B49\u78BC",
-        verification_tip: "\u9A57\u8B49\u78BC\u5DF2\u767C\u9001\u5230\u8A3B\u518A\u7684\u96FB\u5B50\u90F5\u4EF6\u5730\u5740\uFF0C\u8ACB\u8F38\u5165\u9A57\u8B49\u78BC\u4EE5\u7E7C\u7E8C\u767B\u5165\u3002",
+        verification_tip: "\u9A57\u8B49\u78BC\u5DF2\u50B3\u9001\u5230\u8A3B\u518A\u7684\u96FB\u5B50\u90F5\u4EF6\u5730\u5740\uFF0C\u8ACB\u8F38\u5165\u9A57\u8B49\u78BC\u4EE5\u7E7C\u7E8C\u767B\u5165\u3002",
         Logout: "\u767B\u51FA",
         Tags: "\u6A19\u7C64",
         "Search ID": "\u641C\u5C0B ID",
@@ -23522,7 +23557,7 @@ Ha egy nyilv\xE1nos szerveren l\xE9v\u0151 eszk\xF6zh\xF6z szeretne hozz\xE1f\xE
         "Display Settings": "\u986F\u793A\u8A2D\u5B9A",
         Ratio: "\u6BD4\u4F8B",
         "Image Quality": "\u756B\u8CEA",
-        "Scroll Style": "\u6EFE\u52D5\u6A23\u5F0F",
+        "Scroll Style": "\u6372\u52D5\u6A23\u5F0F",
         "Show Toolbar": "\u986F\u793A\u5DE5\u5177\u5217",
         "Hide Toolbar": "\u96B1\u85CF\u5DE5\u5177\u5217",
         "Direct Connection": "\u76F4\u63A5\u9023\u7DDA",
@@ -23547,7 +23582,7 @@ Ha egy nyilv\xE1nos szerveren l\xE9v\u0151 eszk\xF6zh\xF6z szeretne hozz\xE1f\xE
         "Direct IP Access": "IP \u76F4\u63A5\u9023\u7DDA",
         Proxy: "\u4EE3\u7406\u4F3A\u670D\u5668",
         Apply: "\u5957\u7528",
-        "Disconnect all devices?": "\u4E2D\u65B7\u6240\u6709\u9060\u7AEF\u9023\u7DDA\uFF1F",
+        "Disconnect all devices?": "\u662F\u5426\u4E2D\u65B7\u6240\u6709\u9060\u7AEF\u9023\u7DDA\uFF1F",
         Clear: "\u6E05\u7A7A",
         "Audio Input Device": "\u97F3\u8A0A\u8F38\u5165\u88DD\u7F6E",
         "Use IP Whitelisting": "\u53EA\u5141\u8A31\u767D\u540D\u55AE\u4E0A\u7684 IP \u9032\u884C\u9023\u7DDA",
@@ -23566,7 +23601,7 @@ Ha egy nyilv\xE1nos szerveren l\xE9v\u0151 eszk\xF6zh\xF6z szeretne hozz\xE1f\xE
         "Deny LAN discovery": "\u62D2\u7D55\u5340\u57DF\u7DB2\u8DEF\u63A2\u7D22",
         "Write a message": "\u8F38\u5165\u804A\u5929\u8A0A\u606F",
         Prompt: "\u63D0\u793A",
-        "Please wait for confirmation of UAC...": "\u8ACB\u7B49\u5F85\u5C0D\u65B9\u78BA\u8A8D UAC ...",
+        "Please wait for confirmation of UAC...": "\u8ACB\u7B49\u5F85\u5C0D\u65B9\u78BA\u8A8D UAC...",
         elevated_foreground_window_tip: "\u76EE\u524D\u9060\u7AEF\u684C\u9762\u7684\u8996\u7A97\u9700\u8981\u66F4\u9AD8\u7684\u6B0A\u9650\u624D\u80FD\u7E7C\u7E8C\u64CD\u4F5C\uFF0C\u60A8\u66AB\u6642\u7121\u6CD5\u4F7F\u7528\u6ED1\u9F20\u548C\u9375\u76E4\uFF0C\u60A8\u53EF\u4EE5\u8ACB\u6C42\u5C0D\u65B9\u6700\u5C0F\u5316\u76EE\u524D\u8996\u7A97\uFF0C\u6216\u8005\u5728\u9023\u7DDA\u7BA1\u7406\u8996\u7A97\u9EDE\u9078\u63D0\u5347\u6B0A\u9650\u3002\u70BA\u4E86\u907F\u514D\u9019\u500B\u554F\u984C\uFF0C\u5EFA\u8B70\u5728\u9060\u7AEF\u88DD\u7F6E\u4E0A\u5B89\u88DD\u672C\u8EDF\u9AD4\u3002",
         Disconnected: "\u65B7\u958B\u9023\u7DDA",
         Other: "\u5176\u4ED6",
@@ -23587,7 +23622,7 @@ Ha egy nyilv\xE1nos szerveren l\xE9v\u0151 eszk\xF6zh\xF6z szeretne hozz\xE1f\xE
         "Accept sessions via password": "\u53EA\u5141\u8A31\u900F\u904E\u8F38\u5165\u5BC6\u78BC\u9032\u884C\u9023\u7DDA",
         "Accept sessions via click": "\u53EA\u5141\u8A31\u900F\u904E\u9EDE\u9078\u63A5\u53D7\u9032\u884C\u9023\u7DDA",
         "Accept sessions via both": "\u5141\u8A31\u8F38\u5165\u5BC6\u78BC\u6216\u9EDE\u9078\u63A5\u53D7\u9032\u884C\u9023\u7DDA",
-        "Please wait for the remote side to accept your session request...": "\u8ACB\u7B49\u5F85\u5C0D\u65B9\u63A5\u53D7\u60A8\u7684\u9023\u7DDA\u8ACB\u6C42 ...",
+        "Please wait for the remote side to accept your session request...": "\u8ACB\u7B49\u5F85\u5C0D\u65B9\u63A5\u53D7\u60A8\u7684\u9023\u7DDA\u8ACB\u6C42...",
         "One-time Password": "\u4E00\u6B21\u6027\u5BC6\u78BC",
         "Use one-time password": "\u4F7F\u7528\u4E00\u6B21\u6027\u5BC6\u78BC",
         "One-time password length": "\u4E00\u6B21\u6027\u5BC6\u78BC\u9577\u5EA6",
@@ -23603,16 +23638,16 @@ Ha egy nyilv\xE1nos szerveren l\xE9v\u0151 eszk\xF6zh\xF6z szeretne hozz\xE1f\xE
         "Closed manually by web console": "\u88AB Web \u63A7\u5236\u53F0\u624B\u52D5\u95DC\u9589",
         "Local keyboard type": "\u672C\u6A5F\u9375\u76E4\u985E\u578B",
         "Select local keyboard type": "\u8ACB\u9078\u64C7\u672C\u6A5F\u9375\u76E4\u985E\u578B",
-        software_render_tip: "\u5982\u679C\u60A8\u4F7F\u7528 Nvidia \u986F\u793A\u5361\uFF0C\u4E26\u4E14\u9060\u7AEF\u8996\u7A97\u5728\u5EFA\u7ACB\u9023\u7DDA\u5F8C\u6703\u7ACB\u523B\u95DC\u9589\uFF0C\u90A3\u9EBC\u8ACB\u5B89\u88DD nouveau \u986F\u793A\u5361\u9A45\u52D5\u7A0B\u5F0F\u4E26\u4E14\u9078\u64C7\u4F7F\u7528\u8EDF\u9AD4\u6E32\u67D3\u53EF\u80FD\u6703\u6709\u5E6B\u52A9\u3002\u91CD\u65B0\u555F\u52D5\u8EDF\u9AD4\u5F8C\u751F\u6548\u3002",
-        "Always use software rendering": "\u4F7F\u7528\u8EDF\u9AD4\u6E32\u67D3",
-        config_input: '\u70BA\u4E86\u80FD\u5920\u900F\u904E\u9375\u76E4\u63A7\u5236\u9060\u7AEF\u684C\u9762\uFF0C\u8ACB\u7D66\u4E88 RustDesk "\u8F38\u5165\u76E3\u63A7" \u6B0A\u9650\u3002',
-        config_microphone: '\u70BA\u4E86\u652F\u63F4\u900F\u904E\u9EA5\u514B\u98A8\u9032\u884C\u97F3\u8A0A\u50B3\u8F38\uFF0C\u8ACB\u7D66\u4E88 RustDesk "\u9304\u97F3"\u6B0A\u9650\u3002',
+        software_render_tip: "\u5982\u679C\u60A8\u4F7F\u7528 Nvidia \u986F\u793A\u5361\uFF0C\u4E26\u4E14\u9060\u7AEF\u8996\u7A97\u5728\u5EFA\u7ACB\u9023\u7DDA\u5F8C\u6703\u7ACB\u523B\u95DC\u9589\uFF0C\u90A3\u9EBC\u8ACB\u5B89\u88DD nouveau \u986F\u793A\u5361\u9A45\u52D5\u7A0B\u5F0F\u4E26\u4E14\u9078\u64C7\u4F7F\u7528\u8EDF\u9AD4\u7E6A\u88FD\u53EF\u80FD\u6703\u6709\u5E6B\u52A9\u3002\u91CD\u65B0\u555F\u52D5\u8EDF\u9AD4\u5F8C\u751F\u6548\u3002",
+        "Always use software rendering": "\u4F7F\u7528\u8EDF\u9AD4\u7E6A\u88FD",
+        config_input: "\u70BA\u4E86\u80FD\u5920\u900F\u904E\u9375\u76E4\u63A7\u5236\u9060\u7AEF\u684C\u9762\uFF0C\u8ACB\u7D66\u4E88 RustDesk\u300C\u8F38\u5165\u76E3\u63A7\u300D\u6B0A\u9650\u3002",
+        config_microphone: "\u70BA\u4E86\u652F\u63F4\u900F\u904E\u9EA5\u514B\u98A8\u9032\u884C\u97F3\u8A0A\u50B3\u8F38\uFF0C\u8ACB\u7D66\u4E88 RustDesk\u300C\u9304\u97F3\u300D\u6B0A\u9650\u3002",
         request_elevation_tip: "\u5982\u679C\u9060\u7AEF\u4F7F\u7528\u8005\u53EF\u4EE5\u64CD\u4F5C\u96FB\u8166\uFF0C\u60A8\u53EF\u4EE5\u8ACB\u6C42\u63D0\u5347\u6B0A\u9650\u3002",
         Wait: "\u7B49\u5F85",
         "Elevation Error": "\u6B0A\u9650\u63D0\u5347\u5931\u6557",
-        "Ask the remote user for authentication": "\u8ACB\u6C42\u9060\u7AEF\u4F7F\u7528\u8005\u9032\u884C\u8EAB\u5206\u9A57\u8B49",
+        "Ask the remote user for authentication": "\u8ACB\u6C42\u9060\u7AEF\u4F7F\u7528\u8005\u9032\u884C\u9A57\u8B49\u9A57\u8B49",
         "Choose this if the remote account is administrator": "\u7576\u9060\u7AEF\u4F7F\u7528\u8005\u5E33\u6236\u662F\u7BA1\u7406\u54E1\u6642\uFF0C\u8ACB\u9078\u64C7\u6B64\u9078\u9805",
-        "Transmit the username and password of administrator": "\u767C\u9001\u7BA1\u7406\u54E1\u7684\u4F7F\u7528\u8005\u540D\u7A31\u548C\u5BC6\u78BC",
+        "Transmit the username and password of administrator": "\u50B3\u9001\u7BA1\u7406\u54E1\u7684\u4F7F\u7528\u8005\u540D\u7A31\u548C\u5BC6\u78BC",
         still_click_uac_tip: "\u4F9D\u7136\u9700\u8981\u9060\u7AEF\u4F7F\u7528\u8005\u5728\u57F7\u884C RustDesk \u6642\u65BC UAC \u8996\u7A97\u9EDE\u9078\u300C\u662F\u300D\u3002",
         "Request Elevation": "\u8ACB\u6C42\u6B0A\u9650\u63D0\u5347",
         wait_accept_uac_tip: "\u8ACB\u7B49\u5F85\u9060\u7AEF\u4F7F\u7528\u8005\u78BA\u8A8D UAC \u5C0D\u8A71\u6846\u3002",
@@ -23629,18 +23664,18 @@ Ha egy nyilv\xE1nos szerveren l\xE9v\u0151 eszk\xF6zh\xF6z szeretne hozz\xE1f\xE
         "Please confirm if you want to share your desktop?": "\u8ACB\u78BA\u8A8D\u662F\u5426\u8981\u8B93\u5C0D\u65B9\u5B58\u53D6\u60A8\u7684\u684C\u9762\uFF1F",
         Display: "\u986F\u793A",
         "Default View Style": "\u9810\u8A2D\u986F\u793A\u65B9\u5F0F",
-        "Default Scroll Style": "\u9810\u8A2D\u6EFE\u52D5\u65B9\u5F0F",
-        "Default Image Quality": "\u9810\u8A2D\u5716\u50CF\u54C1\u8CEA",
+        "Default Scroll Style": "\u9810\u8A2D\u6372\u52D5\u65B9\u5F0F",
+        "Default Image Quality": "\u9810\u8A2D\u5F71\u50CF\u54C1\u8CEA",
         "Default Codec": "\u9810\u8A2D\u7DE8\u89E3\u78BC\u5668",
         Bitrate: "\u4F4D\u5143\u901F\u7387",
-        FPS: "\u5E40\u7387",
+        FPS: "FPS",
         Auto: "\u81EA\u52D5",
         "Other Default Options": "\u5176\u4ED6\u9810\u8A2D\u9078\u9805",
         "Voice call": "\u8A9E\u97F3\u901A\u8A71",
         "Text chat": "\u6587\u5B57\u804A\u5929",
         "Stop voice call": "\u505C\u6B62\u8A9E\u97F3\u901A\u8A71",
         relay_hint_tip: `\u53EF\u80FD\u7121\u6CD5\u4F7F\u7528\u76F4\u63A5\u9023\u7DDA\uFF0C\u60A8\u53EF\u4EE5\u5617\u8A66\u4E2D\u7E7C\u9023\u7DDA\u3002
-\u53E6\u5916\uFF0C\u5982\u679C\u60F3\u8981\u76F4\u63A5\u4F7F\u7528\u4E2D\u7E7C\u9023\u7DDA\uFF0C\u60A8\u53EF\u4EE5\u5728 ID \u5F8C\u9762\u65B0\u589E "/r"\uFF0C\u6216\u662F\u5982\u679C\u8FD1\u671F\u7684\u5DE5\u4F5C\u968E\u6BB5\u88E1\u5B58\u5728\u8A72\u8A2D\u5099\uFF0C\u60A8\u4E5F\u53EF\u4EE5\u5728\u8A2D\u5099\u9078\u9805\u88E1\u9078\u64C7\u300C\u4E00\u5F8B\u900F\u904E\u4E2D\u7E7C\u9023\u7DDA\u300D\u3002`,
+\u53E6\u5916\uFF0C\u5982\u679C\u60F3\u8981\u76F4\u63A5\u4F7F\u7528\u4E2D\u7E7C\u9023\u7DDA\uFF0C\u60A8\u53EF\u4EE5\u5728 ID \u5F8C\u9762\u65B0\u589E\u300C/r\u300D\uFF0C\u6216\u662F\u5982\u679C\u8FD1\u671F\u7684\u5DE5\u4F5C\u968E\u6BB5\u88E1\u5B58\u5728\u8A72\u88DD\u7F6E\uFF0C\u60A8\u4E5F\u53EF\u4EE5\u5728\u88DD\u7F6E\u9078\u9805\u88E1\u9078\u64C7\u300C\u4E00\u5F8B\u900F\u904E\u4E2D\u7E7C\u9023\u7DDA\u300D\u3002`,
         Reconnect: "\u91CD\u65B0\u9023\u7DDA",
         Codec: "\u7DE8\u89E3\u78BC\u5668",
         Resolution: "\u89E3\u6790\u5EA6",
@@ -23722,7 +23757,7 @@ Ha egy nyilv\xE1nos szerveren l\xE9v\u0151 eszk\xF6zh\xF6z szeretne hozz\xE1f\xE
         "Toggle Tags": "\u5207\u63DB\u6A19\u7C64",
         pull_ab_failed_tip: "\u901A\u8A0A\u9304\u66F4\u65B0\u5931\u6557",
         push_ab_failed_tip: "\u6210\u529F\u540C\u6B65\u901A\u8A0A\u9304\u81F3\u4F3A\u670D\u5668",
-        synced_peer_readded_tip: "\u6700\u8FD1\u6703\u8A71\u4E2D\u5B58\u5728\u7684\u8A2D\u5099\u5C07\u6703\u88AB\u91CD\u65B0\u540C\u6B65\u5230\u901A\u8A0A\u9304\u3002",
+        synced_peer_readded_tip: "\u6700\u8FD1\u5DE5\u4F5C\u968E\u6BB5\u4E2D\u5B58\u5728\u7684\u88DD\u7F6E\u5C07\u6703\u88AB\u91CD\u65B0\u540C\u6B65\u5230\u901A\u8A0A\u9304\u3002",
         "Change Color": "\u66F4\u6539\u984F\u8272",
         "Primary Color": "\u57FA\u672C\u8272",
         "HSV Color": "HSV \u8272",
@@ -23754,22 +23789,22 @@ Ha egy nyilv\xE1nos szerveren l\xE9v\u0151 eszk\xF6zh\xF6z szeretne hozz\xE1f\xE
         "Change view": "\u66F4\u6539\u6AA2\u8996\u65B9\u5F0F",
         "Big tiles": "\u5927\u78C1\u78DA",
         "Small tiles": "\u5C0F\u78C1\u78DA",
-        List: "\u5217\u8868",
+        List: "\u6E05\u55AE",
         "Virtual display": "\u865B\u64EC\u87A2\u5E55",
         "Plug out all": "\u62D4\u51FA\u6240\u6709",
         "True color (4:4:4)": "\u5168\u5F69\u6A21\u5F0F\uFF084:4:4\uFF09",
         "Enable blocking user input": "\u5141\u8A31\u5C01\u9396\u4F7F\u7528\u8005\u8F38\u5165",
-        id_input_tip: `\u60A8\u53EF\u4EE5\u8F38\u5165 ID\u3001IP\u3001\u6216\u7DB2\u57DF\u540D\u7A31+\u901A\u8A0A\u57E0\u865F\uFF08<\u7DB2\u57DF\u540D\u7A31>:<\u901A\u8A0A\u57E0\u865F>\uFF09\u3002
-\u5982\u679C\u60A8\u8981\u5B58\u53D6\u4F4D\u65BC\u5176\u4ED6\u4F3A\u670D\u5668\u4E0A\u7684\u8A2D\u5099\uFF0C\u8ACB\u5728 ID \u4E4B\u5F8C\u6DFB\u52A0\u4F3A\u670D\u5668\u5730\u5740\uFF08<ID>@<\u4F3A\u670D\u5668\u5730\u5740>?key=<\u91D1\u9470>\uFF09
+        id_input_tip: `\u60A8\u53EF\u4EE5\u8F38\u5165 ID\u3001IP\u3001\u6216\u7DB2\u57DF\u540D\u7A31+\u9023\u63A5\u57E0\uFF08<\u7DB2\u57DF\u540D\u7A31>:<\u9023\u63A5\u57E0>\uFF09\u3002
+\u5982\u679C\u60A8\u8981\u5B58\u53D6\u4F4D\u65BC\u5176\u4ED6\u4F3A\u670D\u5668\u4E0A\u7684\u88DD\u7F6E\uFF0C\u8ACB\u5728 ID \u4E4B\u5F8C\u65B0\u589E\u4F3A\u670D\u5668\u4F4D\u5740\uFF08<ID>@<\u4F3A\u670D\u5668\u4F4D\u5740>?key=<\u91D1\u9470>\uFF09
 \u4F8B\u5982\uFF1A9123456234@192.168.16.1:21117?key=5Qbwsde3unUcJBtrx9ZkvUmwFNoExHzpryHuPUdqlWM=
-\u8981\u5B58\u53D6\u516C\u5171\u4F3A\u670D\u5668\u4E0A\u7684\u8A2D\u5099\uFF0C\u8ACB\u8F38\u5165"<id>@public"\uFF0C\u4E0D\u9700\u8F38\u5165\u91D1\u9470\u3002
+\u8981\u5B58\u53D6\u516C\u5171\u4F3A\u670D\u5668\u4E0A\u7684\u88DD\u7F6E\uFF0C\u8ACB\u8F38\u5165\u300C<id>@public\u300D\uFF0C\u4E0D\u9700\u8F38\u5165\u91D1\u9470\u3002
 
-\u5982\u679C\u60A8\u60F3\u8981\u5728\u7B2C\u4E00\u6B21\u9023\u7DDA\u6642\uFF0C\u5F37\u5236\u4F7F\u7528\u4E2D\u7E7C\u9023\u63A5\uFF0C\u8ACB\u5728 ID \u7684\u672B\u5C3E\u6DFB\u52A0 "/r"\uFF0C\u4F8B\u5982\uFF0C"9123456234/r"\u3002`,
+\u5982\u679C\u60A8\u60F3\u8981\u5728\u7B2C\u4E00\u6B21\u9023\u7DDA\u6642\uFF0C\u5F37\u5236\u4F7F\u7528\u4E2D\u7E7C\u9023\u7DDA\uFF0C\u8ACB\u5728 ID \u7684\u7D50\u5C3E\u65B0\u589E\u300C/r\u300D\uFF0C\u4F8B\u5982\uFF0C\u300C9123456234/r\u300D\u3002`,
         privacy_mode_impl_mag_tip: "\u6A21\u5F0F 1",
         privacy_mode_impl_virtual_display_tip: "\u6A21\u5F0F 2",
         "Enter privacy mode": "\u9032\u5165\u96B1\u79C1\u6A21\u5F0F",
         "Exit privacy mode": "\u9000\u51FA\u96B1\u79C1\u6A21\u5F0F",
-        idd_not_support_under_win10_2004_tip: "\u4E0D\u652F\u63F4 Indirect display driver\u3002 \u9700\u8981 Windows 10 \u7248\u672C 2004 \u6216\u66F4\u65B0\u7684\u7248\u672C\u3002",
+        idd_not_support_under_win10_2004_tip: "\u4E0D\u652F\u63F4 Indirect display driver\u3002\u9700\u8981 Windows 10 \u7248\u672C 2004 \u4EE5\u4E0A\u7248\u672C\u3002",
         input_source_1_tip: "\u8F38\u5165\u6E90 1",
         input_source_2_tip: "\u8F38\u5165\u6E90 2",
         "Swap control-command key": "\u4EA4\u63DB Control \u548C Command \u6309\u9375",
@@ -23777,31 +23812,31 @@ Ha egy nyilv\xE1nos szerveren l\xE9v\u0151 eszk\xF6zh\xF6z szeretne hozz\xE1f\xE
         "2FA code": "\u4E8C\u6B65\u9A5F\u9A57\u8B49\u78BC",
         More: "\u66F4\u591A",
         "enable-2fa-title": "\u555F\u7528\u4E8C\u6B65\u9A5F\u9A57\u8B49",
-        "enable-2fa-desc": `\u73FE\u5728\u8ACB\u60A8\u8A2D\u5B9A\u60A8\u7684\u4E8C\u6B65\u9A5F\u9A57\u8B49\u7A0B\u5F0F\u3002 \u60A8\u53EF\u4EE5\u5728\u624B\u6A5F\u6216\u96FB\u8166\u4F7F\u7528 Authy\u3001Microsoft \u6216 Google Authenticator \u7B49\u9A57\u8B49\u5668\u7A0B\u5F0F\u3002
+        "enable-2fa-desc": `\u73FE\u5728\u8ACB\u60A8\u8A2D\u5B9A\u60A8\u7684\u4E8C\u6B65\u9A5F\u9A57\u8B49\u7A0B\u5F0F\u3002\u60A8\u53EF\u4EE5\u5728\u624B\u6A5F\u6216\u96FB\u8166\u4F7F\u7528 Authy\u3001Microsoft \u6216 Google Authenticator \u7B49\u9A57\u8B49\u5668\u7A0B\u5F0F\u3002
 
 \u7528\u5B83\u6383\u63CFQR Code\u6216\u8F38\u5165\u4E0B\u65B9\u91D1\u9470\u81F3\u60A8\u7684\u9A57\u8B49\u5668\uFF0C\u7136\u5F8C\u8F38\u5165\u986F\u793A\u7684\u9A57\u8B49\u78BC\u4EE5\u555F\u7528\u4E8C\u6B65\u9A5F\u9A57\u8B49\u3002`,
-        "wrong-2fa-code": "\u7121\u6CD5\u9A57\u8B49\u6B64\u9A57\u8B49\u78BC\u3002 \u8ACB\u78BA\u8A8D\u60A8\u7684\u9A57\u8B49\u78BC\u548C\u60A8\u7684\u672C\u5730\u6642\u9593\u8A2D\u7F6E\u662F\u6B63\u78BA\u7684",
+        "wrong-2fa-code": "\u7121\u6CD5\u9A57\u8B49\u6B64\u9A57\u8B49\u78BC\u3002\u8ACB\u78BA\u8A8D\u60A8\u7684\u9A57\u8B49\u78BC\u548C\u60A8\u7684\u672C\u6A5F\u6642\u9593\u8A2D\u5B9A\u662F\u6B63\u78BA\u7684",
         "enter-2fa-title": "\u4E8C\u6B65\u9A5F\u9A57\u8B49",
-        "Email verification code must be 6 characters.": "Email \u9A57\u8B49\u78BC\u5FC5\u9808\u662F 6 \u500B\u5B57\u5143\u3002",
+        "Email verification code must be 6 characters.": "\u96FB\u5B50\u90F5\u4EF6\u9A57\u8B49\u78BC\u5FC5\u9808\u662F 6 \u500B\u5B57\u5143\u3002",
         "2FA code must be 6 digits.": "\u4E8C\u6B65\u9A5F\u9A57\u8B49\u78BC\u5FC5\u9808\u662F 6 \u4F4D\u6578\u5B57\u3002",
         "Multiple Windows sessions found": "\u767C\u73FE\u591A\u500B Windows \u5DE5\u4F5C\u968E\u6BB5",
         "Please select the session you want to connect to": "\u8ACB\u9078\u64C7\u60A8\u60F3\u8981\u9023\u7D50\u7684\u5DE5\u4F5C\u968E\u6BB5",
         powered_by_me: "\u7531 RustDesk \u63D0\u4F9B\u652F\u63F4",
-        outgoing_only_desk_tip: `\u76EE\u524D\u7248\u672C\u7684\u8EDF\u9AD4\u662F\u81EA\u5B9A\u7FA9\u7248\u672C\u3002
-\u60A8\u53EF\u4EE5\u9023\u63A5\u81F3\u5176\u4ED6\u8A2D\u5099\uFF0C\u4F46\u662F\u5176\u4ED6\u8A2D\u5099\u7121\u6CD5\u9023\u63A5\u81F3\u60A8\u7684\u8A2D\u5099\u3002`,
-        preset_password_warning: "\u6B64\u5BA2\u88FD\u5316\u7248\u672C\u9644\u6709\u9810\u8A2D\u5BC6\u78BC\u3002\u4EFB\u4F55\u77E5\u66C9\u6B64\u5BC6\u78BC\u7684\u4EBA\u90FD\u80FD\u5B8C\u5168\u63A7\u5236\u60A8\u7684\u88DD\u7F6E\u3002\u5982\u679C\u9019\u4E0D\u662F\u60A8\u6240\u9810\u671F\u7684\uFF0C\u8ACB\u7ACB\u5373\u5378\u8F09\u6B64\u8EDF\u9AD4\u3002",
+        outgoing_only_desk_tip: `\u76EE\u524D\u7248\u672C\u7684\u8EDF\u9AD4\u662F\u81EA\u8A02\u7248\u672C\u3002
+\u60A8\u53EF\u4EE5\u9023\u7DDA\u81F3\u5176\u4ED6\u88DD\u7F6E\uFF0C\u4F46\u662F\u5176\u4ED6\u88DD\u7F6E\u7121\u6CD5\u9023\u7DDA\u81F3\u60A8\u7684\u88DD\u7F6E\u3002`,
+        preset_password_warning: "\u6B64\u5BA2\u88FD\u5316\u7248\u672C\u9644\u6709\u9810\u8A2D\u5BC6\u78BC\u3002\u4EFB\u4F55\u77E5\u66C9\u6B64\u5BC6\u78BC\u7684\u4EBA\u90FD\u80FD\u5B8C\u5168\u63A7\u5236\u60A8\u7684\u88DD\u7F6E\u3002\u5982\u679C\u9019\u4E0D\u662F\u60A8\u6240\u9810\u671F\u7684\uFF0C\u8ACB\u7ACB\u5373\u79FB\u9664\u6B64\u8EDF\u9AD4\u3002",
         "Security Alert": "\u5B89\u5168\u8B66\u544A",
         "My address book": "\u6211\u7684\u901A\u8A0A\u9304",
         Personal: "\u500B\u4EBA\u7684",
         Owner: "\u64C1\u6709\u8005",
-        "Set shared password": "\u8A2D\u5B9A\u5171\u4EAB\u5BC6\u78BC",
+        "Set shared password": "\u8A2D\u5B9A\u5171\u7528\u5BC6\u78BC",
         "Exist in": "\u5B58\u5728\u65BC",
         "Read-only": "\u552F\u8B80",
         "Read/Write": "\u8B80\u5BEB",
         "Full Control": "\u5B8C\u5168\u63A7\u5236",
-        share_warning_tip: "\u4E0A\u8FF0\u7684\u6B04\u4F4D\u70BA\u5171\u4EAB\u4E14\u5C0D\u5176\u4ED6\u4EBA\u53EF\u898B\u3002",
+        share_warning_tip: "\u4E0A\u8FF0\u7684\u6B04\u4F4D\u70BA\u5171\u7528\u4E14\u5C0D\u5176\u4ED6\u4EBA\u53EF\u898B\u3002",
         Everyone: "\u6240\u6709\u4EBA",
-        ab_web_console_tip: "\u6253\u958B Web \u63A7\u5236\u53F0\u4EE5\u9032\u884C\u66F4\u591A\u64CD\u4F5C",
+        ab_web_console_tip: "\u958B\u555F Web \u63A7\u5236\u53F0\u4EE5\u9032\u884C\u66F4\u591A\u64CD\u4F5C",
         "allow-only-conn-window-open-tip": "\u53EA\u5728 RustDesk \u8996\u7A97\u958B\u555F\u6642\u5141\u8A31\u9023\u63A5",
         no_need_privacy_mode_no_physical_displays_tip: "\u6C92\u6709\u7269\u7406\u87A2\u5E55\uFF0C\u6C92\u5FC5\u8981\u4F7F\u7528\u96B1\u79C1\u6A21\u5F0F\u3002",
         "Follow remote cursor": "\u8DDF\u96A8\u9060\u7AEF\u6E38\u6A19",
@@ -23814,8 +23849,8 @@ Ha egy nyilv\xE1nos szerveren l\xE9v\u0151 eszk\xF6zh\xF6z szeretne hozz\xE1f\xE
         clear_Wayland_screen_selection_tip: "\u6E05\u9664 Wayland \u7684\u87A2\u5E55\u9078\u64C7\u5F8C\uFF0C\u60A8\u53EF\u4EE5\u91CD\u65B0\u9078\u64C7\u5206\u4EAB\u7684\u87A2\u5E55\u3002",
         confirm_clear_Wayland_screen_selection_tip: "\u662F\u5426\u78BA\u8A8D\u6E05\u9664 Wayland \u7684\u5206\u4EAB\u87A2\u5E55\u9078\u64C7\uFF1F",
         android_new_voice_call_tip: "\u6536\u5230\u65B0\u7684\u8A9E\u97F3\u901A\u8A71\u8ACB\u6C42\u3002\u5982\u679C\u60A8\u63A5\u53D7\uFF0C\u97F3\u8A0A\u5C07\u5207\u63DB\u70BA\u8A9E\u97F3\u901A\u8A0A\u3002",
-        texture_render_tip: "\u4F7F\u7528\u7D0B\u7406\u6E32\u67D3\uFF0C\u8B93\u5716\u7247\u66F4\u52A0\u9806\u66A2\u3002 \u5982\u679C\u60A8\u906D\u9047\u6E32\u67D3\u554F\u984C\uFF0C\u53EF\u5617\u8A66\u95DC\u9589\u6B64\u9078\u9805\u3002",
-        "Use texture rendering": "\u4F7F\u7528\u7D0B\u7406\u6E32\u67D3",
+        texture_render_tip: "\u4F7F\u7528\u7D0B\u7406\u7E6A\u88FD\uFF0C\u8B93\u5716\u7247\u66F4\u52A0\u9806\u66A2\u3002\u5982\u679C\u60A8\u906D\u9047\u7E6A\u88FD\u554F\u984C\uFF0C\u53EF\u5617\u8A66\u95DC\u9589\u6B64\u9078\u9805\u3002",
+        "Use texture rendering": "\u4F7F\u7528\u7D0B\u7406\u7E6A\u88FD",
         "Floating window": "\u61F8\u6D6E\u8996\u7A97",
         floating_window_tip: "\u6709\u52A9\u65BC\u4FDD\u6301 RustDesk \u5F8C\u53F0\u670D\u52D9",
         "Keep screen on": "\u4FDD\u6301\u87A2\u5E55\u958B\u555F",
@@ -23831,36 +23866,37 @@ Ha egy nyilv\xE1nos szerveren l\xE9v\u0151 eszk\xF6zh\xF6z szeretne hozz\xE1f\xE
         "Telegram bot": "Telegram \u6A5F\u5668\u4EBA",
         "enable-bot-tip": "\u5982\u679C\u60A8\u555F\u7528\u6B64\u529F\u80FD\uFF0C\u60A8\u53EF\u4EE5\u5F9E\u60A8\u7684\u6A5F\u5668\u4EBA\u63A5\u6536\u4E8C\u6B65\u9A5F\u9A57\u8B49\u78BC\uFF0C\u4EA6\u53EF\u4F5C\u70BA\u9023\u7DDA\u901A\u77E5\u4E4B\u7528\u3002",
         "enable-bot-desc": `1. \u958B\u555F\u8207 @BotFather \u7684\u5C0D\u8A71\u3002
-2. \u50B3\u9001\u6307\u4EE4 "/newbot"\u3002 \u60A8\u5C07\u6703\u5728\u5B8C\u6210\u6B64\u6B65\u9A5F\u5F8C\u6536\u5230\u6B0A\u6756 (Token)\u3002
-3. \u958B\u59CB\u8207\u60A8\u525B\u5275\u7ACB\u7684\u6A5F\u5668\u4EBA\u7684\u5C0D\u8A71\u3002 \u50B3\u9001\u4E00\u5247\u4EE5\u6B63\u659C\u69D3 ("/") \u958B\u982D\u7684\u8A0A\u606F\u4F86\u555F\u7528\u5B83\uFF0C\u4F8B\u5982 "/hello"\u3002`,
+2. \u50B3\u9001\u6307\u4EE4\u300C/newbot\u300D\u3002\u60A8\u5C07\u6703\u5728\u5B8C\u6210\u6B64\u6B65\u9A5F\u5F8C\u6536\u5230\u6B0A\u6756 (Token)\u3002
+3. \u958B\u59CB\u8207\u60A8\u525B\u5275\u7ACB\u7684\u6A5F\u5668\u4EBA\u7684\u5C0D\u8A71\u3002\u50B3\u9001\u4E00\u5247\u4EE5\u6B63\u659C\u7DDA (\u300C/\u300D) \u958B\u982D\u7684\u8A0A\u606F\u4F86\u555F\u7528\u5B83\uFF0C\u4F8B\u5982\u300C/hello\u300D\u3002`,
         "cancel-2fa-confirm-tip": "\u78BA\u5B9A\u8981\u53D6\u6D88\u4E8C\u6B65\u9A5F\u9A57\u8B49\u55CE\uFF1F",
         "cancel-bot-confirm-tip": "\u78BA\u5B9A\u8981\u53D6\u6D88 Telegram \u6A5F\u5668\u4EBA\u55CE\uFF1F",
         "About RustDesk": "\u95DC\u65BC RustDesk",
-        "Send clipboard keystrokes": "\u767C\u9001\u526A\u8CBC\u7C3F\u6309\u9375",
-        network_error_tip: "\u8ACB\u6AA2\u67E5\u7DB2\u8DEF\u9023\u7D50\uFF0C\u7136\u5F8C\u9EDE\u64CA\u91CD\u8A66",
+        "Send clipboard keystrokes": "\u50B3\u9001\u526A\u8CBC\u7C3F\u6309\u9375",
+        network_error_tip: "\u8ACB\u6AA2\u67E5\u7DB2\u8DEF\u9023\u7D50\uFF0C\u7136\u5F8C\u9EDE\u9078\u91CD\u8A66",
         "Unlock with PIN": "\u4F7F\u7528 PIN \u78BC\u89E3\u9396\u8A2D\u5B9A",
         "Requires at least {} characters": "\u4E0D\u5C11\u65BC {} \u500B\u5B57\u5143",
         "Wrong PIN": "PIN \u78BC\u932F\u8AA4",
         "Set PIN": "\u8A2D\u5B9A PIN \u78BC",
-        "Enable trusted devices": "\u555F\u7528\u4FE1\u4EFB\u8A2D\u5099",
-        "Manage trusted devices": "\u7BA1\u7406\u4FE1\u4EFB\u8A2D\u5099",
+        "Enable trusted devices": "\u555F\u7528\u4FE1\u4EFB\u88DD\u7F6E",
+        "Manage trusted devices": "\u7BA1\u7406\u4FE1\u4EFB\u88DD\u7F6E",
         Platform: "\u5E73\u53F0",
         "Days remaining": "\u5269\u9918\u5929\u6578",
-        "enable-trusted-devices-tip": "\u5141\u8A31\u53D7\u4FE1\u4EFB\u7684\u8A2D\u5099\u8DF3\u904E 2FA \u9A57\u8B49",
+        "enable-trusted-devices-tip": "\u5141\u8A31\u53D7\u4FE1\u4EFB\u7684\u88DD\u7F6E\u8DF3\u904E 2FA \u9A57\u8B49",
         "Parent directory": "\u7236\u76EE\u9304",
         Resume: "\u7E7C\u7E8C",
-        "Invalid file name": "\u7121\u6548\u6587\u4EF6\u540D",
-        "one-way-file-transfer-tip": "\u88AB\u63A7\u7AEF\u555F\u7528\u4E86\u55AE\u5411\u6587\u4EF6\u50B3\u8F38",
-        "Authentication Required": "\u9700\u8981\u8EAB\u5206\u9A57\u8B49",
+        "Invalid file name": "\u7121\u6548\u6A94\u540D",
+        "one-way-file-transfer-tip": "\u88AB\u63A7\u7AEF\u555F\u7528\u4E86\u55AE\u5411\u6A94\u6848\u50B3\u8F38",
+        "Authentication Required": "\u9700\u8981\u9A57\u8B49\u9A57\u8B49",
         Authenticate: "\u8A8D\u8B49",
-        web_id_input_tip: `\u60A8\u53EF\u4EE5\u8F38\u5165\u540C\u4E00\u500B\u4F3A\u670D\u5668\u5167\u7684 ID\uFF0CWeb \u5BA2\u6236\u7AEF\u4E0D\u652F\u63F4\u76F4\u63A5 IP \u5B58\u53D6\u3002
-\u5982\u679C\u60A8\u8981\u5B58\u53D6\u4F4D\u65BC\u5176\u4ED6\u4F3A\u670D\u5668\u4E0A\u7684\u8A2D\u5099\uFF0C\u8ACB\u5728 ID \u4E4B\u5F8C\u6DFB\u52A0\u4F3A\u670D\u5668\u5730\u5740\uFF08<ID>@<\u4F3A\u670D\u5668\u5730\u5740>?key=<\u91D1\u9470>\uFF09
+        web_id_input_tip: `\u60A8\u53EF\u4EE5\u8F38\u5165\u540C\u4E00\u500B\u4F3A\u670D\u5668\u5167\u7684 ID\uFF0CWeb \u7528\u6236\u7AEF\u4E0D\u652F\u63F4\u76F4\u63A5 IP \u5B58\u53D6\u3002
+\u5982\u679C\u60A8\u8981\u5B58\u53D6\u4F4D\u65BC\u5176\u4ED6\u4F3A\u670D\u5668\u4E0A\u7684\u88DD\u7F6E\uFF0C\u8ACB\u5728 ID \u4E4B\u5F8C\u65B0\u589E\u4F3A\u670D\u5668\u4F4D\u5740\uFF08<ID>@<\u4F3A\u670D\u5668\u4F4D\u5740>?key=<\u91D1\u9470>\uFF09
 \u4F8B\u5982\uFF1A9123456234@192.168.16.1:21117?key=5Qbwsde3unUcJBtrx9ZkvUmwFNoExHzpryHuPUdqlWM=
-\u8981\u5B58\u53D6\u516C\u5171\u4F3A\u670D\u5668\u4E0A\u7684\u8A2D\u5099\uFF0C\u8ACB\u8F38\u5165"<id>@public"\uFF0C\u4E0D\u9700\u8F38\u5165\u91D1\u9470\u3002`,
+\u8981\u5B58\u53D6\u516C\u5171\u4F3A\u670D\u5668\u4E0A\u7684\u88DD\u7F6E\uFF0C\u8ACB\u8F38\u5165\u300C<id>@public\u300D\uFF0C\u4E0D\u9700\u8F38\u5165\u91D1\u9470\u3002`,
         Download: "\u4E0B\u8F09",
         "Upload folder": "\u4E0A\u50B3\u8CC7\u6599\u593E",
         "Upload files": "\u4E0A\u50B3\u6A94\u6848",
-        "Clipboard is synchronized": ""
+        "Clipboard is synchronized": "\u526A\u8CBC\u7C3F\u5DF2\u540C\u6B65",
+        "Update client clipboard": ""
     }, lt: {
         Status: "B\u016Bsena",
         "Your Desktop": "J\u016Bs\u0173 darbalaukis",
@@ -24515,7 +24551,8 @@ Laikas suplanuoti nauj\u0105.`,
         Download: "",
         "Upload folder": "",
         "Upload files": "",
-        "Clipboard is synchronized": ""
+        "Clipboard is synchronized": "",
+        "Update client clipboard": ""
     }, en: {
         desk_tip: "Your desktop can be accessed with this ID and password.",
         connecting_status: "Connecting to the RustDesk network...",
@@ -25420,7 +25457,8 @@ If you want to access a device on a public server, please input "<id>@public", t
         Download: "",
         "Upload folder": "",
         "Upload files": "",
-        "Clipboard is synchronized": ""
+        "Clipboard is synchronized": "",
+        "Update client clipboard": ""
     }, uk: {
         Status: "\u0421\u0442\u0430\u0442\u0443\u0441",
         "Your Desktop": "\u0412\u0430\u0448\u0430 \u0441\u0442\u0456\u043B\u044C\u043D\u0438\u0446\u044F",
@@ -26088,7 +26126,8 @@ If you want to access a device on a public server, please input "<id>@public", t
         Download: "",
         "Upload folder": "",
         "Upload files": "",
-        "Clipboard is synchronized": ""
+        "Clipboard is synchronized": "",
+        "Update client clipboard": ""
     }, cs: {
         Status: "Stav",
         "Your Desktop": "Va\u0161e plocha",
@@ -26752,7 +26791,8 @@ M\u016F\u017Eete se p\u0159ipojit k jin\xFDm za\u0159\xEDzen\xEDm, ale jin\xE1 z
         Download: "",
         "Upload folder": "",
         "Upload files": "",
-        "Clipboard is synchronized": ""
+        "Clipboard is synchronized": "",
+        "Update client clipboard": ""
     }, nl: {
         Status: "Status",
         "Your Desktop": "Uw Bureaublad",
@@ -27414,7 +27454,8 @@ Als je toegang wilt krijgen tot een apparaat op een publieke server, voer dan "<
         Download: "Downloaden",
         "Upload folder": "Map uploaden",
         "Upload files": "Bestanden uploaden",
-        "Clipboard is synchronized": "Klembord is gesynchroniseerd"
+        "Clipboard is synchronized": "Klembord is gesynchroniseerd",
+        "Update client clipboard": "Klembord van client bijwerken"
     }, fr: {
         Status: "Statut",
         "Your Desktop": "Votre bureau",
@@ -28074,6 +28115,7 @@ Vous pouvez vous connecter \xE0 d\u2019autres appareils, mais les autres apparei
         Download: "",
         "Upload folder": "",
         "Upload files": "",
-        "Clipboard is synchronized": ""
+        "Clipboard is synchronized": "",
+        "Update client clipboard": ""
     }
 }

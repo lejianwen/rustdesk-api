@@ -1,6 +1,6 @@
-import {getServerConf} from "./ljw.js?v=5"
+import {getServerConf} from "./ljw.js?v=6"
 import {F as $t, J as Yt, L as Re, l as P4, m as r, P as ua, s as Xt, z as H4} from "./vendor.js?v=0b990c6e";
-import {ids as langIds, lang} from './lang.js?v=5'
+import {ids as langIds, lang} from './lang.js?v=6'
 
 var Zt = Object.defineProperty;
 var Qt = (u, e, i) => e in u ? Zt(u, e, {enumerable: !0, configurable: !0, writable: !0, value: i}) : u[e] = i;
@@ -7711,7 +7711,7 @@ const oo = {
     RShift: "RShift",
     CTRL_ALT_DEL: "CtrlAltDel",
     LOCK_SCREEN: "LockScreen"
-}, ne = "1.3.2", no = "2024-11-01 11:21";
+}, ne = "1.3.3", no = "2024-11-22 02:03";
 
 class A {
     static setItem(e, i) {
@@ -9582,7 +9582,7 @@ class It {
                 m = D == $4 ? qi : (s = B.split("&").reduce((R, I) => {
                     const y = I.indexOf("=");
                     if (y != -1) {
-                        const nu = I.substring(0, y), k4 = I.substring(y + 1);
+                        const nu = I.substring(0, y).toLowerCase(), k4 = I.substring(y + 1);
                         R[nu] = k4
                     }
                     return R
