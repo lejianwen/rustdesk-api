@@ -869,7 +869,7 @@ paths:
       - token: []
       summary: 服务配置
       tags:
-      - WEBCLIENT
+      - WEBCLIENT_V2
   /shared-peer:
     post:
       consumes:
