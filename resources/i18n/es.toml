@@ -1,0 +1,134 @@
+[Test]
+description = "test"
+one = "prueba1"
+other = "Prueba2 {{.P0}}"
+
+[ParamsError]
+description = "Params validation failed."
+one = "La validación de los parámetros falló."
+other = "La validación de los parámetros falló."
+
+[OperationFailed]
+description = "OperationFailed."
+one = "La operación falló."
+other = "La operación falló."
+
+[OperationSuccess]
+description = "OperationSuccess."
+one = "La operación fue exitosa."
+other = "La operación fue exitosa."
+
+[ItemExists]
+description = "Item already exists."
+one = "El elemento ya existe."
+other = "El elemento ya existe."
+
+[ItemNotFound]
+description = "Item not found."
+one = "El elemento no fue encontrado."
+other = "El elemento no fue encontrado."
+
+[NoAccess]
+description = "No access."
+one = "Sin acceso."
+other = "Sin acceso."
+
+[UsernameOrPasswordError]
+description = "Username or password error."
+one = "Error de usuario o contraseña."
+other = "Error de usuario o contraseña."
+
+[SystemError]
+description = "System error."
+one = "Error del sistema."
+other = "Error del sistema."
+
+[ConfigNotFound]
+description = "Config not found."
+one = "Configuración no encontrada."
+other = "Configuración no encontrada."
+
+[OauthExpired]
+description = "Oauth expired."
+one = "Oauth expirado, por favor intente nuevamente."
+other = "Oauth expirado, por favor intente nuevamente."
+
+[OauthFailed]
+description = "Oauth failed."
+one = "Oauth falló."
+other = "Oauth falló."
+
+[OauthHasBindOtherUser]
+description = "Oauth has bind other user."
+one = "Oauth está vinculado a otro usuario."
+other = "Oauth está vinculado a otro usuario."
+
+[ParamIsEmpty]
+description = "Param is empty."
+one = "{{.P0}} está vacío."
+other = "{{.P0}} está vacío."
+
+[BindFail]
+description = "Bind fail."
+one = "Fallo al vincular."
+other = "Fallo al vincular."
+
+[BindSuccess]
+description = "Bind success."
+one = "Vinculación exitosa."
+other = "Vinculación exitosa."
+
+[OauthHasBeenSuccess]
+description = "Oauth has been success."
+one = "Oauth fue exitoso."
+other = "Oauth fue exitoso."
+
+[OauthSuccess]
+description = "Oauth success."
+one = "Oauth exitoso."
+other = "Oauth exitoso."
+
+[OauthRegisterSuccess]
+description = "Oauth register success."
+one = "Registro de Oauth exitoso."
+other = "Registro de Oauth exitoso."
+
+[OauthRegisterFailed]
+description = "Oauth register failed."
+one = "Registro de Oauth falló."
+other = "Registro de Oauth falló."
+
+[GetOauthTokenError]
+description = "Get oauth token error."
+one = "Error al obtener el token de Oauth."
+other = "Error al obtener el token de Oauth."
+
+[GetOauthUserInfoError]
+description = "Get oauth user info error."
+one = "Error al obtener la información del usuario de Oauth."
+other = "Error al obtener la información del usuario de Oauth."
+
+[DecodeOauthUserInfoError]
+description = "Decode oauth user info error."
+one = "Error al decodificar la información del usuario de Oauth."
+other = "Error al decodificar la información del usuario de Oauth."
+
+[OldPasswordError]
+description = "Old password error."
+one = "Error con la contraseña anterior."
+other = "Error con la contraseña anterior."
+
+[DefaultGroup]
+description = "Default group"
+one = "Grupo predeterminado"
+other = "Grupo predeterminado"
+
+[ShareGroup]
+description = "Share group"
+one = "Grupo compartido"
+other = "Grupo compartido"
+
+[RegisterClosed]
+description = "Register closed."
+one = "Registro cerrado."
+other = "Registro cerrado."

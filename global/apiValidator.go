@@ -3,6 +3,7 @@ package global
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/locales/en"
+	"github.com/go-playground/locales/es"
 	"github.com/go-playground/locales/ko"
 	"github.com/go-playground/locales/ru"
 	"github.com/go-playground/locales/zh_Hans_CN"
@@ -10,6 +11,7 @@ import (
 	ut "github.com/go-playground/universal-translator"
 	"github.com/go-playground/validator/v10"
 	en_translations "github.com/go-playground/validator/v10/translations/en"
+	es_translations "github.com/go-playground/validator/v10/translations/es"
 	ru_translations "github.com/go-playground/validator/v10/translations/ru"
 	zh_translations "github.com/go-playground/validator/v10/translations/zh"
 	"reflect"
@@ -23,13 +25,15 @@ func ApiInitValidator() {
 	cn := zh_Hans_CN.New()
 	koT := ko.New()
 	ruT := ru.New()
+	esT := es.New()
 
-	uni := ut.New(enT, cn, koT, ruT)
+	uni := ut.New(enT, cn, koT, ruT, esT)
 
 	enTrans, _ := uni.GetTranslator("en")
 	zhTrans, _ := uni.GetTranslator("zh_Hans_CN")
 	koTrans, _ := uni.GetTranslator("ko")
 	ruTrans, _ := uni.GetTranslator("ru")
+	esTrans, _ := uni.GetTranslator("es")
 
 	err := zh_translations.RegisterDefaultTranslations(validate, zhTrans)
 	if err != nil {
@@ -46,6 +50,10 @@ func ApiInitValidator() {
 		panic(err)
 	}
 	err = ru_translations.RegisterDefaultTranslations(validate, ruTrans)
+	if err != nil {
+		panic(err)
+	}
+	err = es_translations.RegisterDefaultTranslations(validate, esTrans)
 	if err != nil {
 		panic(err)
 	}
@@ -114,6 +122,9 @@ func getTranslatorForLang(lang string) ut.Translator {
 		return trans
 	case "ru":
 		trans, _ := Validator.UT.GetTranslator("ru")
+		return trans
+	case "es":
+		trans, _ := Validator.UT.GetTranslator("es")
 		return trans
 	case "en":
 		fallthrough
