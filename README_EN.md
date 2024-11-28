@@ -152,6 +152,7 @@ installation are `admin` `admin`, please change the password immediately.
 6. `v2 preview` deployment
    - If deploying via `https` on port `443`, you must configure a reverse proxy. Refer to the [official documentation](https://rustdesk.com/docs/en/self-host/rustdesk-server-pro/faq/#8-add-websocket-secure-wss-support-for-the-id-server-and-relay-server-to-enable-secure-communication-for-the-web-client)
    - If deploying via `http` or other `https` ports, configure `21118` and `21119` as with `v1`
+   - More [Web-Client-V2-Preview-Document](https://github.com/lejianwen/rustdesk-api/wiki/Web-Client-V2-Preview-Document)
 
 
 ### Automated Documentation : API documentation is generated using Swag, making it easier for developers to understand and use the API.

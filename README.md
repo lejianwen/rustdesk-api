@@ -148,6 +148,7 @@
 6. `v2 preview` 部署 
    - 如果是通过`443`端口的`https`部署，必须配置反向代理，可以参考[官方文档](https://rustdesk.com/docs/en/self-host/rustdesk-server-pro/faq/#8-add-websocket-secure-wss-support-for-the-id-server-and-relay-server-to-enable-secure-communication-for-the-web-client)
    - 如果是`http`或者其他的`https`端口部署，则和`v1`一样，配置好`21118`,`21119`即可
+   - 更多参考[Web-Client-V2-Preview-Document](https://github.com/lejianwen/rustdesk-api/wiki/Web-Client-V2-Preview-Document)
 
 ### 自动化文档: 使用 Swag 生成 API 文档，方便开发者理解和使用 API。
 
