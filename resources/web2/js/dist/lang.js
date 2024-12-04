@@ -697,7 +697,8 @@ export const lang = {
         "Upload folder": "",
         "Upload files": "",
         "Clipboard is synchronized": "",
-        "Update client clipboard": ""
+        "Update client clipboard": "",
+        Untagged: ""
     }, hr: {
         Status: "Status",
         "Your Desktop": "Va\u0161a radna povr\u0161ina",
@@ -1359,7 +1360,8 @@ Mo\u017Eete se povezati s drugim ure\u0111ajima, ali se drugi ure\u0111aji ne mo
         "Upload folder": "",
         "Upload files": "",
         "Clipboard is synchronized": "",
-        "Update client clipboard": ""
+        "Update client clipboard": "",
+        Untagged: ""
     }, th: {
         Status: "\u0E2A\u0E16\u0E32\u0E19\u0E30",
         "Your Desktop": "\u0E2B\u0E19\u0E49\u0E32\u0E08\u0E2D\u0E02\u0E2D\u0E07\u0E04\u0E38\u0E13",
@@ -2013,7 +2015,8 @@ Mo\u017Eete se povezati s drugim ure\u0111ajima, ali se drugi ure\u0111aji ne mo
         "Upload folder": "",
         "Upload files": "",
         "Clipboard is synchronized": "",
-        "Update client clipboard": ""
+        "Update client clipboard": "",
+        Untagged: ""
     }, ru: {
         Status: "\u0421\u0442\u0430\u0442\u0443\u0441",
         "Your Desktop": "\u0412\u0430\u0448 \u0440\u0430\u0431\u043E\u0447\u0438\u0439 \u0441\u0442\u043E\u043B",
@@ -2682,7 +2685,8 @@ Mo\u017Eete se povezati s drugim ure\u0111ajima, ali se drugi ure\u0111aji ne mo
         "Upload folder": "\u0417\u0430\u0433\u0440\u0443\u0437\u0438\u0442\u044C \u043F\u0430\u043F\u043A\u0443",
         "Upload files": "\u0417\u0430\u0433\u0440\u0443\u0437\u0438\u0442\u044C \u0444\u0430\u0439\u043B\u044B",
         "Clipboard is synchronized": "\u0411\u0443\u0444\u0435\u0440 \u043E\u0431\u043C\u0435\u043D\u0430 \u0441\u0438\u043D\u0445\u0440\u043E\u043D\u0438\u0437\u0438\u0440\u043E\u0432\u0430\u043D",
-        "Update client clipboard": "\u041E\u0431\u043D\u043E\u0432\u0438\u0442\u044C \u0431\u0443\u0444\u0435\u0440 \u043E\u0431\u043C\u0435\u043D\u0430 \u043A\u043B\u0438\u0435\u043D\u0442\u0430"
+        "Update client clipboard": "\u041E\u0431\u043D\u043E\u0432\u0438\u0442\u044C \u0431\u0443\u0444\u0435\u0440 \u043E\u0431\u043C\u0435\u043D\u0430 \u043A\u043B\u0438\u0435\u043D\u0442\u0430",
+        Untagged: "\u0411\u0435\u0437 \u043C\u0435\u0442\u043A\u0438"
     }, eu: {
         Status: "Egoera",
         "Your Desktop": "Zure mahaigaina",
@@ -3349,7 +3353,8 @@ Beste gailuetara konekta zaitezke, baina beste gailu batzuk ezin dira zure gailu
         "Upload folder": "",
         "Upload files": "",
         "Clipboard is synchronized": "",
-        "Update client clipboard": ""
+        "Update client clipboard": "",
+        Untagged: ""
     }, el: {
         Status: "\u039A\u03B1\u03C4\u03AC\u03C3\u03C4\u03B1\u03C3\u03B7",
         "Your Desktop": "\u039F \u03C3\u03C4\u03B1\u03B8\u03BC\u03CC\u03C2 \u03B5\u03C1\u03B3\u03B1\u03C3\u03AF\u03B1\u03C2 \u03C3\u03B1\u03C2",
@@ -4008,7 +4013,8 @@ Beste gailuetara konekta zaitezke, baina beste gailu batzuk ezin dira zure gailu
         "Upload folder": "",
         "Upload files": "",
         "Clipboard is synchronized": "",
-        "Update client clipboard": ""
+        "Update client clipboard": "",
+        Untagged: ""
     }, et: {
         Status: "",
         "Your Desktop": "",
@@ -4667,7 +4673,8 @@ Kui soovid juurdep\xE4\xE4su seadmele avalikus serveris, sisesta "<id>@public", 
         "Upload folder": "",
         "Upload files": "",
         "Clipboard is synchronized": "",
-        "Update client clipboard": ""
+        "Update client clipboard": "",
+        Untagged: ""
     }, sl: {
         Status: "Stanje",
         "Your Desktop": "Va\u0161e namizje",
@@ -5333,7 +5340,8 @@ Lahko se pove\u017Eete na druge naprave, druge naprave pa se k vam ne morejo pov
         "Upload folder": "",
         "Upload files": "",
         "Clipboard is synchronized": "",
-        "Update client clipboard": ""
+        "Update client clipboard": "",
+        Untagged: ""
     }, ko: {
         Status: "\uC0C1\uD0DC",
         "Your Desktop": "\uB0B4 \uB370\uC2A4\uD06C\uD0D1",
@@ -5995,7 +6003,8 @@ Lahko se pove\u017Eete na druge naprave, druge naprave pa se k vam ne morejo pov
         "Upload folder": "\uD3F4\uB354 \uC5C5\uB85C\uB4DC",
         "Upload files": "\uD30C\uC77C \uC5C5\uB85C\uB4DC",
         "Clipboard is synchronized": "\uD074\uB9BD\uBCF4\uB4DC\uAC00 \uB3D9\uAE30\uD654\uB428",
-        "Update client clipboard": ""
+        "Update client clipboard": "\uD074\uB77C\uC774\uC5B8\uD2B8 \uD074\uB9BD\uBCF4\uB4DC \uC5C5\uB370\uC774\uD2B8",
+        Untagged: "\uD0DC\uADF8 \uC5C6\uC74C"
     }, lv: {
         Status: "Statuss",
         "Your Desktop": "J\u016Bsu darbvirsma",
@@ -6663,7 +6672,8 @@ Ja v\u0113laties piek\u013C\u016Bt ier\u012Bcei publiskaj\u0101 server\u012B, l\
         "Upload folder": "Aug\u0161upiel\u0101d\u0113t mapi",
         "Upload files": "Aug\u0161upiel\u0101d\u0113t failus",
         "Clipboard is synchronized": "Starpliktuve ir sinhroniz\u0113ta",
-        "Update client clipboard": ""
+        "Update client clipboard": "Atjaunin\u0101t klienta starpliktuvi",
+        Untagged: "Neatz\u012Bm\u0113ts"
     }, pl: {
         Status: "Status",
         "Your Desktop": "Tw\xF3j pulpit",
@@ -7330,7 +7340,8 @@ Je\u015Bli chcesz uzyska\u0107 dost\u0119p do urz\u0105dzenia na serwerze public
         "Upload folder": "Wy\u015Blij folder",
         "Upload files": "Wy\u015Blij pliki",
         "Clipboard is synchronized": "Schowek jest zsynchronizowany",
-        "Update client clipboard": ""
+        "Update client clipboard": "Uaktualnij schowek klienta",
+        Untagged: ""
     }, pt_PT: {
         Status: "Estado",
         "Your Desktop": "Ambiente de Trabalho",
@@ -7984,7 +7995,8 @@ Je\u015Bli chcesz uzyska\u0107 dost\u0119p do urz\u0105dzenia na serwerze public
         "Upload folder": "",
         "Upload files": "",
         "Clipboard is synchronized": "",
-        "Update client clipboard": ""
+        "Update client clipboard": "",
+        Untagged: ""
     }, id: {
         Status: "Status",
         "Your Desktop": "Layar Utama",
@@ -8650,7 +8662,8 @@ Untuk mengakses perangkat di server publik, cukup masukkan "<id>@public", tanpa 
         "Upload folder": "",
         "Upload files": "",
         "Clipboard is synchronized": "",
-        "Update client clipboard": ""
+        "Update client clipboard": "",
+        Untagged: ""
     }, ptbr: {
         Status: "Status",
         "Your Desktop": "Seu Computador",
@@ -9314,7 +9327,8 @@ Voc\xEA pode se conectar a outros dispositivos, mas eles n\xE3o podem se conecta
         "Upload folder": "",
         "Upload files": "",
         "Clipboard is synchronized": "",
-        "Update client clipboard": ""
+        "Update client clipboard": "",
+        Untagged: ""
     }, ja: {
         Status: "\u72B6\u614B",
         "Your Desktop": "\u3042\u306A\u305F\u306E\u30B3\u30F3\u30D4\u30E5\u30FC\u30BF\u30FC",
@@ -9979,7 +9993,8 @@ QR\u30B3\u30FC\u30C9\u3092\u30B9\u30AD\u30E3\u30F3\u3057\u3001\u30A2\u30D7\u30EA
         "Upload folder": "",
         "Upload files": "",
         "Clipboard is synchronized": "",
-        "Update client clipboard": ""
+        "Update client clipboard": "",
+        Untagged: ""
     }, he: {
         Status: "",
         "Your Desktop": "",
@@ -10641,7 +10656,8 @@ QR\u30B3\u30FC\u30C9\u3092\u30B9\u30AD\u30E3\u30F3\u3057\u3001\u30A2\u30D7\u30EA
         "Upload folder": "",
         "Upload files": "",
         "Clipboard is synchronized": "",
-        "Update client clipboard": ""
+        "Update client clipboard": "",
+        Untagged: ""
     }, bg: {
         Status: "\u041F\u043E\u043B\u043E\u0436\u0435\u043D\u0438\u0435",
         "Your Desktop": "\u0412\u0430\u0448\u0430\u0442\u0430 \u0440\u0430\u0431\u043E\u0442\u043D\u0430 \u0441\u0440\u0435\u0434\u0430",
@@ -11302,7 +11318,8 @@ QR\u30B3\u30FC\u30C9\u3092\u30B9\u30AD\u30E3\u30F3\u3057\u3001\u30A2\u30D7\u30EA
         "Upload folder": "",
         "Upload files": "",
         "Clipboard is synchronized": "",
-        "Update client clipboard": ""
+        "Update client clipboard": "",
+        Untagged: ""
     }, fa: {
         Status: "\u0648\u0636\u0639\u06CC\u062A",
         "Your Desktop": "\u062F\u0633\u06A9\u062A\u0627\u067E \u0634\u0645\u0627",
@@ -11965,7 +11982,8 @@ QR\u30B3\u30FC\u30C9\u3092\u30B9\u30AD\u30E3\u30F3\u3057\u3001\u30A2\u30D7\u30EA
         "Upload folder": "",
         "Upload files": "",
         "Clipboard is synchronized": "",
-        "Update client clipboard": ""
+        "Update client clipboard": "",
+        Untagged: ""
     }, README: {"ENG-KEY": "translation"}, de: {
         Status: "Status",
         "Your Desktop": "Ihr Desktop",
@@ -12636,7 +12654,8 @@ Wenn Sie auf ein Ger\xE4t auf einem \xF6ffentlichen Server zugreifen wollen, geb
         "Upload folder": "Ordner hochladen",
         "Upload files": "Dateien hochladen",
         "Clipboard is synchronized": "Zwischenablage ist synchronisiert",
-        "Update client clipboard": "Client-Zwischenablage aktualisieren"
+        "Update client clipboard": "Client-Zwischenablage aktualisieren",
+        Untagged: ""
     }, kz: {
         Status: "\u041A\u04AF\u0439",
         "Your Desktop": "\u0421\u0456\u0437\u0434\u0456\u04A3 \u0416\u04B1\u043C\u044B\u0441 \u04AF\u0441\u0442\u0435\u043B\u0456\u04A3\u0456\u0437",
@@ -13290,7 +13309,8 @@ Wenn Sie auf ein Ger\xE4t auf einem \xF6ffentlichen Server zugreifen wollen, geb
         "Upload folder": "",
         "Upload files": "",
         "Clipboard is synchronized": "",
-        "Update client clipboard": ""
+        "Update client clipboard": "",
+        Untagged: ""
     }, da: {
         Status: "Status",
         "Your Desktop": "Dit skrivebord",
@@ -13957,7 +13977,8 @@ Du kan forbinde til andre enheder, men andre enheder kan ikke forbinde til din e
         "Upload folder": "",
         "Upload files": "",
         "Clipboard is synchronized": "",
-        "Update client clipboard": ""
+        "Update client clipboard": "",
+        Untagged: ""
     }, nb: {
         Status: "Status",
         "Your Desktop": "Ditt skrivebord",
@@ -14611,7 +14632,8 @@ Du kan forbinde til andre enheder, men andre enheder kan ikke forbinde til din e
         "Upload folder": "",
         "Upload files": "",
         "Clipboard is synchronized": "",
-        "Update client clipboard": ""
+        "Update client clipboard": "",
+        Untagged: ""
     }, be: {
         Status: "\u0421\u0442\u0430\u0442\u0443\u0441",
         "Your Desktop": "\u0412\u0430\u0448 \u043F\u0440\u0430\u0446\u043E\u045E\u043D\u044B \u0441\u0442\u043E\u043B",
@@ -15274,7 +15296,8 @@ Du kan forbinde til andre enheder, men andre enheder kan ikke forbinde til din e
         "Upload folder": "",
         "Upload files": "",
         "Clipboard is synchronized": "",
-        "Update client clipboard": ""
+        "Update client clipboard": "",
+        Untagged: ""
     }, ca: {
         Status: "Estat",
         "Your Desktop": "Aquest ordinador",
@@ -15940,7 +15963,8 @@ Si voleu accedir a un dispositiu en un servidor p\xFAblic, no cal que inseriu la
         "Upload folder": "",
         "Upload files": "",
         "Clipboard is synchronized": "",
-        "Update client clipboard": ""
+        "Update client clipboard": "",
+        Untagged: ""
     }, eo: {
         Status: "Stato",
         "Your Desktop": "Via aparato",
@@ -16594,7 +16618,8 @@ Si voleu accedir a un dispositiu en un servidor p\xFAblic, no cal que inseriu la
         "Upload folder": "",
         "Upload files": "",
         "Clipboard is synchronized": "",
-        "Update client clipboard": ""
+        "Update client clipboard": "",
+        Untagged: ""
     }, ro: {
         Status: "Stare",
         "Your Desktop": "Desktopul t\u0103u",
@@ -17250,7 +17275,8 @@ Hai s\u0103-\u021Bi g\u0103sim pe cineva cu care s\u0103 te conectezi, iar apoi 
         "Upload folder": "",
         "Upload files": "",
         "Clipboard is synchronized": "",
-        "Update client clipboard": ""
+        "Update client clipboard": "",
+        Untagged: ""
     }, tr: {
         Status: "Durum",
         "Your Desktop": "Sizin Masa\xFCst\xFCn\xFCz",
@@ -17906,7 +17932,8 @@ Ba\u011Flanacak ve favorilere eklemek i\xE7in birini bulal\u0131m!`,
         "Upload folder": "",
         "Upload files": "",
         "Clipboard is synchronized": "",
-        "Update client clipboard": ""
+        "Update client clipboard": "",
+        Untagged: ""
     }, vn: {
         Status: "Tr\u1EA1ng th\xE1i hi\u1EC7n t\u1EA1i",
         "Your Desktop": "Desktop c\u1EE7a b\u1EA1n",
@@ -18563,7 +18590,8 @@ H\xE3y t\xECm ai \u0111\xF3 \u0111\u1EC3 k\u1EBFt n\u1ED1i c\xF9ng v\xE0 th\xEAm
         "Upload folder": "",
         "Upload files": "",
         "Clipboard is synchronized": "",
-        "Update client clipboard": ""
+        "Update client clipboard": "",
+        Untagged: ""
     }, cn: {
         Status: "\u72B6\u6001",
         "Your Desktop": "\u4F60\u7684\u684C\u9762",
@@ -19229,7 +19257,8 @@ H\xE3y t\xECm ai \u0111\xF3 \u0111\u1EC3 k\u1EBFt n\u1ED1i c\xF9ng v\xE0 th\xEAm
         "Upload folder": "\u4E0A\u4F20\u6587\u4EF6\u5939",
         "Upload files": "\u4E0A\u4F20\u6587\u4EF6",
         "Clipboard is synchronized": "\u526A\u8D34\u677F\u5DF2\u540C\u6B65",
-        "Update client clipboard": "\u66F4\u65B0\u5BA2\u6237\u7AEF\u7684\u7C98\u8D34\u677F"
+        "Update client clipboard": "\u66F4\u65B0\u5BA2\u6237\u7AEF\u7684\u7C98\u8D34\u677F",
+        Untagged: "\u65E0\u6807\u7B7E"
     }, ar: {
         Status: "\u0627\u0644\u062D\u0627\u0644\u0629",
         "Your Desktop": "\u0633\u0637\u062D \u0645\u0643\u062A\u0628\u0643",
@@ -19885,7 +19914,8 @@ H\xE3y t\xECm ai \u0111\xF3 \u0111\u1EC3 k\u1EBFt n\u1ED1i c\xF9ng v\xE0 th\xEAm
         "Upload folder": "",
         "Upload files": "",
         "Clipboard is synchronized": "",
-        "Update client clipboard": ""
+        "Update client clipboard": "",
+        Untagged: ""
     }, it: {
         Status: "Stato",
         "Your Desktop": "Questo desktop",
@@ -20568,7 +20598,8 @@ Se vuoi accedere ad un dispositivo in un server pubblico, inserisci "<id>@public
         "Upload folder": "Cartella upload",
         "Upload files": "File upload",
         "Clipboard is synchronized": "Gli appunti sono sincronizzati",
-        "Update client clipboard": "Aggiorna appunti client"
+        "Update client clipboard": "Aggiorna appunti client",
+        Untagged: "Senza tag"
     }, sk: {
         Status: "Stav",
         "Your Desktop": "Va\u0161a plocha",
@@ -21233,7 +21264,8 @@ M\xF4\u017Eete sa pripoji\u0165 k in\xFDm zariadeniam, ale in\xE9 zariadenia sa 
         "Upload folder": "",
         "Upload files": "",
         "Clipboard is synchronized": "",
-        "Update client clipboard": ""
+        "Update client clipboard": "",
+        Untagged: ""
     }, es: {
         Status: "Estado",
         "Your Desktop": "Tu escritorio",
@@ -21902,7 +21934,8 @@ Si quieres accedder a un dispositivo en un servidor p\xFAblico, por favor, intro
         "Upload folder": "Subir carpeta",
         "Upload files": "Subir archivos",
         "Clipboard is synchronized": "Portapapeles sincronizado",
-        "Update client clipboard": ""
+        "Update client clipboard": "Actualizar portapapeles del cliente",
+        Untagged: ""
     }, sr: {
         Status: "Status",
         "Your Desktop": "Va\u0161a radna povr\u0161ina",
@@ -22556,7 +22589,8 @@ Si quieres accedder a un dispositivo en un servidor p\xFAblico, por favor, intro
         "Upload folder": "",
         "Upload files": "",
         "Clipboard is synchronized": "",
-        "Update client clipboard": ""
+        "Update client clipboard": "",
+        Untagged: ""
     }, hu: {
         Status: "\xC1llapot",
         "Your Desktop": "Saj\xE1t asztal",
@@ -23227,7 +23261,8 @@ Ha egy nyilv\xE1nos szerveren l\xE9v\u0151 eszk\xF6zh\xF6z szeretne hozz\xE1f\xE
         "Upload folder": "Mappa felt\xF6lt\xE9se",
         "Upload files": "F\xE1jlok felt\xF6lt\xE9se",
         "Clipboard is synchronized": "A v\xE1g\xF3lap szinkroniz\xE1lva van",
-        "Update client clipboard": ""
+        "Update client clipboard": "",
+        Untagged: ""
     }, tw: {
         Status: "\u72C0\u614B",
         "Your Desktop": "\u60A8\u7684\u684C\u9762",
@@ -23896,7 +23931,8 @@ Ha egy nyilv\xE1nos szerveren l\xE9v\u0151 eszk\xF6zh\xF6z szeretne hozz\xE1f\xE
         "Upload folder": "\u4E0A\u50B3\u8CC7\u6599\u593E",
         "Upload files": "\u4E0A\u50B3\u6A94\u6848",
         "Clipboard is synchronized": "\u526A\u8CBC\u7C3F\u5DF2\u540C\u6B65",
-        "Update client clipboard": ""
+        "Update client clipboard": "\u66F4\u65B0\u5BA2\u6236\u7AEF\u7684\u526A\u8CBC\u7C3F",
+        Untagged: "\u7121\u6A19\u7C64"
     }, lt: {
         Status: "B\u016Bsena",
         "Your Desktop": "J\u016Bs\u0173 darbalaukis",
@@ -24552,7 +24588,8 @@ Laikas suplanuoti nauj\u0105.`,
         "Upload folder": "",
         "Upload files": "",
         "Clipboard is synchronized": "",
-        "Update client clipboard": ""
+        "Update client clipboard": "",
+        Untagged: ""
     }, en: {
         desk_tip: "Your desktop can be accessed with this ID and password.",
         connecting_status: "Connecting to the RustDesk network...",
@@ -25458,7 +25495,8 @@ If you want to access a device on a public server, please input "<id>@public", t
         "Upload folder": "",
         "Upload files": "",
         "Clipboard is synchronized": "",
-        "Update client clipboard": ""
+        "Update client clipboard": "",
+        Untagged: ""
     }, uk: {
         Status: "\u0421\u0442\u0430\u0442\u0443\u0441",
         "Your Desktop": "\u0412\u0430\u0448\u0430 \u0441\u0442\u0456\u043B\u044C\u043D\u0438\u0446\u044F",
@@ -25606,7 +25644,7 @@ If you want to access a device on a public server, please input "<id>@public", t
         "OS Password": "\u041F\u0430\u0440\u043E\u043B\u044C \u041E\u0421",
         install_tip: "\u0427\u0435\u0440\u0435\u0437 UAC, \u0432 \u0434\u0435\u044F\u043A\u0438\u0445 \u0432\u0438\u043F\u0430\u0434\u043A\u0430\u0445 RustDesk \u043C\u043E\u0436\u0435 \u043F\u0440\u0430\u0446\u044E\u0432\u0430\u0442\u0438 \u043D\u0435\u043A\u043E\u0440\u0435\u043A\u0442\u043D\u043E \u043D\u0430 \u0432\u0456\u0434\u0434\u0430\u043B\u0435\u043D\u043E\u043C\u0443 \u0432\u0443\u0437\u043B\u0456. \u0429\u043E\u0431 \u0443\u043D\u0438\u043A\u043D\u0443\u0442\u0438 UAC, \u043D\u0430\u0442\u0438\u0441\u043D\u0456\u0442\u044C \u043A\u043D\u043E\u043F\u043A\u0443 \u043D\u0438\u0436\u0447\u0435 \u0434\u043B\u044F \u0432\u0441\u0442\u0430\u043D\u043E\u0432\u043B\u0435\u043D\u043D\u044F RustDesk \u0432 \u0441\u0438\u0441\u0442\u0435\u043C\u0456",
         "Click to upgrade": "\u041D\u0430\u0442\u0438\u0441\u043D\u0456\u0442\u044C, \u0449\u043E\u0431 \u043F\u0435\u0440\u0435\u0432\u0456\u0440\u0438\u0442\u0438 \u043D\u0430\u044F\u0432\u043D\u0456\u0441\u0442\u044C \u043E\u043D\u043E\u0432\u043B\u0435\u043D\u044C",
-        "Click to download": "\u041D\u0430\u0442\u0438\u0441\u043D\u0456\u0442\u044C, \u0449\u043E\u0431 \u0437\u0430\u0432\u0430\u043D\u0442\u0430\u0436\u0438\u0442\u0438",
+        "Click to download": "\u041D\u0430\u0442\u0438\u0441\u043D\u0456\u0442\u044C, \u0449\u043E\u0431 \u043E\u0442\u0440\u0438\u043C\u0430\u0442\u0438",
         "Click to update": "\u041D\u0430\u0442\u0438\u0441\u043D\u0456\u0442\u044C, \u0449\u043E\u0431 \u043E\u043D\u043E\u0432\u0438\u0442\u0438",
         Configure: "\u041D\u0430\u043B\u0430\u0448\u0442\u0443\u0432\u0430\u0442\u0438",
         config_acc: '\u0414\u043B\u044F \u0432\u0456\u0434\u0434\u0430\u043B\u0435\u043D\u043E\u0433\u043E \u043A\u0435\u0440\u0443\u0432\u0430\u043D\u043D\u044F \u0432\u0430\u0448\u043E\u044E \u0441\u0442\u0456\u043B\u044C\u043D\u0438\u0446\u0435\u044E, \u0432\u0430\u043C \u043D\u0435\u043E\u0431\u0445\u0456\u0434\u043D\u043E \u043D\u0430\u0434\u0430\u0442\u0438 RustDesk \u0434\u043E\u0437\u0432\u043E\u043B\u0438 "\u0421\u043F\u0435\u0446\u0456\u0430\u043B\u044C\u043D\u0456 \u043C\u043E\u0436\u043B\u0438\u0432\u043E\u0441\u0442\u0456"',
@@ -25705,7 +25743,7 @@ If you want to access a device on a public server, please input "<id>@public", t
         Paste: "\u0412\u0441\u0442\u0430\u0432\u0438\u0442\u0438",
         "Paste here?": "\u0412\u0441\u0442\u0430\u0432\u0438\u0442\u0438 \u0441\u044E\u0434\u0438?",
         "Are you sure to close the connection?": "\u0412\u0438 \u0432\u043F\u0435\u0432\u043D\u0435\u043D\u0456, \u0449\u043E \u0445\u043E\u0447\u0435\u0442\u0435 \u0437\u0430\u0432\u0435\u0440\u0448\u0438\u0442\u0438 \u043F\u0456\u0434\u043A\u043B\u044E\u0447\u0435\u043D\u043D\u044F?",
-        "Download new version": "\u0417\u0430\u0432\u0430\u043D\u0442\u0430\u0436\u0442\u0435 \u043D\u043E\u0432\u0443 \u0432\u0435\u0440\u0441\u0456\u044E",
+        "Download new version": "\u041E\u0442\u0440\u0438\u043C\u0430\u0439\u0442\u0435 \u043D\u043E\u0432\u0443 \u0432\u0435\u0440\u0441\u0456\u044E",
         "Touch mode": "\u0421\u0435\u043D\u0441\u043E\u0440\u043D\u0438\u0439 \u0440\u0435\u0436\u0438\u043C",
         "Mouse mode": "\u0420\u0435\u0436\u0438\u043C \u043C\u0438\u0448\u0456",
         "One-Finger Tap": "\u0414\u043E\u0442\u0438\u043A \u043E\u0434\u043D\u0438\u043C \u043F\u0430\u043B\u044C\u0446\u0435\u043C",
@@ -25766,7 +25804,7 @@ If you want to access a device on a public server, please input "<id>@public", t
         "Ignore Battery Optimizations": "\u0406\u0433\u043D\u043E\u0440\u0443\u0432\u0430\u0442\u0438 \u043E\u043F\u0442\u0438\u043C\u0456\u0437\u0430\u0446\u0456\u0457 \u0431\u0430\u0442\u0430\u0440\u0435\u0457",
         android_open_battery_optimizations_tip: "\u041F\u0435\u0440\u0435\u0439\u0434\u0456\u0442\u044C \u043D\u0430 \u043D\u0430\u0441\u0442\u0443\u043F\u043D\u0443 \u0441\u0442\u043E\u0440\u0456\u043D\u043A\u0443 \u043D\u0430\u043B\u0430\u0448\u0442\u0443\u0432\u0430\u043D\u044C",
         "Start on boot": "\u0410\u0432\u0442\u043E\u0437\u0430\u043F\u0443\u0441\u043A",
-        "Start the screen sharing service on boot, requires special permissions": "\u0417\u0430\u043F\u0443\u0441\u0442\u0438\u0442\u0438 \u0441\u043B\u0443\u0436\u0431\u0443 \u0441\u043B\u0443\u0436\u0431\u0443 \u0441\u043F\u0456\u043B\u044C\u043D\u043E\u0433\u043E \u0434\u043E\u0441\u0442\u0443\u043F\u0443 \u0434\u043E \u0435\u043A\u0440\u0430\u043D\u0430 \u043F\u0456\u0434 \u0447\u0430\u0441 \u0437\u0430\u0432\u0430\u043D\u0442\u0430\u0436\u0435\u043D\u043D\u044F, \u043F\u043E\u0442\u0440\u0435\u0431\u0443\u0454 \u0441\u043F\u0435\u0446\u0456\u0430\u043B\u044C\u043D\u0438\u0445 \u0434\u043E\u0437\u0432\u043E\u043B\u0456\u0432",
+        "Start the screen sharing service on boot, requires special permissions": "\u0417\u0430\u043F\u0443\u0441\u043A\u0430\u0442\u0438 \u0441\u043B\u0443\u0436\u0431\u0443 \u0441\u043F\u0456\u043B\u044C\u043D\u043E\u0433\u043E \u0434\u043E\u0441\u0442\u0443\u043F\u0443 \u0434\u043E \u0435\u043A\u0440\u0430\u043D\u0430 \u043F\u0456\u0434 \u0447\u0430\u0441 \u0437\u0430\u0432\u0430\u043D\u0442\u0430\u0436\u0435\u043D\u043D\u044F, \u043F\u043E\u0442\u0440\u0435\u0431\u0443\u0454 \u0441\u043F\u0435\u0446\u0456\u0430\u043B\u044C\u043D\u0438\u0445 \u0434\u043E\u0437\u0432\u043E\u043B\u0456\u0432",
         "Connection not allowed": "\u041F\u0456\u0434\u043A\u043B\u044E\u0447\u0435\u043D\u043D\u044F \u043D\u0435 \u0434\u043E\u0437\u0432\u043E\u043B\u0435\u043D\u043E",
         "Legacy mode": "\u0417\u0430\u0441\u0442\u0430\u0440\u0456\u043B\u0438\u0439 \u0440\u0435\u0436\u0438\u043C",
         "Map mode": "\u0420\u0435\u0436\u0438\u043C \u043A\u0430\u0440\u0442\u0438",
@@ -26119,15 +26157,16 @@ If you want to access a device on a public server, please input "<id>@public", t
         "one-way-file-transfer-tip": "\u041D\u0430 \u0441\u0442\u043E\u0440\u043E\u043D\u0456, \u0449\u043E \u043A\u0435\u0440\u0443\u0454\u0442\u044C\u0441\u044F, \u0443\u0432\u0456\u043C\u043A\u043D\u0435\u043D\u043E \u043E\u0434\u043D\u043E\u0441\u0442\u043E\u0440\u043E\u043D\u043D\u044E \u043F\u0435\u0440\u0435\u0434\u0430\u0447\u0443 \u0444\u0430\u0439\u043B\u0456\u0432.",
         "Authentication Required": "\u041F\u043E\u0442\u0440\u0456\u0431\u043D\u0430 \u0430\u0432\u0442\u0435\u043D\u0442\u0438\u0444\u0456\u043A\u0430\u0446\u0456\u044F",
         Authenticate: "\u0410\u0432\u0442\u0435\u043D\u0442\u0438\u0444\u0456\u043A\u0443\u0432\u0430\u0442\u0438",
-        web_id_input_tip: `\u0412\u0438 \u043C\u043E\u0436\u0435\u0442\u0435 \u0432\u0432\u0435\u0441\u0442\u0438 ID \u0437 \u0442\u043E\u0433\u043E \u0441\u0430\u043C\u043E\u0433\u043E \u0441\u0435\u0440\u0432\u0435\u0440\u0443, \u043F\u0440\u044F\u043C\u0438\u0439 IP-\u0434\u043E\u0441\u0442\u0443\u043F \u0443 \u0432\u0435\u0431-\u043A\u043B\u0456\u0454\u043D\u0442\u0456 \u043D\u0435 \u043F\u0456\u0434\u0442\u0440\u0438\u043C\u0443\u0454\u0442\u044C\u0441\u044F.
-\u042F\u043A\u0449\u043E \u0432\u0438 \u0445\u043E\u0447\u0435\u0442\u0435 \u043E\u0442\u0440\u0438\u043C\u0430\u0442\u0438 \u0434\u043E\u0441\u0442\u0443\u043F \u0434\u043E \u043F\u0440\u0438\u0441\u0442\u0440\u043E\u044E \u043D\u0430 \u0456\u043D\u0448\u043E\u043C\u0443 \u0441\u0435\u0440\u0432\u0435\u0440\u0456, \u0431\u0443\u0434\u044C \u043B\u0430\u0441\u043A\u0430, \u0434\u043E\u0434\u0430\u0439\u0442\u0435 \u0430\u0434\u0440\u0435\u0441\u0443 \u0441\u0435\u0440\u0432\u0435\u0440\u0430 (<id>@<\u0430\u0434\u0440\u0435\u0441\u0430_\u0441\u0435\u0440\u0432\u0435\u0440\u0430>?key=<\u0437\u043D\u0430\u0447\u0435\u043D\u043D\u044F_\u043A\u043B\u044E\u0447\u0430>), \u043D\u0430\u043F\u0440\u0438\u043A\u043B\u0430\u0434,
+        web_id_input_tip: `\u0412\u0438 \u043C\u043E\u0436\u0435\u0442\u0435 \u0432\u0432\u0435\u0441\u0442\u0438 ID \u043D\u0430 \u0442\u043E\u043C\u0443 \u0441\u0430\u043C\u043E\u043C\u0443 \u0441\u0435\u0440\u0432\u0435\u0440\u0443, \u043F\u0440\u044F\u043C\u0438\u0439 IP-\u0434\u043E\u0441\u0442\u0443\u043F \u0443 \u0432\u0435\u0431-\u043A\u043B\u0456\u0454\u043D\u0442\u0456 \u043D\u0435 \u043F\u0456\u0434\u0442\u0440\u0438\u043C\u0443\u0454\u0442\u044C\u0441\u044F.
+\u042F\u043A\u0449\u043E \u0432\u0438 \u0445\u043E\u0447\u0435\u0442\u0435 \u043E\u0442\u0440\u0438\u043C\u0430\u0442\u0438 \u0434\u043E\u0441\u0442\u0443\u043F \u0434\u043E \u043F\u0440\u0438\u0441\u0442\u0440\u043E\u044E \u043D\u0430 \u0456\u043D\u0448\u043E\u043C\u0443 \u0441\u0435\u0440\u0432\u0435\u0440\u0456, \u0431\u0443\u0434\u044C \u043B\u0430\u0441\u043A\u0430, \u0434\u043E\u0434\u0430\u0439\u0442\u0435 \u0430\u0434\u0440\u0435\u0441\u0443 \u0441\u0435\u0440\u0432\u0435\u0440\u0430 (<id>@<\u0430\u0434\u0440\u0435\u0441\u0430_\u0441\u0435\u0440\u0432\u0435\u0440\u0430>?key=<\u0437\u043D\u0430\u0447\u0435\u043D\u043D\u044F_\u043A\u043B\u044E\u0447\u0430>). \u041D\u0430\u043F\u0440\u0438\u043A\u043B\u0430\u0434,
 9123456234@192.168.16.1:21117?key=5Qbwsde3unUcJBtrx9ZkvUmwFNoExHzpryHuPUdqlWM=.
-\u042F\u043A\u0449\u043E \u0432\u0438 \u0445\u043E\u0447\u0435\u0442\u0435 \u043E\u0442\u0440\u0438\u043C\u0430\u0442\u0438 \u0434\u043E\u0441\u0442\u0443\u043F \u0434\u043E \u043F\u0440\u0438\u0441\u0442\u0440\u043E\u044E \u043D\u0430 \u043F\u0443\u0431\u043B\u0456\u0447\u043D\u043E\u043C\u0443 \u0441\u0435\u0440\u0432\u0435\u0440\u0456, \u0431\u0443\u0434\u044C \u043B\u0430\u0441\u043A\u0430, \u0432\u0432\u0435\u0434\u0456\u0442\u044C "<id>@public", \u0434\u043B\u044F \u043F\u0443\u0431\u043B\u0456\u0447\u043D\u043E\u0433\u043E \u0441\u0435\u0440\u0432\u0435\u0440\u0430 \u043A\u043B\u044E\u0447 \u043D\u0435 \u043F\u043E\u0442\u0440\u0456\u0431\u0435\u043D.`,
-        Download: "",
-        "Upload folder": "",
-        "Upload files": "",
-        "Clipboard is synchronized": "",
-        "Update client clipboard": ""
+\u042F\u043A\u0449\u043E \u0432\u0438 \u0445\u043E\u0447\u0435\u0442\u0435 \u043E\u0442\u0440\u0438\u043C\u0430\u0442\u0438 \u0434\u043E\u0441\u0442\u0443\u043F \u0434\u043E \u043F\u0440\u0438\u0441\u0442\u0440\u043E\u044E \u043D\u0430 \u043F\u0443\u0431\u043B\u0456\u0447\u043D\u043E\u043C\u0443 \u0441\u0435\u0440\u0432\u0435\u0440\u0456, \u0431\u0443\u0434\u044C \u043B\u0430\u0441\u043A\u0430, \u0432\u0432\u0435\u0434\u0456\u0442\u044C "<id>@public". \u0414\u043B\u044F \u043F\u0443\u0431\u043B\u0456\u0447\u043D\u043E\u0433\u043E \u0441\u0435\u0440\u0432\u0435\u0440\u0430 \u043A\u043B\u044E\u0447 \u043D\u0435 \u043F\u043E\u0442\u0440\u0456\u0431\u0435\u043D.`,
+        Download: "\u041E\u0442\u0440\u0438\u043C\u0430\u0442\u0438",
+        "Upload folder": "\u041D\u0430\u0434\u0456\u0441\u043B\u0430\u0442\u0438 \u0442\u0435\u043A\u0443",
+        "Upload files": "\u041D\u0430\u0434\u0456\u0441\u043B\u0430\u0442\u0438 \u0444\u0430\u0439\u043B\u0438",
+        "Clipboard is synchronized": "\u0411\u0443\u0444\u0435\u0440 \u043E\u0431\u043C\u0456\u043D\u0443 \u0441\u0438\u043D\u0445\u0440\u043E\u043D\u0456\u0437\u043E\u0432\u0430\u043D\u043E",
+        "Update client clipboard": "\u041E\u043D\u043E\u0432\u0438\u0442\u0438 \u0431\u0443\u0444\u0435\u0440 \u043E\u0431\u043C\u0456\u043D\u0443 \u043A\u043B\u0456\u0454\u043D\u0442\u0430",
+        Untagged: ""
     }, cs: {
         Status: "Stav",
         "Your Desktop": "Va\u0161e plocha",
@@ -26792,7 +26831,8 @@ M\u016F\u017Eete se p\u0159ipojit k jin\xFDm za\u0159\xEDzen\xEDm, ale jin\xE1 z
         "Upload folder": "",
         "Upload files": "",
         "Clipboard is synchronized": "",
-        "Update client clipboard": ""
+        "Update client clipboard": "",
+        Untagged: ""
     }, nl: {
         Status: "Status",
         "Your Desktop": "Uw Bureaublad",
@@ -27455,7 +27495,8 @@ Als je toegang wilt krijgen tot een apparaat op een publieke server, voer dan "<
         "Upload folder": "Map uploaden",
         "Upload files": "Bestanden uploaden",
         "Clipboard is synchronized": "Klembord is gesynchroniseerd",
-        "Update client clipboard": "Klembord van client bijwerken"
+        "Update client clipboard": "Klembord van client bijwerken",
+        Untagged: ""
     }, fr: {
         Status: "Statut",
         "Your Desktop": "Votre bureau",
@@ -27601,7 +27642,7 @@ Als je toegang wilt krijgen tot een apparaat op een publieke server, voer dan "<
         "Failed to make direct connection to remote desktop": "Impossible d'\xE9tablir une connexion directe",
         "Set Password": "D\xE9finir le mot de passe",
         "OS Password": "Mot de passe du syst\xE8me d'exploitation",
-        install_tip: "Vous utilisez une version non install\xE9e. En raison des restrictions UAC, en tant que terminal contr\xF4l\xE9, dans certains cas, il ne sera pas en mesure de contr\xF4ler la souris et le clavier ou d'enregistrer l'\xE9cran. Veuillez cliquer sur le bouton ci-dessous pour installer RustDesk au syst\xE8me pour \xE9viter la question ci-dessus.",
+        install_tip: "RustDesk n'est pas install\xE9, ce qui peut limiter son utilisation \xE0 cause de l'UAC. Cliquez ci-dessous pour l'installer.",
         "Click to upgrade": "Cliquer pour mettre \xE0 niveau",
         "Click to download": "Cliquer pour t\xE9l\xE9charger",
         "Click to update": "Cliquer pour mettre \xE0 jour",
@@ -28116,6 +28157,7 @@ Vous pouvez vous connecter \xE0 d\u2019autres appareils, mais les autres apparei
         "Upload folder": "",
         "Upload files": "",
         "Clipboard is synchronized": "",
-        "Update client clipboard": ""
+        "Update client clipboard": "",
+        Untagged: ""
     }
 }
