@@ -69,3 +69,7 @@ type RegisterForm struct {
 	Password        string `json:"password" validate:"required,gte=4,lte=32"`
 	ConfirmPassword string `json:"confirm_password" validate:"required,gte=4,lte=32"`
 }
+
+type UserTokenBatchDeleteForm struct {
+	Ids []uint `json:"ids" validate:"required"`
+}

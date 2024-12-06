@@ -458,3 +458,7 @@ func (us *UserService) AutoRefreshAccessToken(ut *model.UserToken) {
 		us.RefreshAccessToken(ut)
 	}
 }
+
+func (us *UserService) BatchDeleteUserToken(ids []uint) error {
+	return global.DB.Where("id in ?", ids).Delete(&model.UserToken{}).Error
+}
