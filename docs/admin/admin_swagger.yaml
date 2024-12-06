@@ -78,11 +78,11 @@ definitions:
   admin.ChangeCurPasswordForm:
     properties:
       new_password:
-        maxLength: 20
+        maxLength: 32
         minLength: 4
         type: string
       old_password:
-        maxLength: 20
+        maxLength: 32
         minLength: 4
         type: string
     required:
@@ -238,7 +238,7 @@ definitions:
         - $ref: '#/definitions/model.StatusCode'
         minimum: 0
       username:
-        maxLength: 10
+        maxLength: 32
         minLength: 2
         type: string
     required:
@@ -258,12 +258,21 @@ definitions:
       id:
         type: integer
       password:
-        maxLength: 20
+        maxLength: 32
         minLength: 4
         type: string
     required:
     - id
     - password
+    type: object
+  admin.UserTokenBatchDeleteForm:
+    properties:
+      ids:
+        items:
+          type: integer
+        type: array
+    required:
+    - ids
     type: object
   model.AddressBook:
     properties:
@@ -2871,14 +2880,14 @@ paths:
     post:
       consumes:
       - application/json
-      description: 登录凭证删除
+      description: 登录凭证批量删除
       parameters:
       - description: 登录凭证信息
         in: body
         name: body
         required: true
         schema:
-          $ref: '#/definitions/model.UserToken'
+          $ref: '#/definitions/admin.UserTokenBatchDeleteForm'
       produces:
       - application/json
       responses:
@@ -2892,7 +2901,7 @@ paths:
             $ref: '#/definitions/response.Response'
       security:
       - token: []
-      summary: 登录凭证删除
+      summary: 登录凭证批量删除
       tags:
       - 登录凭证
   /admin/user_token/list:

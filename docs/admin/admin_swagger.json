@@ -3562,7 +3562,7 @@
                         "token": []
                     }
                 ],
-                "description": "登录凭证删除",
+                "description": "登录凭证批量删除",
                 "consumes": [
                     "application/json"
                 ],
@@ -3572,7 +3572,7 @@
                 "tags": [
                     "登录凭证"
                 ],
-                "summary": "登录凭证删除",
+                "summary": "登录凭证批量删除",
                 "parameters": [
                     {
                         "description": "登录凭证信息",
@@ -3580,7 +3580,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/model.UserToken"
+                            "$ref": "#/definitions/admin.UserTokenBatchDeleteForm"
                         }
                     }
                 ],
@@ -3791,12 +3791,12 @@
             "properties": {
                 "new_password": {
                     "type": "string",
-                    "maxLength": 20,
+                    "maxLength": 32,
                     "minLength": 4
                 },
                 "old_password": {
                     "type": "string",
-                    "maxLength": 20,
+                    "maxLength": 32,
                     "minLength": 4
                 }
             }
@@ -4031,7 +4031,7 @@
                 },
                 "username": {
                     "type": "string",
-                    "maxLength": 10,
+                    "maxLength": 32,
                     "minLength": 2
                 }
             }
@@ -4059,8 +4059,22 @@
                 },
                 "password": {
                     "type": "string",
-                    "maxLength": 20,
+                    "maxLength": 32,
                     "minLength": 4
+                }
+            }
+        },
+        "admin.UserTokenBatchDeleteForm": {
+            "type": "object",
+            "required": [
+                "ids"
+            ],
+            "properties": {
+                "ids": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
                 }
             }
         },

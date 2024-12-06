@@ -1356,7 +1356,7 @@ const docTemplateapi = `{
                 },
                 "password": {
                     "type": "string",
-                    "maxLength": 20,
+                    "maxLength": 32,
                     "minLength": 4
                 },
                 "type": {
@@ -1364,7 +1364,7 @@ const docTemplateapi = `{
                 },
                 "username": {
                     "type": "string",
-                    "maxLength": 10,
+                    "maxLength": 32,
                     "minLength": 2
                 },
                 "uuid": {
