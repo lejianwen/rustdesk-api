@@ -62,13 +62,13 @@ definitions:
       id:
         type: string
       password:
-        maxLength: 20
+        maxLength: 32
         minLength: 4
         type: string
       type:
         type: string
       username:
-        maxLength: 10
+        maxLength: 32
         minLength: 2
         type: string
       uuid:

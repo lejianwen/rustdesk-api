@@ -94,7 +94,7 @@ func (i *WebClient) SharedPeer(c *gin.Context) {
 // @Produce  json
 // @Success 200 {object} response.Response
 // @Failure 500 {object} response.Response
-// @Router /server-config [get]
+// @Router /server-config-v2 [get]
 // @Security token
 func (i *WebClient) ServerConfigV2(c *gin.Context) {
 	response.Success(

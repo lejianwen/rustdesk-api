@@ -3569,7 +3569,7 @@ const docTemplateadmin = `{
                         "token": []
                     }
                 ],
-                "description": "登录凭证删除",
+                "description": "登录凭证批量删除",
                 "consumes": [
                     "application/json"
                 ],
@@ -3579,7 +3579,7 @@ const docTemplateadmin = `{
                 "tags": [
                     "登录凭证"
                 ],
-                "summary": "登录凭证删除",
+                "summary": "登录凭证批量删除",
                 "parameters": [
                     {
                         "description": "登录凭证信息",
@@ -3587,7 +3587,7 @@ const docTemplateadmin = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/model.UserToken"
+                            "$ref": "#/definitions/admin.UserTokenBatchDeleteForm"
                         }
                     }
                 ],
@@ -3798,12 +3798,12 @@ const docTemplateadmin = `{
             "properties": {
                 "new_password": {
                     "type": "string",
-                    "maxLength": 20,
+                    "maxLength": 32,
                     "minLength": 4
                 },
                 "old_password": {
                     "type": "string",
-                    "maxLength": 20,
+                    "maxLength": 32,
                     "minLength": 4
                 }
             }
@@ -4038,7 +4038,7 @@ const docTemplateadmin = `{
                 },
                 "username": {
                     "type": "string",
-                    "maxLength": 10,
+                    "maxLength": 32,
                     "minLength": 2
                 }
             }
@@ -4066,8 +4066,22 @@ const docTemplateadmin = `{
                 },
                 "password": {
                     "type": "string",
-                    "maxLength": 20,
+                    "maxLength": 32,
                     "minLength": 4
+                }
+            }
+        },
+        "admin.UserTokenBatchDeleteForm": {
+            "type": "object",
+            "required": [
+                "ids"
+            ],
+            "properties": {
+                "ids": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
                 }
             }
         },
