@@ -3,6 +3,7 @@ package service
 import (
 	"Gwen/global"
 	"Gwen/model"
+	"encoding/json"
 	"github.com/google/uuid"
 	"gorm.io/gorm"
 	"strings"
@@ -114,6 +115,16 @@ func (s *AddressBookService) List(page, pageSize uint, where func(tx *gorm.DB)) 
 	tx.Scopes(Paginate(page, pageSize))
 	tx.Find(&res.AddressBooks)
 	return
+}
+
+func (s *AddressBookService) FromPeer(peer *model.Peer) (a *model.AddressBook) {
+	a = &model.AddressBook{}
+	a.Id = peer.Id
+	a.Username = peer.Username
+	a.Hostname = peer.Hostname
+	a.UserId = peer.UserId
+	a.Platform = s.PlatformFromOs(peer.Os)
+	return a
 }
 
 // Create 创建
@@ -317,4 +328,13 @@ func (s *AddressBookService) DeleteRule(t *model.AddressBookCollectionRule) erro
 func (s *AddressBookService) CheckCollectionOwner(uid uint, cid uint) bool {
 	p := s.CollectionInfoById(cid)
 	return p.UserId == uid
+}
+
+func (s *AddressBookService) BatchUpdateTags(abs []*model.AddressBook, tags []string) error {
+	ids := make([]uint, 0)
+	for _, ab := range abs {
+		ids = append(ids, ab.RowId)
+	}
+	tagsv, _ := json.Marshal(tags)
+	return global.DB.Model(&model.AddressBook{}).Where("row_id in ?", ids).Update("tags", tagsv).Error
 }

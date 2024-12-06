@@ -122,3 +122,13 @@ type AddressBookCollectionRuleQuery struct {
 	IsMy         int `form:"is_my"`
 	PageQuery
 }
+
+type BatchCreateFromPeersForm struct {
+	CollectionId uint     `json:"collection_id"`
+	PeerIds      []uint   `json:"peer_ids"`
+	Tags         []string `json:"tags"`
+}
+type BatchUpdateTagsForm struct {
+	RowIds []uint   `json:"row_ids"`
+	Tags   []string `json:"tags"`
+}
