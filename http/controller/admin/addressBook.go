@@ -6,6 +6,7 @@ import (
 	"Gwen/http/response"
 	"Gwen/model"
 	"Gwen/service"
+	"encoding/json"
 	_ "encoding/json"
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
@@ -326,4 +327,71 @@ func (ct *AddressBook) ShareByWebClient(c *gin.Context) {
 	response.Success(c, &gin.H{
 		"share_token": m.ShareToken,
 	})
+}
+
+func (ct *AddressBook) BatchCreateFromPeers(c *gin.Context) {
+	f := &admin.BatchCreateFromPeersForm{}
+	if err := c.ShouldBindJSON(f); err != nil {
+		response.Fail(c, 101, response.TranslateMsg(c, "ParamsError")+err.Error())
+		return
+	}
+	u := service.AllService.UserService.CurUser(c)
+
+	if f.CollectionId != 0 {
+		collection := service.AllService.AddressBookService.CollectionInfoById(f.CollectionId)
+		if collection.Id == 0 {
+			response.Fail(c, 101, response.TranslateMsg(c, "ItemNotFound"))
+			return
+		}
+		if collection.UserId != u.Id {
+			response.Fail(c, 101, response.TranslateMsg(c, "NoAccess"))
+			return
+		}
+	}
+
+	peers := service.AllService.PeerService.List(1, 999, func(tx *gorm.DB) {
+		tx.Where("row_id in ?", f.PeerIds)
+		tx.Where("user_id = ?", u.Id)
+	})
+	if peers.Total == 0 {
+		response.Fail(c, 101, response.TranslateMsg(c, "ItemNotFound"))
+		return
+	}
+
+	tags, _ := json.Marshal(f.Tags)
+	for _, peer := range peers.Peers {
+		ab := service.AllService.AddressBookService.FromPeer(peer)
+		ab.Tags = tags
+		ab.CollectionId = f.CollectionId
+		ex := service.AllService.AddressBookService.InfoByUserIdAndIdAndCid(u.Id, ab.Id, ab.CollectionId)
+		if ex.RowId != 0 {
+			continue
+		}
+		service.AllService.AddressBookService.Create(ab)
+	}
+	response.Success(c, nil)
+}
+
+func (ct *AddressBook) BatchUpdateTags(c *gin.Context) {
+	f := &admin.BatchUpdateTagsForm{}
+	if err := c.ShouldBindJSON(f); err != nil {
+		response.Fail(c, 101, response.TranslateMsg(c, "ParamsError")+err.Error())
+		return
+	}
+	u := service.AllService.UserService.CurUser(c)
+
+	abs := service.AllService.AddressBookService.List(1, 999, func(tx *gorm.DB) {
+		tx.Where("row_id in ?", f.RowIds)
+		tx.Where("user_id = ?", u.Id)
+	})
+	if abs.Total == 0 {
+		response.Fail(c, 101, response.TranslateMsg(c, "ItemNotFound"))
+		return
+	}
+	err := service.AllService.AddressBookService.BatchUpdateTags(abs.AddressBooks, f.Tags)
+	if err != nil {
+		response.Fail(c, 101, response.TranslateMsg(c, "OperationFailed")+err.Error())
+		return
+	}
+	response.Success(c, nil)
 }
