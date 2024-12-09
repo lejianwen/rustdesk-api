@@ -347,25 +347,7 @@ proxy:
       ```
      
    - S6的镜像
-     - 如果使用***自定义KEY***，会需要修改启动脚本，覆盖镜像中的`/etc/s6-overlay/s6-rc.d/hbbr/run`和`/etc/s6-overlay/s6-rc.d/hbbr/run`
-         1. 创建`hbbr/run`，自定义KEY才需要
-            ```bash
-            #!/command/with-contenv sh
-            cd /data
-            PARAMS=
-            [ "${ENCRYPTED_ONLY}" = "1" ] && PARAMS="-k ${KEY}"
-            /usr/bin/hbbr $PARAMS
-            ```
-         2. 创建`hbbs/run`，自定义KEY才需要
-             ```bash
-             #!/command/with-contenv sh
-             sleep 2
-             cd /data
-             PARAMS=
-             [ "${ENCRYPTED_ONLY}" = "1" ] && PARAMS="-k ${KEY}"
-             /usr/bin/hbbs -r $RELAY $PARAMS
-             ```
-         3. 修改`docker-compose.yml`中的`s6`部分
+     - 如果使用***系统生成的KEY***或者***自定义KEY_PUB,KEY_PRIV***，不需要修改启动脚本，但要在生成KEY后获取到KEY再`docker-compose up -d`
          ```yaml
          networks:
            rustdesk-net:
@@ -384,11 +366,8 @@ proxy:
              environment:
                - RELAY=192.168.1.66:21117
                - ENCRYPTED_ONLY=1
-               - KEY=<key>  #自定义KEY
              volumes:
                - ./data:/data
-               - ./hbbr/run:/etc/s6-overlay/s6-rc.d/hbbr/run 
-               - ./hbbs/run:/etc/s6-overlay/s6-rc.d/hbbs/run 
              restart: unless-stopped
            rustdesk-api:
              container_name: rustdesk-api
@@ -400,14 +379,32 @@ proxy:
                - RUSTDESK_API_RUSTDESK_ID_SERVER=192.168.1.66:21116
                - RUSTDESK_API_RUSTDESK_RELAY_SERVER=192.168.1.66:21117
                - RUSTDESK_API_RUSTDESK_API_SERVER=http://192.168.1.66:21114
-               - RUSTDESK_API_RUSTDESK_KEY=<key>
+               - RUSTDESK_API_RUSTDESK_KEY=<key> #系统生成的KEY
              volumes:
                - /data/rustdesk/api:/app/data #将数据库挂载
              networks:
                - rustdesk-net
              restart: unless-stopped
          ```
-   - 如果使用***系统生成的KEY***或者***自定义KEY_PUB,KEY_PRIV***，不需要修改启动脚本，但要在生成KEY后获取到KEY再`docker-compose up -d`
+     - 如果使用***自定义KEY***，会需要修改启动脚本，覆盖镜像中的`/etc/s6-overlay/s6-rc.d/hbbr/run`和`/etc/s6-overlay/s6-rc.d/hbbr/run`
+       1. 创建`hbbr/run`，自定义KEY才需要
+          ```bash
+          #!/command/with-contenv sh
+          cd /data
+          PARAMS=
+          [ "${ENCRYPTED_ONLY}" = "1" ] && PARAMS="-k ${KEY}"
+          /usr/bin/hbbr $PARAMS
+          ```
+       2. 创建`hbbs/run`，自定义KEY才需要
+           ```bash
+           #!/command/with-contenv sh
+           sleep 2
+           cd /data
+           PARAMS=
+           [ "${ENCRYPTED_ONLY}" = "1" ] && PARAMS="-k ${KEY}"
+           /usr/bin/hbbs -r $RELAY $PARAMS
+           ```
+       3. 修改`docker-compose.yml`中的`s6`部分
        ```yaml
        networks:
          rustdesk-net:
@@ -426,8 +423,11 @@ proxy:
            environment:
              - RELAY=192.168.1.66:21117
              - ENCRYPTED_ONLY=1
+             - KEY=<key>  #自定义KEY
            volumes:
              - ./data:/data
+             - ./hbbr/run:/etc/s6-overlay/s6-rc.d/hbbr/run 
+             - ./hbbs/run:/etc/s6-overlay/s6-rc.d/hbbs/run 
            restart: unless-stopped
          rustdesk-api:
            container_name: rustdesk-api
@@ -439,13 +439,34 @@ proxy:
              - RUSTDESK_API_RUSTDESK_ID_SERVER=192.168.1.66:21116
              - RUSTDESK_API_RUSTDESK_RELAY_SERVER=192.168.1.66:21117
              - RUSTDESK_API_RUSTDESK_API_SERVER=http://192.168.1.66:21114
-             - RUSTDESK_API_RUSTDESK_KEY=<key> #系统生成的KEY
+             - RUSTDESK_API_RUSTDESK_KEY=<key>
            volumes:
              - /data/rustdesk/api:/app/data #将数据库挂载
            networks:
              - rustdesk-net
            restart: unless-stopped
        ```
+
+#### nginx反代
+
+在`nginx`中配置反代
+
+```
+server {
+    listen <your port>;
+    server_name <your server>;
+    location / {
+        proxy_pass http://<api-server[:port]>;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+}
+```
+##### HTTPS等更多相关配置参考[wiki](https://github.com/lejianwen/rustdesk-api/wiki/Web-Client-V2-Preview-Document)
+
+
 #### 下载release直接运行
 
 [下载地址](https://github.com/lejianwen/rustdesk-api/releases)
@@ -488,21 +509,7 @@ proxy:
 
 6. 打开浏览器访问`http://<your server[:port]>/_admin/`，默认用户名密码为`admin`，请及时更改密码。
 
-#### nginx反代
-在`nginx`中配置反代
-```
-server {
-    listen <your port>;
-    server_name <your server>;
-    location / {
-        proxy_pass http://<api-server[:port]>;
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto $scheme;
-    }
-}
-```
+
 ## 其他
 
 - [修改客户端ID](https://github.com/abdullah-erturk/RustDesk-ID-Changer)
