@@ -1,22 +1,22 @@
-import {getServerConf} from "./ljw.js?v=6"
+import {getServerConf} from "./ljw.js?v=7"
 import {F as oa, J as Ne, L as je, l as I4, m as r, P as na, s as aa, z as Z4} from "./vendor.js?v=0b990c6e";
-import {ids as langIds, lang} from './lang.js?v=6'
+import {ids as langIds, lang} from './lang.js?v=7'
 
 var ia = Object.defineProperty;
 var ta = (u, e, i) => e in u ? ia(u, e, {enumerable: !0, configurable: !0, writable: !0, value: i}) : u[e] = i;
-var d = (u, e, i) => (ta(u, typeof e != "symbol" ? e + "" : e, i), i), ee = (u, e, i) => {
+var d = (u, e, i) => (ta(u, typeof e != "symbol" ? e + "" : e, i), i), ue = (u, e, i) => {
     if (!e.has(u)) throw TypeError("Cannot " + i)
 };
-var h = (u, e, i) => (ee(u, e, "read from private field"), i ? i.call(u) : e.get(u)), pu = (u, e, i) => {
+var h = (u, e, i) => (ue(u, e, "read from private field"), i ? i.call(u) : e.get(u)), pu = (u, e, i) => {
     if (e.has(u)) throw TypeError("Cannot add the same private member more than once");
     e instanceof WeakSet ? e.add(u) : e.set(u, i)
-}, p4 = (u, e, i, o) => (ee(u, e, "write to private field"), o ? o.call(u, i) : e.set(u, i), i), Ie = (u, e, i, o) => ({
+}, p4 = (u, e, i, o) => (ue(u, e, "write to private field"), o ? o.call(u, i) : e.set(u, i), i), Ie = (u, e, i, o) => ({
     set _(a) {
         p4(u, e, a, i)
     }, get _() {
         return h(u, e, o)
     }
-}), Te = (u, e, i) => (ee(u, e, "access private method"), i);
+}), Te = (u, e, i) => (ue(u, e, "access private method"), i);
 
 
 const ra = function () {
@@ -40,7 +40,7 @@ const ra = function () {
     }
 };
 ra();
-var oe = (u => (u[u.I420 = 0] = "I420", u[u.I444 = 1] = "I444", u[u.UNRECOGNIZED = -1] = "UNRECOGNIZED", u))(oe || {});
+var ae = (u => (u[u.I420 = 0] = "I420", u[u.I444 = 1] = "I444", u[u.UNRECOGNIZED = -1] = "UNRECOGNIZED", u))(ae || {});
 
 function sa(u) {
     switch (u) {
@@ -1185,7 +1185,7 @@ function Ve() {
     return {id: "", pk: new Uint8Array(0)}
 }
 
-const ne = {
+const oe = {
     encode(u, e = r.Writer.create()) {
         return u.id !== "" && e.uint32(10).string(u.id), u.pk.length !== 0 && e.uint32(18).bytes(u.pk), e
     }, decode(u, e) {
@@ -1214,7 +1214,7 @@ const ne = {
         const e = {};
         return u.id !== "" && (e.id = u.id), u.pk.length !== 0 && (e.pk = I(u.pk)), e
     }, create(u) {
-        return ne.fromPartial(u != null ? u : {})
+        return oe.fromPartial(u != null ? u : {})
     }, fromPartial(u) {
         var i, o;
         const e = Ve();
@@ -6025,7 +6025,7 @@ function n(u) {
     return u != null
 }
 
-var re = (u => (u[u.DEFAULT_CONN = 0] = "DEFAULT_CONN", u[u.FILE_TRANSFER = 1] = "FILE_TRANSFER", u[u.PORT_FORWARD = 2] = "PORT_FORWARD", u[u.RDP = 3] = "RDP", u[u.UNRECOGNIZED = -1] = "UNRECOGNIZED", u))(re || {});
+var ne = (u => (u[u.DEFAULT_CONN = 0] = "DEFAULT_CONN", u[u.FILE_TRANSFER = 1] = "FILE_TRANSFER", u[u.PORT_FORWARD = 2] = "PORT_FORWARD", u[u.RDP = 3] = "RDP", u[u.UNRECOGNIZED = -1] = "UNRECOGNIZED", u))(ne || {});
 
 function ct(u) {
     switch (u) {
@@ -7590,7 +7590,7 @@ class j4 {
             let i = new Uint8Array(e.data);
             this._recvDataCount += i.length;
             const o = this._secretKey;
-            o && (o[2] += 1, i = Mn(i, o[2], o[0]));
+            o && (o[2] += 1, i = jn(i, o[2], o[0]));
             let a;
             i.length == 0 ? a = new Uint8Array : a = this._isRendezvous ? this.parseRendezvous(i) : this.parseMessage(i), this._buf.push(a), this._eventHandlers.message && (this._isProcessing || this.processQueue())
         }
@@ -7689,10 +7689,10 @@ const Ia = "Desktop session not ready", Ta = "Desktop xsession failed", ja = "De
     Za = "https://github.com/rustdesk/rustdesk/wiki/Headless-Linux-Support",
     Ki = {"rustdesk docs home": Ja, "rustdesk docs x11-required": Ga, "rustdesk x11 headless": Za},
     Hi = "Input source 1", Qa = "map", Ji = "translate", Xa = "ShiftLeft", Ya = "ShiftRight", m4 = "ControlLeft",
-    mt = "ControlRight", De = "AltLeft", At = "AltRight", Ft = "MetaLeft", _t = "MetaRight", Y4 = "Windows",
-    $4 = "Linux", Be = "Mac OS", vt = "Android", $a = "iOS", uo = "web", eo = "ISO", io = 1, to = 2, Gi = 3, Zi = 4,
-    x4 = 1, y4 = 2, ao = 4, oo = 8, no = 16, ie = "public", Qi = "OeVuKk5nlHiXp+APNn0Y3pC1Iwpwn44JGqrQCsWqmBw=",
-    ro = 1e3, so = 6e4, se = lang, lo = langIds;
+    mt = "ControlRight", pe = "AltLeft", At = "AltRight", Ft = "MetaLeft", _t = "MetaRight", Y4 = "Windows",
+    De = "Linux", Be = "Mac OS", vt = "Android", $a = "iOS", uo = "web", eo = "ISO", io = 1, to = 2, Gi = 3, Zi = 4,
+    x4 = 1, y4 = 2, ao = 4, oo = 8, no = 16, ee = "public", Qi = "OeVuKk5nlHiXp+APNn0Y3pC1Iwpwn44JGqrQCsWqmBw=",
+    ro = 1e3, so = 6e4, re = lang, lo = langIds;
 
 function Eo(u, e, i, o) {
     return u == "error" && e == "Connection Error" && ((i.indexOf("10054") < 0 || i.indexOf("104") < 0) && o || i.toLowerCase().indexOf("offline") < 0 && i.toLowerCase().indexOf("exist") < 0 && i.toLowerCase().indexOf("handshake") < 0 && i.toLowerCase().indexOf("failed") < 0 && i.toLowerCase().indexOf("resolve") < 0 && i.toLowerCase().indexOf("mismatch") < 0 && i.toLowerCase().indexOf("manually") < 0 && i.toLowerCase().indexOf("not allowed") < 0)
@@ -7817,7 +7817,7 @@ const co = {
     RShift: "RShift",
     CTRL_ALT_DEL: "CtrlAltDel",
     LOCK_SCREEN: "LockScreen"
-}, le = "1.3.4", Co = "2024-12-03 14:23";
+}, se = "1.3.5", Co = "2024-12-06 18:29";
 
 class A {
     static setItem(e, i) {
@@ -7923,12 +7923,12 @@ const Cu = () => {
 }, po = u => {
     const e = Cu();
     delete e[u], me(e)
-}, Ee = u => Cu()[u], Do = (u, e) => {
+}, le = u => Cu()[u], Do = (u, e) => {
     const i = Cu();
     i[u] = e, me(i)
 }, Bo = (u, e) => {
     var o;
-    return (o = Ee(u)[e]) != null ? o : u0(e)
+    return (o = le(u)[e]) != null ? o : u0(e)
 }, kt = (u, e, i) => {
     const o = Cu(), a = o[u] || {};
     i == null ? delete a[e] : a[e] = i, a.tm = new Date().getTime(), o[u] = a, me(o)
@@ -7937,11 +7937,11 @@ const Cu = () => {
 }, mo = u => A.getItem(`option:flutter:local:${u}`), Ao = (u, e) => {
     A.setItem(`option:flutter:local:${u}`, e)
 }, ht = async u => {
-    const e = Jt(), i = Xu.publicKey, o = ue(0), a = e.from_string(u), t = await $t(a),
+    const e = Jt(), i = Xu.publicKey, o = $4(0), a = e.from_string(u), t = await $t(a),
         s = e.crypto_secretbox_easy(t, o, i);
     return Z(s)
 }, ft = async u => {
-    const e = Jt(), i = Xu.publicKey, o = c4(u), a = e.crypto_secretbox_open_easy(o, ue(0), i), t = await ua(a);
+    const e = Jt(), i = Xu.publicKey, o = c4(u), a = e.crypto_secretbox_open_easy(o, $4(0), i), t = await ua(a);
     return e.to_string(t)
 }, Fo = async u => {
     let e = await ht(u);
@@ -7978,7 +7978,7 @@ function fo() {
 
 function xo(u, e) {
     const i = yt || u.substring(u.length - 2).toLowerCase();
-    let o = se.en, a = se[i];
+    let o = re.en, a = re[i];
     a || (a = o);
     let t = a[e];
     return !t && i != "en" && (t = o[e]), t || e
@@ -7996,13 +7996,13 @@ function wo(u, e) {
     return o == j.UNRECOGNIZED && console.error("Unknown control key " + i), w.fromPartial({control_key: o})
 }
 
-async function te(u) {
+async function ie(u) {
     await new Promise(e => setTimeout(e, u))
 }
 
 function bt() {
     let u = A.getItem("option:local:lang");
-    if (u && (u.includes("-") && (u = u.split("-")[1]), u.includes("_") && (u = u.split("_")[1]), se.hasOwnProperty(u))) return u;
+    if (u && (u.includes("-") && (u = u.split("-")[1]), u.includes("_") && (u = u.split("_")[1]), re.hasOwnProperty(u))) return u;
     try {
         const e = window.location.search;
         return new URLSearchParams(e).get("lang") || ""
@@ -8036,7 +8036,7 @@ async function So() {
 }
 
 function Z(u) {
-    return Tn(u)
+    return Pn(u)
 }
 
 function c4(u) {
@@ -8044,7 +8044,7 @@ function c4(u) {
 }
 
 async function zo() {
-    return await Jn()
+    return await qn()
 }
 
 function N4() {
@@ -8070,7 +8070,7 @@ function Zu(u) {
 
 function zt() {
     const u = navigator.userAgent.toLowerCase();
-    return u.includes("win") ? Y4 : u.includes("mac") ? Be : u.includes("linux") ? $4 : u.includes("android") ? vt : u.includes("iphone") || u.includes("ipad") ? $a : "Unknown OS"
+    return u.includes("win") ? Y4 : u.includes("mac") ? Be : u.includes("linux") ? De : u.includes("android") ? vt : u.includes("iphone") || u.includes("ipad") ? $a : "Unknown OS"
 }
 
 async function Ro(u, e) {
@@ -8834,24 +8834,23 @@ const Fe = {
         Lang3: "Lang3",
         Lang4: "Lang4",
         Lang5: "Lang5"
-    }, Lo = new Set(["ShiftLeft", "ShiftRight", "ControlLeft", "ControlRight", "MetaLeft", "MetaRight", "Alt", "AltGr"]),
-    Wo = new Set(["BackQuote", "Num1", "Num2", "Num3", "Num4", "Num5", "Num6", "Num7", "Num8", "Num9", "Num0", "Minus", "Equal", "KeyA", "KeyB", "KeyC", "KeyD", "KeyE", "KeyF", "KeyG", "KeyH", "KeyI", "KeyJ", "KeyK", "KeyL", "KeyM", "KeyN", "KeyO", "KeyP", "KeyQ", "KeyR", "KeyS", "KeyT", "KeyU", "KeyV", "KeyW", "KeyX", "KeyY", "KeyZ", "LeftBracket", "RightBracket", "BackSlash", "SemiColon", "Quote", "Comma", "Dot", "Slash", "IntlBackslash", "Space"]),
-    Vo = new Set(["Kp0", "Kp1", "Kp2", "Kp3", "Kp4", "Kp5", "Kp6", "Kp7", "Kp8", "Kp9", "KpMinus", "KpMultiply", "KpDivide", "KpPlus", "KpDecimal"]);
+    },
+    Lo = new Set(["BackQuote", "Num1", "Num2", "Num3", "Num4", "Num5", "Num6", "Num7", "Num8", "Num9", "Num0", "Minus", "Equal", "KeyA", "KeyB", "KeyC", "KeyD", "KeyE", "KeyF", "KeyG", "KeyH", "KeyI", "KeyJ", "KeyK", "KeyL", "KeyM", "KeyN", "KeyO", "KeyP", "KeyQ", "KeyR", "KeyS", "KeyT", "KeyU", "KeyV", "KeyW", "KeyX", "KeyY", "KeyZ", "LeftBracket", "RightBracket", "BackSlash", "SemiColon", "Quote", "Comma", "Dot", "Slash", "IntlBackslash", "Space"]),
+    Wo = new Set(["Kp0", "Kp1", "Kp2", "Kp3", "Kp4", "Kp5", "Kp6", "Kp7", "Kp8", "Kp9", "KpMinus", "KpMultiply", "KpDivide", "KpPlus", "KpDecimal"]);
 let D4 = !1, ru = !1;
 const b = {};
 b[Xa] = !1;
 b[Ya] = !1;
 b[m4] = !1;
 b[mt] = !1;
-b[De] = !1;
+b[pe] = !1;
 b[At] = !1;
 b[Ft] = !1;
 b[_t] = !1;
-const _4 = {}, _e = u => Vo.has(u), ve = u => Wo.has(u), qo = u => Lo.has(u),
-    Ko = () => b[m4] || b[mt] || b[De] || b[At] || b[Ft] || b[_t];
+const _4 = {}, _e = u => Wo.has(u), ve = u => Lo.has(u), Vo = () => b[m4] || b[mt] || b[pe] || b[At] || b[Ft] || b[_t];
 let _, O4 = !1;
 
-function Ho() {
+function qo() {
     if (O4) {
         console.info("Keyboard event listener is already started");
         return
@@ -8859,7 +8858,7 @@ function Ho() {
     document.addEventListener("keydown", M4), document.addEventListener("keyup", M4), _ || (_ = document.createElement("div"), _.setAttribute("contenteditable", "true"), _.id = "hiddenInput", _.style.position = "absolute", _.style.left = "-9999px", _.style.height = "1px", _.style.width = "1px", document.body.appendChild(_), Yu ? _.addEventListener("input", U4) : (H4 || Qu) && _.addEventListener("compositionend", U4), _.focus()), O4 = !0, console.info("Keyboard event listener started")
 }
 
-function de() {
+function Ee() {
     if (!O4) {
         console.info("Keyboard event listener is not started");
         return
@@ -8885,16 +8884,16 @@ function U4(u) {
     u.preventDefault();
     let i = null;
     if ((u instanceof InputEvent || u instanceof CompositionEvent) && (i = u.data), !i) return;
-    const o = w.fromPartial({seq: i, mode: C4.Translate, down: !0, press: !0});
+    const o = w.fromPartial({seq: i, mode: C4.Translate, down: !0, press: !1});
     ke(e, o), ((t = (a = _ == null ? void 0 : _.textContent) == null ? void 0 : a.length) != null ? t : 0) > 10 && (_.textContent = "")
 }
 
 function Rt(u, e, i) {
-    const o = Zo(u, e, i);
+    const o = Jo(u, e, i);
     for (const a of o) ke(u, a)
 }
 
-function Jo(u, e, i, o) {
+function Ko(u, e, i, o) {
     const a = Oo[e];
     if (!a) {
         console.error("Unknown USB HID code " + e);
@@ -8907,7 +8906,7 @@ function Jo(u, e, i, o) {
     for (const E of t) ke(u, E)
 }
 
-function Go() {
+function Ho() {
     const u = e0();
     if (!!u) for (const e in _4) {
         const i = _4[e];
@@ -8915,19 +8914,19 @@ function Go() {
     }
 }
 
-function Zo(u, e, i) {
+function Jo(u, e, i) {
     var c;
     const o = e.code, a = Uo[o];
     if (!a) return console.error("Key code is not supported " + o), [];
-    const t = u.getOption("keyboard_mode"), s = Qo(e);
-    $o(e, i), i ? _4[o] = e : delete _4[o];
+    const t = u.getOption("keyboard_mode"), s = Go(e);
+    Qo(e, i), i ? _4[o] = e : delete _4[o];
     let l = [];
     switch (t) {
         case Qa:
             l = (c = L4(u, a, i)) != null ? c : [];
             break;
         case Ji:
-            l = un(u, e, a, i);
+            l = Xo(u, e, a, i);
             break
     }
     if (!l) return [];
@@ -8943,21 +8942,16 @@ function It(u, e, i, o) {
     for (const s of u) o && (e & 1 << 1) != 0 && s.modifiers.push(j.CapsLock), i && (e & 1 << 2) != 0 && s.modifiers.push(j.NumLock)
 }
 
-function Qo(u) {
+function Go(u) {
     let a = 0;
     return u.getModifierState("CapsLock") && (a |= 1 << 1), u.getModifierState("NumLock") && (a |= 1 << 2), u.getModifierState("ScrollLock") && (a |= 1 << 3), a
 }
 
-function Xo(u, e) {
-    return u == Y4 ? Fe[e] : u == $4 ? jo[e] : u == vt ? No[e] : u == Be ? (A.getItem("option:local:kb_layout") == eo && (e == "IntlBackslash" ? e = "BackQuote" : e == "BackQuote" && (e = "IntlBackslash")), Mo[e]) : null
+function Zo(u, e) {
+    return u == Y4 ? Fe[e] : u == De ? jo[e] : u == vt ? No[e] : u == Be ? (A.getItem("option:local:kb_layout") == eo && (e == "IntlBackslash" ? e = "BackQuote" : e == "BackQuote" && (e = "IntlBackslash")), Mo[e]) : null
 }
 
-function Yo(u) {
-    let e = {...u};
-    return e.down = !1, [u, e]
-}
-
-function $o(u, e) {
+function Qo(u, e) {
     const i = u.code;
     i in b && (b[i] = e)
 }
@@ -8965,13 +8959,16 @@ function $o(u, e) {
 function L4(u, e, i) {
     const o = u.getPeerPlatform(), a = u.isSwapControlCommand();
     e == "ControlLeft" || e == "ControlRight" ? a && (e = "MetaLeft") : (e == "MetaLeft" || e == "MetaRight") && a && (e = "ControlLeft");
-    const t = Xo(o, e);
-    if (t == null) return console.error("Unknown key code " + e + " for platform " + o), [];
-    const s = w.fromPartial({chr: t, mode: C4.Map, down: i, press: i});
-    return o === $4 && i && !qo(e) ? Yo(s) : [s]
+    const t = Zo(o, e);
+    return t == null ? (console.error("Unknown key code " + e + " for platform " + o), []) : [w.fromPartial({
+        chr: t,
+        mode: C4.Map,
+        down: i,
+        press: !1
+    })]
 }
 
-function un(u, e, i, o) {
+function Xo(u, e, i, o) {
     const a = _ === document.activeElement;
     if (_ && _.focus(), H4 && _ && a && e.key === "Process") return [];
     const t = ve(i), s = e.key === "Dead";
@@ -8987,26 +8984,26 @@ function un(u, e, i, o) {
     })]) : [];
     const E = u.getPeerPlatform();
     let c = [];
-    return Yu && (c = en(E, e, o)), (Yu || H4) && c.length === 0 && o && t && (c = Xi(e, o)), Yu && D4 || (Qu && o && t && !b[De] && c.push(...Xi(e, o)), c.length === 0 && c.push(...L4(u, i, o))), c
+    return Yu && (c = Yo(E, e, o)), (Yu || H4) && c.length === 0 && o && t && (c = Xi(e, o)), Yu && D4 || (Qu && o && t && !b[pe] && c.push(...Xi(e, o)), c.length === 0 && c.push(...L4(u, i, o))), c
 }
 
-function en(u, e, i) {
-    if (u !== Y4 || !Ko()) return [];
+function Yo(u, e, i) {
+    if (u !== Y4 || !Vo()) return [];
     let o;
     const a = Fe[e.code];
     return a === void 0 ? (console.error("Key code cannot be converted to scan code: " + e.code), []) : (i ? e.key.length === 1 && (o = e.key.charCodeAt(0) & 65535 | a << 16) : o = a << 16, o === void 0 ? [] : [w.fromPartial({
         win2win_hotkey: o,
         mode: C4.Translate,
         down: i,
-        press: i
+        press: !1
     })])
 }
 
 function Xi(u, e) {
-    return u.key ? [w.fromPartial({seq: u.key, mode: C4.Translate, down: e, press: e})] : []
+    return u.key ? [w.fromPartial({seq: u.key, mode: C4.Translate, down: e, press: !1})] : []
 }
 
-class tn {
+class $o {
     constructor(e, i, o, a) {
         d(this, "_uri");
         d(this, "_feedback");
@@ -9089,19 +9086,19 @@ async function Yi(u, e = !1) {
     } catch {
         return
     }
-    e || i.length === 0 && o === "" || (await an(i) ? (W4 = i, await nn(u)) : o !== v4 && (v4 = o, await rn(u)))
+    e || i.length === 0 && o === "" || (await un(i) ? (W4 = i, await tn(u)) : o !== v4 && (v4 = o, await an(u)))
 }
 
-async function an(u) {
+async function un(u) {
     if (u.length !== W4.length) return !0;
     for (let e = 0; e < u.length; e++) {
         const i = u[e], o = W4[e];
-        if (!await on(i, o)) return !0
+        if (!await en(i, o)) return !0
     }
     return !1
 }
 
-async function on(u, e) {
+async function en(u, e) {
     if (u.types.length !== e.types.length) return !1;
     for (let i = 0; i < u.types.length; i++) {
         if (u.types[i] !== e.types[i]) return !1;
@@ -9129,7 +9126,7 @@ function Tt(u) {
     }
 }
 
-async function nn(u) {
+async function tn(u) {
     const e = [], i = (await Promise.all(W4.map(async o => {
         const a = [];
         for (const t of o.types) {
@@ -9150,7 +9147,7 @@ async function nn(u) {
     })
 }
 
-async function rn(u) {
+async function an(u) {
     const e = new TextEncoder().encode(v4);
     Yt(e, !1, i => {
         let o = !1;
@@ -9164,7 +9161,7 @@ async function rn(u) {
 function fe(u, e = void 0) {
     const i = () => {
         try {
-            Kn(new TextDecoder().decode(u.content)), he(), e == null || e()
+            Wn(new TextDecoder().decode(u.content)), he(), e == null || e()
         } catch (o) {
             console.error("Failed to copy to clipboard, ", o), document.hasFocus() || (q4 = u)
         }
@@ -9174,15 +9171,15 @@ function fe(u, e = void 0) {
     }) : i()
 }
 
-const z4 = document.createElement("canvas"), ae = z4.getContext("2d");
+const z4 = document.createElement("canvas"), te = z4.getContext("2d");
 
-function sn(u, e, i) {
-    if (z4.width = e, z4.height = i, !ae) return new Uint8Array(0);
-    const o = ae.createImageData(e, i);
-    return o.data.set(u), ae.putImageData(o, 0, 0), Uint8Array.from(atob(z4.toDataURL("image/png").split(",")[1]), a => a.charCodeAt(0))
+function on(u, e, i) {
+    if (z4.width = e, z4.height = i, !te) return new Uint8Array(0);
+    const o = te.createImageData(e, i);
+    return o.data.set(u), te.putImageData(o, 0, 0), Uint8Array.from(atob(z4.toDataURL("image/png").split(",")[1]), a => a.charCodeAt(0))
 }
 
-function ln(u, e = void 0) {
+function nn(u, e = void 0) {
     he();
     const i = u.clipboards, o = i.filter(a => a.compress).map(a => a.content);
     Pe(o, !0, async a => {
@@ -9199,7 +9196,7 @@ function ln(u, e = void 0) {
         }
         if (!(s["image/png"] !== void 0)) {
             for (const C of i) if (C.format === du.ImageRgba) {
-                const D = sn(C.content, C.width, C.height);
+                const D = on(C.content, C.width, C.height);
                 D.length > 0 && (s["image/png"] = new Blob([D], {type: "image/png"}));
                 break
             }
@@ -9228,14 +9225,14 @@ async function jt(u, e, i = void 0) {
 }
 
 function $i() {
-    In("info", "Clipboard is synchronized", 2e3)
+    zn("info", "Clipboard is synchronized", 2e3)
 }
 
 window.addEventListener("focus", function () {
     k4.length > 0 ? jt(V4, k4[0], $i) : q4 && fe(q4, $i)
 });
 
-class En {
+class rn {
     constructor({id: e, path: i}) {
         d(this, "id");
         d(this, "path");
@@ -9314,7 +9311,7 @@ const su = class {
                     try {
                         await this.writer.write(s)
                     } catch (l) {
-                        throw ce(this.id, "write failed", this.file_num), i(), l
+                        throw de(this.id, "write failed", this.file_num), i(), l
                     }
                 }
                 this.finished_size += s.length
@@ -9324,7 +9321,7 @@ const su = class {
                     try {
                         await this.writer.write(e.data)
                     } catch (s) {
-                        throw ce(this.id, "write failed", this.file_num), i(), s
+                        throw de(this.id, "write failed", this.file_num), i(), s
                     }
                 }
                 this.finished_size += e.data.length
@@ -9360,7 +9357,7 @@ const su = class {
             }
             let E = new Uint8Array(t, 0, l);
             if (l === 0) this.file_num += 1, this.currentReader = void 0, this.file_confirmed = !1, this.file_is_waiting = !1; else {
-                if (this.finished_size += l, !yn(su.join(this.path, o.name))) {
+                if (this.finished_size += l, !hn(su.join(this.path, o.name))) {
                     const C = await $t(new Uint8Array(t, 0, l));
                     if (C) C.length < l && (E = new Uint8Array(C), s = !0); else throw new Error("Failed to compress")
                 }
@@ -9388,7 +9385,7 @@ const su = class {
                 });
                 return this.confirm(t), su.new_send_confirm(t)
             } else {
-                bn(e.id, e.file_num, o, !0, e.is_identical);
+                fn(e.id, e.file_num, o, !0, e.is_identical);
                 return
             }
         });
@@ -9506,66 +9503,66 @@ d(lu, "newWrite", (e, i, o, a, t, s, l, E, c) => {
     });
     return D.fileHandles = c, D
 }), d(lu, "new_send_confirm", e => iu.fromPartial({file_action: P.fromPartial({send_confirm: e})})), d(lu, "join", (e, i) => i === "" ? e : e.endsWith("/") || e.endsWith("\\") ? e + i : A4() ? e + "\\" + i : e + "/" + i);
-const dn = (u, e, i, o) => {
+const sn = (u, e, i, o) => {
     let a = Pu.fromPartial({id: u, path: e, include_hidden: o, file_num: i});
     return P.fromPartial({send: a})
 }, ut = (u, e, i, o) => {
     if (!o) return;
     let a = ju.fromPartial({id: u, path: e, file_num: i});
     return P.fromPartial({remove_file: a})
-}, cn = (u, e, i) => {
+}, ln = (u, e, i) => {
     let o = xu.fromPartial({id: u, path: e, include_hidden: i});
     return P.fromPartial({all_files: o})
-}, Cn = (u, e) => {
+}, En = (u, e) => {
     let i = Nu.fromPartial({id: u, path: e});
     return P.fromPartial({create: i})
-}, pn = u => {
+}, dn = u => {
     let e = bu.fromPartial({id: u});
     return P.fromPartial({cancel: e})
-}, Dn = (u, e) => {
+}, cn = (u, e) => {
     let i = Tu.fromPartial({id: u, path: e, recursive: !0});
     return P.fromPartial({remove_dir: i})
-}, Bn = (u, e, i) => {
+}, Cn = (u, e, i) => {
     let o = yu.fromPartial({id: u, path: e, new_name: i});
     return P.fromPartial({rename: o})
-}, mn = (u, e, i, o, a) => {
+}, pn = (u, e, i, o, a) => {
     let t = Iu.fromPartial({id: u, path: e, file_num: i, files: o, total_size: a});
     return P.fromPartial({receive: t})
-}, An = u => {
+}, Dn = u => {
     let e = nu.fromPartial({block: u});
     return iu.fromPartial({file_response: e})
 }, et = (u, e, i) => {
     let o = nu.fromPartial({error: zu.fromPartial({id: u, error: e, file_num: i})});
     return iu.fromPartial({file_response: o})
-}, Fn = (u, e) => {
+}, Bn = (u, e) => {
     let i = nu.fromPartial({done: Ru.fromPartial({id: u, file_num: e})});
     return iu.fromPartial({file_response: i})
-}, _n = (u, e) => {
+}, mn = (u, e) => {
     let i = fu.fromPartial({path: u, include_hidden: e});
     return P.fromPartial({read_empty_dirs: i})
 }, it = (u, e, i, o, a) => {
-    a ? m("update_folder_files", {info: vn(u, e, a)}) : m("file_dir", {is_local: "false", value: kn(u, i, e)})
-}, vn = (u, e, i) => {
+    a ? m("update_folder_files", {info: An(u, e, a)}) : m("file_dir", {is_local: "false", value: Fn(u, i, e)})
+}, An = (u, e, i) => {
     let o = {
         id: u,
         entries: e.map(a => ({name: a.name, type: a.entry_type, time: a.modified_time, size: a.size})),
         total_size: e.reduce((a, t) => a + t.size, 0)
     };
     return i && (o.num_entries = e.length, delete o.entries), JSON.stringify(o)
-}, kn = (u, e, i) => {
+}, Fn = (u, e, i) => {
     let o = {
         id: u,
         path: e,
         entries: i.map(a => ({entry_type: a.entry_type, name: a.name, size: a.size, modified_time: a.modified_time}))
     };
     return JSON.stringify(o)
-}, ce = (u, e, i) => {
+}, de = (u, e, i) => {
     m("job_error", {id: u.toString(), err: e, file_num: i.toString()})
-}, gn = (u, e) => {
+}, _n = (u, e) => {
     m("job_done", {id: u.toString(), file_num: e.toString()})
 };
 var i0 = 0;
-const hn = async (u, e) => {
+const vn = async (u, e) => {
     try {
         if (u) {
             const i = await window.showDirectoryPicker();
@@ -9582,26 +9579,26 @@ const hn = async (u, e) => {
     } catch (i) {
         console.error("Failed to choose file:", i)
     }
-}, fn = async (u, e) => {
+}, kn = async (u, e) => {
     let i = [];
     for (let o of u) if (!o.is_last_job) try {
         let a = await o.read(e);
-        if (a) e(An(a)); else if (o.job_completed()) {
+        if (a) e(Dn(a)); else if (o.job_completed()) {
             i.push(o.id);
             let t = o.job_error();
-            e(t ? et(o.id, t, o.file_num) : Fn(o.id, o.file_num))
+            e(t ? et(o.id, t, o.file_num) : Bn(o.id, o.file_num))
         }
     } catch (a) {
         e(et(o.id, (a != null ? a : "read failed").toString(), o.file_num))
     }
     return i
-}, xn = u => {
+}, gn = u => {
     let e = u.lastIndexOf(".");
     return e >= 0 ? u.substring(e + 1) : ""
-}, yn = u => {
-    let e = xn(u);
+}, hn = u => {
+    let e = gn(u);
     return e === "xz" || e === "gz" || e === "zip" || e === "7z" || e === "rar" || e === "bz2" || e === "tgz" || e === "png" || e === "jpg"
-}, bn = (u, e, i, o, a) => {
+}, fn = (u, e, i, o, a) => {
     m("override_file_confirm", {
         id: u.toString(),
         file_num: e.toString(),
@@ -9691,7 +9688,7 @@ class Lt {
             var e;
             return Q((e = this._peerInfo) == null ? void 0 : e.version) >= Q("1.1.10")
         });
-        this._msgbox = Wt, this._draw = pe, this._msgs = [], this._id = "", this._frameCount = {}, this._fpsCalc = {
+        this._msgbox = Wt, this._draw = Ce, this._msgs = [], this._id = "", this._frameCount = {}, this._fpsCalc = {
             videoTestSpeed: [0, 0],
             skipBegining: 0,
             fps: void 0
@@ -9732,7 +9729,7 @@ class Lt {
         if (i == 0 && (i = 1), this._sessionId = i, this._restartingRemoteDevice = !1, this._id = e, e.includes("@")) {
             const E = e.split("@"), c = E[0], C = ((o = E[1]) != null ? o : "").split("?"),
                 D = (a = C[0]) != null ? a : "", B = (t = C[1]) != null ? t : "",
-                F = D == ie ? Qi : (s = B.split("&").reduce((S, g) => {
+                F = D == ee ? Qi : (s = B.split("&").reduce((S, g) => {
                     const U = g.indexOf("=");
                     if (U != -1) {
                         const h4 = g.substring(0, U).toLowerCase(), f4 = g.substring(U + 1);
@@ -9770,14 +9767,14 @@ class Lt {
         let e = this.getId(), i = Io(), o = Pt(), a = (F = this._otherServer) == null ? void 0 : F.server;
         this._otherServer && (i = this._otherServer.key, o = "");
         let t = "";
-        a ? a == ie ? t = R4(Ut) : t = R4(a) : t = P4(), this._options || (this._options = (y = Cu()[this._id]) != null ? y : this.getUserDefaultToggleOptions()), this._interval = setInterval(() => {
+        a ? a == ee ? t = R4(Ut) : t = R4(a) : t = P4(), this._options || (this._options = (y = Cu()[this._id]) != null ? y : this.getUserDefaultToggleOptions()), this._interval = setInterval(() => {
             var S;
             for (; this._msgs.length;) (S = this._ws) == null || S.sendMessage(this._msgs[0]), this._msgs.splice(0, 1)
         }, 1);
         const s = new j4(t, !0, "rendezvous");
         this._ws = s, console.log(new Date + ": Connecting to rendezvous server: " + t + ", for " + e), await s.open(), console.log(new Date + ": Connected to rendezvous server");
-        const l = this._isFileTransfer ? re.FILE_TRANSFER : re.DEFAULT_CONN, E = pt.SYMMETRIC,
-            c = Ku.fromPartial({id: e, licence_key: i, conn_type: l, nat_type: E, token: o, version: le});
+        const l = this._isFileTransfer ? ne.FILE_TRANSFER : ne.DEFAULT_CONN, E = pt.SYMMETRIC,
+            c = Ku.fromPartial({id: e, licence_key: i, conn_type: l, nat_type: E, token: o, version: se});
         s.sendRendezvous({punch_hole_request: c});
         const C = await s.next();
         s.close(), console.log(new Date + ": Got relay response");
@@ -9806,7 +9803,7 @@ class Lt {
                 this.msgbox("error", "Error", "Remote version is low, not support web");
                 return
             }
-            this._healthCheck = new tn(t, B.feedback, i, o), this._healthCheck.start(), await this.connectRelay(B, i)
+            this._healthCheck = new $o(t, B.feedback, i, o), this._healthCheck.start(), await this.connectRelay(B, i)
         }
     }
 
@@ -9832,7 +9829,7 @@ class Lt {
         if (e) {
             try {
                 if (e = await rt(e, i || Qi), e) {
-                    const T = ne.decode(e);
+                    const T = oe.decode(e);
                     T.id == this.getId() && (e = T.pk)
                 }
                 (e == null ? void 0 : e.length) != 32 && (e = void 0)
@@ -9862,7 +9859,7 @@ class Lt {
             (g = this._ws) == null || g.sendMessage({public_key: ea});
             return
         }
-        const t = ne.decode(a), s = t.id, l = t.pk;
+        const t = oe.decode(a), s = t.id, l = t.pk;
         if (s != this.getId()) {
             console.error("Handshake failed: sign failure");
             const T = K.fromPartial({});
@@ -9875,7 +9872,7 @@ class Lt {
             (h4 = this._ws) == null || h4.sendMessage({public_key: T});
             return
         }
-        const [E, c] = jn(), C = Nn(), D = On(C, l, E), B = K.fromPartial({asymmetric_value: c, symmetric_value: D});
+        const [E, c] = Rn(), C = In(), D = Tn(C, l, E), B = K.fromPartial({asymmetric_value: c, symmetric_value: D});
         return (f4 = this._ws) == null || f4.sendMessage({public_key: B}), (Re = this._ws) == null || Re.setSecretKey(C), console.log("secured"), !0
     }
 
@@ -9888,12 +9885,12 @@ class Lt {
                     delay: `${o.last_delay}`,
                     target_bitrate: `${o.target_bitrate}`
                 }), (i = this._ws) == null || i.sendMessage({test_delay: o}))
-            } else if (e != null && e.login_response) this.handleLoginResponse(e == null ? void 0 : e.login_response); else if (e != null && e.video_frame) this.handleVideoFrame(e == null ? void 0 : e.video_frame); else if (e != null && e.clipboard) fe(e == null ? void 0 : e.clipboard); else if (e != null && e.multi_clipboards) ln(e == null ? void 0 : e.multi_clipboards); else if (e != null && e.cursor_data) {
+            } else if (e != null && e.login_response) this.handleLoginResponse(e == null ? void 0 : e.login_response); else if (e != null && e.video_frame) this.handleVideoFrame(e == null ? void 0 : e.video_frame); else if (e != null && e.clipboard) fe(e == null ? void 0 : e.clipboard); else if (e != null && e.multi_clipboards) nn(e == null ? void 0 : e.multi_clipboards); else if (e != null && e.cursor_data) {
                 const o = e == null ? void 0 : e.cursor_data;
                 Pe(o.colors, !1, a => {
                     a && (o.colors = a, m("cursor_data", o))
                 })
-            } else if (e != null && e.cursor_id) m("cursor_id", {id: e == null ? void 0 : e.cursor_id}); else if (e != null && e.cursor_position) m("cursor_position", e == null ? void 0 : e.cursor_position); else if (e != null && e.misc) this.handleMisc(e == null ? void 0 : e.misc); else if (e != null && e.audio_frame) Vn(e == null ? void 0 : e.audio_frame.data); else if (e != null && e.message_box) this.handleMsgBox(e == null ? void 0 : e.message_box); else if (e != null && e.peer_info) this.handleSyncPeerInfo(e.peer_info); else if (e.file_response) await this.handleFileResponse(e.file_response); else if (e.file_action) {
+            } else if (e != null && e.cursor_id) m("cursor_id", {id: e == null ? void 0 : e.cursor_id}); else if (e != null && e.cursor_position) m("cursor_position", e == null ? void 0 : e.cursor_position); else if (e != null && e.misc) this.handleMisc(e == null ? void 0 : e.misc); else if (e != null && e.audio_frame) Un(e == null ? void 0 : e.audio_frame.data); else if (e != null && e.message_box) this.handleMsgBox(e == null ? void 0 : e.message_box); else if (e != null && e.peer_info) this.handleSyncPeerInfo(e.peer_info); else if (e.file_response) await this.handleFileResponse(e.file_response); else if (e.file_action) {
                 const o = e.file_action;
                 await this.handleFileAction(o)
             }
@@ -9918,7 +9915,7 @@ class Lt {
     }
 
     enterOrLeave(e) {
-        e === !1 ? (Go(), de()) : (Ce(), Yi(this))
+        e === !1 ? (Ho(), Ee()) : (ce(), Yi(this))
     }
 
     makeDisplaysMsg(e) {
@@ -10015,12 +10012,12 @@ class Lt {
     }
 
     draw(e, i) {
-        pe(e, new Uint8Array(i.data))
+        Ce(e, new Uint8Array(i.data))
     }
 
     close() {
         var e, i;
-        this._msgs = [], this._interval && (clearInterval(this._interval), this._interval = void 0), this._updateInterval && (clearInterval(this._updateInterval), this._updateInterval = void 0), this._ftTimer && (clearTimeout(this._ftTimer), this._ftTimer = void 0), (e = this._ws) == null || e.close(), this._ws = void 0, (i = this._healthCheck) == null || i.close(), this._healthCheck = void 0, this._readJobs = [], this._writeJobs = [], this._removeJobs = {}, this._fileHandles = {}, this._readRemoteEmptyDirsJobs = [], de(), this._lastChangeDisplay = void 0, this._lastSendFps = void 0, this._videoQueue = [], this._decodingVideo = !1
+        this._msgs = [], this._interval && (clearInterval(this._interval), this._interval = void 0), this._updateInterval && (clearInterval(this._updateInterval), this._updateInterval = void 0), this._ftTimer && (clearTimeout(this._ftTimer), this._ftTimer = void 0), (e = this._ws) == null || e.close(), this._ws = void 0, (i = this._healthCheck) == null || i.close(), this._healthCheck = void 0, this._readJobs = [], this._writeJobs = [], this._removeJobs = {}, this._fileHandles = {}, this._readRemoteEmptyDirsJobs = [], Ee(), this._lastChangeDisplay = void 0, this._lastSendFps = void 0, this._videoQueue = [], this._decodingVideo = !1
     }
 
     refresh() {
@@ -10123,7 +10120,7 @@ class Lt {
             option: this.getOptionMessage(),
             video_ack_required: !0,
             os_login: e.os_login,
-            version: le,
+            version: se,
             my_platform: uo,
             file_transfer: t,
             hwid: s
@@ -10169,7 +10166,7 @@ class Lt {
     getSupportedDecoding() {
         let e = this.getOption("codec-preference");
         e == "vp8" ? e = Au.VP8 : e == "vp9" ? e = Au.VP9 : e == "av1" ? e = Au.AV1 : e == "h264" ? e = Au.H264 : e == "h265" ? e = Au.H265 : e = Au.Auto;
-        let i = this.getOption("i444") == "Y" ? oe.I444 : oe.I420;
+        let i = this.getOption("i444") == "Y" ? ae.I444 : ae.I420;
         return Vu.fromPartial({
             ability_vp8: 1,
             ability_vp9: 1,
@@ -10206,7 +10203,7 @@ class Lt {
 
     handleVideoFrame(e) {
         if (!this._firstFrame) {
-            this.msgbox("", "", ""), this._firstFrame = !0, this.sendToggleVirtualDisplayMsg(), this.sendTogglePrivacyModeMsg(), Ce(), Yi(this, !0);
+            this.msgbox("", "", ""), this._firstFrame = !0, this.sendToggleVirtualDisplayMsg(), this.sendTogglePrivacyModeMsg(), ce(), Yi(this, !0);
             const i = 0;
             for (let o = 0; o < i; o++) this.sendVideoReceived();
             console.log(`send ${i} video received in advance for high fps`)
@@ -10292,10 +10289,10 @@ class Lt {
 
     lcHandlePeerInfo(e) {
         var l;
-        let i = Ee(this._id) || {};
+        let i = le(this._id) || {};
         i.info = {username: e.username, hostname: e.hostname, platform: e.platform};
         let o = this._password, a = i.password, t = this.getRemember(), s = this._hash;
-        t ? o && o.length > 0 && Z(o) !== a && !at(this._passwordSource, o, s) && (i.password = Z(o), console.log("remember password of " + this._id)) : o && o.length > 0 && ot(this._passwordSource, o) ? (i.password = Z(o), console.log("save ab password of " + this._id + " to recent")) : a && (i.password = void 0, console.log("remove password of " + this._id)), (l = this._otherServer) != null && l.server && this._otherServer.server != ie && this.setOption("other-server-key", this._otherServer.key), i.password && o && o.length > 0 && !at(this._passwordSource, o, s) && !ot(this._passwordSource, o) && m("sync_peer_hash_password_to_personal_ab", {
+        t ? o && o.length > 0 && Z(o) !== a && !at(this._passwordSource, o, s) && (i.password = Z(o), console.log("remember password of " + this._id)) : o && o.length > 0 && ot(this._passwordSource, o) ? (i.password = Z(o), console.log("save ab password of " + this._id + " to recent")) : a && (i.password = void 0, console.log("remove password of " + this._id)), (l = this._otherServer) != null && l.server && this._otherServer.server != ee && this.setOption("other-server-key", this._otherServer.key), i.password && o && o.length > 0 && !at(this._passwordSource, o, s) && !ot(this._passwordSource, o) && m("sync_peer_hash_password_to_personal_ab", {
             id: this._id,
             hash: Z(o)
         }), this.saveConfig(i), e.encoding && (this._supportedEncoding = e.encoding)
@@ -10312,7 +10309,7 @@ class Lt {
     }
 
     handleMisc(e) {
-        if (e.audio_format) Wn(e.audio_format.channels, e.audio_format.sample_rate); else if (e.chat_message) m("chat_client_mode", {text: e.chat_message.text}); else if (e.permission_info) {
+        if (e.audio_format) Mn(e.audio_format.channels, e.audio_format.sample_rate); else if (e.chat_message) m("chat_client_mode", {text: e.chat_message.text}); else if (e.permission_info) {
             const i = e.permission_info;
             console.info("Change permission " + i.permission + " -> " + i.enabled);
             let o;
@@ -10465,7 +10462,7 @@ class Lt {
     }
 
     loadConfig() {
-        return Ee(this._id) || {}
+        return le(this._id) || {}
     }
 
     setOption(e, i) {
@@ -10482,7 +10479,7 @@ class Lt {
 
     inputKey(e, i, o, a, t, s, l) {
         var c;
-        const E = wo(e, Rn());
+        const E = wo(e, Sn());
         !E || (a && (e == "VK_MENU" || e == "RAlt") && (a = !1), t && (e == "VK_CONTROL" || e == "RControl") && (t = !1), s && (e == "VK_SHIFT" || e == "RShift") && (s = !1), l && (e == "Meta" || e == "RWin") && (l = !1), E.down = i, E.press = o, E.modifiers = this.getMod(a, t, s, l), (c = this._ws) == null || c.sendMessage({key_event: E}))
     }
 
@@ -10557,7 +10554,7 @@ class Lt {
 
     async inputOsPassword(e) {
         var a, t;
-        this.inputMouse(), await te(50), this.inputMouse(0, 3, 3), await te(50), this.inputMouse(1 | 1 << 3), this.inputMouse(2 | 1 << 3), await te(1200);
+        this.inputMouse(), await ie(50), this.inputMouse(0, 3, 3), await ie(50), this.inputMouse(1 | 1 << 3), this.inputMouse(2 | 1 << 3), await ie(1200);
         const i = w.fromPartial({press: !0, seq: e});
         (a = this._ws) == null || a.sendMessage({key_event: i});
         const o = w.fromPartial({press: !0, control_key: j.Return});
@@ -10813,11 +10810,11 @@ class Lt {
             } = o, D = this.enableOverwriteDetection();
             if (c) {
                 this._writeJobs.push(lu.newWrite(a, t, s, l, E, c, [], D, C));
-                const B = dn(a, t, l, E);
-                (i = this._ws) == null || i.sendMessage({file_action: B}), C && this.enableEmptyDirs() && (this._readRemoteEmptyDirsJobs.find(F => F.id == a) == null && this._readRemoteEmptyDirsJobs.push(new En({
+                const B = sn(a, t, l, E);
+                (i = this._ws) == null || i.sendMessage({file_action: B}), C && this.enableEmptyDirs() && (this._readRemoteEmptyDirsJobs.find(F => F.id == a) == null && this._readRemoteEmptyDirsJobs.push(new rn({
                     id: a,
                     path: t
-                })), this.sendMessage({file_action: _n(t, E)}))
+                })), this.sendMessage({file_action: mn(t, E)}))
             }
         } catch (o) {
             console.error("Failed to send files:", o)
@@ -10854,7 +10851,7 @@ class Lt {
                 it(a, B, t, !c, !0), this._readJobs.push(y), this._ftTimer || (this._ftTimer = setTimeout(this.readJobTimerCallback.bind(this), tt));
                 let S = [...B];
                 if (A4() && this.getPeerPlatform() != "Windows") for (let g = 0; g < S.length; g++) S[g].name = S[g].name.replace(/\\/g, "/");
-                if (this.sendMessage({file_action: mn(a, s, l, S, y.total_size)}), this.enableEmptyDirs()) {
+                if (this.sendMessage({file_action: pn(a, s, l, S, y.total_size)}), this.enableEmptyDirs()) {
                     const g = await Ot(D, D.name);
                     g.length > 0 && m("send_emptry_dirs", {dirs: g})
                 }
@@ -10867,7 +10864,7 @@ class Lt {
     }
 
     async readJobTimerCallback() {
-        let e = await fn(this._readJobs, this.sendMessage.bind(this));
+        let e = await kn(this._readJobs, this.sendMessage.bind(this));
         this._readJobs = this._readJobs.filter(i => !e.includes(i.id)), this.update_jobs_status(), this._readJobs.length == 0 ? (clearTimeout(this._ftTimer), this._ftTimer = void 0) : this._ftTimer = setTimeout(this.readJobTimerCallback.bind(this), tt)
     }
 
@@ -10889,12 +10886,12 @@ class Lt {
                 if ((a = this._ws) == null || a.sendMessage({file_action: ut(e, s, i + 1, this._removeJobs[e].is_remote)}), new Date().getTime() - this._removeJobs[e].last_update_job_status >= 1e3) this._removeJobs[e].last_update_job_status = new Date().getTime(); else return
             } else delete this._removeJobs[e], console.log("remove jobs:", this._removeJobs)
         }
-        o ? ce(e, o, i) : gn(e, i)
+        o ? de(e, o, i) : _n(e, i)
     }
 
     cancelJob(e) {
         var o;
-        (o = this._ws) == null || o.sendMessage({file_action: pn(e)});
+        (o = this._ws) == null || o.sendMessage({file_action: dn(e)});
         let i = this._writeJobs.find(a => a.id == e);
         i && i.remove_download_file(), this._writeJobs = this._writeJobs.filter(a => a.id != e), this._readJobs = this._readJobs.filter(a => a.id != e), delete this._removeJobs[e]
     }
@@ -10903,7 +10900,7 @@ class Lt {
         var i;
         try {
             const o = JSON.parse(e);
-            (i = this._ws) == null || i.sendMessage({file_action: Dn(o.id, o.path)})
+            (i = this._ws) == null || i.sendMessage({file_action: cn(o.id, o.path)})
         } catch (o) {
             console.error("Failed to remove all empty dirs:", o)
         }
@@ -10924,7 +10921,7 @@ class Lt {
         try {
             const o = JSON.parse(e), {id: a, path: t, is_remote: s, show_hidden: l} = o;
             if (s) {
-                (i = this._ws) == null || i.sendMessage({file_action: cn(a, t, l)});
+                (i = this._ws) == null || i.sendMessage({file_action: ln(a, t, l)});
                 const E = (c, C) => (c ? C === "Windows" : A4()) ? "\\" : "/";
                 this._removeJobs[a] = {
                     path: t,
@@ -10944,7 +10941,7 @@ class Lt {
         var i;
         try {
             const o = JSON.parse(e), {id: a, path: t, is_remote: s} = o;
-            s && ((i = this._ws) == null || i.sendMessage({file_action: Cn(a, t)}))
+            s && ((i = this._ws) == null || i.sendMessage({file_action: En(a, t)}))
         } catch (o) {
             console.error("Failed to create dir:", o)
         }
@@ -10954,14 +10951,14 @@ class Lt {
         var i;
         try {
             const o = JSON.parse(e), {id: a, path: t, new_name: s, is_remote: l} = o;
-            l && ((i = this._ws) == null || i.sendMessage({file_action: Bn(a, t, s)}))
+            l && ((i = this._ws) == null || i.sendMessage({file_action: Cn(a, t, s)}))
         } catch (o) {
             console.error("Failed to rename file:", o)
         }
     }
 
     async seletFiles(e) {
-        await hn(e, (i, o) => {
+        await vn(e, (i, o) => {
             this._fileHandles[i] = o
         })
     }
@@ -11103,10 +11100,11 @@ function uriPort(u) {
     return u.indexOf(":") > 0 ? u.split(":")[1] : ''
 }
 
+
 const at = (u, e, i) => e && u.type == "SharedAb" ? Z(Zu([u.value, i.salt])) === Z(e) : !1,
     ot = (u, e) => e && u.type == "PersonalAb" ? Z(u.value) === Z(e) : !1;
 
-function zn() {
+function bn() {
     return P4()
 }
 
@@ -11114,7 +11112,7 @@ function nt(u, e) {
     ye("callback_query_onlines", {onlines: u.join(","), offlines: e.join(",")})
 }
 
-async function Pn(u) {
+async function wn(u) {
     let e = [];
     try {
         e = JSON.parse(u)
@@ -11123,7 +11121,7 @@ async function Pn(u) {
         return
     }
     if (e.length === 0) return;
-    const i = zn(), o = new j4(i, !0, "query onlines");
+    const i = bn(), o = new j4(i, !0, "query onlines");
     try {
         await o.open();
         const a = Ju.fromPartial({id: N4(), peers: e});
@@ -11149,9 +11147,9 @@ async function Pn(u) {
 
 window.curConn = void 0;
 window.isMobile = () => /(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|ipad|iris|kindle|Android|Silk|lge |maemo|midp|mmp|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino/i.test(navigator.userAgent) || /1207|6310|6590|3gso|4thp|50[1-6]i|770s|802s|a wa|abac|ac(er|oo|s\-)|ai(ko|rn)|al(av|ca|co)|amoi|an(ex|ny|yw)|aptu|ar(ch|go)|as(te|us)|attw|au(di|\-m|r |s )|avan|be(ck|ll|nq)|bi(lb|rd)|bl(ac|az)|br(e|v)w|bumb|bw\-(n|u)|c55\/|capi|ccwa|cdm\-|cell|chtm|cldc|cmd\-|co(mp|nd)|craw|da(it|ll|ng)|dbte|dc\-s|devi|dica|dmob|do(c|p)o|ds(12|\-d)|el(49|ai)|em(l2|ul)|er(ic|k0)|esl8|ez([4-7]0|os|wa|ze)|fetc|fly(\-|_)|g1 u|g560|gene|gf\-5|g\-mo|go(\.w|od)|gr(ad|un)|haie|hcit|hd\-(m|p|t)|hei\-|hi(pt|ta)|hp( i|ip)|hs\-c|ht(c(\-| |_|a|g|p|s|t)|tp)|hu(aw|tc)|i\-(20|go|ma)|i230|iac( |\-|\/)|ibro|idea|ig01|ikom|im1k|inno|ipaq|iris|ja(t|v)a|jbro|jemu|jigs|kddi|keji|kgt( |\/)|klon|kpt |kwc\-|kyo(c|k)|le(no|xi)|lg( g|\/(k|l|u)|50|54|\-[a-w])|libw|lynx|m1\-w|m3ga|m50\/|ma(te|ui|xo)|mc(01|21|ca)|m\-cr|me(rc|ri)|mi(o8|oa|ts)|mmef|mo(01|02|bi|de|do|t(\-| |o|v)|zz)|mt(50|p1|v )|mwbp|mywa|n10[0-2]|n20[2-3]|n30(0|2)|n50(0|2|5)|n7(0(0|1)|10)|ne((c|m)\-|on|tf|wf|wg|wt)|nok(6|i)|nzph|o2im|op(ti|wv)|oran|owg1|p800|pan(a|d|t)|pdxg|pg(13|\-([1-8]|c))|phil|pire|pl(ay|uc)|pn\-2|po(ck|rt|se)|prox|psio|pt\-g|qa\-a|qc(07|12|21|32|60|\-[2-7]|i\-)|qtek|r380|r600|raks|rim9|ro(ve|zo)|s55\/|sa(ge|ma|mm|ms|ny|va)|sc(01|h\-|oo|p\-)|sdk\/|se(c(\-|0|1)|47|mc|nd|ri)|sgh\-|shar|sie(\-|m)|sk\-0|sl(45|id)|sm(al|ar|b3|it|t5)|so(ft|ny)|sp(01|h\-|v\-|v )|sy(01|mb)|t2(18|50)|t6(00|10|18)|ta(gt|lk)|tcl\-|tdg\-|tel(i|m)|tim\-|t\-mo|to(pl|sh)|ts(70|m\-|m3|m5)|tx\-9|up(\.b|g1|si)|utst|v400|v750|veri|vi(rg|te)|vk(40|5[0-3]|\-v)|vm40|voda|vulc|vx(52|53|60|61|70|80|81|83|85|98)|w3c(\-| )|webc|whit|wi(g |nc|nw)|wmlb|wonu|x700|yas\-|your|zeto|zte\-/i.test(navigator.userAgent.substr(0, 4));
-const xe = zt(), Yu = xe === Y4, H4 = xe === $4, Qu = xe === Be;
+const xe = zt(), Yu = xe === Y4, H4 = xe === De, Qu = xe === Be;
 
-function Rn() {
+function Sn() {
     return !isMobile()
 }
 
@@ -11170,7 +11168,7 @@ function Wt(u, e, i, o) {
     }
 }
 
-function In(u, e, i) {
+function zn(u, e, i) {
     onGlobalEvent(JSON.stringify({name: "toast", type: u, text: e, dur_msec: i}))
 }
 
@@ -11184,16 +11182,16 @@ function m(u, e) {
     e = Vt(e), e.name = u, onGlobalEvent(JSON.stringify(e))
 }
 
-function Ce() {
+function ce() {
     var e;
-    ((e = Ae("input-source")) != null ? e : Hi) === Hi ? Ho() : de()
+    ((e = Ae("input-source")) != null ? e : Hi) === Hi ? qo() : Ee()
 }
 
 function ye(u, e) {
     e = Vt(e), e.name = u, onRegisteredEvent(JSON.stringify(e))
 }
 
-function pe(u, e) {
+function Ce(u, e) {
     onRgba(u, e)
 }
 
@@ -11243,25 +11241,25 @@ function Gt(u) {
     return q.from_base64(u, q.base64_variants.ORIGINAL)
 }
 
-function Tn(u) {
+function Pn(u) {
     return q.to_base64(u, q.base64_variants.ORIGINAL)
 }
 
-function jn() {
+function Rn() {
     const u = q.crypto_box_keypair(), e = u.privateKey, i = u.publicKey;
     return [e, i]
 }
 
-function Nn() {
+function In() {
     return q.crypto_secretbox_keygen()
 }
 
-function On(u, e, i) {
+function Tn(u, e, i) {
     const o = Uint8Array.from(Array(24).fill(0));
     return q.crypto_box_easy(u, o, e, i)
 }
 
-function ue(u) {
+function $4(u) {
     for (var e = Array(24).fill(0), i = 0; i < e.length && u > 0; i++) {
         var o = u & 255;
         e[i] = o, u = (u - o) / 256
@@ -11270,11 +11268,11 @@ function ue(u) {
 }
 
 function st(u, e, i) {
-    return q.crypto_secretbox_easy(u, ue(e), i)
+    return q.crypto_secretbox_easy(u, $4(e), i)
 }
 
-function Mn(u, e, i) {
-    return q.crypto_secretbox_open_easy(u, ue(e), i)
+function jn(u, e, i) {
+    return q.crypto_secretbox_open_easy(u, $4(e), i)
 }
 
 window.setByName = (u, e) => {
@@ -11328,10 +11326,10 @@ window.setByName = (u, e) => {
             curConn.inputString(e);
             break;
         case"flutter_key_event":
-            e = JSON.parse(e), Jo(curConn, e.usb_hid, e.down == "true", e.lock_modes);
+            e = JSON.parse(e), Ko(curConn, e.usb_hid, e.down == "true", e.lock_modes);
             break;
         case"send_mouse":
-            Un(e);
+            Nn(e);
             break;
         case"send_2fa":
             curConn == null || curConn.send2fa(e);
@@ -11348,7 +11346,7 @@ window.setByName = (u, e) => {
             if (o.name == 'access_token' && o.value) {
                 getServerConf(o.value)
             }
-            gt(o.name, o.value), o.name === "input-source" && Ce(), o.name == "lang" && fo()
+            gt(o.name, o.value), o.name === "input-source" && ce(), o.name == "lang" && fo()
         }
             break;
         case"option:flutter:local":
@@ -11358,7 +11356,7 @@ window.setByName = (u, e) => {
             e = JSON.parse(e), curConn.setFlutterUiOption(e.name, e.value);
             break;
         case"option:user:default":
-            Gn(e);
+            Kn(e);
             break;
         case"option:session":
             e = JSON.parse(e), curConn.setOption(e.name, e.value);
@@ -11376,12 +11374,12 @@ window.setByName = (u, e) => {
             curConn.inputOsPassword(e);
             break;
         case"session_add_sync":
-            return Xn(e);
+            return Gn(e);
         case"session_start":
-            Yn();
+            Zn();
             break;
         case"session_close":
-            $n();
+            Qn();
             break;
         case"elevate_direct":
             curConn.elevateDirect();
@@ -11397,19 +11395,19 @@ window.setByName = (u, e) => {
         case"fav":
             return A.setItem("fav", e);
         case"query_onlines":
-            Pn(e);
+            wn(e);
             break;
         case"change_prefer_codec":
             curConn.changePreferCodec(e);
             break;
         case"cursor":
-            Hn(e);
+            Vn(e);
             break;
         case"enter_or_leave":
             curConn == null || curConn.enterOrLeave(e);
             break;
         case"fullscreen":
-            e == "Y" ? er() : ir();
+            e == "Y" ? Yn() : $n();
             break;
         case"send_note":
             const i = Xt("conn");
@@ -11452,7 +11450,7 @@ window.setByName = (u, e) => {
             curConn == null || curConn.sendChat(e);
             break;
         case"load_ab":
-            or();
+            ir();
             break;
         case"save_ab":
             Fo(e);
@@ -11461,7 +11459,7 @@ window.setByName = (u, e) => {
             _o();
             break;
         case"load_group":
-            nr();
+            tr();
             break;
         case"save_group":
             vo(e);
@@ -11478,7 +11476,7 @@ window.setByName = (u, e) => {
     }
 };
 
-function Un(u) {
+function Nn(u) {
     if (!curConn) return;
     let e = 0;
     switch (u = JSON.parse(u), u.type) {
@@ -11519,11 +11517,11 @@ function Un(u) {
 }
 
 window.getByName = (u, e) => {
-    let i = Ln(u, e);
+    let i = On(u, e);
     return typeof i == "string" || i instanceof String ? i : i == null || i == null ? "" : JSON.stringify(i)
 };
 
-function Ln(u, e) {
+function On(u, e) {
     var o, a, t, s;
     switch (u) {
         case"remember":
@@ -11568,12 +11566,12 @@ function Ln(u, e) {
         case"test_if_valid_server":
             break;
         case"version":
-            return le;
+            return se;
         case"load_recent_peers":
-            Zn();
+            Hn();
             break;
         case"load_fav_peers":
-            Qn();
+            Jn();
             break;
         case"fav":
             return (a = A.getItem("fav")) != null ? a : "[]";
@@ -11627,7 +11625,7 @@ function Ln(u, e) {
         case"peer_has_password":
             return ((t = (Cu()[e] || {}).password) != null ? t : "") !== "";
         case"fullscreen":
-            return tr() ? "Y" : "N";
+            return ur() ? "Y" : "N";
         case"platform":
             return curConn.getPlatform();
         case"enable_trusted_devices":
@@ -11638,11 +11636,11 @@ function Ln(u, e) {
 
 let Se = new Worker("./libopus.js?v=02816afa"), Zt;
 
-function Wn(u, e) {
-    Zt = qn(u, e), Se.postMessage({channels: u, sampleRate: e})
+function Mn(u, e) {
+    Zt = Ln(u, e), Se.postMessage({channels: u, sampleRate: e})
 }
 
-function Vn(u) {
+function Un(u) {
     Se.postMessage(u, [u.buffer])
 }
 
@@ -11659,11 +11657,11 @@ window.onunload = () => {
     console.log("window close"), Ra()
 };
 
-function qn(u, e) {
+function Ln(u, e) {
     return new na({channels: u, sampleRate: e, flushingTime: 2e3})
 }
 
-function Kn(u) {
+function Wn(u) {
     if (window.clipboardData && window.clipboardData.setData) return window.clipboardData.setData("Text", u);
     if (document.queryCommandSupported && document.queryCommandSupported("copy")) {
         var e = document.createElement("textarea");
@@ -11692,7 +11690,7 @@ function Q(u) {
     }
 }
 
-function Hn(u) {
+function Vn(u) {
     let e = "auto";
     if (u != "auto") try {
         const t = JSON.parse(u);
@@ -11708,13 +11706,13 @@ function Hn(u) {
     }
 }
 
-async function Jn() {
+async function qn() {
     await I4.ready;
     const u = I4.crypto_sign_keypair();
     return {publicKey: u.publicKey, privateKey: u.privateKey}
 }
 
-function Gn(u) {
+function Kn(u) {
     try {
         const e = JSON.parse(u), i = JSON.parse(A.getItem("user-default-options")) || {};
         i[e.name] = e.value, A.setItem("user-default-options", JSON.stringify(i))
@@ -11756,12 +11754,12 @@ function ze() {
     return u.sort().reverse().map(e => e[2])
 }
 
-function Zn() {
+function Hn() {
     const u = ze();
     u && ye("load_recent_peers", {peers: JSON.stringify(u)})
 }
 
-function Qn() {
+function Jn() {
     var u;
     try {
         const e = (u = A.getItem("fav")) != null ? u : "[]", i = JSON.parse(e), o = ze().filter(a => i.includes(a.id));
@@ -11771,7 +11769,7 @@ function Qn() {
     }
 }
 
-function Xn(u) {
+function Gn(u) {
     var e;
     try {
         const i = JSON.parse(u), o = i.id;
@@ -11785,7 +11783,7 @@ function Xn(u) {
     }
 }
 
-function Yn(u) {
+function Zn(u) {
     try {
         if (!e0()) return;
         qt()
@@ -11794,11 +11792,11 @@ function Yn(u) {
     }
 }
 
-function $n(u) {
+function Qn(u) {
     we()
 }
 
-function ur(u, e) {
+function Xn(u, e) {
     function i(o) {
         return /^([0-9a-fA-F]{0,4}:){1,7}[0-9a-fA-F]{0,4}$/.test(o)
     }
@@ -11826,7 +11824,7 @@ function Qt() {
     if (u) return u;
     const e = A.getItem("custom-rendezvous-server");
     if (e) {
-        let i = ur(e, -2);
+        let i = Xn(e, -2);
         return i == e ? `http://${i}:${Mt - 2}` : `http://${i}`
     }
     return "https://admin.rustdesk.com"
@@ -11886,28 +11884,28 @@ async function ua(u, e) {
     })
 }
 
-function er() {
+function Yn() {
     const u = document.documentElement;
     u.requestFullscreen ? u.requestFullscreen() : u.mozRequestFullScreen ? u.mozRequestFullScreen() : u.webkitRequestFullscreen ? u.webkitRequestFullscreen() : u.msRequestFullscreen && u.msRequestFullscreen()
 }
 
-function ir() {
+function $n() {
     document.exitFullscreen ? document.exitFullscreen() : document.mozCancelFullScreen ? document.mozCancelFullScreen() : document.webkitExitFullscreen ? document.webkitExitFullscreen() : document.msExitFullscreen && document.msExitFullscreen()
 }
 
-function tr() {
+function ur() {
     return document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement
 }
 
 var lt = !1;
 
-function ar() {
+function er() {
     lt || (console.log("listen fullscreen"), lt = !0, document.addEventListener("fullscreenchange", () => onFullscreenChanged(!!document.fullscreenElement)), document.addEventListener("mozfullscreenchange", () => onFullscreenChanged(!!document.mozFullScreen)), document.addEventListener("webkitfullscreenchange", () => onFullscreenChanged(!!document.webkitFullscreenElement)), document.addEventListener("msfullscreenchange", () => onFullscreenChanged(!!document.msFullscreenElement)))
 }
 
-ar();
+er();
 
-async function or() {
+async function ir() {
     try {
         let u = await xt();
         onLoadAbFinished(JSON.stringify(u))
@@ -11916,7 +11914,7 @@ async function or() {
     }
 }
 
-async function nr() {
+async function tr() {
     try {
         let u = await ko();
         onLoadGroupFinished(JSON.stringify(u))
@@ -11969,7 +11967,7 @@ if (Et) {
         A.setItem("key", a.value), (async () => {
             const s = Kt();
             s.setMsgbox(e), s.setDraw(l => {
-                pe(l), u.drawFrame(l)
+                Ce(l), u.drawFrame(l)
             }), document.querySelector("div#status").style.display = "block", document.querySelector("div#connect").style.display = "none", document.querySelector("div#text").innerHTML = "Connecting ...", s.setPeerId(o.value), await s.start()
         })()
     }, window.cancel = () => {
