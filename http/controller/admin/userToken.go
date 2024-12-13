@@ -91,7 +91,7 @@ func (ct *UserToken) Delete(c *gin.Context) {
 // @Param body body admin.UserTokenBatchDeleteForm true "登录凭证信息"
 // @Success 200 {object} response.Response
 // @Failure 500 {object} response.Response
-// @Router /admin/user_token/delete [post]
+// @Router /admin/user_token/batchDelete [post]
 // @Security token
 func (ct *UserToken) BatchDelete(c *gin.Context) {
 	f := &admin.UserTokenBatchDeleteForm{}
