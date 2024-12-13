@@ -127,6 +127,7 @@ type BatchCreateFromPeersForm struct {
 	CollectionId uint     `json:"collection_id"`
 	PeerIds      []uint   `json:"peer_ids"`
 	Tags         []string `json:"tags"`
+	UserId       uint     `json:"user_id"`
 }
 type BatchUpdateTagsForm struct {
 	RowIds []uint   `json:"row_ids"`

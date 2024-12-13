@@ -111,11 +111,12 @@ func AddressBookBind(rg *gin.RouterGroup) {
 		aR.POST("/update", cont.Update)
 		aR.POST("/delete", cont.Delete)
 		aR.POST("/shareByWebClient", cont.ShareByWebClient)
-		aR.POST("/batchCreateFromPeers", cont.BatchCreateFromPeers)
+
 		aR.POST("/batchUpdateTags", cont.BatchUpdateTags)
 
 		arp := aR.Use(middleware.AdminPrivilege())
 		arp.POST("/batchCreate", cont.BatchCreate)
+		arp.POST("/batchCreateFromPeers", cont.BatchCreateFromPeers)
 
 	}
 }
@@ -227,10 +228,13 @@ func FileBind(rg *gin.RouterGroup) {
 
 func MyBind(rg *gin.RouterGroup) {
 	{
-		sr := &my.ShareRecord{}
-		rg.GET("/my/share_record/list", sr.List)
-		rg.POST("/my/share_record/delete", sr.Delete)
-		rg.POST("/my/share_record/batchDelete", sr.BatchDelete)
+		msr := &my.ShareRecord{}
+		rg.GET("/my/share_record/list", msr.List)
+		rg.POST("/my/share_record/delete", msr.Delete)
+		rg.POST("/my/share_record/batchDelete", msr.BatchDelete)
+
+		mab := &my.AddressBook{}
+		rg.POST("/my/address_book/batchCreateFromPeers", mab.BatchCreateFromPeers)
 	}
 }
 

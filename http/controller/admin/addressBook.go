@@ -335,7 +335,11 @@ func (ct *AddressBook) BatchCreateFromPeers(c *gin.Context) {
 		response.Fail(c, 101, response.TranslateMsg(c, "ParamsError")+err.Error())
 		return
 	}
-	u := service.AllService.UserService.CurUser(c)
+
+	if f.UserId == 0 {
+		response.Fail(c, 101, response.TranslateMsg(c, "ParamsError"))
+		return
+	}
 
 	if f.CollectionId != 0 {
 		collection := service.AllService.AddressBookService.CollectionInfoById(f.CollectionId)
@@ -343,17 +347,13 @@ func (ct *AddressBook) BatchCreateFromPeers(c *gin.Context) {
 			response.Fail(c, 101, response.TranslateMsg(c, "ItemNotFound"))
 			return
 		}
-		if collection.UserId != u.Id {
-			response.Fail(c, 101, response.TranslateMsg(c, "NoAccess"))
-			return
-		}
 	}
 
-	peers := service.AllService.PeerService.List(1, 999, func(tx *gorm.DB) {
+	pl := int64(len(f.PeerIds))
+	peers := service.AllService.PeerService.List(1, uint(pl), func(tx *gorm.DB) {
 		tx.Where("row_id in ?", f.PeerIds)
-		tx.Where("user_id = ?", u.Id)
 	})
-	if peers.Total == 0 {
+	if peers.Total == 0 || pl != peers.Total {
 		response.Fail(c, 101, response.TranslateMsg(c, "ItemNotFound"))
 		return
 	}
@@ -363,7 +363,8 @@ func (ct *AddressBook) BatchCreateFromPeers(c *gin.Context) {
 		ab := service.AllService.AddressBookService.FromPeer(peer)
 		ab.Tags = tags
 		ab.CollectionId = f.CollectionId
-		ex := service.AllService.AddressBookService.InfoByUserIdAndIdAndCid(u.Id, ab.Id, ab.CollectionId)
+		ab.UserId = f.UserId
+		ex := service.AllService.AddressBookService.InfoByUserIdAndIdAndCid(f.UserId, ab.Id, ab.CollectionId)
 		if ex.RowId != 0 {
 			continue
 		}
