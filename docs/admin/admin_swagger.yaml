@@ -182,6 +182,15 @@ definitions:
       version:
         type: string
     type: object
+  admin.PeerShareRecordBatchDeleteForm:
+    properties:
+      ids:
+        items:
+          type: integer
+        type: array
+    required:
+    - ids
+    type: object
   admin.ShareByWebClientForm:
     properties:
       expire:
@@ -200,6 +209,13 @@ definitions:
     - id
     - password
     - password_type
+    type: object
+  admin.ShareRecordForm:
+    properties:
+      id:
+        type: integer
+      user_id:
+        type: integer
     type: object
   admin.TagForm:
     properties:
@@ -1959,6 +1975,92 @@ paths:
       summary: 登出
       tags:
       - 登录
+  /admin/my/share_record/batchDelete:
+    post:
+      consumes:
+      - application/json
+      description: 批量删除我的分享记录
+      parameters:
+      - description: id
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/admin.PeerShareRecordBatchDeleteForm'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - token: []
+      summary: 批量删除我的分享记录
+      tags:
+      - 我的
+  /admin/my/share_record/delete:
+    post:
+      consumes:
+      - application/json
+      description: 分享记录删除
+      parameters:
+      - description: 分享记录信息
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/admin.ShareRecordForm'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - token: []
+      summary: 分享记录删除
+      tags:
+      - 我的
+  /admin/my/share_record/list:
+    get:
+      consumes:
+      - application/json
+      description: 分享记录列表
+      parameters:
+      - description: 页码
+        in: query
+        name: page
+        type: integer
+      - description: 页大小
+        in: query
+        name: page_size
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - token: []
+      summary: 分享记录列表
+      tags:
+      - 我的
   /admin/oauth/create:
     post:
       consumes:
@@ -2381,6 +2483,96 @@ paths:
       summary: RUSTDESK服务配置
       tags:
       - ADMIN
+  /admin/share_record/batchDelete:
+    post:
+      consumes:
+      - application/json
+      description: 批量分享记录
+      parameters:
+      - description: id
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/admin.PeerShareRecordBatchDeleteForm'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - token: []
+      summary: 批量分享记录
+      tags:
+      - 分享记录
+  /admin/share_record/delete:
+    post:
+      consumes:
+      - application/json
+      description: 分享记录删除
+      parameters:
+      - description: 分享记录信息
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/admin.ShareRecordForm'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - token: []
+      summary: 分享记录删除
+      tags:
+      - 分享记录
+  /admin/share_record/list:
+    get:
+      consumes:
+      - application/json
+      description: 分享记录列表
+      parameters:
+      - description: 用户ID
+        in: query
+        name: user_id
+        type: integer
+      - description: 页码
+        in: query
+        name: page
+        type: integer
+      - description: 页大小
+        in: query
+        name: page_size
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - token: []
+      summary: 分享记录列表
+      tags:
+      - 分享记录
   /admin/tag/create:
     post:
       consumes:
@@ -2876,7 +3068,7 @@ paths:
       summary: 修改密码
       tags:
       - 用户
-  /admin/user_token/delete:
+  /admin/user_token/batchDelete:
     post:
       consumes:
       - application/json
@@ -2902,6 +3094,34 @@ paths:
       security:
       - token: []
       summary: 登录凭证批量删除
+      tags:
+      - 登录凭证
+  /admin/user_token/delete:
+    post:
+      consumes:
+      - application/json
+      description: 登录凭证删除
+      parameters:
+      - description: 登录凭证信息
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/model.UserToken'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - token: []
+      summary: 登录凭证删除
       tags:
       - 登录凭证
   /admin/user_token/list:

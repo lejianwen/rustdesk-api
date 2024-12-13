@@ -10,3 +10,9 @@ type ShareRecord struct {
 	Expire       int64  `json:"expire" gorm:"default:0;not null;"`
 	TimeModel
 }
+
+// ShareRecordList 分享记录列表
+type ShareRecordList struct {
+	ShareRecords []*ShareRecord `json:"list,omitempty"`
+	Pagination
+}
