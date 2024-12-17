@@ -1,4 +1,4 @@
-package admin
+package my
 
 import (
 	"Gwen/global"
@@ -8,14 +8,13 @@ import (
 	"Gwen/service"
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
-	"strconv"
 )
 
 type AddressBookCollectionRule struct {
 }
 
 // List 列表
-// @Tags 地址簿规则
+// @Tags 我的地址簿规则
 // @Summary 地址簿规则列表
 // @Description 地址簿规则列表
 // @Accept  json
@@ -27,7 +26,7 @@ type AddressBookCollectionRule struct {
 // @Param collection_id query int false "地址簿集合id"
 // @Success 200 {object} response.Response{data=model.AddressBookCollectionList}
 // @Failure 500 {object} response.Response
-// @Router /admin/address_book_collection_rule/list [get]
+// @Router /admin/my/address_book_collection_rule/list [get]
 // @Security token
 func (abcr *AddressBookCollectionRule) List(c *gin.Context) {
 	query := &admin.AddressBookCollectionRuleQuery{}
@@ -35,11 +34,11 @@ func (abcr *AddressBookCollectionRule) List(c *gin.Context) {
 		response.Fail(c, 101, response.TranslateMsg(c, "ParamsError")+err.Error())
 		return
 	}
+	u := service.AllService.UserService.CurUser(c)
+	query.UserId = int(u.Id)
 
 	res := service.AllService.AddressBookService.ListRules(query.Page, query.PageSize, func(tx *gorm.DB) {
-		if query.UserId > 0 {
-			tx.Where("user_id = ?", query.UserId)
-		}
+		tx.Where("user_id = ?", query.UserId)
 		if query.CollectionId > 0 {
 			tx.Where("collection_id = ?", query.CollectionId)
 		}
@@ -47,30 +46,8 @@ func (abcr *AddressBookCollectionRule) List(c *gin.Context) {
 	response.Success(c, res)
 }
 
-// Detail 地址簿规则
-// @Tags 地址簿规则
-// @Summary 地址簿规则详情
-// @Description 地址簿规则详情
-// @Accept  json
-// @Produce  json
-// @Param id path int true "ID"
-// @Success 200 {object} response.Response{data=model.AddressBookCollectionRule}
-// @Failure 500 {object} response.Response
-// @Router /admin/address_book_collection_rule/detail/{id} [get]
-// @Security token
-func (abcr *AddressBookCollectionRule) Detail(c *gin.Context) {
-	id := c.Param("id")
-	iid, _ := strconv.Atoi(id)
-	t := service.AllService.AddressBookService.RuleInfoById(uint(iid))
-	if t.Id > 0 {
-		response.Success(c, t)
-		return
-	}
-	response.Fail(c, 101, response.TranslateMsg(c, "ItemNotFound"))
-}
-
 // Create 创建地址簿规则
-// @Tags 地址簿规则
+// @Tags 我的地址簿规则
 // @Summary 创建地址簿规则
 // @Description 创建地址簿规则
 // @Accept  json
@@ -78,7 +55,7 @@ func (abcr *AddressBookCollectionRule) Detail(c *gin.Context) {
 // @Param body body model.AddressBookCollectionRule true "地址簿规则信息"
 // @Success 200 {object} response.Response{data=model.AddressBookCollection}
 // @Failure 500 {object} response.Response
-// @Router /admin/address_book_collection_rule/create [post]
+// @Router /admin/my/address_book_collection_rule/create [post]
 // @Security token
 func (abcr *AddressBookCollectionRule) Create(c *gin.Context) {
 	f := &model.AddressBookCollectionRule{}
@@ -95,8 +72,11 @@ func (abcr *AddressBookCollectionRule) Create(c *gin.Context) {
 		response.Fail(c, 101, response.TranslateMsg(c, "ParamsError"))
 		return
 	}
+	//t := f.ToAddressBookCollection()
 	t := f
-	msg, res := abcr.CheckForm(t)
+	u := service.AllService.UserService.CurUser(c)
+	t.UserId = u.Id
+	msg, res := abcr.CheckForm(u, t)
 	if !res {
 		response.Fail(c, 101, response.TranslateMsg(c, msg))
 		return
@@ -109,9 +89,9 @@ func (abcr *AddressBookCollectionRule) Create(c *gin.Context) {
 	response.Success(c, nil)
 }
 
-func (abcr *AddressBookCollectionRule) CheckForm(t *model.AddressBookCollectionRule) (string, bool) {
-	if t.UserId == 0 {
-		return "ParamsError", false
+func (abcr *AddressBookCollectionRule) CheckForm(u *model.User, t *model.AddressBookCollectionRule) (string, bool) {
+	if t.UserId != u.Id {
+		return "NoAccess", false
 	}
 	if t.CollectionId > 0 && !service.AllService.AddressBookService.CheckCollectionOwner(t.UserId, t.CollectionId) {
 		return "ParamsError", false
@@ -126,7 +106,16 @@ func (abcr *AddressBookCollectionRule) CheckForm(t *model.AddressBookCollectionR
 		if tou.Id == 0 {
 			return "ItemNotFound", false
 		}
+		//非管理员不能分享给非本组织用户
+		if tou.GroupId != u.GroupId {
+			return "NoAccess", false
+		}
 	} else if t.Type == model.ShareAddressBookRuleTypeGroup {
+		//非管理员不能分享给其他组
+		if t.ToId != u.GroupId {
+			return "NoAccess", false
+		}
+
 		tog := service.AllService.GroupService.InfoById(t.ToId)
 		if tog.Id == 0 {
 			return "ItemNotFound", false
@@ -146,7 +135,7 @@ func (abcr *AddressBookCollectionRule) CheckForm(t *model.AddressBookCollectionR
 }
 
 // Update 编辑
-// @Tags 地址簿规则
+// @Tags 我的地址簿规则
 // @Summary 地址簿规则编辑
 // @Description 地址簿规则编辑
 // @Accept  json
@@ -154,7 +143,7 @@ func (abcr *AddressBookCollectionRule) CheckForm(t *model.AddressBookCollectionR
 // @Param body body model.AddressBookCollectionRule true "地址簿规则信息"
 // @Success 200 {object} response.Response{data=model.AddressBookCollection}
 // @Failure 500 {object} response.Response
-// @Router /admin/address_book_collection_rule/update [post]
+// @Router /admin/my/address_book_collection_rule/update [post]
 // @Security token
 func (abcr *AddressBookCollectionRule) Update(c *gin.Context) {
 	f := &model.AddressBookCollectionRule{}
@@ -171,8 +160,19 @@ func (abcr *AddressBookCollectionRule) Update(c *gin.Context) {
 		response.Fail(c, 101, response.TranslateMsg(c, "ParamsError"))
 		return
 	}
+	u := service.AllService.UserService.CurUser(c)
+
+	ex := service.AllService.AddressBookService.RuleInfoById(f.Id)
+	if ex.Id == 0 {
+		response.Fail(c, 101, response.TranslateMsg(c, "ItemNotFound"))
+		return
+	}
+	if ex.UserId != u.Id {
+		response.Fail(c, 101, response.TranslateMsg(c, "NoAccess"))
+		return
+	}
 	t := f
-	msg, res := abcr.CheckForm(t)
+	msg, res := abcr.CheckForm(u, t)
 	if !res {
 		response.Fail(c, 101, response.TranslateMsg(c, msg))
 		return
@@ -186,7 +186,7 @@ func (abcr *AddressBookCollectionRule) Update(c *gin.Context) {
 }
 
 // Delete 删除
-// @Tags 地址簿规则
+// @Tags 我的地址簿规则
 // @Summary 地址簿规则删除
 // @Description 地址簿规则删除
 // @Accept  json
@@ -194,7 +194,7 @@ func (abcr *AddressBookCollectionRule) Update(c *gin.Context) {
 // @Param body body model.AddressBookCollectionRule true "地址簿规则信息"
 // @Success 200 {object} response.Response
 // @Failure 500 {object} response.Response
-// @Router /admin/address_book_collection_rule/delete [post]
+// @Router /admin/my/address_book_collection_rule/delete [post]
 // @Security token
 func (abcr *AddressBookCollectionRule) Delete(c *gin.Context) {
 	f := &model.AddressBookCollectionRule{}
@@ -213,6 +213,12 @@ func (abcr *AddressBookCollectionRule) Delete(c *gin.Context) {
 		response.Fail(c, 101, response.TranslateMsg(c, "ItemNotFound"))
 		return
 	}
+	u := service.AllService.UserService.CurUser(c)
+	if ex.UserId != u.Id {
+		response.Fail(c, 101, response.TranslateMsg(c, "NoAccess"))
+		return
+	}
+
 	err := service.AllService.AddressBookService.DeleteRule(ex)
 	if err == nil {
 		response.Success(c, nil)

@@ -13,7 +13,7 @@ type ShareRecord struct {
 }
 
 // List 分享记录列表
-// @Tags 我的
+// @Tags 我的分享记录
 // @Summary 分享记录列表
 // @Description 分享记录列表
 // @Accept  json
@@ -38,7 +38,7 @@ func (sr *ShareRecord) List(c *gin.Context) {
 }
 
 // Delete 分享记录删除
-// @Tags 我的
+// @Tags 我的分享记录
 // @Summary 分享记录删除
 // @Description 分享记录删除
 // @Accept  json

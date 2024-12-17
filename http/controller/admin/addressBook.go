@@ -31,11 +31,6 @@ func (ct *AddressBook) Detail(c *gin.Context) {
 	id := c.Param("id")
 	iid, _ := strconv.Atoi(id)
 	t := service.AllService.AddressBookService.InfoByRowId(uint(iid))
-	u := service.AllService.UserService.CurUser(c)
-	if !service.AllService.UserService.IsAdmin(u) && t.UserId != u.Id {
-		response.Fail(c, 101, response.TranslateMsg(c, "NoAccess"))
-		return
-	}
 	if t.RowId > 0 {
 		response.Success(c, t)
 		return
@@ -67,9 +62,9 @@ func (ct *AddressBook) Create(c *gin.Context) {
 		return
 	}
 	t := f.ToAddressBook()
-	u := service.AllService.UserService.CurUser(c)
-	if !service.AllService.UserService.IsAdmin(u) || t.UserId == 0 {
-		t.UserId = u.Id
+	if t.UserId == 0 {
+		response.Fail(c, 101, response.TranslateMsg(c, "ParamsError"))
+		return
 	}
 	if t.CollectionId > 0 && !service.AllService.AddressBookService.CheckCollectionOwner(t.UserId, t.CollectionId) {
 		response.Fail(c, 101, response.TranslateMsg(c, "ParamsError"))
@@ -99,7 +94,7 @@ func (ct *AddressBook) Create(c *gin.Context) {
 // @Param body body admin.AddressBookForm true "地址簿信息"
 // @Success 200 {object} response.Response{data=model.AddressBook}
 // @Failure 500 {object} response.Response
-// @Router /admin/address_book/create [post]
+// @Router /admin/address_book/batchCreate [post]
 // @Security token
 func (ct *AddressBook) BatchCreate(c *gin.Context) {
 	f := &admin.AddressBookForm{}
@@ -162,10 +157,6 @@ func (ct *AddressBook) List(c *gin.Context) {
 		response.Fail(c, 101, response.TranslateMsg(c, "ParamsError")+err.Error())
 		return
 	}
-	u := service.AllService.UserService.CurUser(c)
-	if !service.AllService.UserService.IsAdmin(u) || query.IsMy == 1 {
-		query.UserId = int(u.Id)
-	}
 	res := service.AllService.AddressBookService.List(query.Page, query.PageSize, func(tx *gorm.DB) {
 		tx.Preload("Collection", func(txc *gorm.DB) *gorm.DB {
 			return txc.Select("id,name")
@@ -191,11 +182,6 @@ func (ct *AddressBook) List(c *gin.Context) {
 	for _, ab := range res.AddressBooks {
 		abCIds = append(abCIds, ab.CollectionId)
 	}
-	//获取地址簿名称
-	//cRes := service.AllService.AddressBookService.ListCollection(1, 999, func(tx *gorm.DB) {
-	//		tx.Where("id in ?", abCIds)
-	//})
-	//
 	response.Success(c, res)
 }
 
@@ -222,15 +208,15 @@ func (ct *AddressBook) Update(c *gin.Context) {
 		return
 	}
 	if f.RowId == 0 {
-		response.Fail(c, 101, response.TranslateMsg(c, "ParamsError"))
+		response.Fail(c, 101, response.TranslateMsg(c, "ItemNotFound"))
+		return
+	}
+	ex := service.AllService.AddressBookService.InfoByRowId(f.RowId)
+	if ex.RowId == 0 {
+		response.Fail(c, 101, response.TranslateMsg(c, "ItemNotFound"))
 		return
 	}
 	t := f.ToAddressBook()
-	u := service.AllService.UserService.CurUser(c)
-	if !service.AllService.UserService.IsAdmin(u) && t.UserId != u.Id {
-		response.Fail(c, 101, response.TranslateMsg(c, "NoAccess"))
-		return
-	}
 	if t.CollectionId > 0 && !service.AllService.AddressBookService.CheckCollectionOwner(t.UserId, t.CollectionId) {
 		response.Fail(c, 101, response.TranslateMsg(c, "ParamsError"))
 		return
@@ -271,21 +257,12 @@ func (ct *AddressBook) Delete(c *gin.Context) {
 		response.Fail(c, 101, response.TranslateMsg(c, "ItemNotFound"))
 		return
 	}
-	u := service.AllService.UserService.CurUser(c)
-	if !service.AllService.UserService.IsAdmin(u) && t.UserId != u.Id {
-		response.Fail(c, 101, response.TranslateMsg(c, "NoAccess"))
+	err := service.AllService.AddressBookService.Delete(t)
+	if err == nil {
+		response.Success(c, nil)
 		return
 	}
-	if u.Id > 0 {
-		err := service.AllService.AddressBookService.Delete(t)
-		if err == nil {
-			response.Success(c, nil)
-			return
-		}
-		response.Fail(c, 101, response.TranslateMsg(c, "OperationFailed")+err.Error())
-		return
-	}
-	response.Fail(c, 101, response.TranslateMsg(c, "ItemNotFound"))
+	response.Fail(c, 101, response.TranslateMsg(c, "OperationFailed")+err.Error())
 }
 
 // ShareByWebClient
@@ -369,30 +346,6 @@ func (ct *AddressBook) BatchCreateFromPeers(c *gin.Context) {
 			continue
 		}
 		service.AllService.AddressBookService.Create(ab)
-	}
-	response.Success(c, nil)
-}
-
-func (ct *AddressBook) BatchUpdateTags(c *gin.Context) {
-	f := &admin.BatchUpdateTagsForm{}
-	if err := c.ShouldBindJSON(f); err != nil {
-		response.Fail(c, 101, response.TranslateMsg(c, "ParamsError")+err.Error())
-		return
-	}
-	u := service.AllService.UserService.CurUser(c)
-
-	abs := service.AllService.AddressBookService.List(1, 999, func(tx *gorm.DB) {
-		tx.Where("row_id in ?", f.RowIds)
-		tx.Where("user_id = ?", u.Id)
-	})
-	if abs.Total == 0 {
-		response.Fail(c, 101, response.TranslateMsg(c, "ItemNotFound"))
-		return
-	}
-	err := service.AllService.AddressBookService.BatchUpdateTags(abs.AddressBooks, f.Tags)
-	if err != nil {
-		response.Fail(c, 101, response.TranslateMsg(c, "OperationFailed")+err.Error())
-		return
 	}
 	response.Success(c, nil)
 }
