@@ -2,6 +2,7 @@ package router
 
 import (
 	_ "Gwen/docs/admin"
+	"Gwen/global"
 	"Gwen/http/controller/admin"
 	"Gwen/http/controller/admin/my"
 	"Gwen/http/middleware"
@@ -14,7 +15,9 @@ func Init(g *gin.Engine) {
 
 	//swagger
 	//g.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
-	g.GET("/admin/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler, ginSwagger.InstanceName("admin")))
+	if global.Config.App.ShowSwagger == 1 {
+		g.GET("/admin/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler, ginSwagger.InstanceName("admin")))
+	}
 
 	adg := g.Group("/api/admin")
 	LoginBind(adg)
