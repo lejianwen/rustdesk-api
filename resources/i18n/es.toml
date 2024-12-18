@@ -132,3 +132,13 @@ other = "Grupo compartido"
 description = "Register closed."
 one = "Registro cerrado."
 other = "Registro cerrado."
+
+[CaptchaRequired]
+description = "Captcha required."
+one = "Captcha requerido."
+other = "Captcha requerido."
+
+[CaptchaError]
+description = "Captcha error."
+one = "Error de captcha."
+other = "Error de captcha."

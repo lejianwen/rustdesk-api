@@ -132,3 +132,13 @@ other = "Общая группа"
 description = "Register closed."
 one = "Регистрация закрыта."
 other = "Регистрация закрыта."
+
+[CaptchaRequired]
+description = "Captcha required."
+one = "Требуется капча."
+other = "Требуется капча."
+
+[CaptchaError]
+description = "Captcha error."
+one = "Ошибка капчи."
+other = "Ошибка капчи."

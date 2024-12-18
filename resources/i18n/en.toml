@@ -123,3 +123,13 @@ other = "Share Group"
 description = "Register closed."
 one = "Register closed."
 other = "Register closed."
+
+[CaptchaRequired]
+description = "Captcha required."
+one = "Captcha required."
+other = "Captcha required."
+
+[CaptchaError]
+description = "Captcha error."
+one = "Captcha error."
+other = "Captcha error."
