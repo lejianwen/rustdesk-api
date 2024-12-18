@@ -106,6 +106,14 @@ func (l *LoginLimiter) VerifyCaptcha(ip, code string) bool {
 	return false
 }
 
+// RemoveCaptcha 移除指定 IP 的验证码
+func (l *LoginLimiter) RemoveCaptcha(ip string) {
+	l.mu.Lock()
+	defer l.mu.Unlock()
+
+	delete(l.captchas, ip)
+}
+
 // CleanupExpired 清理过期的记录
 func (l *LoginLimiter) CleanupExpired() {
 	l.mu.Lock()
@@ -120,6 +128,7 @@ func (l *LoginLimiter) CleanupExpired() {
 		}
 	}
 }
+
 func (l *LoginLimiter) RemoveRecord(ip string) {
 	l.mu.Lock()
 	defer l.mu.Unlock()
@@ -162,7 +171,7 @@ func (ct *Login) Login(c *gin.Context) {
 	// 检查是否需要验证码
 	if loginLimiter.NeedsCaptcha(clientIp) {
 		if f.Captcha == "" {
-			response.Fail(c, 110, response.TranslateMsg(c, "CaptchaRequired"))
+			response.Fail(c, 110, response.TranslateMsg(c, "CaptchaError"))
 			return
 		}
 		if !loginLimiter.VerifyCaptcha(clientIp, f.Captcha) {
@@ -176,6 +185,12 @@ func (ct *Login) Login(c *gin.Context) {
 	if u.Id == 0 {
 		global.Logger.Warn(fmt.Sprintf("Login Fail: %s %s %s", "UsernameOrPasswordError", c.RemoteIP(), clientIp))
 		loginLimiter.RecordFailure(clientIp)
+		if loginLimiter.NeedsCaptcha(clientIp) {
+			// 移除原验证码，重新生成
+			loginLimiter.RemoveCaptcha(clientIp)
+			response.Fail(c, 110, response.TranslateMsg(c, "UsernameOrPasswordError"))
+			return
+		}
 		response.Fail(c, 101, response.TranslateMsg(c, "UsernameOrPasswordError"))
 		return
 	}
