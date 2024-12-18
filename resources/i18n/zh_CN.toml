@@ -125,3 +125,13 @@ other = "共享组"
 description = "Register closed."
 one = "注册已关闭。"
 other = "注册已关闭。"
+
+[CaptchaRequired]
+description = "Captcha required."
+one = "需要验证码。"
+other = "需要验证码。"
+
+[CaptchaError]
+description = "Captcha error."
+one = "验证码错误。"
+other = "验证码错误。"
