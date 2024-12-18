@@ -144,16 +144,11 @@ installation are `admin` `admin`, please change the password immediately.
 1. If you're already logged into the admin panel, the web client will log in automatically.
 2. If you're not logged in, simply click the login button in the top right corner, and the API server will be
    pre-configured.
-   ![webclient_conf](docs/webclient_conf.png)
 3. After logging in, the ID server and key will be automatically synced.
 4. The address book will also be automatically saved to the web client for convenient use.
 5. Now supports `v2 Preview`, accessible at `/webclient2`
    ![webclientv2](./docs/webclientv2.png)
-6. `v2 preview` deployment
-   - If deploying via `https` on port `443`, you must configure a reverse proxy. Refer to the [official documentation](https://rustdesk.com/docs/en/self-host/rustdesk-server-pro/faq/#8-add-websocket-secure-wss-support-for-the-id-server-and-relay-server-to-enable-secure-communication-for-the-web-client)
-   - If deploying via `http` or other `https` ports, configure `21118` and `21119` as with `v1`
-   - More [Web-Client-V2-Preview-Document](https://github.com/lejianwen/rustdesk-api/wiki/Web-Client-V2-Preview-Document)
-
+6. `v2 preview` deployment, [WIKI](https://github.com/lejianwen/rustdesk-api/wiki)
 
 ### Automated Documentation : API documentation is generated using Swag, making it easier for developers to understand and use the API.
 
@@ -185,6 +180,7 @@ lang: "en"
 app:
   web-client: 1  # web client route 1:open 0:close  
   register: false #register enable
+  show-swagger: 0 #show swagger 1:open 0:close
 gin:
   api-addr: "0.0.0.0:21114"
   mode: "release"
@@ -221,8 +217,9 @@ The prefix for variable names is `RUSTDESK_API`. If environment variables exist,
 |------------------------------------|-------------------------------------------------------------------------|-------------------------------|
 | TZ                                 | timezone                                                                | Asia/Shanghai                 |
 | RUSTDESK_API_LANG                  | Language                                                                | `en`,`zh-CN`                  |
-| RUSTDESK_API_APP_WEB_CLIENT        | web client on/off; 1: on, 0 off, deault 1                               | 1                             |
+| RUSTDESK_API_APP_WEB_CLIENT        | web client on/off; 1: on, 0 off, default: 1                             | 1                             |
 | RUSTDESK_API_APP_REGISTER          | register enable; `true`, `false`; default:`false`                       | `false`                       |
+| RUSTDESK_API_APP_SHOW_SWAGGER      | swagger visible; 1: yes, 0: no; default: 0                              | `0`                           |
 | ----- ADMIN Configuration-----     | ----------                                                              | ----------                    |
 | RUSTDESK_API_ADMIN_TITLE           | Admin Title                                                             | `RustDesk Api Admin`          |
 | RUSTDESK_API_ADMIN_HELLO           | Admin welcome message, you can use `html`                               |                               |
@@ -267,7 +264,7 @@ The prefix for variable names is `RUSTDESK_API`. If environment variables exist,
     lejianwen/rustdesk-api
     ```
 
-2. Using `docker-compose`,look [wiki](https://github.com/lejianwen/rustdesk-api/wiki)
+2. Using `docker-compose`,look [WIKI](https://github.com/lejianwen/rustdesk-api/wiki)
 
 #### Running from Release
 
