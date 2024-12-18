@@ -140,15 +140,12 @@
 
 1. 如果已经登录了后台，web client将自动直接登录
 2. 如果没登录后台，点击右上角登录即可，api server已经自动配置好了
-   ![webclient_conf](docs/webclient_conf.png)
 3. 登录后，会自动同步ID服务器和KEY
 4. 登录后，会将地址簿自动保存到web client中，方便使用
 5. 现已支持`v2 Preview`，访问路径是`/webclient2`
    ![webclientv2](./docs/webclientv2.png)
-6. `v2 preview` 部署 
-   - 如果是通过`443`端口的`https`部署，必须配置反向代理，可以参考[官方文档](https://rustdesk.com/docs/en/self-host/rustdesk-server-pro/faq/#8-add-websocket-secure-wss-support-for-the-id-server-and-relay-server-to-enable-secure-communication-for-the-web-client)
-   - 如果是`http`或者其他的`https`端口部署，则和`v1`一样，配置好`21118`,`21119`即可
-   - 更多参考[Web-Client-V2-Preview-Document](https://github.com/lejianwen/rustdesk-api/wiki/Web-Client-V2-Preview-Document)
+6. `v2 preview` 部署，参考[WIKI](https://github.com/lejianwen/rustdesk-api/wiki)
+
 
 ### 自动化文档: 使用 Swag 生成 API 文档，方便开发者理解和使用 API。
 
@@ -180,6 +177,7 @@ lang: "en"
 app:
   web-client: 1  # 1:启用 0:禁用
   register: false #是否开启注册
+  show-swagger: 0 #是否显示swagger文档
 gin:
   api-addr: "0.0.0.0:21114"
   mode: "release"
@@ -218,6 +216,7 @@ proxy:
 | RUSTDESK_API_LANG                  | 语言                                                      | `en`,`zh-CN`                 |
 | RUSTDESK_API_APP_WEB_CLIENT        | 是否启用web-client; 1:启用,0:不启用; 默认启用                        | 1                            |
 | RUSTDESK_API_APP_REGISTER          | 是否开启注册; `true`, `false`  默认`false`                      | `false`                      |
+| RUSTDESK_API_APP_SHOW_SWAGGER      | 是否可见swagger文档;`1`显示，`0`不显示，默认`0`不显示                     | `1`                          |
 | -----ADMIN配置-----                  | ----------                                              | ----------                   |
 | RUSTDESK_API_ADMIN_TITLE           | 后台标题                                                    | `RustDesk Api Admin`         |
 | RUSTDESK_API_ADMIN_HELLO           | 后台欢迎语，可以使用`html`                                        |                              |
@@ -263,7 +262,7 @@ proxy:
     lejianwen/rustdesk-api
     ```
 
-2. 使用`docker compose`，参考[wiki](https://github.com/lejianwen/rustdesk-api/wiki)
+2. 使用`docker compose`，参考[WIKI](https://github.com/lejianwen/rustdesk-api/wiki)
 
 #### 下载release直接运行
 
