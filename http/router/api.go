@@ -15,7 +15,9 @@ func ApiInit(g *gin.Engine) {
 
 	//g.Use(middleware.Cors())
 	//swagger
-	g.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler, ginSwagger.InstanceName("api")))
+	if global.Config.App.ShowSwagger == 1 {
+		g.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler, ginSwagger.InstanceName("api")))
+	}
 
 	frg := g.Group("/api")
 
