@@ -170,11 +170,7 @@ func (ct *Login) Login(c *gin.Context) {
 
 	// 检查是否需要验证码
 	if loginLimiter.NeedsCaptcha(clientIp) {
-		if f.Captcha == "" {
-			response.Fail(c, 110, response.TranslateMsg(c, "CaptchaError"))
-			return
-		}
-		if !loginLimiter.VerifyCaptcha(clientIp, f.Captcha) {
+		if f.Captcha == "" || !loginLimiter.VerifyCaptcha(clientIp, f.Captcha) {
 			response.Fail(c, 101, response.TranslateMsg(c, "CaptchaError"))
 			return
 		}
