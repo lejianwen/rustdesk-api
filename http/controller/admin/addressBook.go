@@ -4,7 +4,6 @@ import (
 	"Gwen/global"
 	"Gwen/http/request/admin"
 	"Gwen/http/response"
-	"Gwen/model"
 	"Gwen/service"
 	"encoding/json"
 	_ "encoding/json"
@@ -107,9 +106,21 @@ func (ct *AddressBook) BatchCreate(c *gin.Context) {
 		response.Fail(c, 101, errList[0])
 		return
 	}
+	ul := len(f.UserIds)
+
+	if ul == 0 {
+		response.Fail(c, 101, response.TranslateMsg(c, "ParamsError"))
+		return
+	}
+	if ul > 1 {
+		//多用户置空标签
+		f.Tags = []string{}
+		//多用户只能创建到默认地址簿
+		f.CollectionId = 0
+	}
 
 	//创建标签
-	for _, fu := range f.UserIds {
+	/*for _, fu := range f.UserIds {
 		if fu == 0 {
 			continue
 		}
@@ -122,13 +133,13 @@ func (ct *AddressBook) BatchCreate(c *gin.Context) {
 				})
 			}
 		}
-	}
+	}*/
 	ts := f.ToAddressBooks()
 	for _, t := range ts {
 		if t.UserId == 0 {
 			continue
 		}
-		ex := service.AllService.AddressBookService.InfoByUserIdAndId(t.UserId, t.Id)
+		ex := service.AllService.AddressBookService.InfoByUserIdAndIdAndCid(t.UserId, t.Id, t.CollectionId)
 		if ex.RowId == 0 {
 			service.AllService.AddressBookService.Create(t)
 		}
