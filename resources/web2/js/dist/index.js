@@ -11198,7 +11198,6 @@ async function wn(u) {
                 offlines.push(e[i])
             }
         }
-        console.log("onlines: ", onlines, "offlines: ", offlines)
         nt(onlines, offlines)
     } else {
         const i = bn(), o = new j4(i, !0, "query onlines");
