@@ -11112,6 +11112,71 @@ function nt(u, e) {
     ye("callback_query_onlines", {onlines: u.join(","), offlines: e.join(",")})
 }
 
+const onlineCache = {}
+
+// Query onlines
+async function myQueryOnline(id) {
+    const last_online = onlineCache[id]
+    if (last_online && new Date().getTime() - last_online < 20 * 1000) {
+        return true
+    }
+    // 映射 方便后期更新
+    const maps = {
+        uri: P4(),
+        ws: j4,
+        conn_type: ne.DEFAULT_CONN,
+        nat_type: pt.SYMMETRIC,
+        token: Pt(),
+        version: se,
+        licence_key: Io(),
+        rendezvousPunchHoleRequest: Ku,
+        rendezvousPunchHoleResponse_Failure: Z0
+    }
+
+    const s = new maps.ws(maps.uri, !0, "rendezvous");
+    await s.open();
+    const punch_hole_request = maps.rendezvousPunchHoleRequest.fromPartial({
+        id: id,
+        licence_key: maps.licence_key,
+        conn_type: maps.conn_type,
+        nat_type: maps.nat_type,
+        token: maps.token,
+        version: maps.version
+    });
+    s.sendRendezvous({punch_hole_request: punch_hole_request});
+    const msg = await s.next();
+    s.close();
+    let online = false
+    const phr = msg.punch_hole_response, rr = msg.relay_response;
+    if (phr) {
+        online = true
+        if (phr != null && phr.other_failure) {
+            online = false
+            return online
+        }
+        if (phr.failure != maps.rendezvousPunchHoleResponse_Failure.UNRECOGNIZED) switch (phr == null ? void 0 : phr.failure) {
+            case maps.rendezvousPunchHoleResponse_Failure.ID_NOT_EXIST:
+            case maps.rendezvousPunchHoleResponse_Failure.OFFLINE:
+            case maps.rendezvousPunchHoleResponse_Failure.LICENSE_MISMATCH:
+            case maps.rendezvousPunchHoleResponse_Failure.LICENSE_OVERUSE:
+                online = false
+                break
+        }
+    } else if (rr) {
+        online = true
+        if (!rr.version) {
+            online = false
+            return online
+        }
+    }
+    if (online) {
+        onlineCache[id] = new Date().getTime()
+    } else if (onlineCache[id]) {
+        delete onlineCache[id]
+    }
+    return online
+}
+
 async function wn(u) {
     let e = [];
     try {
@@ -11121,28 +11186,46 @@ async function wn(u) {
         return
     }
     if (e.length === 0) return;
-    const i = bn(), o = new j4(i, !0, "query onlines");
-    try {
-        await o.open();
-        const a = Ju.fromPartial({id: N4(), peers: e});
-        o.sendRendezvous({online_request: a})
-    } catch (a) {
-        console.error("Failed to query onlines, ", a), nt([], e), o.close();
-        return
-    }
-    for (let a = 0; a < 2; a++) {
-        const t = await Ro(o, 3e3);
-        if (!t || (t == null ? void 0 : t.key_exchange) || (t == null ? void 0 : t.online_response) === void 0) continue;
-        const s = t.online_response.states;
-        let l = [], E = [];
-        for (let c = 0; c < e.length; c++) {
-            const C = 1 << 7 - c % 8;
-            (s[Math.floor(c / 8)] & C) === C ? l.push(e[c]) : E.push(e[c])
+
+    if (window.webclient_magic_queryonline) {
+        const onlines = []
+        const offlines = []
+        for (let i = 0; i < e.length; i++) {
+            let online = await myQueryOnline(e[i])
+            if (online) {
+                onlines.push(e[i])
+            } else {
+                offlines.push(e[i])
+            }
         }
-        nt(l, E), o.close();
-        return
+        console.log("onlines: ", onlines, "offlines: ", offlines)
+        nt(onlines, offlines)
+    } else {
+        const i = bn(), o = new j4(i, !0, "query onlines");
+        try {
+            await o.open();
+            const a = Ju.fromPartial({id: N4(), peers: e});
+            o.sendRendezvous({online_request: a})
+        } catch (a) {
+            console.error("Failed to query onlines, ", a), nt([], e), o.close();
+            return
+        }
+        for (let a = 0; a < 2; a++) {
+            const t = await Ro(o, 3e3);
+            if (!t || (t == null ? void 0 : t.key_exchange) || (t == null ? void 0 : t.online_response) === void 0) continue;
+            const s = t.online_response.states;
+            let l = [], E = [];
+            for (let c = 0; c < e.length; c++) {
+                const C = 1 << 7 - c % 8;
+                (s[Math.floor(c / 8)] & C) === C ? l.push(e[c]) : E.push(e[c])
+            }
+            nt(l, E), o.close();
+            return
+        }
+        o.close(), console.error("Failed to query online states, no online response")
     }
-    o.close(), console.error("Failed to query online states, no online response")
+
+
 }
 
 window.curConn = void 0;

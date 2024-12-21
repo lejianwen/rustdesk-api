@@ -28,6 +28,7 @@ rustdesk:
   key: ""
   key-file: "./conf/data/id_ed25519.pub"
   personal: 1
+  webclient-magic-queryonline: 0
 logger:
   path: "./runtime/log.txt"
   level: "warn" #trace,debug,info,warn,error,fatal
