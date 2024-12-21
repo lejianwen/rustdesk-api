@@ -210,38 +210,39 @@ proxy:
 ### 环境变量
 变量名前缀是`RUSTDESK_API`，环境变量如果存在将覆盖配置文件中的配置
 
-| 变量名                                | 说明                                                      | 示例                           |
-|------------------------------------|---------------------------------------------------------|------------------------------|
-| TZ                                 | 时区                                                      | Asia/Shanghai                |
-| RUSTDESK_API_LANG                  | 语言                                                      | `en`,`zh-CN`                 |
-| RUSTDESK_API_APP_WEB_CLIENT        | 是否启用web-client; 1:启用,0:不启用; 默认启用                        | 1                            |
-| RUSTDESK_API_APP_REGISTER          | 是否开启注册; `true`, `false`  默认`false`                      | `false`                      |
-| RUSTDESK_API_APP_SHOW_SWAGGER      | 是否可见swagger文档;`1`显示，`0`不显示，默认`0`不显示                     | `1`                          |
-| -----ADMIN配置-----                  | ----------                                              | ----------                   |
-| RUSTDESK_API_ADMIN_TITLE           | 后台标题                                                    | `RustDesk Api Admin`         |
-| RUSTDESK_API_ADMIN_HELLO           | 后台欢迎语，可以使用`html`                                        |                              |
-| RUSTDESK_API_ADMIN_HELLO_FILE      | 后台欢迎语文件，如果内容多，使用文件更方便。<br>会覆盖`RUSTDESK_API_ADMIN_HELLO` | `./conf/admin/hello.html`    |
-| -----GIN配置-----                    | ----------                                              | ----------                   |
-| RUSTDESK_API_GIN_TRUST_PROXY       | 信任的代理IP列表，以`,`分割，默认信任所有                                 | 192.168.1.2,192.168.1.3      |
-| -----------GORM配置----------------  | ------------------------------------                    | ---------------------------  |
-| RUSTDESK_API_GORM_TYPE             | 数据库类型sqlite或者mysql，默认sqlite                             | sqlite                       |
-| RUSTDESK_API_GORM_MAX_IDLE_CONNS   | 数据库最大空闲连接数                                              | 10                           |
-| RUSTDESK_API_GORM_MAX_OPEN_CONNS   | 数据库最大打开连接数                                              | 100                          |
-| RUSTDESK_API_RUSTDESK_PERSONAL     | 是否启用个人版API， 1:启用,0:不启用； 默认启用                            | 1                            |
-| -----MYSQL配置-----                  | ----------                                              | ----------                   |
-| RUSTDESK_API_MYSQL_USERNAME        | mysql用户名                                                | root                         |
-| RUSTDESK_API_MYSQL_PASSWORD        | mysql密码                                                 | 111111                       |
-| RUSTDESK_API_MYSQL_ADDR            | mysql地址                                                 | 192.168.1.66:3306            |
-| RUSTDESK_API_MYSQL_DBNAME          | mysql数据库名                                               | rustdesk                     |
-| -----RUSTDESK配置-----               | ---------------                                         | ----------                   |
-| RUSTDESK_API_RUSTDESK_ID_SERVER    | Rustdesk的id服务器地址                                        | 192.168.1.66:21116           |
-| RUSTDESK_API_RUSTDESK_RELAY_SERVER | Rustdesk的relay服务器地址                                     | 192.168.1.66:21117           |
-| RUSTDESK_API_RUSTDESK_API_SERVER   | Rustdesk的api服务器地址                                       | http://192.168.1.66:21114    |
-| RUSTDESK_API_RUSTDESK_KEY          | Rustdesk的key                                            | 123456789                    |
-| RUSTDESK_API_RUSTDESK_KEY_FILE     | Rustdesk存放key的文件                                        | `./conf/data/id_ed25519.pub` |
-| ----PROXY配置-----                   | ---------------                                         | ----------                   |
-| RUSTDESK_API_PROXY_ENABLE          | 是否启用代理:`false`, `true`                                  | `false`                      |
-| RUSTDESK_API_PROXY_HOST            | 代理地址                                                    | `http://127.0.0.1:1080`      |
+| 变量名                                               | 说明                                                      | 示例                           |
+|---------------------------------------------------|---------------------------------------------------------|------------------------------|
+| TZ                                                | 时区                                                      | Asia/Shanghai                |
+| RUSTDESK_API_LANG                                 | 语言                                                      | `en`,`zh-CN`                 |
+| RUSTDESK_API_APP_WEB_CLIENT                       | 是否启用web-client; 1:启用,0:不启用; 默认启用                        | 1                            |
+| RUSTDESK_API_APP_REGISTER                         | 是否开启注册; `true`, `false`  默认`false`                      | `false`                      |
+| RUSTDESK_API_APP_SHOW_SWAGGER                     | 是否可见swagger文档;`1`显示，`0`不显示，默认`0`不显示                     | `1`                          |
+| -----ADMIN配置-----                                 | ----------                                              | ----------                   |
+| RUSTDESK_API_ADMIN_TITLE                          | 后台标题                                                    | `RustDesk Api Admin`         |
+| RUSTDESK_API_ADMIN_HELLO                          | 后台欢迎语，可以使用`html`                                        |                              |
+| RUSTDESK_API_ADMIN_HELLO_FILE                     | 后台欢迎语文件，如果内容多，使用文件更方便。<br>会覆盖`RUSTDESK_API_ADMIN_HELLO` | `./conf/admin/hello.html`    |
+| -----GIN配置-----                                   | ----------                                              | ----------                   |
+| RUSTDESK_API_GIN_TRUST_PROXY                      | 信任的代理IP列表，以`,`分割，默认信任所有                                 | 192.168.1.2,192.168.1.3      |
+| -----------GORM配置----------------                 | ------------------------------------                    | ---------------------------  |
+| RUSTDESK_API_GORM_TYPE                            | 数据库类型sqlite或者mysql，默认sqlite                             | sqlite                       |
+| RUSTDESK_API_GORM_MAX_IDLE_CONNS                  | 数据库最大空闲连接数                                              | 10                           |
+| RUSTDESK_API_GORM_MAX_OPEN_CONNS                  | 数据库最大打开连接数                                              | 100                          |
+| RUSTDESK_API_RUSTDESK_PERSONAL                    | 是否启用个人版API， 1:启用,0:不启用； 默认启用                            | 1                            |
+| -----MYSQL配置-----                                 | ----------                                              | ----------                   |
+| RUSTDESK_API_MYSQL_USERNAME                       | mysql用户名                                                | root                         |
+| RUSTDESK_API_MYSQL_PASSWORD                       | mysql密码                                                 | 111111                       |
+| RUSTDESK_API_MYSQL_ADDR                           | mysql地址                                                 | 192.168.1.66:3306            |
+| RUSTDESK_API_MYSQL_DBNAME                         | mysql数据库名                                               | rustdesk                     |
+| -----RUSTDESK配置-----                              | ---------------                                         | ----------                   |
+| RUSTDESK_API_RUSTDESK_ID_SERVER                   | Rustdesk的id服务器地址                                        | 192.168.1.66:21116           |
+| RUSTDESK_API_RUSTDESK_RELAY_SERVER                | Rustdesk的relay服务器地址                                     | 192.168.1.66:21117           |
+| RUSTDESK_API_RUSTDESK_API_SERVER                  | Rustdesk的api服务器地址                                       | http://192.168.1.66:21114    |
+| RUSTDESK_API_RUSTDESK_KEY                         | Rustdesk的key                                            | 123456789                    |
+| RUSTDESK_API_RUSTDESK_KEY_FILE                    | Rustdesk存放key的文件                                        | `./conf/data/id_ed25519.pub` |
+| RUSTDESK_API_RUSTDESK_WEBCLIENT_MAGIC_QUERYONLINE | Web client v2 中是否启用新的在线状态查询方法; `1`:启用,`0`:不启用,默认不启用     | `0`                          |
+| ----PROXY配置-----                                  | ---------------                                         | ----------                   |
+| RUSTDESK_API_PROXY_ENABLE                         | 是否启用代理:`false`, `true`                                  | `false`                      |
+| RUSTDESK_API_PROXY_HOST                           | 代理地址                                                    | `http://127.0.0.1:1080`      |
 
 
 ### 运行
