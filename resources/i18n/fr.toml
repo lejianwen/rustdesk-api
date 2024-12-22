@@ -1,0 +1,144 @@
+[Test]
+description = "test"
+one = "test1 "
+other = "Test2 {{.P0}}"
+
+[ParamsError]
+description = "Params validation failed."
+one = "La validation des paramètres a échoué."
+other = "La validation des paramètres a échoué."
+
+[OperationFailed]
+description = "OperationFailed."
+one = "l'opération a échoué."
+other = "l'opération a échoué."
+
+[OperationSuccess]
+description = "OperationSuccess."
+one = "Opération réussie"
+other = "Opération réussie"
+
+[ItemExists]
+description = "Item already exists."
+one = "L'élément existe déjà."
+other = "L'élément existe déjà."
+
+[ItemNotFound]
+description = "Item not found."
+one = "Article introuvable."
+other = "Article introuvable."
+
+[NoAccess]
+description = "No access."
+one = "Aucun d'access."
+other = "Aucun d'access."
+
+[UsernameOrPasswordError]
+description = "Username or password error."
+one = "Nom d'utilisateur ou de mot de passe incorrect."
+other = "Nom d'utilisateur ou de mot de passe incorrect."
+
+[SystemError]
+description = "System error."
+one = "Erreur system."
+other = "Erreur system."
+
+[ConfigNotFound]
+description = "Config not found."
+one = "Configuration introuvable."
+other = "Configuration introuvable."
+
+[OauthExpired]
+description = "Oauth expired."
+one = "Oauth a expiré, veuillez réessayer."
+other = "Oauth a expiré, veuillez réessayer."
+
+[OauthFailed]
+description = "Oauth failed."
+one = "Oauth a échoué."
+other = "Oauth a échoué."
+
+[OauthHasBindOtherUser]
+description = "Oauth has bind other user."
+one = "Oauth a lié un autre utilisateur."
+other = "Oauth a lié un autre utilisateur."
+
+[ParamIsEmpty]
+description = "Param is empty."
+one = "{{.P0}} est vide."
+other = "{{.P0}} est vide."
+
+[BindFail]
+description = "Bind fail."
+one = "Échec de la liaison."
+other = "Échec de la liaison."
+
+[BindSuccess]
+description = "Bind success."
+one = "Succès de la liaison."
+other = "Succès de la liaison."
+
+[OauthHasBeenSuccess]
+description = "Oauth has been success."
+one = "Oauth a été réussi avec Succès."
+other = "Oauth a été réussi avec Succès."
+
+[OauthSuccess]
+description = "Oauth success."
+one = "Oauh réussi avec succès."
+other = "Oauh réussi avec succès."
+
+[OauthRegisterSuccess]
+description = "Oauth register success."
+one = "Succès de l'enregistrement Oauth."
+other = "Succès de l'enregistrement Oauth."
+
+[OauthRegisterFailed]
+description = "Oauth register failed."
+one = "L'inscription Oauth a échoué."
+other = "L'inscription Oauth a échoué."
+
+[GetOauthTokenError]
+description = "Get oauth token error."
+one = "Erreur de l'obtention du jeton oauth."
+other = "Erreur de l'obtention du jeton oauth."
+
+[GetOauthUserInfoError]
+description = "Get oauth user info error."
+one = "Erreur d'obtention d'informations sur l'utilisateur oauth."
+other = "Erreur d'obtention d'informations sur l'utilisateur oauth."
+
+[DecodeOauthUserInfoError]
+description = "Decode oauth user info error."
+one = "Erreur de décodage des informations utilisateur oauth."
+other = "Erreur de décodage des informations utilisateur oauth."
+
+[OldPasswordError]
+description = "Old password error."
+one = "Ancien mot de passe incorrect."
+other = "Ancien mot de passe incorrect."
+
+[DefaultGroup]
+description = "Default group"
+one = "Groupe Défaut"
+other = "Groupe Défaut"
+
+[ShareGroup]
+description = "Share group"
+one = "Groupe partagé"
+other = "Groupe partagé"
+
+[RegisterClosed]
+description = "Register closed."
+one = "Inscription fermée."
+other = "Inscription fermée."
+
+[CaptchaRequired]
+description = "Captcha required."
+one = "Captcha requis."
+other = "Captcha requis."
+
+[CaptchaError]
+description = "Captcha error."
+one = "Erreur de captcha."
+other = "Erreur de captcha."

@@ -6,6 +6,7 @@ import (
 	"github.com/go-playground/locales/es"
 	"github.com/go-playground/locales/ko"
 	"github.com/go-playground/locales/ru"
+	"github.com/go-playground/locales/fr"
 	"github.com/go-playground/locales/zh_Hans_CN"
 
 	ut "github.com/go-playground/universal-translator"
@@ -14,6 +15,7 @@ import (
 	es_translations "github.com/go-playground/validator/v10/translations/es"
 	ru_translations "github.com/go-playground/validator/v10/translations/ru"
 	zh_translations "github.com/go-playground/validator/v10/translations/zh"
+	fr_translations "github.com/go-playground/validator/v10/translations/fr"
 	"reflect"
 )
 
@@ -26,14 +28,16 @@ func ApiInitValidator() {
 	koT := ko.New()
 	ruT := ru.New()
 	esT := es.New()
+	frT := fr.New()
 
-	uni := ut.New(enT, cn, koT, ruT, esT)
+	uni := ut.New(enT, cn, koT, ruT, esT, frT)
 
 	enTrans, _ := uni.GetTranslator("en")
 	zhTrans, _ := uni.GetTranslator("zh_Hans_CN")
 	koTrans, _ := uni.GetTranslator("ko")
 	ruTrans, _ := uni.GetTranslator("ru")
 	esTrans, _ := uni.GetTranslator("es")
+	frTrans, _ := uni.GetTranslator("fr")
 
 	err := zh_translations.RegisterDefaultTranslations(validate, zhTrans)
 	if err != nil {
@@ -54,6 +58,10 @@ func ApiInitValidator() {
 		panic(err)
 	}
 	err = es_translations.RegisterDefaultTranslations(validate, esTrans)
+	if err != nil {
+		panic(err)
+	}
+	err = fr_translations.RegisterDefaultTranslations(validate, frTrans)
 	if err != nil {
 		panic(err)
 	}
@@ -125,6 +133,9 @@ func getTranslatorForLang(lang string) ut.Translator {
 		return trans
 	case "es":
 		trans, _ := Validator.UT.GetTranslator("es")
+		return trans
+	case "fr":
+		trans, _ := Validator.UT.GetTranslator("fr")
 		return trans
 	case "en":
 		fallthrough
