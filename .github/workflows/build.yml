@@ -147,9 +147,9 @@ jobs:
       fail-fast: false
       matrix:
         job:
-          - { platform: "amd64", goos: "linux", crossbuild_package: "" }
-          - { platform: "arm64", goos: "linux", crossbuild_package: "aarch64-linux-musl-cross" }
-          - { platform: "armv7l", goos: "linux", crossbuild_package: "armv7l-linux-musleabihf-cross" }
+          - { platform: "amd64", goos: "linux" }
+          - { platform: "arm64", goos: "linux" }
+          - { platform: "armv7l", goos: "linux" }
     steps:
 
       - name: Checkout
@@ -161,7 +161,7 @@ jobs:
       - name: Create packaging env
         run: |
           sudo apt update
-          DEBIAN_FRONTEND=noninteractive sudo apt install -y devscripts build-essential debhelper pkg-config ${{ matrix.job.crossbuild_package }}
+          DEBIAN_FRONTEND=noninteractive sudo apt install -y devscripts build-essential debhelper pkg-config
           mkdir -p debian-build/${{ matrix.job.platform }}/bin
 
       - name: Download binaries
