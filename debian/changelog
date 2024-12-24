@@ -1,0 +1,5 @@
+rustdesk-api-server (1.3.6) UNRELEASED; urgency=medium
+ 
+  * Update the version to 1.3.6 to match the client.
+ 
+ -- rustdesk-api <ymwlpoolc@qq.com>  Tue, 24 Dec 2024 13:48:34 +0800

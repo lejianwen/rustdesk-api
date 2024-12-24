@@ -1,0 +1,2 @@
+bin/rustdesk-api usr/bin
+systemd/rustdesk-api.service lib/systemd/system
