@@ -1,25 +1,25 @@
 import {getServerConf} from "./ljw.js?v=7"
-import {F as oa, J as Ne, L as je, l as I4, m as r, P as na, s as aa, z as Z4} from "./vendor.js?v=0b990c6e";
+import {F as na, J as Oe, L as Ne, l as T4, m as r, s as oa, z as Z4} from "./vendor.js?v=0b990c6e";
 import {ids as langIds, lang} from './lang.js?v=7'
 
-var ia = Object.defineProperty;
-var ta = (u, e, i) => e in u ? ia(u, e, {enumerable: !0, configurable: !0, writable: !0, value: i}) : u[e] = i;
-var d = (u, e, i) => (ta(u, typeof e != "symbol" ? e + "" : e, i), i), ue = (u, e, i) => {
+var ta = Object.defineProperty;
+var aa = (u, e, i) => e in u ? ta(u, e, {enumerable: !0, configurable: !0, writable: !0, value: i}) : u[e] = i;
+var d = (u, e, i) => (aa(u, typeof e != "symbol" ? e + "" : e, i), i), ue = (u, e, i) => {
     if (!e.has(u)) throw TypeError("Cannot " + i)
 };
 var h = (u, e, i) => (ue(u, e, "read from private field"), i ? i.call(u) : e.get(u)), pu = (u, e, i) => {
     if (e.has(u)) throw TypeError("Cannot add the same private member more than once");
     e instanceof WeakSet ? e.add(u) : e.set(u, i)
-}, p4 = (u, e, i, o) => (ue(u, e, "write to private field"), o ? o.call(u, i) : e.set(u, i), i), Ie = (u, e, i, o) => ({
+}, B4 = (u, e, i, o) => (ue(u, e, "write to private field"), o ? o.call(u, i) : e.set(u, i), i), Te = (u, e, i, o) => ({
     set _(a) {
-        p4(u, e, a, i)
+        B4(u, e, a, i)
     }, get _() {
         return h(u, e, o)
     }
-}), Te = (u, e, i) => (ue(u, e, "access private method"), i);
+}), je = (u, e, i) => (ue(u, e, "access private method"), i);
 
 
-const ra = function () {
+const sa = function () {
     const e = document.createElement("link").relList;
     if (e && e.supports && e.supports("modulepreload")) return;
     for (const a of document.querySelectorAll('link[rel="modulepreload"]')) o(a);
@@ -39,10 +39,10 @@ const ra = function () {
         fetch(a.href, t)
     }
 };
-ra();
+sa();
 var ae = (u => (u[u.I420 = 0] = "I420", u[u.I444 = 1] = "I444", u[u.UNRECOGNIZED = -1] = "UNRECOGNIZED", u))(ae || {});
 
-function sa(u) {
+function la(u) {
     switch (u) {
         case 0:
         case"I420":
@@ -57,7 +57,7 @@ function sa(u) {
     }
 }
 
-function la(u) {
+function Ea(u) {
     switch (u) {
         case 0:
             return "I420";
@@ -69,9 +69,9 @@ function la(u) {
     }
 }
 
-var C4 = (u => (u[u.Legacy = 0] = "Legacy", u[u.Map = 1] = "Map", u[u.Translate = 2] = "Translate", u[u.Auto = 3] = "Auto", u[u.UNRECOGNIZED = -1] = "UNRECOGNIZED", u))(C4 || {});
+var D4 = (u => (u[u.Legacy = 0] = "Legacy", u[u.Map = 1] = "Map", u[u.Translate = 2] = "Translate", u[u.Auto = 3] = "Auto", u[u.UNRECOGNIZED = -1] = "UNRECOGNIZED", u))(D4 || {});
 
-function Ea(u) {
+function da(u) {
     switch (u) {
         case 0:
         case"Legacy":
@@ -92,7 +92,7 @@ function Ea(u) {
     }
 }
 
-function da(u) {
+function ca(u) {
     switch (u) {
         case 0:
             return "Legacy";
@@ -110,7 +110,7 @@ function da(u) {
 
 var j = (u => (u[u.Unknown = 0] = "Unknown", u[u.Alt = 1] = "Alt", u[u.Backspace = 2] = "Backspace", u[u.CapsLock = 3] = "CapsLock", u[u.Control = 4] = "Control", u[u.Delete = 5] = "Delete", u[u.DownArrow = 6] = "DownArrow", u[u.End = 7] = "End", u[u.Escape = 8] = "Escape", u[u.F1 = 9] = "F1", u[u.F10 = 10] = "F10", u[u.F11 = 11] = "F11", u[u.F12 = 12] = "F12", u[u.F2 = 13] = "F2", u[u.F3 = 14] = "F3", u[u.F4 = 15] = "F4", u[u.F5 = 16] = "F5", u[u.F6 = 17] = "F6", u[u.F7 = 18] = "F7", u[u.F8 = 19] = "F8", u[u.F9 = 20] = "F9", u[u.Home = 21] = "Home", u[u.LeftArrow = 22] = "LeftArrow", u[u.Meta = 23] = "Meta", u[u.Option = 24] = "Option", u[u.PageDown = 25] = "PageDown", u[u.PageUp = 26] = "PageUp", u[u.Return = 27] = "Return", u[u.RightArrow = 28] = "RightArrow", u[u.Shift = 29] = "Shift", u[u.Space = 30] = "Space", u[u.Tab = 31] = "Tab", u[u.UpArrow = 32] = "UpArrow", u[u.Numpad0 = 33] = "Numpad0", u[u.Numpad1 = 34] = "Numpad1", u[u.Numpad2 = 35] = "Numpad2", u[u.Numpad3 = 36] = "Numpad3", u[u.Numpad4 = 37] = "Numpad4", u[u.Numpad5 = 38] = "Numpad5", u[u.Numpad6 = 39] = "Numpad6", u[u.Numpad7 = 40] = "Numpad7", u[u.Numpad8 = 41] = "Numpad8", u[u.Numpad9 = 42] = "Numpad9", u[u.Cancel = 43] = "Cancel", u[u.Clear = 44] = "Clear", u[u.Menu = 45] = "Menu", u[u.Pause = 46] = "Pause", u[u.Kana = 47] = "Kana", u[u.Hangul = 48] = "Hangul", u[u.Junja = 49] = "Junja", u[u.Final = 50] = "Final", u[u.Hanja = 51] = "Hanja", u[u.Kanji = 52] = "Kanji", u[u.Convert = 53] = "Convert", u[u.Select = 54] = "Select", u[u.Print = 55] = "Print", u[u.Execute = 56] = "Execute", u[u.Snapshot = 57] = "Snapshot", u[u.Insert = 58] = "Insert", u[u.Help = 59] = "Help", u[u.Sleep = 60] = "Sleep", u[u.Separator = 61] = "Separator", u[u.Scroll = 62] = "Scroll", u[u.NumLock = 63] = "NumLock", u[u.RWin = 64] = "RWin", u[u.Apps = 65] = "Apps", u[u.Multiply = 66] = "Multiply", u[u.Add = 67] = "Add", u[u.Subtract = 68] = "Subtract", u[u.Decimal = 69] = "Decimal", u[u.Divide = 70] = "Divide", u[u.Equals = 71] = "Equals", u[u.NumpadEnter = 72] = "NumpadEnter", u[u.RShift = 73] = "RShift", u[u.RControl = 74] = "RControl", u[u.RAlt = 75] = "RAlt", u[u.VolumeMute = 76] = "VolumeMute", u[u.VolumeUp = 77] = "VolumeUp", u[u.VolumeDown = 78] = "VolumeDown", u[u.Power = 79] = "Power", u[u.CtrlAltDel = 100] = "CtrlAltDel", u[u.LockScreen = 101] = "LockScreen", u[u.UNRECOGNIZED = -1] = "UNRECOGNIZED", u))(j || {});
 
-function F4(u) {
+function v4(u) {
     switch (u) {
         case 0:
         case"Unknown":
@@ -365,7 +365,7 @@ function F4(u) {
     }
 }
 
-function T4(u) {
+function j4(u) {
     switch (u) {
         case 0:
             return "Unknown";
@@ -539,7 +539,7 @@ function T4(u) {
 
 var du = (u => (u[u.Text = 0] = "Text", u[u.Rtf = 1] = "Rtf", u[u.Html = 2] = "Html", u[u.ImageRgba = 21] = "ImageRgba", u[u.ImagePng = 22] = "ImagePng", u[u.ImageSvg = 23] = "ImageSvg", u[u.Special = 31] = "Special", u[u.UNRECOGNIZED = -1] = "UNRECOGNIZED", u))(du || {});
 
-function ca(u) {
+function Ca(u) {
     switch (u) {
         case 0:
         case"Text":
@@ -569,7 +569,7 @@ function ca(u) {
     }
 }
 
-function Ca(u) {
+function pa(u) {
     switch (u) {
         case 0:
             return "Text";
@@ -593,7 +593,7 @@ function Ca(u) {
 
 var dt = (u => (u[u.Dir = 0] = "Dir", u[u.DirLink = 2] = "DirLink", u[u.DirDrive = 3] = "DirDrive", u[u.File = 4] = "File", u[u.FileLink = 5] = "FileLink", u[u.UNRECOGNIZED = -1] = "UNRECOGNIZED", u))(dt || {});
 
-function pa(u) {
+function Da(u) {
     switch (u) {
         case 0:
         case"Dir":
@@ -617,7 +617,7 @@ function pa(u) {
     }
 }
 
-function Da(u) {
+function Ba(u) {
     switch (u) {
         case 0:
             return "Dir";
@@ -635,9 +635,9 @@ function Da(u) {
     }
 }
 
-var w4 = (u => (u[u.NotSet = 0] = "NotSet", u[u.Low = 2] = "Low", u[u.Balanced = 3] = "Balanced", u[u.Best = 4] = "Best", u[u.UNRECOGNIZED = -1] = "UNRECOGNIZED", u))(w4 || {});
+var S4 = (u => (u[u.NotSet = 0] = "NotSet", u[u.Low = 2] = "Low", u[u.Balanced = 3] = "Balanced", u[u.Best = 4] = "Best", u[u.UNRECOGNIZED = -1] = "UNRECOGNIZED", u))(S4 || {});
 
-function Ba(u) {
+function ma(u) {
     switch (u) {
         case 0:
         case"NotSet":
@@ -658,7 +658,7 @@ function Ba(u) {
     }
 }
 
-function ma(u) {
+function Aa(u) {
     switch (u) {
         case 0:
             return "NotSet";
@@ -676,7 +676,7 @@ function ma(u) {
 
 var t0 = (u => (u[u.Keyboard = 0] = "Keyboard", u[u.Clipboard = 2] = "Clipboard", u[u.Audio = 3] = "Audio", u[u.File = 4] = "File", u[u.Restart = 5] = "Restart", u[u.Recording = 6] = "Recording", u[u.BlockInput = 7] = "BlockInput", u[u.UNRECOGNIZED = -1] = "UNRECOGNIZED", u))(t0 || {});
 
-function Aa(u) {
+function Fa(u) {
     switch (u) {
         case 0:
         case"Keyboard":
@@ -706,7 +706,7 @@ function Aa(u) {
     }
 }
 
-function Fa(u) {
+function _a(u) {
     switch (u) {
         case 0:
             return "Keyboard";
@@ -730,7 +730,7 @@ function Fa(u) {
 
 var Au = (u => (u[u.Auto = 0] = "Auto", u[u.VP9 = 1] = "VP9", u[u.H264 = 2] = "H264", u[u.H265 = 3] = "H265", u[u.VP8 = 4] = "VP8", u[u.AV1 = 5] = "AV1", u[u.UNRECOGNIZED = -1] = "UNRECOGNIZED", u))(Au || {});
 
-function _a(u) {
+function va(u) {
     switch (u) {
         case 0:
         case"Auto":
@@ -757,7 +757,7 @@ function _a(u) {
     }
 }
 
-function va(u) {
+function ka(u) {
     switch (u) {
         case 0:
             return "Auto";
@@ -811,9 +811,9 @@ function au(u) {
     }
 }
 
-var B4 = (u => (u[u.BlkStateUnknown = 0] = "BlkStateUnknown", u[u.BlkOnSucceeded = 2] = "BlkOnSucceeded", u[u.BlkOnFailed = 3] = "BlkOnFailed", u[u.BlkOffSucceeded = 4] = "BlkOffSucceeded", u[u.BlkOffFailed = 5] = "BlkOffFailed", u[u.UNRECOGNIZED = -1] = "UNRECOGNIZED", u))(B4 || {});
+var A4 = (u => (u[u.BlkStateUnknown = 0] = "BlkStateUnknown", u[u.BlkOnSucceeded = 2] = "BlkOnSucceeded", u[u.BlkOnFailed = 3] = "BlkOnFailed", u[u.BlkOffSucceeded = 4] = "BlkOffSucceeded", u[u.BlkOffFailed = 5] = "BlkOffFailed", u[u.UNRECOGNIZED = -1] = "UNRECOGNIZED", u))(A4 || {});
 
-function ka(u) {
+function ga(u) {
     switch (u) {
         case 0:
         case"BlkStateUnknown":
@@ -837,7 +837,7 @@ function ka(u) {
     }
 }
 
-function ga(u) {
+function ha(u) {
     switch (u) {
         case 0:
             return "BlkStateUnknown";
@@ -857,7 +857,7 @@ function ga(u) {
 
 var ou = (u => (u[u.PrvStateUnknown = 0] = "PrvStateUnknown", u[u.PrvOnByOther = 2] = "PrvOnByOther", u[u.PrvNotSupported = 3] = "PrvNotSupported", u[u.PrvOnSucceeded = 4] = "PrvOnSucceeded", u[u.PrvOnFailedDenied = 5] = "PrvOnFailedDenied", u[u.PrvOnFailedPlugin = 6] = "PrvOnFailedPlugin", u[u.PrvOnFailed = 7] = "PrvOnFailed", u[u.PrvOffSucceeded = 8] = "PrvOffSucceeded", u[u.PrvOffByPeer = 9] = "PrvOffByPeer", u[u.PrvOffFailed = 10] = "PrvOffFailed", u[u.PrvOffUnknown = 11] = "PrvOffUnknown", u[u.UNRECOGNIZED = -1] = "UNRECOGNIZED", u))(ou || {});
 
-function ha(u) {
+function fa(u) {
     switch (u) {
         case 0:
         case"PrvStateUnknown":
@@ -899,7 +899,7 @@ function ha(u) {
     }
 }
 
-function fa(u) {
+function xa(u) {
     switch (u) {
         case 0:
             return "PrvStateUnknown";
@@ -929,7 +929,7 @@ function fa(u) {
     }
 }
 
-function Oe() {
+function Me() {
     return {data: new Uint8Array(0), key: !1, pts: 0}
 }
 
@@ -939,7 +939,7 @@ const a0 = {
     }, decode(u, e) {
         const i = u instanceof r.Reader ? u : r.Reader.create(u);
         let o = e === void 0 ? i.len : i.pos + e;
-        const a = Oe();
+        const a = Me();
         for (; i.pos < o;) {
             const t = i.uint32();
             switch (t >>> 3) {
@@ -973,12 +973,12 @@ const a0 = {
         return a0.fromPartial(u != null ? u : {})
     }, fromPartial(u) {
         var i, o, a;
-        const e = Oe();
+        const e = Me();
         return e.data = (i = u.data) != null ? i : new Uint8Array(0), e.key = (o = u.key) != null ? o : !1, e.pts = (a = u.pts) != null ? a : 0, e
     }
 };
 
-function Me() {
+function Ue() {
     return {frames: []}
 }
 
@@ -989,7 +989,7 @@ const k = {
     }, decode(u, e) {
         const i = u instanceof r.Reader ? u : r.Reader.create(u);
         let o = e === void 0 ? i.len : i.pos + e;
-        const a = Me();
+        const a = Ue();
         for (; i.pos < o;) {
             const t = i.uint32();
             switch (t >>> 3) {
@@ -1012,12 +1012,12 @@ const k = {
         return k.fromPartial(u != null ? u : {})
     }, fromPartial(u) {
         var i;
-        const e = Me();
+        const e = Ue();
         return e.frames = ((i = u.frames) == null ? void 0 : i.map(o => a0.fromPartial(o))) || [], e
     }
 };
 
-function Ue() {
+function Le() {
     return {compress: !1}
 }
 
@@ -1027,7 +1027,7 @@ const o0 = {
     }, decode(u, e) {
         const i = u instanceof r.Reader ? u : r.Reader.create(u);
         let o = e === void 0 ? i.len : i.pos + e;
-        const a = Ue();
+        const a = Le();
         for (; i.pos < o;) {
             const t = i.uint32();
             switch (t >>> 3) {
@@ -1049,12 +1049,12 @@ const o0 = {
         return o0.fromPartial(u != null ? u : {})
     }, fromPartial(u) {
         var i;
-        const e = Ue();
+        const e = Le();
         return e.compress = (i = u.compress) != null ? i : !1, e
     }
 };
 
-function Le() {
+function We() {
     return {compress: !1, stride: 0}
 }
 
@@ -1064,7 +1064,7 @@ const n0 = {
     }, decode(u, e) {
         const i = u instanceof r.Reader ? u : r.Reader.create(u);
         let o = e === void 0 ? i.len : i.pos + e;
-        const a = Le();
+        const a = We();
         for (; i.pos < o;) {
             const t = i.uint32();
             switch (t >>> 3) {
@@ -1093,12 +1093,12 @@ const n0 = {
         return n0.fromPartial(u != null ? u : {})
     }, fromPartial(u) {
         var i, o;
-        const e = Le();
+        const e = We();
         return e.compress = (i = u.compress) != null ? i : !1, e.stride = (o = u.stride) != null ? o : 0, e
     }
 };
 
-function We() {
+function Ve() {
     return {
         vp9s: void 0,
         rgb: void 0,
@@ -1117,7 +1117,7 @@ const r0 = {
     }, decode(u, e) {
         const i = u instanceof r.Reader ? u : r.Reader.create(u);
         let o = e === void 0 ? i.len : i.pos + e;
-        const a = We();
+        const a = Ve();
         for (; i.pos < o;) {
             const t = i.uint32();
             switch (t >>> 3) {
@@ -1176,12 +1176,12 @@ const r0 = {
         return r0.fromPartial(u != null ? u : {})
     }, fromPartial(u) {
         var i;
-        const e = We();
+        const e = Ve();
         return e.vp9s = u.vp9s !== void 0 && u.vp9s !== null ? k.fromPartial(u.vp9s) : void 0, e.rgb = u.rgb !== void 0 && u.rgb !== null ? o0.fromPartial(u.rgb) : void 0, e.yuv = u.yuv !== void 0 && u.yuv !== null ? n0.fromPartial(u.yuv) : void 0, e.h264s = u.h264s !== void 0 && u.h264s !== null ? k.fromPartial(u.h264s) : void 0, e.h265s = u.h265s !== void 0 && u.h265s !== null ? k.fromPartial(u.h265s) : void 0, e.vp8s = u.vp8s !== void 0 && u.vp8s !== null ? k.fromPartial(u.vp8s) : void 0, e.av1s = u.av1s !== void 0 && u.av1s !== null ? k.fromPartial(u.av1s) : void 0, e.display = (i = u.display) != null ? i : 0, e
     }
 };
 
-function Ve() {
+function qe() {
     return {id: "", pk: new Uint8Array(0)}
 }
 
@@ -1191,7 +1191,7 @@ const oe = {
     }, decode(u, e) {
         const i = u instanceof r.Reader ? u : r.Reader.create(u);
         let o = e === void 0 ? i.len : i.pos + e;
-        const a = Ve();
+        const a = qe();
         for (; i.pos < o;) {
             const t = i.uint32();
             switch (t >>> 3) {
@@ -1217,12 +1217,12 @@ const oe = {
         return oe.fromPartial(u != null ? u : {})
     }, fromPartial(u) {
         var i, o;
-        const e = Ve();
+        const e = qe();
         return e.id = (i = u.id) != null ? i : "", e.pk = (o = u.pk) != null ? o : new Uint8Array(0), e
     }
 };
 
-function qe() {
+function Ke() {
     return {
         x: 0,
         y: 0,
@@ -1242,7 +1242,7 @@ const s0 = {
     }, decode(u, e) {
         const i = u instanceof r.Reader ? u : r.Reader.create(u);
         let o = e === void 0 ? i.len : i.pos + e;
-        const a = qe();
+        const a = Ke();
         for (; i.pos < o;) {
             const t = i.uint32();
             switch (t >>> 3) {
@@ -1306,12 +1306,12 @@ const s0 = {
         return s0.fromPartial(u != null ? u : {})
     }, fromPartial(u) {
         var i, o, a, t, s, l, E, c;
-        const e = qe();
+        const e = Ke();
         return e.x = (i = u.x) != null ? i : 0, e.y = (o = u.y) != null ? o : 0, e.width = (a = u.width) != null ? a : 0, e.height = (t = u.height) != null ? t : 0, e.name = (s = u.name) != null ? s : "", e.online = (l = u.online) != null ? l : !1, e.cursor_embedded = (E = u.cursor_embedded) != null ? E : !1, e.original_resolution = u.original_resolution !== void 0 && u.original_resolution !== null ? v.fromPartial(u.original_resolution) : void 0, e.scale = (c = u.scale) != null ? c : 0, e
     }
 };
 
-function Ke() {
+function He() {
     return {host: "", port: 0}
 }
 
@@ -1321,7 +1321,7 @@ const l0 = {
     }, decode(u, e) {
         const i = u instanceof r.Reader ? u : r.Reader.create(u);
         let o = e === void 0 ? i.len : i.pos + e;
-        const a = Ke();
+        const a = He();
         for (; i.pos < o;) {
             const t = i.uint32();
             switch (t >>> 3) {
@@ -1347,12 +1347,12 @@ const l0 = {
         return l0.fromPartial(u != null ? u : {})
     }, fromPartial(u) {
         var i, o;
-        const e = Ke();
+        const e = He();
         return e.host = (i = u.host) != null ? i : "", e.port = (o = u.port) != null ? o : 0, e
     }
 };
 
-function He() {
+function Je() {
     return {dir: "", show_hidden: !1}
 }
 
@@ -1362,7 +1362,7 @@ const Fu = {
     }, decode(u, e) {
         const i = u instanceof r.Reader ? u : r.Reader.create(u);
         let o = e === void 0 ? i.len : i.pos + e;
-        const a = He();
+        const a = Je();
         for (; i.pos < o;) {
             const t = i.uint32();
             switch (t >>> 3) {
@@ -1391,12 +1391,12 @@ const Fu = {
         return Fu.fromPartial(u != null ? u : {})
     }, fromPartial(u) {
         var i, o;
-        const e = He();
+        const e = Je();
         return e.dir = (i = u.dir) != null ? i : "", e.show_hidden = (o = u.show_hidden) != null ? o : !1, e
     }
 };
 
-function Je() {
+function Ge() {
     return {username: "", password: ""}
 }
 
@@ -1406,7 +1406,7 @@ const E0 = {
     }, decode(u, e) {
         const i = u instanceof r.Reader ? u : r.Reader.create(u);
         let o = e === void 0 ? i.len : i.pos + e;
-        const a = Je();
+        const a = Ge();
         for (; i.pos < o;) {
             const t = i.uint32();
             switch (t >>> 3) {
@@ -1435,12 +1435,12 @@ const E0 = {
         return E0.fromPartial(u != null ? u : {})
     }, fromPartial(u) {
         var i, o;
-        const e = Je();
+        const e = Ge();
         return e.username = (i = u.username) != null ? i : "", e.password = (o = u.password) != null ? o : "", e
     }
 };
 
-function Ge() {
+function Ze() {
     return {
         username: "",
         password: new Uint8Array(0),
@@ -1464,7 +1464,7 @@ const H = {
     }, decode(u, e) {
         const i = u instanceof r.Reader ? u : r.Reader.create(u);
         let o = e === void 0 ? i.len : i.pos + e;
-        const a = Ge();
+        const a = Ze();
         for (; i.pos < o;) {
             const t = i.uint32();
             switch (t >>> 3) {
@@ -1548,12 +1548,12 @@ const H = {
         return H.fromPartial(u != null ? u : {})
     }, fromPartial(u) {
         var i, o, a, t, s, l, E, c, C;
-        const e = Ge();
+        const e = Ze();
         return e.username = (i = u.username) != null ? i : "", e.password = (o = u.password) != null ? o : new Uint8Array(0), e.my_id = (a = u.my_id) != null ? a : "", e.my_name = (t = u.my_name) != null ? t : "", e.option = u.option !== void 0 && u.option !== null ? z.fromPartial(u.option) : void 0, e.file_transfer = u.file_transfer !== void 0 && u.file_transfer !== null ? Fu.fromPartial(u.file_transfer) : void 0, e.port_forward = u.port_forward !== void 0 && u.port_forward !== null ? l0.fromPartial(u.port_forward) : void 0, e.video_ack_required = (s = u.video_ack_required) != null ? s : !1, e.session_id = (l = u.session_id) != null ? l : 0, e.version = (E = u.version) != null ? E : "", e.os_login = u.os_login !== void 0 && u.os_login !== null ? E0.fromPartial(u.os_login) : void 0, e.my_platform = (c = u.my_platform) != null ? c : "", e.hwid = (C = u.hwid) != null ? C : new Uint8Array(0), e
     }
 };
 
-function Ze() {
+function Qe() {
     return {code: "", hwid: new Uint8Array(0)}
 }
 
@@ -1563,7 +1563,7 @@ const _u = {
     }, decode(u, e) {
         const i = u instanceof r.Reader ? u : r.Reader.create(u);
         let o = e === void 0 ? i.len : i.pos + e;
-        const a = Ze();
+        const a = Qe();
         for (; i.pos < o;) {
             const t = i.uint32();
             switch (t >>> 3) {
@@ -1589,12 +1589,12 @@ const _u = {
         return _u.fromPartial(u != null ? u : {})
     }, fromPartial(u) {
         var i, o;
-        const e = Ze();
+        const e = Qe();
         return e.code = (i = u.code) != null ? i : "", e.hwid = (o = u.hwid) != null ? o : new Uint8Array(0), e
     }
 };
 
-function Qe() {
+function Xe() {
     return {text: ""}
 }
 
@@ -1604,7 +1604,7 @@ const vu = {
     }, decode(u, e) {
         const i = u instanceof r.Reader ? u : r.Reader.create(u);
         let o = e === void 0 ? i.len : i.pos + e;
-        const a = Qe();
+        const a = Xe();
         for (; i.pos < o;) {
             const t = i.uint32();
             switch (t >>> 3) {
@@ -1626,12 +1626,12 @@ const vu = {
         return vu.fromPartial(u != null ? u : {})
     }, fromPartial(u) {
         var i;
-        const e = Qe();
+        const e = Xe();
         return e.text = (i = u.text) != null ? i : "", e
     }
 };
 
-function Xe() {
+function Ye() {
     return {privacy_mode: !1}
 }
 
@@ -1641,7 +1641,7 @@ const d0 = {
     }, decode(u, e) {
         const i = u instanceof r.Reader ? u : r.Reader.create(u);
         let o = e === void 0 ? i.len : i.pos + e;
-        const a = Xe();
+        const a = Ye();
         for (; i.pos < o;) {
             const t = i.uint32();
             switch (t >>> 3) {
@@ -1663,12 +1663,12 @@ const d0 = {
         return d0.fromPartial(u != null ? u : {})
     }, fromPartial(u) {
         var i;
-        const e = Xe();
+        const e = Ye();
         return e.privacy_mode = (i = u.privacy_mode) != null ? i : !1, e
     }
 };
 
-function Ye() {
+function $e() {
     return {vp8: !1, vp9: !1, av1: !1, h264: !1, h265: !1}
 }
 
@@ -1678,7 +1678,7 @@ const J = {
     }, decode(u, e) {
         const i = u instanceof r.Reader ? u : r.Reader.create(u);
         let o = e === void 0 ? i.len : i.pos + e;
-        const a = Ye();
+        const a = $e();
         for (; i.pos < o;) {
             const t = i.uint32();
             switch (t >>> 3) {
@@ -1722,12 +1722,12 @@ const J = {
         return J.fromPartial(u != null ? u : {})
     }, fromPartial(u) {
         var i, o, a, t, s;
-        const e = Ye();
+        const e = $e();
         return e.vp8 = (i = u.vp8) != null ? i : !1, e.vp9 = (o = u.vp9) != null ? o : !1, e.av1 = (a = u.av1) != null ? a : !1, e.h264 = (t = u.h264) != null ? t : !1, e.h265 = (s = u.h265) != null ? s : !1, e
     }
 };
 
-function $e() {
+function u3() {
     return {h264: !1, h265: !1, vp8: !1, av1: !1, i444: void 0}
 }
 
@@ -1737,7 +1737,7 @@ const G = {
     }, decode(u, e) {
         const i = u instanceof r.Reader ? u : r.Reader.create(u);
         let o = e === void 0 ? i.len : i.pos + e;
-        const a = $e();
+        const a = u3();
         for (; i.pos < o;) {
             const t = i.uint32();
             switch (t >>> 3) {
@@ -1781,12 +1781,12 @@ const G = {
         return G.fromPartial(u != null ? u : {})
     }, fromPartial(u) {
         var i, o, a, t;
-        const e = $e();
+        const e = u3();
         return e.h264 = (i = u.h264) != null ? i : !1, e.h265 = (o = u.h265) != null ? o : !1, e.vp8 = (a = u.vp8) != null ? a : !1, e.av1 = (t = u.av1) != null ? t : !1, e.i444 = u.i444 !== void 0 && u.i444 !== null ? J.fromPartial(u.i444) : void 0, e
     }
 };
 
-function u3() {
+function e3() {
     return {
         username: "",
         hostname: "",
@@ -1811,7 +1811,7 @@ const Y = {
     }, decode(u, e) {
         const i = u instanceof r.Reader ? u : r.Reader.create(u);
         let o = e === void 0 ? i.len : i.pos + e;
-        const a = u3();
+        const a = e3();
         for (; i.pos < o;) {
             const t = i.uint32();
             switch (t >>> 3) {
@@ -1891,12 +1891,12 @@ const Y = {
         return Y.fromPartial(u != null ? u : {})
     }, fromPartial(u) {
         var i, o, a, t, s, l, E, c;
-        const e = u3();
+        const e = e3();
         return e.username = (i = u.username) != null ? i : "", e.hostname = (o = u.hostname) != null ? o : "", e.platform = (a = u.platform) != null ? a : "", e.displays = ((t = u.displays) == null ? void 0 : t.map(C => s0.fromPartial(C))) || [], e.current_display = (s = u.current_display) != null ? s : 0, e.sas_enabled = (l = u.sas_enabled) != null ? l : !1, e.version = (E = u.version) != null ? E : "", e.features = u.features !== void 0 && u.features !== null ? d0.fromPartial(u.features) : void 0, e.encoding = u.encoding !== void 0 && u.encoding !== null ? G.fromPartial(u.encoding) : void 0, e.resolutions = u.resolutions !== void 0 && u.resolutions !== null ? uu.fromPartial(u.resolutions) : void 0, e.platform_additions = (c = u.platform_additions) != null ? c : "", e.windows_sessions = u.windows_sessions !== void 0 && u.windows_sessions !== null ? K0.fromPartial(u.windows_sessions) : void 0, e
     }
 };
 
-function e3() {
+function i3() {
     return {sid: 0, name: ""}
 }
 
@@ -1906,7 +1906,7 @@ const c0 = {
     }, decode(u, e) {
         const i = u instanceof r.Reader ? u : r.Reader.create(u);
         let o = e === void 0 ? i.len : i.pos + e;
-        const a = e3();
+        const a = i3();
         for (; i.pos < o;) {
             const t = i.uint32();
             switch (t >>> 3) {
@@ -1932,12 +1932,12 @@ const c0 = {
         return c0.fromPartial(u != null ? u : {})
     }, fromPartial(u) {
         var i, o;
-        const e = e3();
+        const e = i3();
         return e.sid = (i = u.sid) != null ? i : 0, e.name = (o = u.name) != null ? o : "", e
     }
 };
 
-function i3() {
+function t3() {
     return {error: void 0, peer_info: void 0, enable_trusted_devices: !1}
 }
 
@@ -1947,7 +1947,7 @@ const C0 = {
     }, decode(u, e) {
         const i = u instanceof r.Reader ? u : r.Reader.create(u);
         let o = e === void 0 ? i.len : i.pos + e;
-        const a = i3();
+        const a = t3();
         for (; i.pos < o;) {
             const t = i.uint32();
             switch (t >>> 3) {
@@ -1981,12 +1981,12 @@ const C0 = {
         return C0.fromPartial(u != null ? u : {})
     }, fromPartial(u) {
         var i, o;
-        const e = i3();
+        const e = t3();
         return e.error = (i = u.error) != null ? i : void 0, e.peer_info = u.peer_info !== void 0 && u.peer_info !== null ? Y.fromPartial(u.peer_info) : void 0, e.enable_trusted_devices = (o = u.enable_trusted_devices) != null ? o : !1, e
     }
 };
 
-function t3() {
+function a3() {
     return {scale: 0}
 }
 
@@ -1996,7 +1996,7 @@ const p0 = {
     }, decode(u, e) {
         const i = u instanceof r.Reader ? u : r.Reader.create(u);
         let o = e === void 0 ? i.len : i.pos + e;
-        const a = t3();
+        const a = a3();
         for (; i.pos < o;) {
             const t = i.uint32();
             switch (t >>> 3) {
@@ -2018,49 +2018,8 @@ const p0 = {
         return p0.fromPartial(u != null ? u : {})
     }, fromPartial(u) {
         var i;
-        const e = t3();
-        return e.scale = (i = u.scale) != null ? i : 0, e
-    }
-};
-
-function a3() {
-    return {x: 0, y: 0}
-}
-
-const D0 = {
-    encode(u, e = r.Writer.create()) {
-        return u.x !== 0 && e.uint32(8).int32(u.x), u.y !== 0 && e.uint32(16).int32(u.y), e
-    }, decode(u, e) {
-        const i = u instanceof r.Reader ? u : r.Reader.create(u);
-        let o = e === void 0 ? i.len : i.pos + e;
-        const a = a3();
-        for (; i.pos < o;) {
-            const t = i.uint32();
-            switch (t >>> 3) {
-                case 1:
-                    if (t !== 8) break;
-                    a.x = i.int32();
-                    continue;
-                case 2:
-                    if (t !== 16) break;
-                    a.y = i.int32();
-                    continue
-            }
-            if ((t & 7) === 4 || t === 0) break;
-            i.skipType(t & 7)
-        }
-        return a
-    }, fromJSON(u) {
-        return {x: n(u.x) ? globalThis.Number(u.x) : 0, y: n(u.y) ? globalThis.Number(u.y) : 0}
-    }, toJSON(u) {
-        const e = {};
-        return u.x !== 0 && (e.x = Math.round(u.x)), u.y !== 0 && (e.y = Math.round(u.y)), e
-    }, create(u) {
-        return D0.fromPartial(u != null ? u : {})
-    }, fromPartial(u) {
-        var i, o;
         const e = a3();
-        return e.x = (i = u.x) != null ? i : 0, e.y = (o = u.y) != null ? o : 0, e
+        return e.scale = (i = u.scale) != null ? i : 0, e
     }
 };
 
@@ -2068,7 +2027,7 @@ function o3() {
     return {x: 0, y: 0}
 }
 
-const B0 = {
+const D0 = {
     encode(u, e = r.Writer.create()) {
         return u.x !== 0 && e.uint32(8).int32(u.x), u.y !== 0 && e.uint32(16).int32(u.y), e
     }, decode(u, e) {
@@ -2097,7 +2056,7 @@ const B0 = {
         const e = {};
         return u.x !== 0 && (e.x = Math.round(u.x)), u.y !== 0 && (e.y = Math.round(u.y)), e
     }, create(u) {
-        return B0.fromPartial(u != null ? u : {})
+        return D0.fromPartial(u != null ? u : {})
     }, fromPartial(u) {
         var i, o;
         const e = o3();
@@ -2109,7 +2068,7 @@ function n3() {
     return {x: 0, y: 0}
 }
 
-const m0 = {
+const B0 = {
     encode(u, e = r.Writer.create()) {
         return u.x !== 0 && e.uint32(8).int32(u.x), u.y !== 0 && e.uint32(16).int32(u.y), e
     }, decode(u, e) {
@@ -2138,7 +2097,7 @@ const m0 = {
         const e = {};
         return u.x !== 0 && (e.x = Math.round(u.x)), u.y !== 0 && (e.y = Math.round(u.y)), e
     }, create(u) {
-        return m0.fromPartial(u != null ? u : {})
+        return B0.fromPartial(u != null ? u : {})
     }, fromPartial(u) {
         var i, o;
         const e = n3();
@@ -2147,6 +2106,47 @@ const m0 = {
 };
 
 function r3() {
+    return {x: 0, y: 0}
+}
+
+const m0 = {
+    encode(u, e = r.Writer.create()) {
+        return u.x !== 0 && e.uint32(8).int32(u.x), u.y !== 0 && e.uint32(16).int32(u.y), e
+    }, decode(u, e) {
+        const i = u instanceof r.Reader ? u : r.Reader.create(u);
+        let o = e === void 0 ? i.len : i.pos + e;
+        const a = r3();
+        for (; i.pos < o;) {
+            const t = i.uint32();
+            switch (t >>> 3) {
+                case 1:
+                    if (t !== 8) break;
+                    a.x = i.int32();
+                    continue;
+                case 2:
+                    if (t !== 16) break;
+                    a.y = i.int32();
+                    continue
+            }
+            if ((t & 7) === 4 || t === 0) break;
+            i.skipType(t & 7)
+        }
+        return a
+    }, fromJSON(u) {
+        return {x: n(u.x) ? globalThis.Number(u.x) : 0, y: n(u.y) ? globalThis.Number(u.y) : 0}
+    }, toJSON(u) {
+        const e = {};
+        return u.x !== 0 && (e.x = Math.round(u.x)), u.y !== 0 && (e.y = Math.round(u.y)), e
+    }, create(u) {
+        return m0.fromPartial(u != null ? u : {})
+    }, fromPartial(u) {
+        var i, o;
+        const e = r3();
+        return e.x = (i = u.x) != null ? i : 0, e.y = (o = u.y) != null ? o : 0, e
+    }
+};
+
+function s3() {
     return {scale_update: void 0, pan_start: void 0, pan_update: void 0, pan_end: void 0}
 }
 
@@ -2156,7 +2156,7 @@ const A0 = {
     }, decode(u, e) {
         const i = u instanceof r.Reader ? u : r.Reader.create(u);
         let o = e === void 0 ? i.len : i.pos + e;
-        const a = r3();
+        const a = s3();
         for (; i.pos < o;) {
             const t = i.uint32();
             switch (t >>> 3) {
@@ -2194,12 +2194,12 @@ const A0 = {
     }, create(u) {
         return A0.fromPartial(u != null ? u : {})
     }, fromPartial(u) {
-        const e = r3();
+        const e = s3();
         return e.scale_update = u.scale_update !== void 0 && u.scale_update !== null ? p0.fromPartial(u.scale_update) : void 0, e.pan_start = u.pan_start !== void 0 && u.pan_start !== null ? D0.fromPartial(u.pan_start) : void 0, e.pan_update = u.pan_update !== void 0 && u.pan_update !== null ? B0.fromPartial(u.pan_update) : void 0, e.pan_end = u.pan_end !== void 0 && u.pan_end !== null ? m0.fromPartial(u.pan_end) : void 0, e
     }
 };
 
-function s3() {
+function l3() {
     return {touch_event: void 0, modifiers: []}
 }
 
@@ -2211,7 +2211,7 @@ const F0 = {
     }, decode(u, e) {
         const i = u instanceof r.Reader ? u : r.Reader.create(u);
         let o = e === void 0 ? i.len : i.pos + e;
-        const a = s3();
+        const a = l3();
         for (; i.pos < o;) {
             const t = i.uint32();
             switch (t >>> 3) {
@@ -2238,22 +2238,22 @@ const F0 = {
     }, fromJSON(u) {
         return {
             touch_event: n(u.touch_event) ? A0.fromJSON(u.touch_event) : void 0,
-            modifiers: globalThis.Array.isArray(u == null ? void 0 : u.modifiers) ? u.modifiers.map(e => F4(e)) : []
+            modifiers: globalThis.Array.isArray(u == null ? void 0 : u.modifiers) ? u.modifiers.map(e => v4(e)) : []
         }
     }, toJSON(u) {
         var i;
         const e = {};
-        return u.touch_event !== void 0 && (e.touch_event = A0.toJSON(u.touch_event)), (i = u.modifiers) != null && i.length && (e.modifiers = u.modifiers.map(o => T4(o))), e
+        return u.touch_event !== void 0 && (e.touch_event = A0.toJSON(u.touch_event)), (i = u.modifiers) != null && i.length && (e.modifiers = u.modifiers.map(o => j4(o))), e
     }, create(u) {
         return F0.fromPartial(u != null ? u : {})
     }, fromPartial(u) {
         var i;
-        const e = s3();
+        const e = l3();
         return e.touch_event = u.touch_event !== void 0 && u.touch_event !== null ? A0.fromPartial(u.touch_event) : void 0, e.modifiers = ((i = u.modifiers) == null ? void 0 : i.map(o => o)) || [], e
     }
 };
 
-function l3() {
+function E3() {
     return {mask: 0, x: 0, y: 0, modifiers: []}
 }
 
@@ -2265,7 +2265,7 @@ const ku = {
     }, decode(u, e) {
         const i = u instanceof r.Reader ? u : r.Reader.create(u);
         let o = e === void 0 ? i.len : i.pos + e;
-        const a = l3();
+        const a = E3();
         for (; i.pos < o;) {
             const t = i.uint32();
             switch (t >>> 3) {
@@ -2302,22 +2302,22 @@ const ku = {
             mask: n(u.mask) ? globalThis.Number(u.mask) : 0,
             x: n(u.x) ? globalThis.Number(u.x) : 0,
             y: n(u.y) ? globalThis.Number(u.y) : 0,
-            modifiers: globalThis.Array.isArray(u == null ? void 0 : u.modifiers) ? u.modifiers.map(e => F4(e)) : []
+            modifiers: globalThis.Array.isArray(u == null ? void 0 : u.modifiers) ? u.modifiers.map(e => v4(e)) : []
         }
     }, toJSON(u) {
         var i;
         const e = {};
-        return u.mask !== 0 && (e.mask = Math.round(u.mask)), u.x !== 0 && (e.x = Math.round(u.x)), u.y !== 0 && (e.y = Math.round(u.y)), (i = u.modifiers) != null && i.length && (e.modifiers = u.modifiers.map(o => T4(o))), e
+        return u.mask !== 0 && (e.mask = Math.round(u.mask)), u.x !== 0 && (e.x = Math.round(u.x)), u.y !== 0 && (e.y = Math.round(u.y)), (i = u.modifiers) != null && i.length && (e.modifiers = u.modifiers.map(o => j4(o))), e
     }, create(u) {
         return ku.fromPartial(u != null ? u : {})
     }, fromPartial(u) {
         var i, o, a, t;
-        const e = l3();
+        const e = E3();
         return e.mask = (i = u.mask) != null ? i : 0, e.x = (o = u.x) != null ? o : 0, e.y = (a = u.y) != null ? a : 0, e.modifiers = ((t = u.modifiers) == null ? void 0 : t.map(s => s)) || [], e
     }
 };
 
-function E3() {
+function d3() {
     return {
         down: !1,
         press: !1,
@@ -2339,7 +2339,7 @@ const w = {
     }, decode(u, e) {
         const i = u instanceof r.Reader ? u : r.Reader.create(u);
         let o = e === void 0 ? i.len : i.pos + e;
-        const a = E3();
+        const a = d3();
         for (; i.pos < o;) {
             const t = i.uint32();
             switch (t >>> 3) {
@@ -2395,28 +2395,28 @@ const w = {
         return {
             down: n(u.down) ? globalThis.Boolean(u.down) : !1,
             press: n(u.press) ? globalThis.Boolean(u.press) : !1,
-            control_key: n(u.control_key) ? F4(u.control_key) : void 0,
+            control_key: n(u.control_key) ? v4(u.control_key) : void 0,
             chr: n(u.chr) ? globalThis.Number(u.chr) : void 0,
             unicode: n(u.unicode) ? globalThis.Number(u.unicode) : void 0,
             seq: n(u.seq) ? globalThis.String(u.seq) : void 0,
             win2win_hotkey: n(u.win2win_hotkey) ? globalThis.Number(u.win2win_hotkey) : void 0,
-            modifiers: globalThis.Array.isArray(u == null ? void 0 : u.modifiers) ? u.modifiers.map(e => F4(e)) : [],
-            mode: n(u.mode) ? Ea(u.mode) : 0
+            modifiers: globalThis.Array.isArray(u == null ? void 0 : u.modifiers) ? u.modifiers.map(e => v4(e)) : [],
+            mode: n(u.mode) ? da(u.mode) : 0
         }
     }, toJSON(u) {
         var i;
         const e = {};
-        return u.down !== !1 && (e.down = u.down), u.press !== !1 && (e.press = u.press), u.control_key !== void 0 && (e.control_key = T4(u.control_key)), u.chr !== void 0 && (e.chr = Math.round(u.chr)), u.unicode !== void 0 && (e.unicode = Math.round(u.unicode)), u.seq !== void 0 && (e.seq = u.seq), u.win2win_hotkey !== void 0 && (e.win2win_hotkey = Math.round(u.win2win_hotkey)), (i = u.modifiers) != null && i.length && (e.modifiers = u.modifiers.map(o => T4(o))), u.mode !== 0 && (e.mode = da(u.mode)), e
+        return u.down !== !1 && (e.down = u.down), u.press !== !1 && (e.press = u.press), u.control_key !== void 0 && (e.control_key = j4(u.control_key)), u.chr !== void 0 && (e.chr = Math.round(u.chr)), u.unicode !== void 0 && (e.unicode = Math.round(u.unicode)), u.seq !== void 0 && (e.seq = u.seq), u.win2win_hotkey !== void 0 && (e.win2win_hotkey = Math.round(u.win2win_hotkey)), (i = u.modifiers) != null && i.length && (e.modifiers = u.modifiers.map(o => j4(o))), u.mode !== 0 && (e.mode = ca(u.mode)), e
     }, create(u) {
         return w.fromPartial(u != null ? u : {})
     }, fromPartial(u) {
         var i, o, a, t, s, l, E, c, C;
-        const e = E3();
+        const e = d3();
         return e.down = (i = u.down) != null ? i : !1, e.press = (o = u.press) != null ? o : !1, e.control_key = (a = u.control_key) != null ? a : void 0, e.chr = (t = u.chr) != null ? t : void 0, e.unicode = (s = u.unicode) != null ? s : void 0, e.seq = (l = u.seq) != null ? l : void 0, e.win2win_hotkey = (E = u.win2win_hotkey) != null ? E : void 0, e.modifiers = ((c = u.modifiers) == null ? void 0 : c.map(D => D)) || [], e.mode = (C = u.mode) != null ? C : 0, e
     }
 };
 
-function d3() {
+function c3() {
     return {id: 0, hotx: 0, hoty: 0, width: 0, height: 0, colors: new Uint8Array(0)}
 }
 
@@ -2426,7 +2426,7 @@ const _0 = {
     }, decode(u, e) {
         const i = u instanceof r.Reader ? u : r.Reader.create(u);
         let o = e === void 0 ? i.len : i.pos + e;
-        const a = d3();
+        const a = c3();
         for (; i.pos < o;) {
             const t = i.uint32();
             switch (t >>> 3) {
@@ -2475,12 +2475,12 @@ const _0 = {
         return _0.fromPartial(u != null ? u : {})
     }, fromPartial(u) {
         var i, o, a, t, s, l;
-        const e = d3();
+        const e = c3();
         return e.id = (i = u.id) != null ? i : 0, e.hotx = (o = u.hotx) != null ? o : 0, e.hoty = (a = u.hoty) != null ? a : 0, e.width = (t = u.width) != null ? t : 0, e.height = (s = u.height) != null ? s : 0, e.colors = (l = u.colors) != null ? l : new Uint8Array(0), e
     }
 };
 
-function c3() {
+function C3() {
     return {x: 0, y: 0}
 }
 
@@ -2490,7 +2490,7 @@ const v0 = {
     }, decode(u, e) {
         const i = u instanceof r.Reader ? u : r.Reader.create(u);
         let o = e === void 0 ? i.len : i.pos + e;
-        const a = c3();
+        const a = C3();
         for (; i.pos < o;) {
             const t = i.uint32();
             switch (t >>> 3) {
@@ -2516,12 +2516,12 @@ const v0 = {
         return v0.fromPartial(u != null ? u : {})
     }, fromPartial(u) {
         var i, o;
-        const e = c3();
+        const e = C3();
         return e.x = (i = u.x) != null ? i : 0, e.y = (o = u.y) != null ? o : 0, e
     }
 };
 
-function C3() {
+function p3() {
     return {salt: "", challenge: ""}
 }
 
@@ -2531,7 +2531,7 @@ const k0 = {
     }, decode(u, e) {
         const i = u instanceof r.Reader ? u : r.Reader.create(u);
         let o = e === void 0 ? i.len : i.pos + e;
-        const a = C3();
+        const a = p3();
         for (; i.pos < o;) {
             const t = i.uint32();
             switch (t >>> 3) {
@@ -2560,12 +2560,12 @@ const k0 = {
         return k0.fromPartial(u != null ? u : {})
     }, fromPartial(u) {
         var i, o;
-        const e = C3();
+        const e = p3();
         return e.salt = (i = u.salt) != null ? i : "", e.challenge = (o = u.challenge) != null ? o : "", e
     }
 };
 
-function p3() {
+function D3() {
     return {compress: !1, content: new Uint8Array(0), width: 0, height: 0, format: 0, special_name: ""}
 }
 
@@ -2575,7 +2575,7 @@ const L = {
     }, decode(u, e) {
         const i = u instanceof r.Reader ? u : r.Reader.create(u);
         let o = e === void 0 ? i.len : i.pos + e;
-        const a = p3();
+        const a = D3();
         for (; i.pos < o;) {
             const t = i.uint32();
             switch (t >>> 3) {
@@ -2614,22 +2614,22 @@ const L = {
             content: n(u.content) ? R(u.content) : new Uint8Array(0),
             width: n(u.width) ? globalThis.Number(u.width) : 0,
             height: n(u.height) ? globalThis.Number(u.height) : 0,
-            format: n(u.format) ? ca(u.format) : 0,
+            format: n(u.format) ? Ca(u.format) : 0,
             special_name: n(u.special_name) ? globalThis.String(u.special_name) : ""
         }
     }, toJSON(u) {
         const e = {};
-        return u.compress !== !1 && (e.compress = u.compress), u.content.length !== 0 && (e.content = I(u.content)), u.width !== 0 && (e.width = Math.round(u.width)), u.height !== 0 && (e.height = Math.round(u.height)), u.format !== 0 && (e.format = Ca(u.format)), u.special_name !== "" && (e.special_name = u.special_name), e
+        return u.compress !== !1 && (e.compress = u.compress), u.content.length !== 0 && (e.content = I(u.content)), u.width !== 0 && (e.width = Math.round(u.width)), u.height !== 0 && (e.height = Math.round(u.height)), u.format !== 0 && (e.format = pa(u.format)), u.special_name !== "" && (e.special_name = u.special_name), e
     }, create(u) {
         return L.fromPartial(u != null ? u : {})
     }, fromPartial(u) {
         var i, o, a, t, s, l;
-        const e = p3();
+        const e = D3();
         return e.compress = (i = u.compress) != null ? i : !1, e.content = (o = u.content) != null ? o : new Uint8Array(0), e.width = (a = u.width) != null ? a : 0, e.height = (t = u.height) != null ? t : 0, e.format = (s = u.format) != null ? s : 0, e.special_name = (l = u.special_name) != null ? l : "", e
     }
 };
 
-function D3() {
+function B3() {
     return {clipboards: []}
 }
 
@@ -2640,7 +2640,7 @@ const gu = {
     }, decode(u, e) {
         const i = u instanceof r.Reader ? u : r.Reader.create(u);
         let o = e === void 0 ? i.len : i.pos + e;
-        const a = D3();
+        const a = B3();
         for (; i.pos < o;) {
             const t = i.uint32();
             switch (t >>> 3) {
@@ -2663,12 +2663,12 @@ const gu = {
         return gu.fromPartial(u != null ? u : {})
     }, fromPartial(u) {
         var i;
-        const e = D3();
+        const e = B3();
         return e.clipboards = ((i = u.clipboards) == null ? void 0 : i.map(o => L.fromPartial(o))) || [], e
     }
 };
 
-function B3() {
+function m3() {
     return {entry_type: 0, name: "", is_hidden: !1, size: 0, modified_time: 0}
 }
 
@@ -2678,7 +2678,7 @@ const W = {
     }, decode(u, e) {
         const i = u instanceof r.Reader ? u : r.Reader.create(u);
         let o = e === void 0 ? i.len : i.pos + e;
-        const a = B3();
+        const a = m3();
         for (; i.pos < o;) {
             const t = i.uint32();
             switch (t >>> 3) {
@@ -2709,7 +2709,7 @@ const W = {
         return a
     }, fromJSON(u) {
         return {
-            entry_type: n(u.entry_type) ? pa(u.entry_type) : 0,
+            entry_type: n(u.entry_type) ? Da(u.entry_type) : 0,
             name: n(u.name) ? globalThis.String(u.name) : "",
             is_hidden: n(u.is_hidden) ? globalThis.Boolean(u.is_hidden) : !1,
             size: n(u.size) ? globalThis.Number(u.size) : 0,
@@ -2717,17 +2717,17 @@ const W = {
         }
     }, toJSON(u) {
         const e = {};
-        return u.entry_type !== 0 && (e.entry_type = Da(u.entry_type)), u.name !== "" && (e.name = u.name), u.is_hidden !== !1 && (e.is_hidden = u.is_hidden), u.size !== 0 && (e.size = Math.round(u.size)), u.modified_time !== 0 && (e.modified_time = Math.round(u.modified_time)), e
+        return u.entry_type !== 0 && (e.entry_type = Ba(u.entry_type)), u.name !== "" && (e.name = u.name), u.is_hidden !== !1 && (e.is_hidden = u.is_hidden), u.size !== 0 && (e.size = Math.round(u.size)), u.modified_time !== 0 && (e.modified_time = Math.round(u.modified_time)), e
     }, create(u) {
         return W.fromPartial(u != null ? u : {})
     }, fromPartial(u) {
         var i, o, a, t, s;
-        const e = B3();
+        const e = m3();
         return e.entry_type = (i = u.entry_type) != null ? i : 0, e.name = (o = u.name) != null ? o : "", e.is_hidden = (a = u.is_hidden) != null ? a : !1, e.size = (t = u.size) != null ? t : 0, e.modified_time = (s = u.modified_time) != null ? s : 0, e
     }
 };
 
-function m3() {
+function A3() {
     return {id: 0, path: "", entries: []}
 }
 
@@ -2739,7 +2739,7 @@ const $ = {
     }, decode(u, e) {
         const i = u instanceof r.Reader ? u : r.Reader.create(u);
         let o = e === void 0 ? i.len : i.pos + e;
-        const a = m3();
+        const a = A3();
         for (; i.pos < o;) {
             const t = i.uint32();
             switch (t >>> 3) {
@@ -2774,52 +2774,8 @@ const $ = {
         return $.fromPartial(u != null ? u : {})
     }, fromPartial(u) {
         var i, o, a;
-        const e = m3();
-        return e.id = (i = u.id) != null ? i : 0, e.path = (o = u.path) != null ? o : "", e.entries = ((a = u.entries) == null ? void 0 : a.map(t => W.fromPartial(t))) || [], e
-    }
-};
-
-function A3() {
-    return {path: "", include_hidden: !1}
-}
-
-const hu = {
-    encode(u, e = r.Writer.create()) {
-        return u.path !== "" && e.uint32(10).string(u.path), u.include_hidden !== !1 && e.uint32(16).bool(u.include_hidden), e
-    }, decode(u, e) {
-        const i = u instanceof r.Reader ? u : r.Reader.create(u);
-        let o = e === void 0 ? i.len : i.pos + e;
-        const a = A3();
-        for (; i.pos < o;) {
-            const t = i.uint32();
-            switch (t >>> 3) {
-                case 1:
-                    if (t !== 10) break;
-                    a.path = i.string();
-                    continue;
-                case 2:
-                    if (t !== 16) break;
-                    a.include_hidden = i.bool();
-                    continue
-            }
-            if ((t & 7) === 4 || t === 0) break;
-            i.skipType(t & 7)
-        }
-        return a
-    }, fromJSON(u) {
-        return {
-            path: n(u.path) ? globalThis.String(u.path) : "",
-            include_hidden: n(u.include_hidden) ? globalThis.Boolean(u.include_hidden) : !1
-        }
-    }, toJSON(u) {
-        const e = {};
-        return u.path !== "" && (e.path = u.path), u.include_hidden !== !1 && (e.include_hidden = u.include_hidden), e
-    }, create(u) {
-        return hu.fromPartial(u != null ? u : {})
-    }, fromPartial(u) {
-        var i, o;
         const e = A3();
-        return e.path = (i = u.path) != null ? i : "", e.include_hidden = (o = u.include_hidden) != null ? o : !1, e
+        return e.id = (i = u.id) != null ? i : 0, e.path = (o = u.path) != null ? o : "", e.entries = ((a = u.entries) == null ? void 0 : a.map(t => W.fromPartial(t))) || [], e
     }
 };
 
@@ -2827,7 +2783,7 @@ function F3() {
     return {path: "", include_hidden: !1}
 }
 
-const fu = {
+const hu = {
     encode(u, e = r.Writer.create()) {
         return u.path !== "" && e.uint32(10).string(u.path), u.include_hidden !== !1 && e.uint32(16).bool(u.include_hidden), e
     }, decode(u, e) {
@@ -2859,7 +2815,7 @@ const fu = {
         const e = {};
         return u.path !== "" && (e.path = u.path), u.include_hidden !== !1 && (e.include_hidden = u.include_hidden), e
     }, create(u) {
-        return fu.fromPartial(u != null ? u : {})
+        return hu.fromPartial(u != null ? u : {})
     }, fromPartial(u) {
         var i, o;
         const e = F3();
@@ -2868,6 +2824,50 @@ const fu = {
 };
 
 function _3() {
+    return {path: "", include_hidden: !1}
+}
+
+const fu = {
+    encode(u, e = r.Writer.create()) {
+        return u.path !== "" && e.uint32(10).string(u.path), u.include_hidden !== !1 && e.uint32(16).bool(u.include_hidden), e
+    }, decode(u, e) {
+        const i = u instanceof r.Reader ? u : r.Reader.create(u);
+        let o = e === void 0 ? i.len : i.pos + e;
+        const a = _3();
+        for (; i.pos < o;) {
+            const t = i.uint32();
+            switch (t >>> 3) {
+                case 1:
+                    if (t !== 10) break;
+                    a.path = i.string();
+                    continue;
+                case 2:
+                    if (t !== 16) break;
+                    a.include_hidden = i.bool();
+                    continue
+            }
+            if ((t & 7) === 4 || t === 0) break;
+            i.skipType(t & 7)
+        }
+        return a
+    }, fromJSON(u) {
+        return {
+            path: n(u.path) ? globalThis.String(u.path) : "",
+            include_hidden: n(u.include_hidden) ? globalThis.Boolean(u.include_hidden) : !1
+        }
+    }, toJSON(u) {
+        const e = {};
+        return u.path !== "" && (e.path = u.path), u.include_hidden !== !1 && (e.include_hidden = u.include_hidden), e
+    }, create(u) {
+        return fu.fromPartial(u != null ? u : {})
+    }, fromPartial(u) {
+        var i, o;
+        const e = _3();
+        return e.path = (i = u.path) != null ? i : "", e.include_hidden = (o = u.include_hidden) != null ? o : !1, e
+    }
+};
+
+function v3() {
     return {path: "", empty_dirs: []}
 }
 
@@ -2879,7 +2879,7 @@ const g0 = {
     }, decode(u, e) {
         const i = u instanceof r.Reader ? u : r.Reader.create(u);
         let o = e === void 0 ? i.len : i.pos + e;
-        const a = _3();
+        const a = v3();
         for (; i.pos < o;) {
             const t = i.uint32();
             switch (t >>> 3) {
@@ -2909,12 +2909,12 @@ const g0 = {
         return g0.fromPartial(u != null ? u : {})
     }, fromPartial(u) {
         var i, o;
-        const e = _3();
+        const e = v3();
         return e.path = (i = u.path) != null ? i : "", e.empty_dirs = ((o = u.empty_dirs) == null ? void 0 : o.map(a => $.fromPartial(a))) || [], e
     }
 };
 
-function v3() {
+function k3() {
     return {id: 0, path: "", include_hidden: !1}
 }
 
@@ -2924,7 +2924,7 @@ const xu = {
     }, decode(u, e) {
         const i = u instanceof r.Reader ? u : r.Reader.create(u);
         let o = e === void 0 ? i.len : i.pos + e;
-        const a = v3();
+        const a = k3();
         for (; i.pos < o;) {
             const t = i.uint32();
             switch (t >>> 3) {
@@ -2958,12 +2958,12 @@ const xu = {
         return xu.fromPartial(u != null ? u : {})
     }, fromPartial(u) {
         var i, o, a;
-        const e = v3();
+        const e = k3();
         return e.id = (i = u.id) != null ? i : 0, e.path = (o = u.path) != null ? o : "", e.include_hidden = (a = u.include_hidden) != null ? a : !1, e
     }
 };
 
-function k3() {
+function g3() {
     return {id: 0, path: "", new_name: ""}
 }
 
@@ -2973,7 +2973,7 @@ const yu = {
     }, decode(u, e) {
         const i = u instanceof r.Reader ? u : r.Reader.create(u);
         let o = e === void 0 ? i.len : i.pos + e;
-        const a = k3();
+        const a = g3();
         for (; i.pos < o;) {
             const t = i.uint32();
             switch (t >>> 3) {
@@ -3007,12 +3007,12 @@ const yu = {
         return yu.fromPartial(u != null ? u : {})
     }, fromPartial(u) {
         var i, o, a;
-        const e = k3();
+        const e = g3();
         return e.id = (i = u.id) != null ? i : 0, e.path = (o = u.path) != null ? o : "", e.new_name = (a = u.new_name) != null ? a : "", e
     }
 };
 
-function g3() {
+function h3() {
     return {
         read_dir: void 0,
         send: void 0,
@@ -3034,7 +3034,7 @@ const P = {
     }, decode(u, e) {
         const i = u instanceof r.Reader ? u : r.Reader.create(u);
         let o = e === void 0 ? i.len : i.pos + e;
-        const a = g3();
+        const a = h3();
         for (; i.pos < o;) {
             const t = i.uint32();
             switch (t >>> 3) {
@@ -3107,12 +3107,12 @@ const P = {
     }, create(u) {
         return P.fromPartial(u != null ? u : {})
     }, fromPartial(u) {
-        const e = g3();
+        const e = h3();
         return e.read_dir = u.read_dir !== void 0 && u.read_dir !== null ? hu.fromPartial(u.read_dir) : void 0, e.send = u.send !== void 0 && u.send !== null ? Pu.fromPartial(u.send) : void 0, e.receive = u.receive !== void 0 && u.receive !== null ? Iu.fromPartial(u.receive) : void 0, e.create = u.create !== void 0 && u.create !== null ? Nu.fromPartial(u.create) : void 0, e.remove_dir = u.remove_dir !== void 0 && u.remove_dir !== null ? Tu.fromPartial(u.remove_dir) : void 0, e.remove_file = u.remove_file !== void 0 && u.remove_file !== null ? ju.fromPartial(u.remove_file) : void 0, e.all_files = u.all_files !== void 0 && u.all_files !== null ? xu.fromPartial(u.all_files) : void 0, e.cancel = u.cancel !== void 0 && u.cancel !== null ? bu.fromPartial(u.cancel) : void 0, e.send_confirm = u.send_confirm !== void 0 && u.send_confirm !== null ? cu.fromPartial(u.send_confirm) : void 0, e.rename = u.rename !== void 0 && u.rename !== null ? yu.fromPartial(u.rename) : void 0, e.read_empty_dirs = u.read_empty_dirs !== void 0 && u.read_empty_dirs !== null ? fu.fromPartial(u.read_empty_dirs) : void 0, e
     }
 };
 
-function h3() {
+function f3() {
     return {id: 0}
 }
 
@@ -3122,7 +3122,7 @@ const bu = {
     }, decode(u, e) {
         const i = u instanceof r.Reader ? u : r.Reader.create(u);
         let o = e === void 0 ? i.len : i.pos + e;
-        const a = h3();
+        const a = f3();
         for (; i.pos < o;) {
             const t = i.uint32();
             switch (t >>> 3) {
@@ -3144,12 +3144,12 @@ const bu = {
         return bu.fromPartial(u != null ? u : {})
     }, fromPartial(u) {
         var i;
-        const e = h3();
+        const e = f3();
         return e.id = (i = u.id) != null ? i : 0, e
     }
 };
 
-function f3() {
+function x3() {
     return {dir: void 0, block: void 0, error: void 0, done: void 0, digest: void 0, empty_dirs: void 0}
 }
 
@@ -3159,7 +3159,7 @@ const nu = {
     }, decode(u, e) {
         const i = u instanceof r.Reader ? u : r.Reader.create(u);
         let o = e === void 0 ? i.len : i.pos + e;
-        const a = f3();
+        const a = x3();
         for (; i.pos < o;) {
             const t = i.uint32();
             switch (t >>> 3) {
@@ -3207,12 +3207,12 @@ const nu = {
     }, create(u) {
         return nu.fromPartial(u != null ? u : {})
     }, fromPartial(u) {
-        const e = f3();
+        const e = x3();
         return e.dir = u.dir !== void 0 && u.dir !== null ? $.fromPartial(u.dir) : void 0, e.block = u.block !== void 0 && u.block !== null ? Su.fromPartial(u.block) : void 0, e.error = u.error !== void 0 && u.error !== null ? zu.fromPartial(u.error) : void 0, e.done = u.done !== void 0 && u.done !== null ? Ru.fromPartial(u.done) : void 0, e.digest = u.digest !== void 0 && u.digest !== null ? wu.fromPartial(u.digest) : void 0, e.empty_dirs = u.empty_dirs !== void 0 && u.empty_dirs !== null ? g0.fromPartial(u.empty_dirs) : void 0, e
     }
 };
 
-function x3() {
+function y3() {
     return {id: 0, file_num: 0, last_modified: 0, file_size: 0, is_upload: !1, is_identical: !1}
 }
 
@@ -3222,7 +3222,7 @@ const wu = {
     }, decode(u, e) {
         const i = u instanceof r.Reader ? u : r.Reader.create(u);
         let o = e === void 0 ? i.len : i.pos + e;
-        const a = x3();
+        const a = y3();
         for (; i.pos < o;) {
             const t = i.uint32();
             switch (t >>> 3) {
@@ -3271,12 +3271,12 @@ const wu = {
         return wu.fromPartial(u != null ? u : {})
     }, fromPartial(u) {
         var i, o, a, t, s, l;
-        const e = x3();
+        const e = y3();
         return e.id = (i = u.id) != null ? i : 0, e.file_num = (o = u.file_num) != null ? o : 0, e.last_modified = (a = u.last_modified) != null ? a : 0, e.file_size = (t = u.file_size) != null ? t : 0, e.is_upload = (s = u.is_upload) != null ? s : !1, e.is_identical = (l = u.is_identical) != null ? l : !1, e
     }
 };
 
-function y3() {
+function b3() {
     return {id: 0, file_num: 0, data: new Uint8Array(0), compressed: !1, blk_id: 0}
 }
 
@@ -3286,7 +3286,7 @@ const Su = {
     }, decode(u, e) {
         const i = u instanceof r.Reader ? u : r.Reader.create(u);
         let o = e === void 0 ? i.len : i.pos + e;
-        const a = y3();
+        const a = b3();
         for (; i.pos < o;) {
             const t = i.uint32();
             switch (t >>> 3) {
@@ -3330,12 +3330,12 @@ const Su = {
         return Su.fromPartial(u != null ? u : {})
     }, fromPartial(u) {
         var i, o, a, t, s;
-        const e = y3();
+        const e = b3();
         return e.id = (i = u.id) != null ? i : 0, e.file_num = (o = u.file_num) != null ? o : 0, e.data = (a = u.data) != null ? a : new Uint8Array(0), e.compressed = (t = u.compressed) != null ? t : !1, e.blk_id = (s = u.blk_id) != null ? s : 0, e
     }
 };
 
-function b3() {
+function w3() {
     return {id: 0, error: "", file_num: 0}
 }
 
@@ -3345,7 +3345,7 @@ const zu = {
     }, decode(u, e) {
         const i = u instanceof r.Reader ? u : r.Reader.create(u);
         let o = e === void 0 ? i.len : i.pos + e;
-        const a = b3();
+        const a = w3();
         for (; i.pos < o;) {
             const t = i.uint32();
             switch (t >>> 3) {
@@ -3379,12 +3379,12 @@ const zu = {
         return zu.fromPartial(u != null ? u : {})
     }, fromPartial(u) {
         var i, o, a;
-        const e = b3();
+        const e = w3();
         return e.id = (i = u.id) != null ? i : 0, e.error = (o = u.error) != null ? o : "", e.file_num = (a = u.file_num) != null ? a : 0, e
     }
 };
 
-function w3() {
+function S3() {
     return {id: 0, path: "", include_hidden: !1, file_num: 0}
 }
 
@@ -3394,7 +3394,7 @@ const Pu = {
     }, decode(u, e) {
         const i = u instanceof r.Reader ? u : r.Reader.create(u);
         let o = e === void 0 ? i.len : i.pos + e;
-        const a = w3();
+        const a = S3();
         for (; i.pos < o;) {
             const t = i.uint32();
             switch (t >>> 3) {
@@ -3433,12 +3433,12 @@ const Pu = {
         return Pu.fromPartial(u != null ? u : {})
     }, fromPartial(u) {
         var i, o, a, t;
-        const e = w3();
+        const e = S3();
         return e.id = (i = u.id) != null ? i : 0, e.path = (o = u.path) != null ? o : "", e.include_hidden = (a = u.include_hidden) != null ? a : !1, e.file_num = (t = u.file_num) != null ? t : 0, e
     }
 };
 
-function S3() {
+function z3() {
     return {id: 0, file_num: 0, skip: void 0, offset_blk: void 0}
 }
 
@@ -3448,7 +3448,7 @@ const cu = {
     }, decode(u, e) {
         const i = u instanceof r.Reader ? u : r.Reader.create(u);
         let o = e === void 0 ? i.len : i.pos + e;
-        const a = S3();
+        const a = z3();
         for (; i.pos < o;) {
             const t = i.uint32();
             switch (t >>> 3) {
@@ -3487,12 +3487,12 @@ const cu = {
         return cu.fromPartial(u != null ? u : {})
     }, fromPartial(u) {
         var i, o, a, t;
-        const e = S3();
+        const e = z3();
         return e.id = (i = u.id) != null ? i : 0, e.file_num = (o = u.file_num) != null ? o : 0, e.skip = (a = u.skip) != null ? a : void 0, e.offset_blk = (t = u.offset_blk) != null ? t : void 0, e
     }
 };
 
-function z3() {
+function P3() {
     return {id: 0, file_num: 0}
 }
 
@@ -3502,7 +3502,7 @@ const Ru = {
     }, decode(u, e) {
         const i = u instanceof r.Reader ? u : r.Reader.create(u);
         let o = e === void 0 ? i.len : i.pos + e;
-        const a = z3();
+        const a = P3();
         for (; i.pos < o;) {
             const t = i.uint32();
             switch (t >>> 3) {
@@ -3528,12 +3528,12 @@ const Ru = {
         return Ru.fromPartial(u != null ? u : {})
     }, fromPartial(u) {
         var i, o;
-        const e = z3();
+        const e = P3();
         return e.id = (i = u.id) != null ? i : 0, e.file_num = (o = u.file_num) != null ? o : 0, e
     }
 };
 
-function P3() {
+function R3() {
     return {id: 0, path: "", files: [], file_num: 0, total_size: 0}
 }
 
@@ -3545,7 +3545,7 @@ const Iu = {
     }, decode(u, e) {
         const i = u instanceof r.Reader ? u : r.Reader.create(u);
         let o = e === void 0 ? i.len : i.pos + e;
-        const a = P3();
+        const a = R3();
         for (; i.pos < o;) {
             const t = i.uint32();
             switch (t >>> 3) {
@@ -3590,12 +3590,12 @@ const Iu = {
         return Iu.fromPartial(u != null ? u : {})
     }, fromPartial(u) {
         var i, o, a, t, s;
-        const e = P3();
+        const e = R3();
         return e.id = (i = u.id) != null ? i : 0, e.path = (o = u.path) != null ? o : "", e.files = ((a = u.files) == null ? void 0 : a.map(l => W.fromPartial(l))) || [], e.file_num = (t = u.file_num) != null ? t : 0, e.total_size = (s = u.total_size) != null ? s : 0, e
     }
 };
 
-function R3() {
+function I3() {
     return {id: 0, path: "", recursive: !1}
 }
 
@@ -3605,7 +3605,7 @@ const Tu = {
     }, decode(u, e) {
         const i = u instanceof r.Reader ? u : r.Reader.create(u);
         let o = e === void 0 ? i.len : i.pos + e;
-        const a = R3();
+        const a = I3();
         for (; i.pos < o;) {
             const t = i.uint32();
             switch (t >>> 3) {
@@ -3639,12 +3639,12 @@ const Tu = {
         return Tu.fromPartial(u != null ? u : {})
     }, fromPartial(u) {
         var i, o, a;
-        const e = R3();
+        const e = I3();
         return e.id = (i = u.id) != null ? i : 0, e.path = (o = u.path) != null ? o : "", e.recursive = (a = u.recursive) != null ? a : !1, e
     }
 };
 
-function I3() {
+function T3() {
     return {id: 0, path: "", file_num: 0}
 }
 
@@ -3654,7 +3654,7 @@ const ju = {
     }, decode(u, e) {
         const i = u instanceof r.Reader ? u : r.Reader.create(u);
         let o = e === void 0 ? i.len : i.pos + e;
-        const a = I3();
+        const a = T3();
         for (; i.pos < o;) {
             const t = i.uint32();
             switch (t >>> 3) {
@@ -3688,12 +3688,12 @@ const ju = {
         return ju.fromPartial(u != null ? u : {})
     }, fromPartial(u) {
         var i, o, a;
-        const e = I3();
+        const e = T3();
         return e.id = (i = u.id) != null ? i : 0, e.path = (o = u.path) != null ? o : "", e.file_num = (a = u.file_num) != null ? a : 0, e
     }
 };
 
-function T3() {
+function j3() {
     return {id: 0, path: ""}
 }
 
@@ -3703,7 +3703,7 @@ const Nu = {
     }, decode(u, e) {
         const i = u instanceof r.Reader ? u : r.Reader.create(u);
         let o = e === void 0 ? i.len : i.pos + e;
-        const a = T3();
+        const a = j3();
         for (; i.pos < o;) {
             const t = i.uint32();
             switch (t >>> 3) {
@@ -3729,12 +3729,12 @@ const Nu = {
         return Nu.fromPartial(u != null ? u : {})
     }, fromPartial(u) {
         var i, o;
-        const e = T3();
+        const e = j3();
         return e.id = (i = u.id) != null ? i : 0, e.path = (o = u.path) != null ? o : "", e
     }
 };
 
-function j3() {
+function N3() {
     return {}
 }
 
@@ -3744,7 +3744,7 @@ const h0 = {
     }, decode(u, e) {
         const i = u instanceof r.Reader ? u : r.Reader.create(u);
         let o = e === void 0 ? i.len : i.pos + e;
-        const a = j3();
+        const a = N3();
         for (; i.pos < o;) {
             const t = i.uint32();
             if ((t & 7) === 4 || t === 0) break;
@@ -3758,11 +3758,11 @@ const h0 = {
     }, create(u) {
         return h0.fromPartial(u != null ? u : {})
     }, fromPartial(u) {
-        return j3()
+        return N3()
     }
 };
 
-function N3() {
+function O3() {
     return {id: 0, format: ""}
 }
 
@@ -3772,7 +3772,7 @@ const f0 = {
     }, decode(u, e) {
         const i = u instanceof r.Reader ? u : r.Reader.create(u);
         let o = e === void 0 ? i.len : i.pos + e;
-        const a = N3();
+        const a = O3();
         for (; i.pos < o;) {
             const t = i.uint32();
             switch (t >>> 3) {
@@ -3798,12 +3798,12 @@ const f0 = {
         return f0.fromPartial(u != null ? u : {})
     }, fromPartial(u) {
         var i, o;
-        const e = N3();
+        const e = O3();
         return e.id = (i = u.id) != null ? i : 0, e.format = (o = u.format) != null ? o : "", e
     }
 };
 
-function O3() {
+function M3() {
     return {formats: []}
 }
 
@@ -3814,7 +3814,7 @@ const x0 = {
     }, decode(u, e) {
         const i = u instanceof r.Reader ? u : r.Reader.create(u);
         let o = e === void 0 ? i.len : i.pos + e;
-        const a = O3();
+        const a = M3();
         for (; i.pos < o;) {
             const t = i.uint32();
             switch (t >>> 3) {
@@ -3837,12 +3837,12 @@ const x0 = {
         return x0.fromPartial(u != null ? u : {})
     }, fromPartial(u) {
         var i;
-        const e = O3();
+        const e = M3();
         return e.formats = ((i = u.formats) == null ? void 0 : i.map(o => f0.fromPartial(o))) || [], e
     }
 };
 
-function M3() {
+function U3() {
     return {msg_flags: 0}
 }
 
@@ -3852,7 +3852,7 @@ const y0 = {
     }, decode(u, e) {
         const i = u instanceof r.Reader ? u : r.Reader.create(u);
         let o = e === void 0 ? i.len : i.pos + e;
-        const a = M3();
+        const a = U3();
         for (; i.pos < o;) {
             const t = i.uint32();
             switch (t >>> 3) {
@@ -3874,12 +3874,12 @@ const y0 = {
         return y0.fromPartial(u != null ? u : {})
     }, fromPartial(u) {
         var i;
-        const e = M3();
+        const e = U3();
         return e.msg_flags = (i = u.msg_flags) != null ? i : 0, e
     }
 };
 
-function U3() {
+function L3() {
     return {requested_format_id: 0}
 }
 
@@ -3889,7 +3889,7 @@ const b0 = {
     }, decode(u, e) {
         const i = u instanceof r.Reader ? u : r.Reader.create(u);
         let o = e === void 0 ? i.len : i.pos + e;
-        const a = U3();
+        const a = L3();
         for (; i.pos < o;) {
             const t = i.uint32();
             switch (t >>> 3) {
@@ -3911,12 +3911,12 @@ const b0 = {
         return b0.fromPartial(u != null ? u : {})
     }, fromPartial(u) {
         var i;
-        const e = U3();
+        const e = L3();
         return e.requested_format_id = (i = u.requested_format_id) != null ? i : 0, e
     }
 };
 
-function L3() {
+function W3() {
     return {msg_flags: 0, format_data: new Uint8Array(0)}
 }
 
@@ -3926,7 +3926,7 @@ const w0 = {
     }, decode(u, e) {
         const i = u instanceof r.Reader ? u : r.Reader.create(u);
         let o = e === void 0 ? i.len : i.pos + e;
-        const a = L3();
+        const a = W3();
         for (; i.pos < o;) {
             const t = i.uint32();
             switch (t >>> 3) {
@@ -3955,12 +3955,12 @@ const w0 = {
         return w0.fromPartial(u != null ? u : {})
     }, fromPartial(u) {
         var i, o;
-        const e = L3();
+        const e = W3();
         return e.msg_flags = (i = u.msg_flags) != null ? i : 0, e.format_data = (o = u.format_data) != null ? o : new Uint8Array(0), e
     }
 };
 
-function W3() {
+function V3() {
     return {
         stream_id: 0,
         list_index: 0,
@@ -3979,7 +3979,7 @@ const S0 = {
     }, decode(u, e) {
         const i = u instanceof r.Reader ? u : r.Reader.create(u);
         let o = e === void 0 ? i.len : i.pos + e;
-        const a = W3();
+        const a = V3();
         for (; i.pos < o;) {
             const t = i.uint32();
             switch (t >>> 3) {
@@ -4038,12 +4038,12 @@ const S0 = {
         return S0.fromPartial(u != null ? u : {})
     }, fromPartial(u) {
         var i, o, a, t, s, l, E, c;
-        const e = W3();
+        const e = V3();
         return e.stream_id = (i = u.stream_id) != null ? i : 0, e.list_index = (o = u.list_index) != null ? o : 0, e.dw_flags = (a = u.dw_flags) != null ? a : 0, e.n_position_low = (t = u.n_position_low) != null ? t : 0, e.n_position_high = (s = u.n_position_high) != null ? s : 0, e.cb_requested = (l = u.cb_requested) != null ? l : 0, e.have_clip_data_id = (E = u.have_clip_data_id) != null ? E : !1, e.clip_data_id = (c = u.clip_data_id) != null ? c : 0, e
     }
 };
 
-function V3() {
+function q3() {
     return {msg_flags: 0, stream_id: 0, requested_data: new Uint8Array(0)}
 }
 
@@ -4053,7 +4053,7 @@ const z0 = {
     }, decode(u, e) {
         const i = u instanceof r.Reader ? u : r.Reader.create(u);
         let o = e === void 0 ? i.len : i.pos + e;
-        const a = V3();
+        const a = q3();
         for (; i.pos < o;) {
             const t = i.uint32();
             switch (t >>> 3) {
@@ -4087,12 +4087,12 @@ const z0 = {
         return z0.fromPartial(u != null ? u : {})
     }, fromPartial(u) {
         var i, o, a;
-        const e = V3();
+        const e = q3();
         return e.msg_flags = (i = u.msg_flags) != null ? i : 0, e.stream_id = (o = u.stream_id) != null ? o : 0, e.requested_data = (a = u.requested_data) != null ? a : new Uint8Array(0), e
     }
 };
 
-function q3() {
+function K3() {
     return {
         ready: void 0,
         format_list: void 0,
@@ -4110,7 +4110,7 @@ const P0 = {
     }, decode(u, e) {
         const i = u instanceof r.Reader ? u : r.Reader.create(u);
         let o = e === void 0 ? i.len : i.pos + e;
-        const a = q3();
+        const a = K3();
         for (; i.pos < o;) {
             const t = i.uint32();
             switch (t >>> 3) {
@@ -4163,12 +4163,12 @@ const P0 = {
     }, create(u) {
         return P0.fromPartial(u != null ? u : {})
     }, fromPartial(u) {
-        const e = q3();
+        const e = K3();
         return e.ready = u.ready !== void 0 && u.ready !== null ? h0.fromPartial(u.ready) : void 0, e.format_list = u.format_list !== void 0 && u.format_list !== null ? x0.fromPartial(u.format_list) : void 0, e.format_list_response = u.format_list_response !== void 0 && u.format_list_response !== null ? y0.fromPartial(u.format_list_response) : void 0, e.format_data_request = u.format_data_request !== void 0 && u.format_data_request !== null ? b0.fromPartial(u.format_data_request) : void 0, e.format_data_response = u.format_data_response !== void 0 && u.format_data_response !== null ? w0.fromPartial(u.format_data_response) : void 0, e.file_contents_request = u.file_contents_request !== void 0 && u.file_contents_request !== null ? S0.fromPartial(u.file_contents_request) : void 0, e.file_contents_response = u.file_contents_response !== void 0 && u.file_contents_response !== null ? z0.fromPartial(u.file_contents_response) : void 0, e
     }
 };
 
-function K3() {
+function H3() {
     return {width: 0, height: 0}
 }
 
@@ -4178,7 +4178,7 @@ const v = {
     }, decode(u, e) {
         const i = u instanceof r.Reader ? u : r.Reader.create(u);
         let o = e === void 0 ? i.len : i.pos + e;
-        const a = K3();
+        const a = H3();
         for (; i.pos < o;) {
             const t = i.uint32();
             switch (t >>> 3) {
@@ -4207,12 +4207,12 @@ const v = {
         return v.fromPartial(u != null ? u : {})
     }, fromPartial(u) {
         var i, o;
-        const e = K3();
+        const e = H3();
         return e.width = (i = u.width) != null ? i : 0, e.height = (o = u.height) != null ? o : 0, e
     }
 };
 
-function H3() {
+function J3() {
     return {display: 0, resolution: void 0}
 }
 
@@ -4222,7 +4222,7 @@ const Ou = {
     }, decode(u, e) {
         const i = u instanceof r.Reader ? u : r.Reader.create(u);
         let o = e === void 0 ? i.len : i.pos + e;
-        const a = H3();
+        const a = J3();
         for (; i.pos < o;) {
             const t = i.uint32();
             switch (t >>> 3) {
@@ -4251,12 +4251,12 @@ const Ou = {
         return Ou.fromPartial(u != null ? u : {})
     }, fromPartial(u) {
         var i;
-        const e = H3();
+        const e = J3();
         return e.display = (i = u.display) != null ? i : 0, e.resolution = u.resolution !== void 0 && u.resolution !== null ? v.fromPartial(u.resolution) : void 0, e
     }
 };
 
-function J3() {
+function G3() {
     return {resolutions: []}
 }
 
@@ -4267,7 +4267,7 @@ const uu = {
     }, decode(u, e) {
         const i = u instanceof r.Reader ? u : r.Reader.create(u);
         let o = e === void 0 ? i.len : i.pos + e;
-        const a = J3();
+        const a = G3();
         for (; i.pos < o;) {
             const t = i.uint32();
             switch (t >>> 3) {
@@ -4290,12 +4290,12 @@ const uu = {
         return uu.fromPartial(u != null ? u : {})
     }, fromPartial(u) {
         var i;
-        const e = J3();
+        const e = G3();
         return e.resolutions = ((i = u.resolutions) == null ? void 0 : i.map(o => v.fromPartial(o))) || [], e
     }
 };
 
-function G3() {
+function Z3() {
     return {
         display: 0,
         x: 0,
@@ -4314,7 +4314,7 @@ const Mu = {
     }, decode(u, e) {
         const i = u instanceof r.Reader ? u : r.Reader.create(u);
         let o = e === void 0 ? i.len : i.pos + e;
-        const a = G3();
+        const a = Z3();
         for (; i.pos < o;) {
             const t = i.uint32();
             switch (t >>> 3) {
@@ -4373,12 +4373,12 @@ const Mu = {
         return Mu.fromPartial(u != null ? u : {})
     }, fromPartial(u) {
         var i, o, a, t, s, l;
-        const e = G3();
+        const e = Z3();
         return e.display = (i = u.display) != null ? i : 0, e.x = (o = u.x) != null ? o : 0, e.y = (a = u.y) != null ? a : 0, e.width = (t = u.width) != null ? t : 0, e.height = (s = u.height) != null ? s : 0, e.cursor_embedded = (l = u.cursor_embedded) != null ? l : !1, e.resolutions = u.resolutions !== void 0 && u.resolutions !== null ? uu.fromPartial(u.resolutions) : void 0, e.original_resolution = u.original_resolution !== void 0 && u.original_resolution !== null ? v.fromPartial(u.original_resolution) : void 0, e
     }
 };
 
-function Z3() {
+function Q3() {
     return {add: [], sub: [], set: []}
 }
 
@@ -4394,7 +4394,7 @@ const Uu = {
     }, decode(u, e) {
         const i = u instanceof r.Reader ? u : r.Reader.create(u);
         let o = e === void 0 ? i.len : i.pos + e;
-        const a = Z3();
+        const a = Q3();
         for (; i.pos < o;) {
             const t = i.uint32();
             switch (t >>> 3) {
@@ -4450,12 +4450,12 @@ const Uu = {
         return Uu.fromPartial(u != null ? u : {})
     }, fromPartial(u) {
         var i, o, a;
-        const e = Z3();
+        const e = Q3();
         return e.add = ((i = u.add) == null ? void 0 : i.map(t => t)) || [], e.sub = ((o = u.sub) == null ? void 0 : o.map(t => t)) || [], e.set = ((a = u.set) == null ? void 0 : a.map(t => t)) || [], e
     }
 };
 
-function Q3() {
+function X3() {
     return {display: 0, on: !1}
 }
 
@@ -4465,7 +4465,7 @@ const Lu = {
     }, decode(u, e) {
         const i = u instanceof r.Reader ? u : r.Reader.create(u);
         let o = e === void 0 ? i.len : i.pos + e;
-        const a = Q3();
+        const a = X3();
         for (; i.pos < o;) {
             const t = i.uint32();
             switch (t >>> 3) {
@@ -4491,12 +4491,12 @@ const Lu = {
         return Lu.fromPartial(u != null ? u : {})
     }, fromPartial(u) {
         var i, o;
-        const e = Q3();
+        const e = X3();
         return e.display = (i = u.display) != null ? i : 0, e.on = (o = u.on) != null ? o : !1, e
     }
 };
 
-function X3() {
+function Y3() {
     return {impl_key: "", on: !1}
 }
 
@@ -4506,7 +4506,7 @@ const Wu = {
     }, decode(u, e) {
         const i = u instanceof r.Reader ? u : r.Reader.create(u);
         let o = e === void 0 ? i.len : i.pos + e;
-        const a = X3();
+        const a = Y3();
         for (; i.pos < o;) {
             const t = i.uint32();
             switch (t >>> 3) {
@@ -4535,12 +4535,12 @@ const Wu = {
         return Wu.fromPartial(u != null ? u : {})
     }, fromPartial(u) {
         var i, o;
-        const e = X3();
+        const e = Y3();
         return e.impl_key = (i = u.impl_key) != null ? i : "", e.on = (o = u.on) != null ? o : !1, e
     }
 };
 
-function Y3() {
+function $3() {
     return {permission: 0, enabled: !1}
 }
 
@@ -4550,7 +4550,7 @@ const R0 = {
     }, decode(u, e) {
         const i = u instanceof r.Reader ? u : r.Reader.create(u);
         let o = e === void 0 ? i.len : i.pos + e;
-        const a = Y3();
+        const a = $3();
         for (; i.pos < o;) {
             const t = i.uint32();
             switch (t >>> 3) {
@@ -4569,22 +4569,22 @@ const R0 = {
         return a
     }, fromJSON(u) {
         return {
-            permission: n(u.permission) ? Aa(u.permission) : 0,
+            permission: n(u.permission) ? Fa(u.permission) : 0,
             enabled: n(u.enabled) ? globalThis.Boolean(u.enabled) : !1
         }
     }, toJSON(u) {
         const e = {};
-        return u.permission !== 0 && (e.permission = Fa(u.permission)), u.enabled !== !1 && (e.enabled = u.enabled), e
+        return u.permission !== 0 && (e.permission = _a(u.permission)), u.enabled !== !1 && (e.enabled = u.enabled), e
     }, create(u) {
         return R0.fromPartial(u != null ? u : {})
     }, fromPartial(u) {
         var i, o;
-        const e = Y3();
+        const e = $3();
         return e.permission = (i = u.permission) != null ? i : 0, e.enabled = (o = u.enabled) != null ? o : !1, e
     }
 };
 
-function $3() {
+function ui() {
     return {
         ability_vp9: 0,
         ability_h264: 0,
@@ -4603,7 +4603,7 @@ const Vu = {
     }, decode(u, e) {
         const i = u instanceof r.Reader ? u : r.Reader.create(u);
         let o = e === void 0 ? i.len : i.pos + e;
-        const a = $3();
+        const a = ui();
         for (; i.pos < o;) {
             const t = i.uint32();
             switch (t >>> 3) {
@@ -4649,25 +4649,25 @@ const Vu = {
             ability_vp9: n(u.ability_vp9) ? globalThis.Number(u.ability_vp9) : 0,
             ability_h264: n(u.ability_h264) ? globalThis.Number(u.ability_h264) : 0,
             ability_h265: n(u.ability_h265) ? globalThis.Number(u.ability_h265) : 0,
-            prefer: n(u.prefer) ? _a(u.prefer) : 0,
+            prefer: n(u.prefer) ? va(u.prefer) : 0,
             ability_vp8: n(u.ability_vp8) ? globalThis.Number(u.ability_vp8) : 0,
             ability_av1: n(u.ability_av1) ? globalThis.Number(u.ability_av1) : 0,
             i444: n(u.i444) ? J.fromJSON(u.i444) : void 0,
-            prefer_chroma: n(u.prefer_chroma) ? sa(u.prefer_chroma) : 0
+            prefer_chroma: n(u.prefer_chroma) ? la(u.prefer_chroma) : 0
         }
     }, toJSON(u) {
         const e = {};
-        return u.ability_vp9 !== 0 && (e.ability_vp9 = Math.round(u.ability_vp9)), u.ability_h264 !== 0 && (e.ability_h264 = Math.round(u.ability_h264)), u.ability_h265 !== 0 && (e.ability_h265 = Math.round(u.ability_h265)), u.prefer !== 0 && (e.prefer = va(u.prefer)), u.ability_vp8 !== 0 && (e.ability_vp8 = Math.round(u.ability_vp8)), u.ability_av1 !== 0 && (e.ability_av1 = Math.round(u.ability_av1)), u.i444 !== void 0 && (e.i444 = J.toJSON(u.i444)), u.prefer_chroma !== 0 && (e.prefer_chroma = la(u.prefer_chroma)), e
+        return u.ability_vp9 !== 0 && (e.ability_vp9 = Math.round(u.ability_vp9)), u.ability_h264 !== 0 && (e.ability_h264 = Math.round(u.ability_h264)), u.ability_h265 !== 0 && (e.ability_h265 = Math.round(u.ability_h265)), u.prefer !== 0 && (e.prefer = ka(u.prefer)), u.ability_vp8 !== 0 && (e.ability_vp8 = Math.round(u.ability_vp8)), u.ability_av1 !== 0 && (e.ability_av1 = Math.round(u.ability_av1)), u.i444 !== void 0 && (e.i444 = J.toJSON(u.i444)), u.prefer_chroma !== 0 && (e.prefer_chroma = Ea(u.prefer_chroma)), e
     }, create(u) {
         return Vu.fromPartial(u != null ? u : {})
     }, fromPartial(u) {
         var i, o, a, t, s, l, E;
-        const e = $3();
+        const e = ui();
         return e.ability_vp9 = (i = u.ability_vp9) != null ? i : 0, e.ability_h264 = (o = u.ability_h264) != null ? o : 0, e.ability_h265 = (a = u.ability_h265) != null ? a : 0, e.prefer = (t = u.prefer) != null ? t : 0, e.ability_vp8 = (s = u.ability_vp8) != null ? s : 0, e.ability_av1 = (l = u.ability_av1) != null ? l : 0, e.i444 = u.i444 !== void 0 && u.i444 !== null ? J.fromPartial(u.i444) : void 0, e.prefer_chroma = (E = u.prefer_chroma) != null ? E : 0, e
     }
 };
 
-function ui() {
+function ei() {
     return {
         image_quality: 0,
         lock_after_session_end: 0,
@@ -4692,7 +4692,7 @@ const z = {
     }, decode(u, e) {
         const i = u instanceof r.Reader ? u : r.Reader.create(u);
         let o = e === void 0 ? i.len : i.pos + e;
-        const a = ui();
+        const a = ei();
         for (; i.pos < o;) {
             const t = i.uint32();
             switch (t >>> 3) {
@@ -4759,7 +4759,7 @@ const z = {
         return a
     }, fromJSON(u) {
         return {
-            image_quality: n(u.image_quality) ? Ba(u.image_quality) : 0,
+            image_quality: n(u.image_quality) ? ma(u.image_quality) : 0,
             lock_after_session_end: n(u.lock_after_session_end) ? tu(u.lock_after_session_end) : 0,
             show_remote_cursor: n(u.show_remote_cursor) ? tu(u.show_remote_cursor) : 0,
             privacy_mode: n(u.privacy_mode) ? tu(u.privacy_mode) : 0,
@@ -4776,17 +4776,17 @@ const z = {
         }
     }, toJSON(u) {
         const e = {};
-        return u.image_quality !== 0 && (e.image_quality = ma(u.image_quality)), u.lock_after_session_end !== 0 && (e.lock_after_session_end = au(u.lock_after_session_end)), u.show_remote_cursor !== 0 && (e.show_remote_cursor = au(u.show_remote_cursor)), u.privacy_mode !== 0 && (e.privacy_mode = au(u.privacy_mode)), u.block_input !== 0 && (e.block_input = au(u.block_input)), u.custom_image_quality !== 0 && (e.custom_image_quality = Math.round(u.custom_image_quality)), u.disable_audio !== 0 && (e.disable_audio = au(u.disable_audio)), u.disable_clipboard !== 0 && (e.disable_clipboard = au(u.disable_clipboard)), u.enable_file_transfer !== 0 && (e.enable_file_transfer = au(u.enable_file_transfer)), u.supported_decoding !== void 0 && (e.supported_decoding = Vu.toJSON(u.supported_decoding)), u.custom_fps !== 0 && (e.custom_fps = Math.round(u.custom_fps)), u.disable_keyboard !== 0 && (e.disable_keyboard = au(u.disable_keyboard)), u.follow_remote_cursor !== 0 && (e.follow_remote_cursor = au(u.follow_remote_cursor)), u.follow_remote_window !== 0 && (e.follow_remote_window = au(u.follow_remote_window)), e
+        return u.image_quality !== 0 && (e.image_quality = Aa(u.image_quality)), u.lock_after_session_end !== 0 && (e.lock_after_session_end = au(u.lock_after_session_end)), u.show_remote_cursor !== 0 && (e.show_remote_cursor = au(u.show_remote_cursor)), u.privacy_mode !== 0 && (e.privacy_mode = au(u.privacy_mode)), u.block_input !== 0 && (e.block_input = au(u.block_input)), u.custom_image_quality !== 0 && (e.custom_image_quality = Math.round(u.custom_image_quality)), u.disable_audio !== 0 && (e.disable_audio = au(u.disable_audio)), u.disable_clipboard !== 0 && (e.disable_clipboard = au(u.disable_clipboard)), u.enable_file_transfer !== 0 && (e.enable_file_transfer = au(u.enable_file_transfer)), u.supported_decoding !== void 0 && (e.supported_decoding = Vu.toJSON(u.supported_decoding)), u.custom_fps !== 0 && (e.custom_fps = Math.round(u.custom_fps)), u.disable_keyboard !== 0 && (e.disable_keyboard = au(u.disable_keyboard)), u.follow_remote_cursor !== 0 && (e.follow_remote_cursor = au(u.follow_remote_cursor)), u.follow_remote_window !== 0 && (e.follow_remote_window = au(u.follow_remote_window)), e
     }, create(u) {
         return z.fromPartial(u != null ? u : {})
     }, fromPartial(u) {
         var i, o, a, t, s, l, E, c, C, D, B, F, y;
-        const e = ui();
+        const e = ei();
         return e.image_quality = (i = u.image_quality) != null ? i : 0, e.lock_after_session_end = (o = u.lock_after_session_end) != null ? o : 0, e.show_remote_cursor = (a = u.show_remote_cursor) != null ? a : 0, e.privacy_mode = (t = u.privacy_mode) != null ? t : 0, e.block_input = (s = u.block_input) != null ? s : 0, e.custom_image_quality = (l = u.custom_image_quality) != null ? l : 0, e.disable_audio = (E = u.disable_audio) != null ? E : 0, e.disable_clipboard = (c = u.disable_clipboard) != null ? c : 0, e.enable_file_transfer = (C = u.enable_file_transfer) != null ? C : 0, e.supported_decoding = u.supported_decoding !== void 0 && u.supported_decoding !== null ? Vu.fromPartial(u.supported_decoding) : void 0, e.custom_fps = (D = u.custom_fps) != null ? D : 0, e.disable_keyboard = (B = u.disable_keyboard) != null ? B : 0, e.follow_remote_cursor = (F = u.follow_remote_cursor) != null ? F : 0, e.follow_remote_window = (y = u.follow_remote_window) != null ? y : 0, e
     }
 };
 
-function ei() {
+function ii() {
     return {time: 0, from_client: !1, last_delay: 0, target_bitrate: 0}
 }
 
@@ -4796,7 +4796,7 @@ const I0 = {
     }, decode(u, e) {
         const i = u instanceof r.Reader ? u : r.Reader.create(u);
         let o = e === void 0 ? i.len : i.pos + e;
-        const a = ei();
+        const a = ii();
         for (; i.pos < o;) {
             const t = i.uint32();
             switch (t >>> 3) {
@@ -4835,12 +4835,12 @@ const I0 = {
         return I0.fromPartial(u != null ? u : {})
     }, fromPartial(u) {
         var i, o, a, t;
-        const e = ei();
+        const e = ii();
         return e.time = (i = u.time) != null ? i : 0, e.from_client = (o = u.from_client) != null ? o : !1, e.last_delay = (a = u.last_delay) != null ? a : 0, e.target_bitrate = (t = u.target_bitrate) != null ? t : 0, e
     }
 };
 
-function ii() {
+function ti() {
     return {asymmetric_value: new Uint8Array(0), symmetric_value: new Uint8Array(0)}
 }
 
@@ -4850,7 +4850,7 @@ const K = {
     }, decode(u, e) {
         const i = u instanceof r.Reader ? u : r.Reader.create(u);
         let o = e === void 0 ? i.len : i.pos + e;
-        const a = ii();
+        const a = ti();
         for (; i.pos < o;) {
             const t = i.uint32();
             switch (t >>> 3) {
@@ -4879,12 +4879,12 @@ const K = {
         return K.fromPartial(u != null ? u : {})
     }, fromPartial(u) {
         var i, o;
-        const e = ii();
+        const e = ti();
         return e.asymmetric_value = (i = u.asymmetric_value) != null ? i : new Uint8Array(0), e.symmetric_value = (o = u.symmetric_value) != null ? o : new Uint8Array(0), e
     }
 };
 
-function ti() {
+function ai() {
     return {id: new Uint8Array(0)}
 }
 
@@ -4894,7 +4894,7 @@ const T0 = {
     }, decode(u, e) {
         const i = u instanceof r.Reader ? u : r.Reader.create(u);
         let o = e === void 0 ? i.len : i.pos + e;
-        const a = ti();
+        const a = ai();
         for (; i.pos < o;) {
             const t = i.uint32();
             switch (t >>> 3) {
@@ -4916,12 +4916,12 @@ const T0 = {
         return T0.fromPartial(u != null ? u : {})
     }, fromPartial(u) {
         var i;
-        const e = ti();
+        const e = ai();
         return e.id = (i = u.id) != null ? i : new Uint8Array(0), e
     }
 };
 
-function ai() {
+function oi() {
     return {sample_rate: 0, channels: 0}
 }
 
@@ -4931,7 +4931,7 @@ const j0 = {
     }, decode(u, e) {
         const i = u instanceof r.Reader ? u : r.Reader.create(u);
         let o = e === void 0 ? i.len : i.pos + e;
-        const a = ai();
+        const a = oi();
         for (; i.pos < o;) {
             const t = i.uint32();
             switch (t >>> 3) {
@@ -4960,12 +4960,12 @@ const j0 = {
         return j0.fromPartial(u != null ? u : {})
     }, fromPartial(u) {
         var i, o;
-        const e = ai();
+        const e = oi();
         return e.sample_rate = (i = u.sample_rate) != null ? i : 0, e.channels = (o = u.channels) != null ? o : 0, e
     }
 };
 
-function oi() {
+function ni() {
     return {data: new Uint8Array(0)}
 }
 
@@ -4975,7 +4975,7 @@ const N0 = {
     }, decode(u, e) {
         const i = u instanceof r.Reader ? u : r.Reader.create(u);
         let o = e === void 0 ? i.len : i.pos + e;
-        const a = oi();
+        const a = ni();
         for (; i.pos < o;) {
             const t = i.uint32();
             switch (t >>> 3) {
@@ -4997,12 +4997,12 @@ const N0 = {
         return N0.fromPartial(u != null ? u : {})
     }, fromPartial(u) {
         var i;
-        const e = oi();
+        const e = ni();
         return e.data = (i = u.data) != null ? i : new Uint8Array(0), e
     }
 };
 
-function ni() {
+function ri() {
     return {msgtype: "", title: "", text: "", link: ""}
 }
 
@@ -5012,7 +5012,7 @@ const O0 = {
     }, decode(u, e) {
         const i = u instanceof r.Reader ? u : r.Reader.create(u);
         let o = e === void 0 ? i.len : i.pos + e;
-        const a = ni();
+        const a = ri();
         for (; i.pos < o;) {
             const t = i.uint32();
             switch (t >>> 3) {
@@ -5051,12 +5051,12 @@ const O0 = {
         return O0.fromPartial(u != null ? u : {})
     }, fromPartial(u) {
         var i, o, a, t;
-        const e = ni();
+        const e = ri();
         return e.msgtype = (i = u.msgtype) != null ? i : "", e.title = (o = u.title) != null ? o : "", e.text = (a = u.text) != null ? a : "", e.link = (t = u.link) != null ? t : "", e
     }
 };
 
-function ri() {
+function si() {
     return {privacy_mode_state: void 0, block_input_state: void 0, details: "", impl_key: ""}
 }
 
@@ -5066,7 +5066,7 @@ const M0 = {
     }, decode(u, e) {
         const i = u instanceof r.Reader ? u : r.Reader.create(u);
         let o = e === void 0 ? i.len : i.pos + e;
-        const a = ri();
+        const a = si();
         for (; i.pos < o;) {
             const t = i.uint32();
             switch (t >>> 3) {
@@ -5093,24 +5093,24 @@ const M0 = {
         return a
     }, fromJSON(u) {
         return {
-            privacy_mode_state: n(u.privacy_mode_state) ? ha(u.privacy_mode_state) : void 0,
-            block_input_state: n(u.block_input_state) ? ka(u.block_input_state) : void 0,
+            privacy_mode_state: n(u.privacy_mode_state) ? fa(u.privacy_mode_state) : void 0,
+            block_input_state: n(u.block_input_state) ? ga(u.block_input_state) : void 0,
             details: n(u.details) ? globalThis.String(u.details) : "",
             impl_key: n(u.impl_key) ? globalThis.String(u.impl_key) : ""
         }
     }, toJSON(u) {
         const e = {};
-        return u.privacy_mode_state !== void 0 && (e.privacy_mode_state = fa(u.privacy_mode_state)), u.block_input_state !== void 0 && (e.block_input_state = ga(u.block_input_state)), u.details !== "" && (e.details = u.details), u.impl_key !== "" && (e.impl_key = u.impl_key), e
+        return u.privacy_mode_state !== void 0 && (e.privacy_mode_state = xa(u.privacy_mode_state)), u.block_input_state !== void 0 && (e.block_input_state = ha(u.block_input_state)), u.details !== "" && (e.details = u.details), u.impl_key !== "" && (e.impl_key = u.impl_key), e
     }, create(u) {
         return M0.fromPartial(u != null ? u : {})
     }, fromPartial(u) {
         var i, o, a, t;
-        const e = ri();
+        const e = si();
         return e.privacy_mode_state = (i = u.privacy_mode_state) != null ? i : void 0, e.block_input_state = (o = u.block_input_state) != null ? o : void 0, e.details = (a = u.details) != null ? a : "", e.impl_key = (t = u.impl_key) != null ? t : "", e
     }
 };
 
-function si() {
+function li() {
     return {username: "", password: ""}
 }
 
@@ -5120,7 +5120,7 @@ const qu = {
     }, decode(u, e) {
         const i = u instanceof r.Reader ? u : r.Reader.create(u);
         let o = e === void 0 ? i.len : i.pos + e;
-        const a = si();
+        const a = li();
         for (; i.pos < o;) {
             const t = i.uint32();
             switch (t >>> 3) {
@@ -5149,12 +5149,12 @@ const qu = {
         return qu.fromPartial(u != null ? u : {})
     }, fromPartial(u) {
         var i, o;
-        const e = si();
+        const e = li();
         return e.username = (i = u.username) != null ? i : "", e.password = (o = u.password) != null ? o : "", e
     }
 };
 
-function li() {
+function Ei() {
     return {direct: void 0, logon: void 0}
 }
 
@@ -5164,7 +5164,7 @@ const Du = {
     }, decode(u, e) {
         const i = u instanceof r.Reader ? u : r.Reader.create(u);
         let o = e === void 0 ? i.len : i.pos + e;
-        const a = li();
+        const a = Ei();
         for (; i.pos < o;) {
             const t = i.uint32();
             switch (t >>> 3) {
@@ -5193,12 +5193,12 @@ const Du = {
         return Du.fromPartial(u != null ? u : {})
     }, fromPartial(u) {
         var i;
-        const e = li();
+        const e = Ei();
         return e.direct = (i = u.direct) != null ? i : void 0, e.logon = u.logon !== void 0 && u.logon !== null ? qu.fromPartial(u.logon) : void 0, e
     }
 };
 
-function Ei() {
+function di() {
     return {uuid: new Uint8Array(0)}
 }
 
@@ -5208,7 +5208,7 @@ const U0 = {
     }, decode(u, e) {
         const i = u instanceof r.Reader ? u : r.Reader.create(u);
         let o = e === void 0 ? i.len : i.pos + e;
-        const a = Ei();
+        const a = di();
         for (; i.pos < o;) {
             const t = i.uint32();
             switch (t >>> 3) {
@@ -5230,12 +5230,12 @@ const U0 = {
         return U0.fromPartial(u != null ? u : {})
     }, fromPartial(u) {
         var i;
-        const e = Ei();
+        const e = di();
         return e.uuid = (i = u.uuid) != null ? i : new Uint8Array(0), e
     }
 };
 
-function di() {
+function ci() {
     return {uuid: new Uint8Array(0), lr: void 0}
 }
 
@@ -5245,7 +5245,7 @@ const L0 = {
     }, decode(u, e) {
         const i = u instanceof r.Reader ? u : r.Reader.create(u);
         let o = e === void 0 ? i.len : i.pos + e;
-        const a = di();
+        const a = ci();
         for (; i.pos < o;) {
             const t = i.uint32();
             switch (t >>> 3) {
@@ -5271,12 +5271,12 @@ const L0 = {
         return L0.fromPartial(u != null ? u : {})
     }, fromPartial(u) {
         var i;
-        const e = di();
+        const e = ci();
         return e.uuid = (i = u.uuid) != null ? i : new Uint8Array(0), e.lr = u.lr !== void 0 && u.lr !== null ? H.fromPartial(u.lr) : void 0, e
     }
 };
 
-function ci() {
+function Ci() {
     return {}
 }
 
@@ -5286,7 +5286,7 @@ const W0 = {
     }, decode(u, e) {
         const i = u instanceof r.Reader ? u : r.Reader.create(u);
         let o = e === void 0 ? i.len : i.pos + e;
-        const a = ci();
+        const a = Ci();
         for (; i.pos < o;) {
             const t = i.uint32();
             if ((t & 7) === 4 || t === 0) break;
@@ -5300,11 +5300,11 @@ const W0 = {
     }, create(u) {
         return W0.fromPartial(u != null ? u : {})
     }, fromPartial(u) {
-        return ci()
+        return Ci()
     }
 };
 
-function Ci() {
+function pi() {
     return {id: "", content: new Uint8Array(0)}
 }
 
@@ -5314,7 +5314,7 @@ const V0 = {
     }, decode(u, e) {
         const i = u instanceof r.Reader ? u : r.Reader.create(u);
         let o = e === void 0 ? i.len : i.pos + e;
-        const a = Ci();
+        const a = pi();
         for (; i.pos < o;) {
             const t = i.uint32();
             switch (t >>> 3) {
@@ -5340,12 +5340,12 @@ const V0 = {
         return V0.fromPartial(u != null ? u : {})
     }, fromPartial(u) {
         var i, o;
-        const e = Ci();
+        const e = pi();
         return e.id = (i = u.id) != null ? i : "", e.content = (o = u.content) != null ? o : new Uint8Array(0), e
     }
 };
 
-function pi() {
+function Di() {
     return {id: "", name: "", msg: ""}
 }
 
@@ -5355,7 +5355,7 @@ const q0 = {
     }, decode(u, e) {
         const i = u instanceof r.Reader ? u : r.Reader.create(u);
         let o = e === void 0 ? i.len : i.pos + e;
-        const a = pi();
+        const a = Di();
         for (; i.pos < o;) {
             const t = i.uint32();
             switch (t >>> 3) {
@@ -5389,12 +5389,12 @@ const q0 = {
         return q0.fromPartial(u != null ? u : {})
     }, fromPartial(u) {
         var i, o, a;
-        const e = pi();
+        const e = Di();
         return e.id = (i = u.id) != null ? i : "", e.name = (o = u.name) != null ? o : "", e.msg = (a = u.msg) != null ? a : "", e
     }
 };
 
-function Di() {
+function Bi() {
     return {sessions: [], current_sid: 0}
 }
 
@@ -5405,7 +5405,7 @@ const K0 = {
     }, decode(u, e) {
         const i = u instanceof r.Reader ? u : r.Reader.create(u);
         let o = e === void 0 ? i.len : i.pos + e;
-        const a = Di();
+        const a = Bi();
         for (; i.pos < o;) {
             const t = i.uint32();
             switch (t >>> 3) {
@@ -5435,12 +5435,12 @@ const K0 = {
         return K0.fromPartial(u != null ? u : {})
     }, fromPartial(u) {
         var i, o;
-        const e = Di();
+        const e = Bi();
         return e.sessions = ((i = u.sessions) == null ? void 0 : i.map(a => c0.fromPartial(a))) || [], e.current_sid = (o = u.current_sid) != null ? o : 0, e
     }
 };
 
-function Bi() {
+function mi() {
     return {switch_display: 0}
 }
 
@@ -5450,7 +5450,7 @@ const H0 = {
     }, decode(u, e) {
         const i = u instanceof r.Reader ? u : r.Reader.create(u);
         let o = e === void 0 ? i.len : i.pos + e;
-        const a = Bi();
+        const a = mi();
         for (; i.pos < o;) {
             const t = i.uint32();
             switch (t >>> 3) {
@@ -5472,12 +5472,12 @@ const H0 = {
         return H0.fromPartial(u != null ? u : {})
     }, fromPartial(u) {
         var i;
-        const e = Bi();
+        const e = mi();
         return e.switch_display = (i = u.switch_display) != null ? i : 0, e
     }
 };
 
-function mi() {
+function Ai() {
     return {
         chat_message: void 0,
         switch_display: void 0,
@@ -5521,7 +5521,7 @@ const f = {
     }, decode(u, e) {
         const i = u instanceof r.Reader ? u : r.Reader.create(u);
         let o = e === void 0 ? i.len : i.pos + e;
-        const a = mi();
+        const a = Ai();
         for (; i.pos < o;) {
             const t = i.uint32();
             switch (t >>> 3) {
@@ -5705,12 +5705,12 @@ const f = {
         return f.fromPartial(u != null ? u : {})
     }, fromPartial(u) {
         var i, o, a, t, s, l, E, c, C, D, B, F, y, S, g;
-        const e = mi();
+        const e = Ai();
         return e.chat_message = u.chat_message !== void 0 && u.chat_message !== null ? vu.fromPartial(u.chat_message) : void 0, e.switch_display = u.switch_display !== void 0 && u.switch_display !== null ? Mu.fromPartial(u.switch_display) : void 0, e.permission_info = u.permission_info !== void 0 && u.permission_info !== null ? R0.fromPartial(u.permission_info) : void 0, e.option = u.option !== void 0 && u.option !== null ? z.fromPartial(u.option) : void 0, e.audio_format = u.audio_format !== void 0 && u.audio_format !== null ? j0.fromPartial(u.audio_format) : void 0, e.close_reason = (i = u.close_reason) != null ? i : void 0, e.refresh_video = (o = u.refresh_video) != null ? o : void 0, e.video_received = (a = u.video_received) != null ? a : void 0, e.back_notification = u.back_notification !== void 0 && u.back_notification !== null ? M0.fromPartial(u.back_notification) : void 0, e.restart_remote_device = (t = u.restart_remote_device) != null ? t : void 0, e.uac = (s = u.uac) != null ? s : void 0, e.foreground_window_elevated = (l = u.foreground_window_elevated) != null ? l : void 0, e.stop_service = (E = u.stop_service) != null ? E : void 0, e.elevation_request = u.elevation_request !== void 0 && u.elevation_request !== null ? Du.fromPartial(u.elevation_request) : void 0, e.elevation_response = (c = u.elevation_response) != null ? c : void 0, e.portable_service_running = (C = u.portable_service_running) != null ? C : void 0, e.switch_sides_request = u.switch_sides_request !== void 0 && u.switch_sides_request !== null ? U0.fromPartial(u.switch_sides_request) : void 0, e.switch_back = u.switch_back !== void 0 && u.switch_back !== null ? W0.fromPartial(u.switch_back) : void 0, e.change_resolution = u.change_resolution !== void 0 && u.change_resolution !== null ? v.fromPartial(u.change_resolution) : void 0, e.plugin_request = u.plugin_request !== void 0 && u.plugin_request !== null ? V0.fromPartial(u.plugin_request) : void 0, e.plugin_failure = u.plugin_failure !== void 0 && u.plugin_failure !== null ? q0.fromPartial(u.plugin_failure) : void 0, e.full_speed_fps = (D = u.full_speed_fps) != null ? D : void 0, e.auto_adjust_fps = (B = u.auto_adjust_fps) != null ? B : void 0, e.client_record_status = (F = u.client_record_status) != null ? F : void 0, e.capture_displays = u.capture_displays !== void 0 && u.capture_displays !== null ? Uu.fromPartial(u.capture_displays) : void 0, e.refresh_video_display = (y = u.refresh_video_display) != null ? y : void 0, e.toggle_virtual_display = u.toggle_virtual_display !== void 0 && u.toggle_virtual_display !== null ? Lu.fromPartial(u.toggle_virtual_display) : void 0, e.toggle_privacy_mode = u.toggle_privacy_mode !== void 0 && u.toggle_privacy_mode !== null ? Wu.fromPartial(u.toggle_privacy_mode) : void 0, e.supported_encoding = u.supported_encoding !== void 0 && u.supported_encoding !== null ? G.fromPartial(u.supported_encoding) : void 0, e.selected_sid = (S = u.selected_sid) != null ? S : void 0, e.change_display_resolution = u.change_display_resolution !== void 0 && u.change_display_resolution !== null ? Ou.fromPartial(u.change_display_resolution) : void 0, e.message_query = u.message_query !== void 0 && u.message_query !== null ? H0.fromPartial(u.message_query) : void 0, e.follow_current_display = (g = u.follow_current_display) != null ? g : void 0, e
     }
 };
 
-function Ai() {
+function Fi() {
     return {req_timestamp: 0, is_connect: !1}
 }
 
@@ -5720,7 +5720,7 @@ const J0 = {
     }, decode(u, e) {
         const i = u instanceof r.Reader ? u : r.Reader.create(u);
         let o = e === void 0 ? i.len : i.pos + e;
-        const a = Ai();
+        const a = Fi();
         for (; i.pos < o;) {
             const t = i.uint32();
             switch (t >>> 3) {
@@ -5749,12 +5749,12 @@ const J0 = {
         return J0.fromPartial(u != null ? u : {})
     }, fromPartial(u) {
         var i, o;
-        const e = Ai();
+        const e = Fi();
         return e.req_timestamp = (i = u.req_timestamp) != null ? i : 0, e.is_connect = (o = u.is_connect) != null ? o : !1, e
     }
 };
 
-function Fi() {
+function _i() {
     return {accepted: !1, req_timestamp: 0, ack_timestamp: 0}
 }
 
@@ -5764,7 +5764,7 @@ const G0 = {
     }, decode(u, e) {
         const i = u instanceof r.Reader ? u : r.Reader.create(u);
         let o = e === void 0 ? i.len : i.pos + e;
-        const a = Fi();
+        const a = _i();
         for (; i.pos < o;) {
             const t = i.uint32();
             switch (t >>> 3) {
@@ -5798,12 +5798,12 @@ const G0 = {
         return G0.fromPartial(u != null ? u : {})
     }, fromPartial(u) {
         var i, o, a;
-        const e = Fi();
+        const e = _i();
         return e.accepted = (i = u.accepted) != null ? i : !1, e.req_timestamp = (o = u.req_timestamp) != null ? o : 0, e.ack_timestamp = (a = u.ack_timestamp) != null ? a : 0, e
     }
 };
 
-function _i() {
+function vi() {
     return {
         signed_id: void 0,
         public_key: void 0,
@@ -5840,7 +5840,7 @@ const iu = {
     }, decode(u, e) {
         const i = u instanceof r.Reader ? u : r.Reader.create(u);
         let o = e === void 0 ? i.len : i.pos + e;
-        const a = _i();
+        const a = vi();
         for (; i.pos < o;) {
             const t = i.uint32();
             switch (t >>> 3) {
@@ -5989,7 +5989,7 @@ const iu = {
         return iu.fromPartial(u != null ? u : {})
     }, fromPartial(u) {
         var i;
-        const e = _i();
+        const e = vi();
         return e.signed_id = u.signed_id !== void 0 && u.signed_id !== null ? T0.fromPartial(u.signed_id) : void 0, e.public_key = u.public_key !== void 0 && u.public_key !== null ? K.fromPartial(u.public_key) : void 0, e.test_delay = u.test_delay !== void 0 && u.test_delay !== null ? I0.fromPartial(u.test_delay) : void 0, e.video_frame = u.video_frame !== void 0 && u.video_frame !== null ? r0.fromPartial(u.video_frame) : void 0, e.login_request = u.login_request !== void 0 && u.login_request !== null ? H.fromPartial(u.login_request) : void 0, e.login_response = u.login_response !== void 0 && u.login_response !== null ? C0.fromPartial(u.login_response) : void 0, e.hash = u.hash !== void 0 && u.hash !== null ? k0.fromPartial(u.hash) : void 0, e.mouse_event = u.mouse_event !== void 0 && u.mouse_event !== null ? ku.fromPartial(u.mouse_event) : void 0, e.audio_frame = u.audio_frame !== void 0 && u.audio_frame !== null ? N0.fromPartial(u.audio_frame) : void 0, e.cursor_data = u.cursor_data !== void 0 && u.cursor_data !== null ? _0.fromPartial(u.cursor_data) : void 0, e.cursor_position = u.cursor_position !== void 0 && u.cursor_position !== null ? v0.fromPartial(u.cursor_position) : void 0, e.cursor_id = (i = u.cursor_id) != null ? i : void 0, e.key_event = u.key_event !== void 0 && u.key_event !== null ? w.fromPartial(u.key_event) : void 0, e.clipboard = u.clipboard !== void 0 && u.clipboard !== null ? L.fromPartial(u.clipboard) : void 0, e.file_action = u.file_action !== void 0 && u.file_action !== null ? P.fromPartial(u.file_action) : void 0, e.file_response = u.file_response !== void 0 && u.file_response !== null ? nu.fromPartial(u.file_response) : void 0, e.misc = u.misc !== void 0 && u.misc !== null ? f.fromPartial(u.misc) : void 0, e.cliprdr = u.cliprdr !== void 0 && u.cliprdr !== null ? P0.fromPartial(u.cliprdr) : void 0, e.message_box = u.message_box !== void 0 && u.message_box !== null ? O0.fromPartial(u.message_box) : void 0, e.switch_sides_response = u.switch_sides_response !== void 0 && u.switch_sides_response !== null ? L0.fromPartial(u.switch_sides_response) : void 0, e.voice_call_request = u.voice_call_request !== void 0 && u.voice_call_request !== null ? J0.fromPartial(u.voice_call_request) : void 0, e.voice_call_response = u.voice_call_response !== void 0 && u.voice_call_response !== null ? G0.fromPartial(u.voice_call_response) : void 0, e.peer_info = u.peer_info !== void 0 && u.peer_info !== null ? Y.fromPartial(u.peer_info) : void 0, e.pointer_device_event = u.pointer_device_event !== void 0 && u.pointer_device_event !== null ? F0.fromPartial(u.pointer_device_event) : void 0, e.auth_2fa = u.auth_2fa !== void 0 && u.auth_2fa !== null ? _u.fromPartial(u.auth_2fa) : void 0, e.multi_clipboards = u.multi_clipboards !== void 0 && u.multi_clipboards !== null ? gu.fromPartial(u.multi_clipboards) : void 0, e
     }
 };
@@ -6019,7 +6019,7 @@ function V(u) {
     return u.toNumber()
 }
 
-r.util.Long !== je && (r.util.Long = je, r.configure());
+r.util.Long !== Ne && (r.util.Long = Ne, r.configure());
 
 function n(u) {
     return u != null
@@ -6098,7 +6098,7 @@ function X4(u) {
     }
 }
 
-function xa(u) {
+function ya(u) {
     switch (u) {
         case 0:
         case"OK":
@@ -6128,7 +6128,7 @@ function xa(u) {
     }
 }
 
-function ya(u) {
+function ba(u) {
     switch (u) {
         case 0:
             return "OK";
@@ -6152,7 +6152,7 @@ function ya(u) {
 
 var Z0 = (u => (u[u.ID_NOT_EXIST = 0] = "ID_NOT_EXIST", u[u.OFFLINE = 2] = "OFFLINE", u[u.LICENSE_MISMATCH = 3] = "LICENSE_MISMATCH", u[u.LICENSE_OVERUSE = 4] = "LICENSE_OVERUSE", u[u.UNRECOGNIZED = -1] = "UNRECOGNIZED", u))(Z0 || {});
 
-function ba(u) {
+function wa(u) {
     switch (u) {
         case 0:
         case"ID_NOT_EXIST":
@@ -6173,7 +6173,7 @@ function ba(u) {
     }
 }
 
-function wa(u) {
+function Sa(u) {
     switch (u) {
         case 0:
             return "ID_NOT_EXIST";
@@ -6189,7 +6189,7 @@ function wa(u) {
     }
 }
 
-function vi() {
+function ki() {
     return {id: "", serial: 0}
 }
 
@@ -6199,7 +6199,7 @@ const Q0 = {
     }, decode(u, e) {
         const i = u instanceof r.Reader ? u : r.Reader.create(u);
         let o = e === void 0 ? i.len : i.pos + e;
-        const a = vi();
+        const a = ki();
         for (; i.pos < o;) {
             const t = i.uint32();
             switch (t >>> 3) {
@@ -6225,12 +6225,12 @@ const Q0 = {
         return Q0.fromPartial(u != null ? u : {})
     }, fromPartial(u) {
         var i, o;
-        const e = vi();
+        const e = ki();
         return e.id = (i = u.id) != null ? i : "", e.serial = (o = u.serial) != null ? o : 0, e
     }
 };
 
-function ki() {
+function gi() {
     return {request_pk: !1}
 }
 
@@ -6240,7 +6240,7 @@ const X0 = {
     }, decode(u, e) {
         const i = u instanceof r.Reader ? u : r.Reader.create(u);
         let o = e === void 0 ? i.len : i.pos + e;
-        const a = ki();
+        const a = gi();
         for (; i.pos < o;) {
             const t = i.uint32();
             switch (t >>> 3) {
@@ -6262,12 +6262,12 @@ const X0 = {
         return X0.fromPartial(u != null ? u : {})
     }, fromPartial(u) {
         var i;
-        const e = ki();
+        const e = gi();
         return e.request_pk = (i = u.request_pk) != null ? i : !1, e
     }
 };
 
-function gi() {
+function hi() {
     return {id: "", nat_type: 0, licence_key: "", conn_type: 0, token: "", version: ""}
 }
 
@@ -6277,7 +6277,7 @@ const Ku = {
     }, decode(u, e) {
         const i = u instanceof r.Reader ? u : r.Reader.create(u);
         let o = e === void 0 ? i.len : i.pos + e;
-        const a = gi();
+        const a = hi();
         for (; i.pos < o;) {
             const t = i.uint32();
             switch (t >>> 3) {
@@ -6326,12 +6326,12 @@ const Ku = {
         return Ku.fromPartial(u != null ? u : {})
     }, fromPartial(u) {
         var i, o, a, t, s, l;
-        const e = gi();
+        const e = hi();
         return e.id = (i = u.id) != null ? i : "", e.nat_type = (o = u.nat_type) != null ? o : 0, e.licence_key = (a = u.licence_key) != null ? a : "", e.conn_type = (t = u.conn_type) != null ? t : 0, e.token = (s = u.token) != null ? s : "", e.version = (l = u.version) != null ? l : "", e
     }
 };
 
-function hi() {
+function fi() {
     return {socket_addr: new Uint8Array(0), relay_server: "", nat_type: 0}
 }
 
@@ -6341,7 +6341,7 @@ const Y0 = {
     }, decode(u, e) {
         const i = u instanceof r.Reader ? u : r.Reader.create(u);
         let o = e === void 0 ? i.len : i.pos + e;
-        const a = hi();
+        const a = fi();
         for (; i.pos < o;) {
             const t = i.uint32();
             switch (t >>> 3) {
@@ -6375,12 +6375,12 @@ const Y0 = {
         return Y0.fromPartial(u != null ? u : {})
     }, fromPartial(u) {
         var i, o, a;
-        const e = hi();
+        const e = fi();
         return e.socket_addr = (i = u.socket_addr) != null ? i : new Uint8Array(0), e.relay_server = (o = u.relay_server) != null ? o : "", e.nat_type = (a = u.nat_type) != null ? a : 0, e
     }
 };
 
-function fi() {
+function xi() {
     return {serial: 0}
 }
 
@@ -6390,7 +6390,7 @@ const $0 = {
     }, decode(u, e) {
         const i = u instanceof r.Reader ? u : r.Reader.create(u);
         let o = e === void 0 ? i.len : i.pos + e;
-        const a = fi();
+        const a = xi();
         for (; i.pos < o;) {
             const t = i.uint32();
             switch (t >>> 3) {
@@ -6412,12 +6412,12 @@ const $0 = {
         return $0.fromPartial(u != null ? u : {})
     }, fromPartial(u) {
         var i;
-        const e = fi();
+        const e = xi();
         return e.serial = (i = u.serial) != null ? i : 0, e
     }
 };
 
-function xi() {
+function yi() {
     return {port: 0, cu: void 0}
 }
 
@@ -6427,7 +6427,7 @@ const u4 = {
     }, decode(u, e) {
         const i = u instanceof r.Reader ? u : r.Reader.create(u);
         let o = e === void 0 ? i.len : i.pos + e;
-        const a = xi();
+        const a = yi();
         for (; i.pos < o;) {
             const t = i.uint32();
             switch (t >>> 3) {
@@ -6453,12 +6453,12 @@ const u4 = {
         return u4.fromPartial(u != null ? u : {})
     }, fromPartial(u) {
         var i;
-        const e = xi();
+        const e = yi();
         return e.port = (i = u.port) != null ? i : 0, e.cu = u.cu !== void 0 && u.cu !== null ? eu.fromPartial(u.cu) : void 0, e
     }
 };
 
-function yi() {
+function bi() {
     return {socket_addr: new Uint8Array(0), id: "", relay_server: "", nat_type: 0, version: ""}
 }
 
@@ -6468,7 +6468,7 @@ const e4 = {
     }, decode(u, e) {
         const i = u instanceof r.Reader ? u : r.Reader.create(u);
         let o = e === void 0 ? i.len : i.pos + e;
-        const a = yi();
+        const a = bi();
         for (; i.pos < o;) {
             const t = i.uint32();
             switch (t >>> 3) {
@@ -6512,12 +6512,12 @@ const e4 = {
         return e4.fromPartial(u != null ? u : {})
     }, fromPartial(u) {
         var i, o, a, t, s;
-        const e = yi();
+        const e = bi();
         return e.socket_addr = (i = u.socket_addr) != null ? i : new Uint8Array(0), e.id = (o = u.id) != null ? o : "", e.relay_server = (a = u.relay_server) != null ? a : "", e.nat_type = (t = u.nat_type) != null ? t : 0, e.version = (s = u.version) != null ? s : "", e
     }
 };
 
-function bi() {
+function wi() {
     return {id: "", uuid: new Uint8Array(0), pk: new Uint8Array(0), old_id: ""}
 }
 
@@ -6527,7 +6527,7 @@ const i4 = {
     }, decode(u, e) {
         const i = u instanceof r.Reader ? u : r.Reader.create(u);
         let o = e === void 0 ? i.len : i.pos + e;
-        const a = bi();
+        const a = wi();
         for (; i.pos < o;) {
             const t = i.uint32();
             switch (t >>> 3) {
@@ -6566,12 +6566,12 @@ const i4 = {
         return i4.fromPartial(u != null ? u : {})
     }, fromPartial(u) {
         var i, o, a, t;
-        const e = bi();
+        const e = wi();
         return e.id = (i = u.id) != null ? i : "", e.uuid = (o = u.uuid) != null ? o : new Uint8Array(0), e.pk = (a = u.pk) != null ? a : new Uint8Array(0), e.old_id = (t = u.old_id) != null ? t : "", e
     }
 };
 
-function wi() {
+function Si() {
     return {result: 0, keep_alive: 0}
 }
 
@@ -6581,7 +6581,7 @@ const t4 = {
     }, decode(u, e) {
         const i = u instanceof r.Reader ? u : r.Reader.create(u);
         let o = e === void 0 ? i.len : i.pos + e;
-        const a = wi();
+        const a = Si();
         for (; i.pos < o;) {
             const t = i.uint32();
             switch (t >>> 3) {
@@ -6600,22 +6600,22 @@ const t4 = {
         return a
     }, fromJSON(u) {
         return {
-            result: p(u.result) ? xa(u.result) : 0,
+            result: p(u.result) ? ya(u.result) : 0,
             keep_alive: p(u.keep_alive) ? globalThis.Number(u.keep_alive) : 0
         }
     }, toJSON(u) {
         const e = {};
-        return u.result !== 0 && (e.result = ya(u.result)), u.keep_alive !== 0 && (e.keep_alive = Math.round(u.keep_alive)), e
+        return u.result !== 0 && (e.result = ba(u.result)), u.keep_alive !== 0 && (e.keep_alive = Math.round(u.keep_alive)), e
     }, create(u) {
         return t4.fromPartial(u != null ? u : {})
     }, fromPartial(u) {
         var i, o;
-        const e = wi();
+        const e = Si();
         return e.result = (i = u.result) != null ? i : 0, e.keep_alive = (o = u.keep_alive) != null ? o : 0, e
     }
 };
 
-function Si() {
+function zi() {
     return {
         socket_addr: new Uint8Array(0),
         pk: new Uint8Array(0),
@@ -6634,7 +6634,7 @@ const a4 = {
     }, decode(u, e) {
         const i = u instanceof r.Reader ? u : r.Reader.create(u);
         let o = e === void 0 ? i.len : i.pos + e;
-        const a = Si();
+        const a = zi();
         for (; i.pos < o;) {
             const t = i.uint32();
             switch (t >>> 3) {
@@ -6679,7 +6679,7 @@ const a4 = {
         return {
             socket_addr: p(u.socket_addr) ? O(u.socket_addr) : new Uint8Array(0),
             pk: p(u.pk) ? O(u.pk) : new Uint8Array(0),
-            failure: p(u.failure) ? ba(u.failure) : 0,
+            failure: p(u.failure) ? wa(u.failure) : 0,
             relay_server: p(u.relay_server) ? globalThis.String(u.relay_server) : "",
             nat_type: p(u.nat_type) ? Q4(u.nat_type) : void 0,
             is_local: p(u.is_local) ? globalThis.Boolean(u.is_local) : void 0,
@@ -6688,17 +6688,17 @@ const a4 = {
         }
     }, toJSON(u) {
         const e = {};
-        return u.socket_addr.length !== 0 && (e.socket_addr = M(u.socket_addr)), u.pk.length !== 0 && (e.pk = M(u.pk)), u.failure !== 0 && (e.failure = wa(u.failure)), u.relay_server !== "" && (e.relay_server = u.relay_server), u.nat_type !== void 0 && (e.nat_type = X4(u.nat_type)), u.is_local !== void 0 && (e.is_local = u.is_local), u.other_failure !== "" && (e.other_failure = u.other_failure), u.feedback !== 0 && (e.feedback = Math.round(u.feedback)), e
+        return u.socket_addr.length !== 0 && (e.socket_addr = M(u.socket_addr)), u.pk.length !== 0 && (e.pk = M(u.pk)), u.failure !== 0 && (e.failure = Sa(u.failure)), u.relay_server !== "" && (e.relay_server = u.relay_server), u.nat_type !== void 0 && (e.nat_type = X4(u.nat_type)), u.is_local !== void 0 && (e.is_local = u.is_local), u.other_failure !== "" && (e.other_failure = u.other_failure), u.feedback !== 0 && (e.feedback = Math.round(u.feedback)), e
     }, create(u) {
         return a4.fromPartial(u != null ? u : {})
     }, fromPartial(u) {
         var i, o, a, t, s, l, E, c;
-        const e = Si();
+        const e = zi();
         return e.socket_addr = (i = u.socket_addr) != null ? i : new Uint8Array(0), e.pk = (o = u.pk) != null ? o : new Uint8Array(0), e.failure = (a = u.failure) != null ? a : 0, e.relay_server = (t = u.relay_server) != null ? t : "", e.nat_type = (s = u.nat_type) != null ? s : void 0, e.is_local = (l = u.is_local) != null ? l : void 0, e.other_failure = (E = u.other_failure) != null ? E : "", e.feedback = (c = u.feedback) != null ? c : 0, e
     }
 };
 
-function zi() {
+function Pi() {
     return {serial: 0, rendezvous_servers: []}
 }
 
@@ -6710,7 +6710,7 @@ const eu = {
     }, decode(u, e) {
         const i = u instanceof r.Reader ? u : r.Reader.create(u);
         let o = e === void 0 ? i.len : i.pos + e;
-        const a = zi();
+        const a = Pi();
         for (; i.pos < o;) {
             const t = i.uint32();
             switch (t >>> 3) {
@@ -6740,12 +6740,12 @@ const eu = {
         return eu.fromPartial(u != null ? u : {})
     }, fromPartial(u) {
         var i, o;
-        const e = zi();
+        const e = Pi();
         return e.serial = (i = u.serial) != null ? i : 0, e.rendezvous_servers = ((o = u.rendezvous_servers) == null ? void 0 : o.map(a => a)) || [], e
     }
 };
 
-function Pi() {
+function Ri() {
     return {
         id: "",
         uuid: "",
@@ -6764,7 +6764,7 @@ const Hu = {
     }, decode(u, e) {
         const i = u instanceof r.Reader ? u : r.Reader.create(u);
         let o = e === void 0 ? i.len : i.pos + e;
-        const a = Pi();
+        const a = Ri();
         for (; i.pos < o;) {
             const t = i.uint32();
             switch (t >>> 3) {
@@ -6823,12 +6823,12 @@ const Hu = {
         return Hu.fromPartial(u != null ? u : {})
     }, fromPartial(u) {
         var i, o, a, t, s, l, E, c;
-        const e = Pi();
+        const e = Ri();
         return e.id = (i = u.id) != null ? i : "", e.uuid = (o = u.uuid) != null ? o : "", e.socket_addr = (a = u.socket_addr) != null ? a : new Uint8Array(0), e.relay_server = (t = u.relay_server) != null ? t : "", e.secure = (s = u.secure) != null ? s : !1, e.licence_key = (l = u.licence_key) != null ? l : "", e.conn_type = (E = u.conn_type) != null ? E : 0, e.token = (c = u.token) != null ? c : "", e
     }
 };
 
-function Ri() {
+function Ii() {
     return {
         socket_addr: new Uint8Array(0),
         uuid: "",
@@ -6847,7 +6847,7 @@ const o4 = {
     }, decode(u, e) {
         const i = u instanceof r.Reader ? u : r.Reader.create(u);
         let o = e === void 0 ? i.len : i.pos + e;
-        const a = Ri();
+        const a = Ii();
         for (; i.pos < o;) {
             const t = i.uint32();
             switch (t >>> 3) {
@@ -6906,12 +6906,12 @@ const o4 = {
         return o4.fromPartial(u != null ? u : {})
     }, fromPartial(u) {
         var i, o, a, t, s, l, E, c;
-        const e = Ri();
+        const e = Ii();
         return e.socket_addr = (i = u.socket_addr) != null ? i : new Uint8Array(0), e.uuid = (o = u.uuid) != null ? o : "", e.relay_server = (a = u.relay_server) != null ? a : "", e.id = (t = u.id) != null ? t : void 0, e.pk = (s = u.pk) != null ? s : void 0, e.refuse_reason = (l = u.refuse_reason) != null ? l : "", e.version = (E = u.version) != null ? E : "", e.feedback = (c = u.feedback) != null ? c : 0, e
     }
 };
 
-function Ii() {
+function Ti() {
     return {url: ""}
 }
 
@@ -6921,7 +6921,7 @@ const n4 = {
     }, decode(u, e) {
         const i = u instanceof r.Reader ? u : r.Reader.create(u);
         let o = e === void 0 ? i.len : i.pos + e;
-        const a = Ii();
+        const a = Ti();
         for (; i.pos < o;) {
             const t = i.uint32();
             switch (t >>> 3) {
@@ -6943,12 +6943,12 @@ const n4 = {
         return n4.fromPartial(u != null ? u : {})
     }, fromPartial(u) {
         var i;
-        const e = Ii();
+        const e = Ti();
         return e.url = (i = u.url) != null ? i : "", e
     }
 };
 
-function Ti() {
+function ji() {
     return {socket_addr: new Uint8Array(0), relay_server: ""}
 }
 
@@ -6958,7 +6958,7 @@ const r4 = {
     }, decode(u, e) {
         const i = u instanceof r.Reader ? u : r.Reader.create(u);
         let o = e === void 0 ? i.len : i.pos + e;
-        const a = Ti();
+        const a = ji();
         for (; i.pos < o;) {
             const t = i.uint32();
             switch (t >>> 3) {
@@ -6987,12 +6987,12 @@ const r4 = {
         return r4.fromPartial(u != null ? u : {})
     }, fromPartial(u) {
         var i, o;
-        const e = Ti();
+        const e = ji();
         return e.socket_addr = (i = u.socket_addr) != null ? i : new Uint8Array(0), e.relay_server = (o = u.relay_server) != null ? o : "", e
     }
 };
 
-function ji() {
+function Ni() {
     return {socket_addr: new Uint8Array(0), local_addr: new Uint8Array(0), relay_server: "", id: "", version: ""}
 }
 
@@ -7002,7 +7002,7 @@ const s4 = {
     }, decode(u, e) {
         const i = u instanceof r.Reader ? u : r.Reader.create(u);
         let o = e === void 0 ? i.len : i.pos + e;
-        const a = ji();
+        const a = Ni();
         for (; i.pos < o;) {
             const t = i.uint32();
             switch (t >>> 3) {
@@ -7046,12 +7046,12 @@ const s4 = {
         return s4.fromPartial(u != null ? u : {})
     }, fromPartial(u) {
         var i, o, a, t, s;
-        const e = ji();
+        const e = Ni();
         return e.socket_addr = (i = u.socket_addr) != null ? i : new Uint8Array(0), e.local_addr = (o = u.local_addr) != null ? o : new Uint8Array(0), e.relay_server = (a = u.relay_server) != null ? a : "", e.id = (t = u.id) != null ? t : "", e.version = (s = u.version) != null ? s : "", e
     }
 };
 
-function Ni() {
+function Oi() {
     return {cmd: "", mac: "", id: "", username: "", hostname: "", platform: "", misc: ""}
 }
 
@@ -7061,7 +7061,7 @@ const l4 = {
     }, decode(u, e) {
         const i = u instanceof r.Reader ? u : r.Reader.create(u);
         let o = e === void 0 ? i.len : i.pos + e;
-        const a = Ni();
+        const a = Oi();
         for (; i.pos < o;) {
             const t = i.uint32();
             switch (t >>> 3) {
@@ -7115,12 +7115,12 @@ const l4 = {
         return l4.fromPartial(u != null ? u : {})
     }, fromPartial(u) {
         var i, o, a, t, s, l, E;
-        const e = Ni();
+        const e = Oi();
         return e.cmd = (i = u.cmd) != null ? i : "", e.mac = (o = u.mac) != null ? o : "", e.id = (a = u.id) != null ? a : "", e.username = (t = u.username) != null ? t : "", e.hostname = (s = u.hostname) != null ? s : "", e.platform = (l = u.platform) != null ? l : "", e.misc = (E = u.misc) != null ? E : "", e
     }
 };
 
-function Oi() {
+function Mi() {
     return {id: "", peers: []}
 }
 
@@ -7132,7 +7132,7 @@ const Ju = {
     }, decode(u, e) {
         const i = u instanceof r.Reader ? u : r.Reader.create(u);
         let o = e === void 0 ? i.len : i.pos + e;
-        const a = Oi();
+        const a = Mi();
         for (; i.pos < o;) {
             const t = i.uint32();
             switch (t >>> 3) {
@@ -7162,12 +7162,12 @@ const Ju = {
         return Ju.fromPartial(u != null ? u : {})
     }, fromPartial(u) {
         var i, o;
-        const e = Oi();
+        const e = Mi();
         return e.id = (i = u.id) != null ? i : "", e.peers = ((o = u.peers) == null ? void 0 : o.map(a => a)) || [], e
     }
 };
 
-function Mi() {
+function Ui() {
     return {states: new Uint8Array(0)}
 }
 
@@ -7177,7 +7177,7 @@ const E4 = {
     }, decode(u, e) {
         const i = u instanceof r.Reader ? u : r.Reader.create(u);
         let o = e === void 0 ? i.len : i.pos + e;
-        const a = Mi();
+        const a = Ui();
         for (; i.pos < o;) {
             const t = i.uint32();
             switch (t >>> 3) {
@@ -7199,12 +7199,12 @@ const E4 = {
         return E4.fromPartial(u != null ? u : {})
     }, fromPartial(u) {
         var i;
-        const e = Mi();
+        const e = Ui();
         return e.states = (i = u.states) != null ? i : new Uint8Array(0), e
     }
 };
 
-function Ui() {
+function Li() {
     return {keys: []}
 }
 
@@ -7215,7 +7215,7 @@ const d4 = {
     }, decode(u, e) {
         const i = u instanceof r.Reader ? u : r.Reader.create(u);
         let o = e === void 0 ? i.len : i.pos + e;
-        const a = Ui();
+        const a = Li();
         for (; i.pos < o;) {
             const t = i.uint32();
             switch (t >>> 3) {
@@ -7238,12 +7238,12 @@ const d4 = {
         return d4.fromPartial(u != null ? u : {})
     }, fromPartial(u) {
         var i;
-        const e = Ui();
+        const e = Li();
         return e.keys = ((i = u.keys) == null ? void 0 : i.map(o => o)) || [], e
     }
 };
 
-function Li() {
+function Wi() {
     return {token: ""}
 }
 
@@ -7253,7 +7253,7 @@ const Gu = {
     }, decode(u, e) {
         const i = u instanceof r.Reader ? u : r.Reader.create(u);
         let o = e === void 0 ? i.len : i.pos + e;
-        const a = Li();
+        const a = Wi();
         for (; i.pos < o;) {
             const t = i.uint32();
             switch (t >>> 3) {
@@ -7275,12 +7275,12 @@ const Gu = {
         return Gu.fromPartial(u != null ? u : {})
     }, fromPartial(u) {
         var i;
-        const e = Li();
+        const e = Wi();
         return e.token = (i = u.token) != null ? i : "", e
     }
 };
 
-function Wi() {
+function Vi() {
     return {
         register_peer: void 0,
         register_peer_response: void 0,
@@ -7306,13 +7306,13 @@ function Wi() {
     }
 }
 
-const S4 = {
+const z4 = {
     encode(u, e = r.Writer.create()) {
         return u.register_peer !== void 0 && Q0.encode(u.register_peer, e.uint32(50).fork()).ldelim(), u.register_peer_response !== void 0 && X0.encode(u.register_peer_response, e.uint32(58).fork()).ldelim(), u.punch_hole_request !== void 0 && Ku.encode(u.punch_hole_request, e.uint32(66).fork()).ldelim(), u.punch_hole !== void 0 && Y0.encode(u.punch_hole, e.uint32(74).fork()).ldelim(), u.punch_hole_sent !== void 0 && e4.encode(u.punch_hole_sent, e.uint32(82).fork()).ldelim(), u.punch_hole_response !== void 0 && a4.encode(u.punch_hole_response, e.uint32(90).fork()).ldelim(), u.fetch_local_addr !== void 0 && r4.encode(u.fetch_local_addr, e.uint32(98).fork()).ldelim(), u.local_addr !== void 0 && s4.encode(u.local_addr, e.uint32(106).fork()).ldelim(), u.configure_update !== void 0 && eu.encode(u.configure_update, e.uint32(114).fork()).ldelim(), u.register_pk !== void 0 && i4.encode(u.register_pk, e.uint32(122).fork()).ldelim(), u.register_pk_response !== void 0 && t4.encode(u.register_pk_response, e.uint32(130).fork()).ldelim(), u.software_update !== void 0 && n4.encode(u.software_update, e.uint32(138).fork()).ldelim(), u.request_relay !== void 0 && Hu.encode(u.request_relay, e.uint32(146).fork()).ldelim(), u.relay_response !== void 0 && o4.encode(u.relay_response, e.uint32(154).fork()).ldelim(), u.test_nat_request !== void 0 && $0.encode(u.test_nat_request, e.uint32(162).fork()).ldelim(), u.test_nat_response !== void 0 && u4.encode(u.test_nat_response, e.uint32(170).fork()).ldelim(), u.peer_discovery !== void 0 && l4.encode(u.peer_discovery, e.uint32(178).fork()).ldelim(), u.online_request !== void 0 && Ju.encode(u.online_request, e.uint32(186).fork()).ldelim(), u.online_response !== void 0 && E4.encode(u.online_response, e.uint32(194).fork()).ldelim(), u.key_exchange !== void 0 && d4.encode(u.key_exchange, e.uint32(202).fork()).ldelim(), u.hc !== void 0 && Gu.encode(u.hc, e.uint32(210).fork()).ldelim(), e
     }, decode(u, e) {
         const i = u instanceof r.Reader ? u : r.Reader.create(u);
         let o = e === void 0 ? i.len : i.pos + e;
-        const a = Wi();
+        const a = Vi();
         for (; i.pos < o;) {
             const t = i.uint32();
             switch (t >>> 3) {
@@ -7433,9 +7433,9 @@ const S4 = {
         const e = {};
         return u.register_peer !== void 0 && (e.register_peer = Q0.toJSON(u.register_peer)), u.register_peer_response !== void 0 && (e.register_peer_response = X0.toJSON(u.register_peer_response)), u.punch_hole_request !== void 0 && (e.punch_hole_request = Ku.toJSON(u.punch_hole_request)), u.punch_hole !== void 0 && (e.punch_hole = Y0.toJSON(u.punch_hole)), u.punch_hole_sent !== void 0 && (e.punch_hole_sent = e4.toJSON(u.punch_hole_sent)), u.punch_hole_response !== void 0 && (e.punch_hole_response = a4.toJSON(u.punch_hole_response)), u.fetch_local_addr !== void 0 && (e.fetch_local_addr = r4.toJSON(u.fetch_local_addr)), u.local_addr !== void 0 && (e.local_addr = s4.toJSON(u.local_addr)), u.configure_update !== void 0 && (e.configure_update = eu.toJSON(u.configure_update)), u.register_pk !== void 0 && (e.register_pk = i4.toJSON(u.register_pk)), u.register_pk_response !== void 0 && (e.register_pk_response = t4.toJSON(u.register_pk_response)), u.software_update !== void 0 && (e.software_update = n4.toJSON(u.software_update)), u.request_relay !== void 0 && (e.request_relay = Hu.toJSON(u.request_relay)), u.relay_response !== void 0 && (e.relay_response = o4.toJSON(u.relay_response)), u.test_nat_request !== void 0 && (e.test_nat_request = $0.toJSON(u.test_nat_request)), u.test_nat_response !== void 0 && (e.test_nat_response = u4.toJSON(u.test_nat_response)), u.peer_discovery !== void 0 && (e.peer_discovery = l4.toJSON(u.peer_discovery)), u.online_request !== void 0 && (e.online_request = Ju.toJSON(u.online_request)), u.online_response !== void 0 && (e.online_response = E4.toJSON(u.online_response)), u.key_exchange !== void 0 && (e.key_exchange = d4.toJSON(u.key_exchange)), u.hc !== void 0 && (e.hc = Gu.toJSON(u.hc)), e
     }, create(u) {
-        return S4.fromPartial(u != null ? u : {})
+        return z4.fromPartial(u != null ? u : {})
     }, fromPartial(u) {
-        const e = Wi();
+        const e = Vi();
         return e.register_peer = u.register_peer !== void 0 && u.register_peer !== null ? Q0.fromPartial(u.register_peer) : void 0, e.register_peer_response = u.register_peer_response !== void 0 && u.register_peer_response !== null ? X0.fromPartial(u.register_peer_response) : void 0, e.punch_hole_request = u.punch_hole_request !== void 0 && u.punch_hole_request !== null ? Ku.fromPartial(u.punch_hole_request) : void 0, e.punch_hole = u.punch_hole !== void 0 && u.punch_hole !== null ? Y0.fromPartial(u.punch_hole) : void 0, e.punch_hole_sent = u.punch_hole_sent !== void 0 && u.punch_hole_sent !== null ? e4.fromPartial(u.punch_hole_sent) : void 0, e.punch_hole_response = u.punch_hole_response !== void 0 && u.punch_hole_response !== null ? a4.fromPartial(u.punch_hole_response) : void 0, e.fetch_local_addr = u.fetch_local_addr !== void 0 && u.fetch_local_addr !== null ? r4.fromPartial(u.fetch_local_addr) : void 0, e.local_addr = u.local_addr !== void 0 && u.local_addr !== null ? s4.fromPartial(u.local_addr) : void 0, e.configure_update = u.configure_update !== void 0 && u.configure_update !== null ? eu.fromPartial(u.configure_update) : void 0, e.register_pk = u.register_pk !== void 0 && u.register_pk !== null ? i4.fromPartial(u.register_pk) : void 0, e.register_pk_response = u.register_pk_response !== void 0 && u.register_pk_response !== null ? t4.fromPartial(u.register_pk_response) : void 0, e.software_update = u.software_update !== void 0 && u.software_update !== null ? n4.fromPartial(u.software_update) : void 0, e.request_relay = u.request_relay !== void 0 && u.request_relay !== null ? Hu.fromPartial(u.request_relay) : void 0, e.relay_response = u.relay_response !== void 0 && u.relay_response !== null ? o4.fromPartial(u.relay_response) : void 0, e.test_nat_request = u.test_nat_request !== void 0 && u.test_nat_request !== null ? $0.fromPartial(u.test_nat_request) : void 0, e.test_nat_response = u.test_nat_response !== void 0 && u.test_nat_response !== null ? u4.fromPartial(u.test_nat_response) : void 0, e.peer_discovery = u.peer_discovery !== void 0 && u.peer_discovery !== null ? l4.fromPartial(u.peer_discovery) : void 0, e.online_request = u.online_request !== void 0 && u.online_request !== null ? Ju.fromPartial(u.online_request) : void 0, e.online_response = u.online_response !== void 0 && u.online_response !== null ? E4.fromPartial(u.online_response) : void 0, e.key_exchange = u.key_exchange !== void 0 && u.key_exchange !== null ? d4.fromPartial(u.key_exchange) : void 0, e.hc = u.hc !== void 0 && u.hc !== null ? Gu.fromPartial(u.hc) : void 0, e
     }
 };
@@ -7463,7 +7463,7 @@ function p(u) {
     return u != null
 }
 
-class j4 {
+class N4 {
     constructor(e, i = !0, o = "") {
         d(this, "_websocket");
         d(this, "_eventHandlers");
@@ -7507,7 +7507,7 @@ class j4 {
     }
 
     sendRendezvous(e) {
-        this._websocket.send(S4.encode(S4.fromPartial(e)).finish())
+        this._websocket.send(z4.encode(z4.fromPartial(e)).finish())
     }
 
     sendBytes(e) {
@@ -7520,7 +7520,7 @@ class j4 {
     }
 
     parseRendezvous(e) {
-        return S4.decode(e)
+        return z4.decode(e)
     }
 
     off(e) {
@@ -7590,7 +7590,7 @@ class j4 {
             let i = new Uint8Array(e.data);
             this._recvDataCount += i.length;
             const o = this._secretKey;
-            o && (o[2] += 1, i = jn(i, o[2], o[0]));
+            o && (o[2] += 1, i = Mn(i, o[2], o[0]));
             let a;
             i.length == 0 ? a = new Uint8Array : a = this._isRendezvous ? this.parseRendezvous(i) : this.parseMessage(i), this._buf.push(a), this._eventHandlers.message && (this._isProcessing || this.processQueue())
         }
@@ -7611,10 +7611,10 @@ class j4 {
 }
 
 let mu = null;
-const Vi = ".";
-var X, Bu, $u, J4, Eu, G4, Dt, g4;
+const qi = ".";
+var X, Bu, $u, J4, Eu, G4, Dt, h4;
 
-class Sa {
+class za {
     constructor() {
         pu(this, G4);
         pu(this, X, null);
@@ -7622,7 +7622,7 @@ class Sa {
         pu(this, $u, {});
         pu(this, J4, 0);
         pu(this, Eu, []);
-        pu(this, g4, async (e, i) => {
+        pu(this, h4, async (e, i) => {
             const o = await (await fetch(e)).arrayBuffer(), a = new Blob([o], {type: i});
             return URL.createObjectURL(a)
         })
@@ -7630,9 +7630,9 @@ class Sa {
 
     async load() {
         if (!h(this, X)) {
-            p4(this, X, new Worker("./ffmpeg.js?v=dddac33a", {type: "module"})), Te(this, G4, Dt).call(this);
-            const e = await h(this, g4).call(this, `${Vi}/ffmpeg-core.js?v=16fa4bb1`, "text/javascript"),
-                i = await h(this, g4).call(this, `${Vi}/ffmpeg-core.wasm?v=241ebe18`, "application/wasm");
+            B4(this, X, new Worker("./ffmpeg.js?v=dddac33a", {type: "module"})), je(this, G4, Dt).call(this);
+            const e = await h(this, h4).call(this, `${qi}/ffmpeg-core.js?v=16fa4bb1`, "text/javascript"),
+                i = await h(this, h4).call(this, `${qi}/ffmpeg-core.wasm?v=241ebe18`, "application/wasm");
             return this.send({type: "LOAD", data: {coreURL: e, wasmURL: i}})
         }
     }
@@ -7648,57 +7648,57 @@ class Sa {
 
     async send({type: e, data: i}, o) {
         return h(this, X) ? new Promise((a, t) => {
-            const s = Ie(this, J4)._++;
+            const s = Te(this, J4)._++;
             h(this, Bu)[s] = a, h(this, $u)[s] = t, h(this, X).postMessage({id: s, type: e, data: i}, o)
         }) : Promise.reject("FFmpeg not loaded")
     }
 
     close() {
-        h(this, X) && (this.send({type: "CLOSE", data: {}}), h(this, X).terminate(), p4(this, X, null))
+        h(this, X) && (this.send({type: "CLOSE", data: {}}), h(this, X).terminate(), B4(this, X, null))
     }
 }
 
 X = new WeakMap, Bu = new WeakMap, $u = new WeakMap, J4 = new WeakMap, Eu = new WeakMap, G4 = new WeakSet, Dt = function () {
     h(this, X).onmessage = ({data: {id: e, type: i, data: o}}) => {
-        i == "LOAD" ? (console.log("FFmpeg loaded"), h(this, Bu)[e](o)) : i == "DECODE" ? (h(this, Eu).push(o.data.data), h(this, Eu).length > 8 && h(this, Eu).shift(), h(this, Bu)[e](o)) : i == "CLOSE" ? (p4(this, Eu, []), h(this, Bu)[e](o)) : i == "ERROR" ? h(this, $u)[e](o) : h(this, $u)[e](o), delete h(this, Bu)[e], delete h(this, $u)[e]
+        i == "LOAD" ? (console.log("FFmpeg loaded"), h(this, Bu)[e](o)) : i == "DECODE" ? (h(this, Eu).push(o.data.data), h(this, Eu).length > 8 && h(this, Eu).shift(), h(this, Bu)[e](o)) : i == "CLOSE" ? (B4(this, Eu, []), h(this, Bu)[e](o)) : i == "ERROR" ? h(this, $u)[e](o) : h(this, $u)[e](o), delete h(this, Bu)[e], delete h(this, $u)[e]
     }
-}, g4 = new WeakMap;
+}, h4 = new WeakMap;
 
-async function za() {
+async function Pa() {
     try {
-        return mu = new Sa, mu ? mu.load() : Promise.reject("Failed to create FFmpeg instance")
+        return mu = new za, mu ? mu.load() : Promise.reject("Failed to create FFmpeg instance")
     } catch (u) {
         return console.log("Failed to load FFmpeg", u), Promise.reject("Failed to load FFmpeg")
     }
 }
 
-async function Pa(u, e) {
+async function Ra(u, e) {
     return mu ? mu.decode(u, e) : Promise.reject("FFmpeg is uninitialized")
 }
 
-async function Ra() {
+async function Ia() {
     mu && (mu.close(), mu = null)
 }
 
-const Ia = "Desktop session not ready", Ta = "Desktop xsession failed", ja = "Desktop session another user login",
-    Na = "Desktop xorg not found", Oa = "Desktop none", Ma = "Desktop session not ready, password empty",
-    Ua = "Desktop session not ready, password wrong", La = "Empty Password", Wa = "Wrong Password",
-    Va = "Wrong 2FA Code", qi = "2FA Required", qa = "No Password Access", Ka = "Wayland login screen is not supported",
-    Ha = "x11 expected", Bt = "https://rustdesk.com/docs/en/manual/linux/#x11-required",
-    Ja = "https://rustdesk.com/docs/en/", Ga = Bt,
-    Za = "https://github.com/rustdesk/rustdesk/wiki/Headless-Linux-Support",
-    Ki = {"rustdesk docs home": Ja, "rustdesk docs x11-required": Ga, "rustdesk x11 headless": Za},
-    Hi = "Input source 1", Qa = "map", Ji = "translate", Xa = "ShiftLeft", Ya = "ShiftRight", m4 = "ControlLeft",
-    mt = "ControlRight", pe = "AltLeft", At = "AltRight", Ft = "MetaLeft", _t = "MetaRight", Y4 = "Windows",
-    De = "Linux", Be = "Mac OS", vt = "Android", $a = "iOS", uo = "web", eo = "ISO", io = 1, to = 2, Gi = 3, Zi = 4,
-    x4 = 1, y4 = 2, ao = 4, oo = 8, no = 16, ee = "public", Qi = "OeVuKk5nlHiXp+APNn0Y3pC1Iwpwn44JGqrQCsWqmBw=",
-    ro = 1e3, so = 6e4, re = lang, lo = langIds;
+const Ta = "Desktop session not ready", ja = "Desktop xsession failed", Na = "Desktop session another user login",
+    Oa = "Desktop xorg not found", Ma = "Desktop none", Ua = "Desktop session not ready, password empty",
+    La = "Desktop session not ready, password wrong", Wa = "Empty Password", Va = "Wrong Password",
+    qa = "Wrong 2FA Code", Ki = "2FA Required", Ka = "No Password Access", Ha = "Wayland login screen is not supported",
+    Ja = "x11 expected", Bt = "https://rustdesk.com/docs/en/manual/linux/#x11-required",
+    Ga = "https://rustdesk.com/docs/en/", Za = Bt,
+    Qa = "https://github.com/rustdesk/rustdesk/wiki/Headless-Linux-Support",
+    Hi = {"rustdesk docs home": Ga, "rustdesk docs x11-required": Za, "rustdesk x11 headless": Qa},
+    Ji = "Input source 1", Xa = "map", Gi = "translate", Ya = "ShiftLeft", $a = "ShiftRight", F4 = "ControlLeft",
+    mt = "ControlRight", De = "AltLeft", At = "AltRight", Ft = "MetaLeft", _t = "MetaRight", Y4 = "Windows",
+    Be = "Linux", me = "Mac OS", vt = "Android", uo = "iOS", eo = "web", io = "ISO", to = 1, ao = 2, Zi = 3, Qi = 4,
+    y4 = 1, b4 = 2, oo = 4, no = 8, ro = 16, ee = "public", Xi = "OeVuKk5nlHiXp+APNn0Y3pC1Iwpwn44JGqrQCsWqmBw=",
+    so = 1e3, lo = 6e4, re = lang, Eo = langIds;
 
-function Eo(u, e, i, o) {
+function co(u, e, i, o) {
     return u == "error" && e == "Connection Error" && ((i.indexOf("10054") < 0 || i.indexOf("104") < 0) && o || i.toLowerCase().indexOf("offline") < 0 && i.toLowerCase().indexOf("exist") < 0 && i.toLowerCase().indexOf("handshake") < 0 && i.toLowerCase().indexOf("failed") < 0 && i.toLowerCase().indexOf("resolve") < 0 && i.toLowerCase().indexOf("mismatch") < 0 && i.toLowerCase().indexOf("manually") < 0 && i.toLowerCase().indexOf("not allowed") < 0)
 }
 
-const co = {
+const Co = {
     VK_A: "a",
     VK_B: "b",
     VK_C: "c",
@@ -7817,7 +7817,7 @@ const co = {
     RShift: "RShift",
     CTRL_ALT_DEL: "CtrlAltDel",
     LOCK_SCREEN: "LockScreen"
-}, se = "1.3.5", Co = "2024-12-06 18:29";
+}, se = "1.3.6", po = "2024-12-22 23:23";
 
 class A {
     static setItem(e, i) {
@@ -7918,32 +7918,32 @@ const Cu = () => {
     } catch {
         return {}
     }
-}, me = u => {
+}, Ae = u => {
     N.setItem("peers", JSON.stringify(u))
-}, po = u => {
+}, Do = u => {
     const e = Cu();
-    delete e[u], me(e)
-}, le = u => Cu()[u], Do = (u, e) => {
+    delete e[u], Ae(e)
+}, le = u => Cu()[u], Bo = (u, e) => {
     const i = Cu();
-    i[u] = e, me(i)
-}, Bo = (u, e) => {
+    i[u] = e, Ae(i)
+}, mo = (u, e) => {
     var o;
     return (o = le(u)[e]) != null ? o : u0(e)
 }, kt = (u, e, i) => {
     const o = Cu(), a = o[u] || {};
-    i == null ? delete a[e] : a[e] = i, a.tm = new Date().getTime(), o[u] = a, me(o)
-}, Ae = u => A.getItem(`option:local:${u}`), gt = (u, e) => {
+    i == null ? delete a[e] : a[e] = i, a.tm = new Date().getTime(), o[u] = a, Ae(o)
+}, Fe = u => A.getItem(`option:local:${u}`), gt = (u, e) => {
     A.setItem(`option:local:${u}`, e)
-}, mo = u => A.getItem(`option:flutter:local:${u}`), Ao = (u, e) => {
+}, Ao = u => A.getItem(`option:flutter:local:${u}`), Fo = (u, e) => {
     A.setItem(`option:flutter:local:${u}`, e)
 }, ht = async u => {
-    const e = Jt(), i = Xu.publicKey, o = $4(0), a = e.from_string(u), t = await $t(a),
+    const e = Gt(), i = Xu.publicKey, o = $4(0), a = e.from_string(u), t = await ua(a),
         s = e.crypto_secretbox_easy(t, o, i);
     return Z(s)
 }, ft = async u => {
-    const e = Jt(), i = Xu.publicKey, o = c4(u), a = e.crypto_secretbox_open_easy(o, $4(0), i), t = await ua(a);
+    const e = Gt(), i = Xu.publicKey, o = c4(u), a = e.crypto_secretbox_open_easy(o, $4(0), i), t = await ea(a);
     return e.to_string(t)
-}, Fo = async u => {
+}, _o = async u => {
     let e = await ht(u);
     N.setItem("ab", e)
 }, xt = async () => {
@@ -7954,12 +7954,12 @@ const Cu = () => {
         console.error("loadAb error", u)
     }
     return {access_token: "", ab_entries: []}
-}, _o = () => {
+}, vo = () => {
     N.removeItem("ab")
-}, vo = async u => {
+}, ko = async u => {
     let e = await ht(u);
     N.setItem("group", e)
-}, ko = async () => {
+}, go = async () => {
     try {
         let u = N.getItem("group");
         if (u) return JSON.parse(await ft(u))
@@ -7967,16 +7967,16 @@ const Cu = () => {
         console.error("loadGroup error", u)
     }
     return {access_token: "", users: [], peers: []}
-}, go = () => {
+}, ho = () => {
     N.removeItem("group")
-}, ho = u => u.name == "My address book" || u.name == "Legacy address book";
+}, fo = u => u.name == "My address book" || u.name == "Legacy address book";
 var yt = bt();
 
-function fo() {
+function xo() {
     yt = bt()
 }
 
-function xo(u, e) {
+function yo(u, e) {
     const i = yt || u.substring(u.length - 2).toLowerCase();
     let o = re.en, a = re[i];
     a || (a = o);
@@ -7984,15 +7984,15 @@ function xo(u, e) {
     return !t && i != "en" && (t = o[e]), t || e
 }
 
-const yo = "z".charCodeAt(0), bo = "a".charCodeAt(0);
+const bo = "z".charCodeAt(0), wo = "a".charCodeAt(0);
 
-function wo(u, e) {
-    const i = co[u] || u;
+function So(u, e) {
+    const i = Co[u] || u;
     if (i.length == 1) {
         const a = i.charCodeAt(0);
-        return !e && (a > yo || a < bo) ? w.fromPartial({unicode: a}) : w.fromPartial({chr: a})
+        return !e && (a > bo || a < wo) ? w.fromPartial({unicode: a}) : w.fromPartial({chr: a})
     }
-    const o = F4(i);
+    const o = v4(i);
     return o == j.UNRECOGNIZED && console.error("Unknown control key " + i), w.fromPartial({control_key: o})
 }
 
@@ -8013,7 +8013,7 @@ function bt() {
 
 var Xu = {privateKey: new Uint8Array([]), publicKey: new Uint8Array([])};
 
-async function So() {
+async function zo() {
     try {
         const u = "app-data";
         try {
@@ -8028,7 +8028,7 @@ async function So() {
         } catch (i) {
             console.error(i)
         }
-        const e = await zo();
+        const e = await Po();
         A.setItem(u, JSON.stringify({a: Z(e.privateKey), b: Z(e.publicKey)})), Xu = e
     } catch (u) {
         console.error("failed to init key pair", u)
@@ -8036,18 +8036,18 @@ async function So() {
 }
 
 function Z(u) {
-    return Pn(u)
+    return Tn(u)
 }
 
 function c4(u) {
-    return Gt(u)
+    return Zt(u)
 }
 
-async function zo() {
-    return await qn()
+async function Po() {
+    return await Jn()
 }
 
-function N4() {
+function O4() {
     return "web"
 }
 
@@ -8059,28 +8059,28 @@ function St() {
     return Z(Xu.publicKey)
 }
 
-function Po() {
+function Ro() {
     return Zu([St()])
 }
 
 function Zu(u) {
-    const e = new aa.exports.Hash;
+    const e = new oa.exports.Hash;
     return u.forEach(i => (typeof i == "string" && (i = new TextEncoder().encode(i)), e.update(i))), e.digest()
 }
 
 function zt() {
     const u = navigator.userAgent.toLowerCase();
-    return u.includes("win") ? Y4 : u.includes("mac") ? Be : u.includes("linux") ? De : u.includes("android") ? vt : u.includes("iphone") || u.includes("ipad") ? $a : "Unknown OS"
+    return u.includes("win") ? Y4 : u.includes("mac") ? me : u.includes("linux") ? Be : u.includes("android") ? vt : u.includes("iphone") || u.includes("ipad") ? uo : "Unknown OS"
 }
 
-async function Ro(u, e) {
+async function Io(u, e) {
     for (let i = 0; i < 2; i++) {
         const a = e === void 0 ? await u.next() : await u.next(e);
         if (!(!a || (a == null ? void 0 : a.key_exchange))) return a
     }
 }
 
-function Io() {
+function To() {
     return A.getItem("key") || void 0
 }
 
@@ -8088,15 +8088,15 @@ function Pt() {
     return A.getItem("option:local:access_token") || void 0
 }
 
-function To() {
+function jo() {
     return A.getItem("option:local:user_info") || void 0
 }
 
-function A4() {
+function _4() {
     return Yu
 }
 
-const Fe = {
+const _e = {
         Alt: 56,
         AltGr: 57400,
         Backspace: 14,
@@ -8228,7 +8228,7 @@ const Fe = {
         Lang5: 118,
         Kana: 128,
         Hanja: 241
-    }, jo = {
+    }, No = {
         Alt: 64,
         AltGr: 108,
         Backspace: 22,
@@ -8359,7 +8359,7 @@ const Fe = {
         Lang3: 98,
         Lang4: 99,
         Lang5: 93
-    }, No = {
+    }, Oo = {
         Alt: 57,
         AltGr: 58,
         Backspace: 67,
@@ -8447,7 +8447,7 @@ const Fe = {
         Dot: 56,
         Slash: 76,
         Insert: 124
-    }, Oo = {
+    }, Mo = {
         226: "Alt",
         230: "AltGr",
         42: "Backspace",
@@ -8583,7 +8583,7 @@ const Fe = {
         116: "Execute",
         117: "Help",
         159: "Separator"
-    }, Mo = {
+    }, Uo = {
         KeyA: 0,
         KeyS: 1,
         KeyD: 2,
@@ -8704,7 +8704,7 @@ const Fe = {
         DownArrow: 125,
         UpArrow: 126,
         Apps: 110
-    }, Uo = {
+    }, Lo = {
         AltLeft: "Alt",
         AltRight: "AltGr",
         Backspace: "Backspace",
@@ -8835,104 +8835,104 @@ const Fe = {
         Lang4: "Lang4",
         Lang5: "Lang5"
     },
-    Lo = new Set(["BackQuote", "Num1", "Num2", "Num3", "Num4", "Num5", "Num6", "Num7", "Num8", "Num9", "Num0", "Minus", "Equal", "KeyA", "KeyB", "KeyC", "KeyD", "KeyE", "KeyF", "KeyG", "KeyH", "KeyI", "KeyJ", "KeyK", "KeyL", "KeyM", "KeyN", "KeyO", "KeyP", "KeyQ", "KeyR", "KeyS", "KeyT", "KeyU", "KeyV", "KeyW", "KeyX", "KeyY", "KeyZ", "LeftBracket", "RightBracket", "BackSlash", "SemiColon", "Quote", "Comma", "Dot", "Slash", "IntlBackslash", "Space"]),
-    Wo = new Set(["Kp0", "Kp1", "Kp2", "Kp3", "Kp4", "Kp5", "Kp6", "Kp7", "Kp8", "Kp9", "KpMinus", "KpMultiply", "KpDivide", "KpPlus", "KpDecimal"]);
-let D4 = !1, ru = !1;
+    Wo = new Set(["BackQuote", "Num1", "Num2", "Num3", "Num4", "Num5", "Num6", "Num7", "Num8", "Num9", "Num0", "Minus", "Equal", "KeyA", "KeyB", "KeyC", "KeyD", "KeyE", "KeyF", "KeyG", "KeyH", "KeyI", "KeyJ", "KeyK", "KeyL", "KeyM", "KeyN", "KeyO", "KeyP", "KeyQ", "KeyR", "KeyS", "KeyT", "KeyU", "KeyV", "KeyW", "KeyX", "KeyY", "KeyZ", "LeftBracket", "RightBracket", "BackSlash", "SemiColon", "Quote", "Comma", "Dot", "Slash", "IntlBackslash", "Space"]),
+    Vo = new Set(["Kp0", "Kp1", "Kp2", "Kp3", "Kp4", "Kp5", "Kp6", "Kp7", "Kp8", "Kp9", "KpMinus", "KpMultiply", "KpDivide", "KpPlus", "KpDecimal"]);
+let m4 = !1, ru = !1;
 const b = {};
-b[Xa] = !1;
 b[Ya] = !1;
-b[m4] = !1;
+b[$a] = !1;
+b[F4] = !1;
 b[mt] = !1;
-b[pe] = !1;
+b[De] = !1;
 b[At] = !1;
 b[Ft] = !1;
 b[_t] = !1;
-const _4 = {}, _e = u => Wo.has(u), ve = u => Lo.has(u), Vo = () => b[m4] || b[mt] || b[pe] || b[At] || b[Ft] || b[_t];
-let _, O4 = !1;
+const k4 = {}, ve = u => Vo.has(u), ke = u => Wo.has(u), qo = () => b[F4] || b[mt] || b[De] || b[At] || b[Ft] || b[_t];
+let _, M4 = !1;
 
-function qo() {
-    if (O4) {
+function Ko() {
+    if (M4) {
         console.info("Keyboard event listener is already started");
         return
     }
-    document.addEventListener("keydown", M4), document.addEventListener("keyup", M4), _ || (_ = document.createElement("div"), _.setAttribute("contenteditable", "true"), _.id = "hiddenInput", _.style.position = "absolute", _.style.left = "-9999px", _.style.height = "1px", _.style.width = "1px", document.body.appendChild(_), Yu ? _.addEventListener("input", U4) : (H4 || Qu) && _.addEventListener("compositionend", U4), _.focus()), O4 = !0, console.info("Keyboard event listener started")
+    document.addEventListener("keydown", U4), document.addEventListener("keyup", U4), _ || (_ = document.createElement("div"), _.setAttribute("contenteditable", "true"), _.id = "hiddenInput", _.style.position = "absolute", _.style.left = "-9999px", _.style.height = "1px", _.style.width = "1px", document.body.appendChild(_), Yu ? _.addEventListener("input", L4) : (H4 || Qu) && _.addEventListener("compositionend", L4), _.focus()), M4 = !0, console.info("Keyboard event listener started")
 }
 
 function Ee() {
-    if (!O4) {
+    if (!M4) {
         console.info("Keyboard event listener is not started");
         return
     }
-    document.removeEventListener("keydown", M4), document.removeEventListener("keyup", M4), _ && (Yu || H4 ? _.removeEventListener("input", U4) : Qu && _.removeEventListener("compositionend", U4), _.remove(), _ = void 0), O4 = !1, console.info("Keyboard event listener stopped")
+    document.removeEventListener("keydown", U4), document.removeEventListener("keyup", U4), _ && (Yu || H4 ? _.removeEventListener("input", L4) : Qu && _.removeEventListener("compositionend", L4), _.remove(), _ = void 0), M4 = !1, console.info("Keyboard event listener stopped")
 }
 
-function ke(u, e) {
+function ge(u, e) {
     u.sendMessage({key_event: e})
 }
 
-function M4(u) {
+function U4(u) {
     const e = e0();
     if (!e) return;
     const i = u.type === "keydown";
     i && !ru && u.preventDefault(), Rt(e, u, i)
 }
 
-function U4(u) {
+function L4(u) {
     var a, t;
     const e = e0();
     if (!e) return;
     u.preventDefault();
     let i = null;
     if ((u instanceof InputEvent || u instanceof CompositionEvent) && (i = u.data), !i) return;
-    const o = w.fromPartial({seq: i, mode: C4.Translate, down: !0, press: !1});
-    ke(e, o), ((t = (a = _ == null ? void 0 : _.textContent) == null ? void 0 : a.length) != null ? t : 0) > 10 && (_.textContent = "")
+    const o = w.fromPartial({seq: i, mode: D4.Translate, down: !0, press: !1});
+    ge(e, o), ((t = (a = _ == null ? void 0 : _.textContent) == null ? void 0 : a.length) != null ? t : 0) > 10 && (_.textContent = "")
 }
 
 function Rt(u, e, i) {
-    const o = Jo(u, e, i);
-    for (const a of o) ke(u, a)
+    const o = Go(u, e, i);
+    for (const a of o) ge(u, a)
 }
 
-function Ko(u, e, i, o) {
-    const a = Oo[e];
+function Ho(u, e, i, o) {
+    const a = Mo[e];
     if (!a) {
         console.error("Unknown USB HID code " + e);
         return
     }
-    const t = L4(u, a, i);
+    const t = W4(u, a, i);
     if (!t) return;
-    const s = _e(a), l = ve(a);
+    const s = ve(a), l = ke(a);
     (l || s) && It(t, o, s, l);
-    for (const E of t) ke(u, E)
+    for (const E of t) ge(u, E)
 }
 
-function Ho() {
+function Jo() {
     const u = e0();
-    if (!!u) for (const e in _4) {
-        const i = _4[e];
+    if (!!u) for (const e in k4) {
+        const i = k4[e];
         i && Rt(u, i, !1)
     }
 }
 
-function Jo(u, e, i) {
+function Go(u, e, i) {
     var c;
-    const o = e.code, a = Uo[o];
+    const o = e.code, a = Lo[o];
     if (!a) return console.error("Key code is not supported " + o), [];
-    const t = u.getOption("keyboard_mode"), s = Go(e);
-    Qo(e, i), i ? _4[o] = e : delete _4[o];
+    const t = u.getOption("keyboard_mode"), s = Zo(e);
+    Xo(e, i), i ? k4[o] = e : delete k4[o];
     let l = [];
     switch (t) {
-        case Qa:
-            l = (c = L4(u, a, i)) != null ? c : [];
+        case Xa:
+            l = (c = W4(u, a, i)) != null ? c : [];
             break;
-        case Ji:
-            l = Xo(u, e, a, i);
+        case Gi:
+            l = Yo(u, e, a, i);
             break
     }
     if (!l) return [];
-    const E = _e(a);
-    if (t !== Ji || E) {
-        const C = ve(a);
+    const E = ve(a);
+    if (t !== Gi || E) {
+        const C = ke(a);
         It(l, s, E, C)
     }
     return l
@@ -8942,68 +8942,68 @@ function It(u, e, i, o) {
     for (const s of u) o && (e & 1 << 1) != 0 && s.modifiers.push(j.CapsLock), i && (e & 1 << 2) != 0 && s.modifiers.push(j.NumLock)
 }
 
-function Go(u) {
+function Zo(u) {
     let a = 0;
     return u.getModifierState("CapsLock") && (a |= 1 << 1), u.getModifierState("NumLock") && (a |= 1 << 2), u.getModifierState("ScrollLock") && (a |= 1 << 3), a
 }
 
-function Zo(u, e) {
-    return u == Y4 ? Fe[e] : u == De ? jo[e] : u == vt ? No[e] : u == Be ? (A.getItem("option:local:kb_layout") == eo && (e == "IntlBackslash" ? e = "BackQuote" : e == "BackQuote" && (e = "IntlBackslash")), Mo[e]) : null
+function Qo(u, e) {
+    return u == Y4 ? _e[e] : u == Be ? No[e] : u == vt ? Oo[e] : u == me ? (A.getItem("option:local:kb_layout") == io && (e == "IntlBackslash" ? e = "BackQuote" : e == "BackQuote" && (e = "IntlBackslash")), Uo[e]) : null
 }
 
-function Qo(u, e) {
+function Xo(u, e) {
     const i = u.code;
     i in b && (b[i] = e)
 }
 
-function L4(u, e, i) {
+function W4(u, e, i) {
     const o = u.getPeerPlatform(), a = u.isSwapControlCommand();
     e == "ControlLeft" || e == "ControlRight" ? a && (e = "MetaLeft") : (e == "MetaLeft" || e == "MetaRight") && a && (e = "ControlLeft");
-    const t = Zo(o, e);
+    const t = Qo(o, e);
     return t == null ? (console.error("Unknown key code " + e + " for platform " + o), []) : [w.fromPartial({
         chr: t,
-        mode: C4.Map,
+        mode: D4.Map,
         down: i,
         press: !1
     })]
 }
 
-function Xo(u, e, i, o) {
+function Yo(u, e, i, o) {
     const a = _ === document.activeElement;
     if (_ && _.focus(), H4 && _ && a && e.key === "Process") return [];
-    const t = ve(i), s = e.key === "Dead";
+    const t = ke(i), s = e.key === "Dead";
     if (o && ru && t) return Qu ? ru = s : ru = !1, [];
     if (s) return o && (Qu ? ru = !0 : ru = !ru), ru && _ && !a && Yu && _.dispatchEvent(new KeyboardEvent(e.type, {...e})), [];
-    if (ru = !1, !Qu && _e(i)) return L4(u, i, o);
+    if (ru = !1, !Qu && ve(i)) return W4(u, i, o);
     if (Qu && e.code === "AltRight") return [];
-    if (e.key === "AltGraph") return D4 && !o && (D4 = !1), !D4 && o && b[m4] ? (D4 = !0, b[m4] = !1, delete _4[m4], [w.fromPartial({
-        chr: Fe.ControlLeft,
-        mode: C4.Map,
+    if (e.key === "AltGraph") return m4 && !o && (m4 = !1), !m4 && o && b[F4] ? (m4 = !0, b[F4] = !1, delete k4[F4], [w.fromPartial({
+        chr: _e.ControlLeft,
+        mode: D4.Map,
         down: !1,
         press: !1
     })]) : [];
     const E = u.getPeerPlatform();
     let c = [];
-    return Yu && (c = Yo(E, e, o)), (Yu || H4) && c.length === 0 && o && t && (c = Xi(e, o)), Yu && D4 || (Qu && o && t && !b[pe] && c.push(...Xi(e, o)), c.length === 0 && c.push(...L4(u, i, o))), c
+    return Yu && (c = $o(E, e, o)), (Yu || H4) && c.length === 0 && o && t && (c = Yi(e, o)), Yu && m4 || (Qu && o && t && !b[De] && c.push(...Yi(e, o)), c.length === 0 && c.push(...W4(u, i, o))), c
 }
 
-function Yo(u, e, i) {
-    if (u !== Y4 || !Vo()) return [];
+function $o(u, e, i) {
+    if (u !== Y4 || !qo()) return [];
     let o;
-    const a = Fe[e.code];
+    const a = _e[e.code];
     return a === void 0 ? (console.error("Key code cannot be converted to scan code: " + e.code), []) : (i ? e.key.length === 1 && (o = e.key.charCodeAt(0) & 65535 | a << 16) : o = a << 16, o === void 0 ? [] : [w.fromPartial({
         win2win_hotkey: o,
-        mode: C4.Translate,
+        mode: D4.Translate,
         down: i,
         press: !1
     })])
 }
 
-function Xi(u, e) {
-    return u.key ? [w.fromPartial({seq: u.key, mode: C4.Translate, down: e, press: !1})] : []
+function Yi(u, e) {
+    return u.key ? [w.fromPartial({seq: u.key, mode: D4.Translate, down: e, press: !1})] : []
 }
 
-class $o {
+class un {
     constructor(e, i, o, a) {
         d(this, "_uri");
         d(this, "_feedback");
@@ -9014,7 +9014,7 @@ class $o {
         d(this, "_keepAlive");
         d(this, "_lastRecvMsg");
         d(this, "_aliveFailed");
-        this._uri = e, this._feedback = i, this._key = o, this._token = a, this._keepAlive = so, this._lastRecvMsg = new Date, this._aliveFailed = !1
+        this._uri = e, this._feedback = i, this._key = o, this._token = a, this._keepAlive = lo, this._lastRecvMsg = new Date, this._aliveFailed = !1
     }
 
     close() {
@@ -9024,7 +9024,7 @@ class $o {
 
     async start() {
         if (this._feedback == 0 || !this._uri || !this._token || !this._key) return;
-        const e = new j4(this._uri, !0, "health check");
+        const e = new N4(this._uri, !0, "health check");
         await e.open(), console.log(new Date + ": Connected to relay server"), this._ws = e;
         const i = Gu.fromPartial({token: this._token});
         e.sendRendezvous({hc: i}), this.startInterval(), await this.msgLoop(), this.close()
@@ -9033,7 +9033,7 @@ class $o {
     startInterval() {
         this._interval = setInterval(() => {
             new Date().getTime() - this._lastRecvMsg.getTime() > this._keepAlive * 3 / 2 && (this._aliveFailed = !0)
-        }, ro)
+        }, so)
     }
 
     async msgLoop() {
@@ -9072,37 +9072,52 @@ class $o {
     }
 }
 
-let W4 = [], v4 = "", V4 = [], k4 = [], q4;
-const ge = ["text/plain", "text/html", "image/svg+xml", "image/png"];
+let C4 = [], p4 = "", V4 = [], g4 = [], q4, de = !1;
+const he = ["text/plain", "text/html", "image/svg+xml", "image/png"];
 
-function he() {
-    V4 = [], k4 = [], q4 = void 0
+function fe() {
+    V4 = [], g4 = [], q4 = void 0
 }
 
-async function Yi(u, e = !1) {
-    var i = [], o = "";
+function en(u) {
+    de = u
+}
+
+async function tn() {
     try {
-        i = await navigator.clipboard.read(), i.length === 0 && (o = await navigator.clipboard.readText())
-    } catch {
-        return
+        C4 = await navigator.clipboard.read(), C4.length === 0 && (p4 = await navigator.clipboard.readText())
+    } catch (u) {
+        console.error("Failed to read clipboard items before connection, ", u)
     }
-    e || i.length === 0 && o === "" || (await un(i) ? (W4 = i, await tn(u)) : o !== v4 && (v4 = o, await an(u)))
 }
 
-async function un(u) {
-    if (u.length !== W4.length) return !0;
+async function Tt(u) {
+    if (!de) {
+        var e = [], i = "";
+        for (let o = 0; o < 3; o++) try {
+            e = await navigator.clipboard.read(), e.length === 0 && (i = await navigator.clipboard.readText());
+            break
+        } catch (a) {
+            if (a.name === "NotAllowedError" && a.message.includes("Document is not focused")) await new Promise(t => setTimeout(t, 300)); else return
+        }
+        e.length === 0 && i === "" || (de = !0, await an(e) ? (C4 = e, await nn(u)) : i !== p4 && (p4 = i, await rn(u)))
+    }
+}
+
+async function an(u) {
+    if (u.length !== C4.length) return !0;
     for (let e = 0; e < u.length; e++) {
-        const i = u[e], o = W4[e];
-        if (!await en(i, o)) return !0
+        const i = u[e], o = C4[e];
+        if (!await on(i, o)) return !0
     }
     return !1
 }
 
-async function en(u, e) {
+async function on(u, e) {
     if (u.types.length !== e.types.length) return !1;
     for (let i = 0; i < u.types.length; i++) {
         if (u.types[i] !== e.types[i]) return !1;
-        if (!ge.includes(u.types[i])) continue;
+        if (!he.includes(u.types[i])) continue;
         const o = await u.getType(u.types[i]), a = await e.getType(e.types[i]);
         if (o.size !== a.size) return !1;
         const t = new Uint8Array(await o.arrayBuffer()), s = new Uint8Array(await a.arrayBuffer());
@@ -9111,7 +9126,7 @@ async function en(u, e) {
     return !0
 }
 
-function Tt(u) {
+function jt(u) {
     switch (u) {
         case"text/plain":
             return du.Text;
@@ -9126,69 +9141,69 @@ function Tt(u) {
     }
 }
 
-async function tn(u) {
-    const e = [], i = (await Promise.all(W4.map(async o => {
+async function nn(u) {
+    const e = [], i = (await Promise.all(C4.map(async o => {
         const a = [];
         for (const t of o.types) {
-            if (!ge.includes(t)) continue;
+            if (!he.includes(t)) continue;
             const s = await o.getType(t);
             e.push(t), a.push(new Uint8Array(await s.arrayBuffer()))
         }
         return a
     }))).flat();
-    e.length !== 0 && Yt(i, !0, o => {
+    e.length !== 0 && $t(i, !0, o => {
         const a = o.map((t, s) => {
             let l = !1;
-            t && (l = t.length < v4.length);
+            t && (l = t.length < p4.length);
             const E = l && t != null ? t : i[s];
-            return L.fromPartial({content: E, compress: l, format: Tt(e[s])})
+            return L.fromPartial({content: E, compress: l, format: jt(e[s])})
         });
         u.sendMessage(iu.fromPartial({multi_clipboards: gu.fromPartial({clipboards: a})}))
     })
 }
 
-async function an(u) {
-    const e = new TextEncoder().encode(v4);
-    Yt(e, !1, i => {
+async function rn(u) {
+    const e = new TextEncoder().encode(p4);
+    $t(e, !1, i => {
         let o = !1;
-        i && (o = i.length < v4.length);
+        i && (o = i.length < p4.length);
         const a = o && i != null ? i : e;
         let t = L.fromPartial({content: a, compress: o, format: du.Text});
         u.sendMessage(iu.fromPartial({clipboard: t}))
     })
 }
 
-function fe(u, e = void 0) {
+function xe(u, e = void 0) {
     const i = () => {
         try {
-            Wn(new TextDecoder().decode(u.content)), he(), e == null || e()
+            Kn(new TextDecoder().decode(u.content)), fe(), e == null || e()
         } catch (o) {
             console.error("Failed to copy to clipboard, ", o), document.hasFocus() || (q4 = u)
         }
     };
-    u.compress ? Pe(u.content, !1, o => {
+    u.compress ? Re(u.content, !1, o => {
         o && (u.content = o, i())
     }) : i()
 }
 
-const z4 = document.createElement("canvas"), te = z4.getContext("2d");
+const P4 = document.createElement("canvas"), te = P4.getContext("2d");
 
-function on(u, e, i) {
-    if (z4.width = e, z4.height = i, !te) return new Uint8Array(0);
+function sn(u, e, i) {
+    if (P4.width = e, P4.height = i, !te) return new Uint8Array(0);
     const o = te.createImageData(e, i);
-    return o.data.set(u), te.putImageData(o, 0, 0), Uint8Array.from(atob(z4.toDataURL("image/png").split(",")[1]), a => a.charCodeAt(0))
+    return o.data.set(u), te.putImageData(o, 0, 0), Uint8Array.from(atob(P4.toDataURL("image/png").split(",")[1]), a => a.charCodeAt(0))
 }
 
-function nn(u, e = void 0) {
-    he();
+function ln(u, e = void 0) {
+    fe();
     const i = u.clipboards, o = i.filter(a => a.compress).map(a => a.content);
-    Pe(o, !0, async a => {
+    Re(o, !0, async a => {
         var c;
         let t = 0;
         for (const C of i) C.compress && (C.content = (c = a[t]) != null ? c : C.content, t++), C.compress = !1;
         const s = {};
         for (const C of i) {
-            const D = ge.find(B => C.format === Tt(B));
+            const D = he.find(B => C.format === jt(B));
             if (D) {
                 const B = new Blob([C.content], {type: D});
                 s[D] = B
@@ -9196,43 +9211,43 @@ function nn(u, e = void 0) {
         }
         if (!(s["image/png"] !== void 0)) {
             for (const C of i) if (C.format === du.ImageRgba) {
-                const D = on(C.content, C.width, C.height);
+                const D = sn(C.content, C.width, C.height);
                 D.length > 0 && (s["image/png"] = new Blob([D], {type: "image/png"}));
                 break
             }
         }
         if (Object.keys(s).length === 0) return;
         const E = new ClipboardItem(s);
-        await jt(i, E, e)
+        await Nt(i, E, e)
     })
 }
 
-async function jt(u, e, i = void 0) {
+async function Nt(u, e, i = void 0) {
     if (!document.hasFocus()) {
-        V4 = u, k4 = [e];
+        V4 = u, g4 = [e];
         return
     }
     try {
-        await navigator.clipboard.write([e]), he(), i == null || i()
+        await navigator.clipboard.write([e]), fe(), i == null || i()
     } catch (o) {
         if (console.error("Failed to write to clipboard, ", o), !document.hasFocus()) {
-            V4 = u, k4 = [e];
+            V4 = u, g4 = [e];
             return
         }
         const a = u.find(t => t.format === du.Text);
-        a && fe(a, i)
+        a && xe(a, i)
     }
 }
 
 function $i() {
-    zn("info", "Clipboard is synchronized", 2e3)
+    In("info", "Clipboard is synchronized", 2e3)
 }
 
 window.addEventListener("focus", function () {
-    k4.length > 0 ? jt(V4, k4[0], $i) : q4 && fe(q4, $i)
+    g4.length > 0 ? Nt(V4, g4[0], $i) : q4 && xe(q4, $i)
 });
 
-class rn {
+class En {
     constructor({id: e, path: i}) {
         d(this, "id");
         d(this, "path");
@@ -9293,7 +9308,7 @@ const su = class {
             if (o >= this.files.length) throw new Error("Wrong file number");
             const a = this.is_dir;
             if (o !== this.file_num || a && !this.zip || !a && !this.writer) if (a) {
-                if (this.zip || (this.zip = new Ne), this.currentData) {
+                if (this.zip || (this.zip = new Oe), this.currentData) {
                     const s = this.files[this.file_num];
                     this.zip.file(s.name, this.currentData), this.currentData = void 0
                 }
@@ -9304,14 +9319,14 @@ const su = class {
                 this.stream = streamSaver.createWriteStream(l, {size: s.size}), this.writer = (t = this.stream) == null ? void 0 : t.getWriter()
             }
             if (e.compressed) {
-                const s = await ua(e.data);
+                const s = await ea(e.data);
                 if (!s) throw new Error("Failed to decompress");
                 if (a) this.currentData ? this.currentData = new Uint8Array([...this.currentData, ...s]) : this.currentData = s; else {
                     if (!this.writer) throw new Error("file is None");
                     try {
                         await this.writer.write(s)
                     } catch (l) {
-                        throw de(this.id, "write failed", this.file_num), i(), l
+                        throw ce(this.id, "write failed", this.file_num), i(), l
                     }
                 }
                 this.finished_size += s.length
@@ -9321,7 +9336,7 @@ const su = class {
                     try {
                         await this.writer.write(e.data)
                     } catch (s) {
-                        throw de(this.id, "write failed", this.file_num), i(), s
+                        throw ce(this.id, "write failed", this.file_num), i(), s
                     }
                 }
                 this.finished_size += e.data.length
@@ -9357,8 +9372,8 @@ const su = class {
             }
             let E = new Uint8Array(t, 0, l);
             if (l === 0) this.file_num += 1, this.currentReader = void 0, this.file_confirmed = !1, this.file_is_waiting = !1; else {
-                if (this.finished_size += l, !hn(su.join(this.path, o.name))) {
-                    const C = await $t(new Uint8Array(t, 0, l));
+                if (this.finished_size += l, !yn(su.join(this.path, o.name))) {
+                    const C = await ua(new Uint8Array(t, 0, l));
                     if (C) C.length < l && (E = new Uint8Array(C), s = !0); else throw new Error("Failed to compress")
                 }
                 this.transferred += l
@@ -9385,7 +9400,7 @@ const su = class {
                 });
                 return this.confirm(t), su.new_send_confirm(t)
             } else {
-                fn(e.id, e.file_num, o, !0, e.is_identical);
+                bn(e.id, e.file_num, o, !0, e.is_identical);
                 return
             }
         });
@@ -9398,7 +9413,7 @@ const su = class {
                 this.writer.close();
                 return
             }
-            if (this.zip || (this.zip = new Ne), this.currentData) {
+            if (this.zip || (this.zip = new Oe), this.currentData) {
                 const t = this.files[this.file_num];
                 this.zip.file(t.name, this.currentData), this.currentData = void 0
             }
@@ -9406,7 +9421,7 @@ const su = class {
                 const t = i();
                 if (t != null) if (t.empty_dirs != null) for (let s of t.empty_dirs) {
                     var a = s.substring(t.path.length + 1);
-                    A4() ? a = a.replace(/\//g, "\\") : a = a.replace(/\\/g, "/"), this.zip.folder(a)
+                    _4() ? a = a.replace(/\//g, "\\") : a = a.replace(/\\/g, "/"), this.zip.folder(a)
                 } else {
                     setTimeout(() => {
                         this.write_done(e, i, o)
@@ -9415,7 +9430,7 @@ const su = class {
                 }
             }
             this.zip.generateAsync({type: "blob"}).then(t => {
-                oa.exports.saveAs(t, `${this.path}.zip`)
+                na.exports.saveAs(t, `${this.path}.zip`)
             }), o()
         });
         d(this, "confirm", e => (this.file_num !== e.file_num ? console.log("file num truncated, ignoring") : e.skip !== void 0 ? e.skip ? this.set_file_skipped() : this.set_file_confirmed(!0) : e.offset_blk !== void 0 && this.set_file_confirmed(!0), !0));
@@ -9502,67 +9517,67 @@ d(lu, "newWrite", (e, i, o, a, t, s, l, E, c) => {
         file_is_waiting: !1
     });
     return D.fileHandles = c, D
-}), d(lu, "new_send_confirm", e => iu.fromPartial({file_action: P.fromPartial({send_confirm: e})})), d(lu, "join", (e, i) => i === "" ? e : e.endsWith("/") || e.endsWith("\\") ? e + i : A4() ? e + "\\" + i : e + "/" + i);
-const sn = (u, e, i, o) => {
+}), d(lu, "new_send_confirm", e => iu.fromPartial({file_action: P.fromPartial({send_confirm: e})})), d(lu, "join", (e, i) => i === "" ? e : e.endsWith("/") || e.endsWith("\\") ? e + i : _4() ? e + "\\" + i : e + "/" + i);
+const dn = (u, e, i, o) => {
     let a = Pu.fromPartial({id: u, path: e, include_hidden: o, file_num: i});
     return P.fromPartial({send: a})
 }, ut = (u, e, i, o) => {
     if (!o) return;
     let a = ju.fromPartial({id: u, path: e, file_num: i});
     return P.fromPartial({remove_file: a})
-}, ln = (u, e, i) => {
+}, cn = (u, e, i) => {
     let o = xu.fromPartial({id: u, path: e, include_hidden: i});
     return P.fromPartial({all_files: o})
-}, En = (u, e) => {
+}, Cn = (u, e) => {
     let i = Nu.fromPartial({id: u, path: e});
     return P.fromPartial({create: i})
-}, dn = u => {
+}, pn = u => {
     let e = bu.fromPartial({id: u});
     return P.fromPartial({cancel: e})
-}, cn = (u, e) => {
+}, Dn = (u, e) => {
     let i = Tu.fromPartial({id: u, path: e, recursive: !0});
     return P.fromPartial({remove_dir: i})
-}, Cn = (u, e, i) => {
+}, Bn = (u, e, i) => {
     let o = yu.fromPartial({id: u, path: e, new_name: i});
     return P.fromPartial({rename: o})
-}, pn = (u, e, i, o, a) => {
+}, mn = (u, e, i, o, a) => {
     let t = Iu.fromPartial({id: u, path: e, file_num: i, files: o, total_size: a});
     return P.fromPartial({receive: t})
-}, Dn = u => {
+}, An = u => {
     let e = nu.fromPartial({block: u});
     return iu.fromPartial({file_response: e})
 }, et = (u, e, i) => {
     let o = nu.fromPartial({error: zu.fromPartial({id: u, error: e, file_num: i})});
     return iu.fromPartial({file_response: o})
-}, Bn = (u, e) => {
+}, Fn = (u, e) => {
     let i = nu.fromPartial({done: Ru.fromPartial({id: u, file_num: e})});
     return iu.fromPartial({file_response: i})
-}, mn = (u, e) => {
+}, _n = (u, e) => {
     let i = fu.fromPartial({path: u, include_hidden: e});
     return P.fromPartial({read_empty_dirs: i})
 }, it = (u, e, i, o, a) => {
-    a ? m("update_folder_files", {info: An(u, e, a)}) : m("file_dir", {is_local: "false", value: Fn(u, i, e)})
-}, An = (u, e, i) => {
+    a ? m("update_folder_files", {info: vn(u, e, a)}) : m("file_dir", {is_local: "false", value: kn(u, i, e)})
+}, vn = (u, e, i) => {
     let o = {
         id: u,
         entries: e.map(a => ({name: a.name, type: a.entry_type, time: a.modified_time, size: a.size})),
         total_size: e.reduce((a, t) => a + t.size, 0)
     };
     return i && (o.num_entries = e.length, delete o.entries), JSON.stringify(o)
-}, Fn = (u, e, i) => {
+}, kn = (u, e, i) => {
     let o = {
         id: u,
         path: e,
         entries: i.map(a => ({entry_type: a.entry_type, name: a.name, size: a.size, modified_time: a.modified_time}))
     };
     return JSON.stringify(o)
-}, de = (u, e, i) => {
+}, ce = (u, e, i) => {
     m("job_error", {id: u.toString(), err: e, file_num: i.toString()})
-}, _n = (u, e) => {
+}, gn = (u, e) => {
     m("job_done", {id: u.toString(), file_num: e.toString()})
 };
 var i0 = 0;
-const vn = async (u, e) => {
+const hn = async (u, e) => {
     try {
         if (u) {
             const i = await window.showDirectoryPicker();
@@ -9579,26 +9594,26 @@ const vn = async (u, e) => {
     } catch (i) {
         console.error("Failed to choose file:", i)
     }
-}, kn = async (u, e) => {
+}, fn = async (u, e) => {
     let i = [];
     for (let o of u) if (!o.is_last_job) try {
         let a = await o.read(e);
-        if (a) e(Dn(a)); else if (o.job_completed()) {
+        if (a) e(An(a)); else if (o.job_completed()) {
             i.push(o.id);
             let t = o.job_error();
-            e(t ? et(o.id, t, o.file_num) : Bn(o.id, o.file_num))
+            e(t ? et(o.id, t, o.file_num) : Fn(o.id, o.file_num))
         }
     } catch (a) {
         e(et(o.id, (a != null ? a : "read failed").toString(), o.file_num))
     }
     return i
-}, gn = u => {
+}, xn = u => {
     let e = u.lastIndexOf(".");
     return e >= 0 ? u.substring(e + 1) : ""
-}, hn = u => {
-    let e = gn(u);
+}, yn = u => {
+    let e = xn(u);
     return e === "xz" || e === "gz" || e === "zip" || e === "7z" || e === "rar" || e === "bz2" || e === "tgz" || e === "png" || e === "jpg"
-}, fn = (u, e, i, o, a) => {
+}, bn = (u, e, i, o, a) => {
     m("override_file_confirm", {
         id: u.toString(),
         file_num: e.toString(),
@@ -9606,7 +9621,7 @@ const vn = async (u, e) => {
         is_upload: o.toString(),
         is_identical: a.toString()
     })
-}, K4 = (u, e) => u === "" ? e : lu.join(u, e), Nt = async (u, e) => {
+}, K4 = (u, e) => u === "" ? e : lu.join(u, e), Ot = async (u, e) => {
     const i = [];
     let o = [];
     for await(const a of u.values()) if (a.kind === "file") i.push(a.getFile().then(t => {
@@ -9620,24 +9635,24 @@ const vn = async (u, e) => {
         })
     })); else if (a.kind === "directory") {
         let t = K4(e, a.name);
-        const s = await Nt(a, t);
+        const s = await Ot(a, t);
         o = o.concat(s)
     }
     return await Promise.all(i), o
-}, Ot = async (u, e) => {
+}, Mt = async (u, e) => {
     let i = [], o = !0;
     for await(const a of u.values()) {
         if (a.kind === "directory") {
             let t = K4(e, a.name);
-            const s = await Ot(a, t);
+            const s = await Mt(a, t);
             i = i.concat(s)
         }
         o = !1
     }
     return o && i.push(K4(e, "")), i
-}, Mt = 21116, Ut = "rs-ny.rustdesk.com", tt = 100, b4 = "trust-this-device";
+}, Ut = 21116, Lt = "rs-ny.rustdesk.com", tt = 100, w4 = "trust-this-device";
 
-class Lt {
+class Wt {
     constructor() {
         d(this, "_msgs");
         d(this, "_ws");
@@ -9688,7 +9703,7 @@ class Lt {
             var e;
             return Q((e = this._peerInfo) == null ? void 0 : e.version) >= Q("1.1.10")
         });
-        this._msgbox = Wt, this._draw = Ce, this._msgs = [], this._id = "", this._frameCount = {}, this._fpsCalc = {
+        this._msgbox = Vt, this._draw = pe, this._msgs = [], this._id = "", this._frameCount = {}, this._fpsCalc = {
             videoTestSpeed: [0, 0],
             skipBegining: 0,
             fps: void 0
@@ -9705,7 +9720,7 @@ class Lt {
     }
 
     isSupportVirtualDisplay() {
-        if (!this._peerInfo) return !1;
+        if (!this._peerInfo || !this._peerInfo.platform_additions) return !1;
         try {
             const e = JSON.parse(this._peerInfo.platform_additions), i = e.is_installed, o = e.idd_impl;
             return i && this._peerInfo.platform == "Windows" && (o == "rustdesk_idd" || o == "amyuni_idd")
@@ -9729,11 +9744,11 @@ class Lt {
         if (i == 0 && (i = 1), this._sessionId = i, this._restartingRemoteDevice = !1, this._id = e, e.includes("@")) {
             const E = e.split("@"), c = E[0], C = ((o = E[1]) != null ? o : "").split("?"),
                 D = (a = C[0]) != null ? a : "", B = (t = C[1]) != null ? t : "",
-                F = D == ee ? Qi : (s = B.split("&").reduce((S, g) => {
+                F = D == ee ? Xi : (s = B.split("&").reduce((S, g) => {
                     const U = g.indexOf("=");
                     if (U != -1) {
-                        const h4 = g.substring(0, U).toLowerCase(), f4 = g.substring(U + 1);
-                        S[h4] = f4
+                        const f4 = g.substring(0, U).toLowerCase(), x4 = g.substring(U + 1);
+                        S[f4] = x4
                     }
                     return S
                 }, {}).key) != null ? s : "", y = this.handleRelayId(c);
@@ -9751,7 +9766,7 @@ class Lt {
 
     async start() {
         try {
-            await this._start()
+            tn(), await this._start()
         } catch (e) {
             this.msgbox("error", "Connection Error", e.type == "close" ? "Reset by the peer" : String(e))
         }
@@ -9764,14 +9779,14 @@ class Lt {
 
     async _start() {
         var F, y;
-        let e = this.getId(), i = Io(), o = Pt(), a = (F = this._otherServer) == null ? void 0 : F.server;
+        let e = this.getId(), i = To(), o = Pt(), a = (F = this._otherServer) == null ? void 0 : F.server;
         this._otherServer && (i = this._otherServer.key, o = "");
         let t = "";
-        a ? a == ee ? t = R4(Ut) : t = R4(a) : t = P4(), this._options || (this._options = (y = Cu()[this._id]) != null ? y : this.getUserDefaultToggleOptions()), this._interval = setInterval(() => {
+        a ? a == ee ? t = I4(Lt) : t = I4(a) : t = R4(), this._options || (this._options = (y = Cu()[this._id]) != null ? y : this.getUserDefaultToggleOptions()), this._interval = setInterval(() => {
             var S;
             for (; this._msgs.length;) (S = this._ws) == null || S.sendMessage(this._msgs[0]), this._msgs.splice(0, 1)
         }, 1);
-        const s = new j4(t, !0, "rendezvous");
+        const s = new N4(t, !0, "rendezvous");
         this._ws = s, console.log(new Date + ": Connecting to rendezvous server: " + t + ", for " + e), await s.open(), console.log(new Date + ": Connected to rendezvous server");
         const l = this._isFileTransfer ? ne.FILE_TRANSFER : ne.DEFAULT_CONN, E = pt.SYMMETRIC,
             c = Ku.fromPartial({id: e, licence_key: i, conn_type: l, nat_type: E, token: o, version: se});
@@ -9803,7 +9818,7 @@ class Lt {
                 this.msgbox("error", "Error", "Remote version is low, not support web");
                 return
             }
-            this._healthCheck = new $o(t, B.feedback, i, o), this._healthCheck.start(), await this.connectRelay(B, i)
+            this._healthCheck = new un(t, B.feedback, i, o), this._healthCheck.start(), await this.connectRelay(B, i)
         }
     }
 
@@ -9811,10 +9826,10 @@ class Lt {
         var c, C;
         const o = e.pk;
         let a = e.relay_server;
-        a ? a = R4(a, !0, 2) : a = P4(!0);
+        a ? a = I4(a, !0, 2) : a = R4(!0);
         const t = e.uuid;
         console.log(new Date + ": Connecting to relay server: " + a);
-        const s = new j4(a, !1, "relay");
+        const s = new N4(a, !1, "relay");
         await s.open(), console.log(new Date + ": Connected to relay server"), this._ws = s;
         const l = Hu.fromPartial({licence_key: i, uuid: t});
         s.sendRendezvous({request_relay: l});
@@ -9825,10 +9840,10 @@ class Lt {
     }
 
     async secure(e, i) {
-        var F, y, S, g, U, h4, f4, Re;
+        var F, y, S, g, U, f4, x4, Ie;
         if (e) {
             try {
-                if (e = await rt(e, i || Qi), e) {
+                if (e = await rt(e, i || Xi), e) {
                     const T = oe.decode(e);
                     T.id == this.getId() && (e = T.pk)
                 }
@@ -9855,8 +9870,8 @@ class Lt {
             a = await rt(a.id, Uint8Array.from(e))
         } catch (T) {
             console.error("Failed to verify signed id pk, ", T), console.error("pk mismatch, fall back to non-secure");
-            const ea = K.fromPartial({});
-            (g = this._ws) == null || g.sendMessage({public_key: ea});
+            const ia = K.fromPartial({});
+            (g = this._ws) == null || g.sendMessage({public_key: ia});
             return
         }
         const t = oe.decode(a), s = t.id, l = t.pk;
@@ -9869,11 +9884,11 @@ class Lt {
         if (l.length != 32) {
             console.error("Handshake failed: invalid public box key length from peer");
             const T = K.fromPartial({});
-            (h4 = this._ws) == null || h4.sendMessage({public_key: T});
+            (f4 = this._ws) == null || f4.sendMessage({public_key: T});
             return
         }
-        const [E, c] = Rn(), C = In(), D = Tn(C, l, E), B = K.fromPartial({asymmetric_value: c, symmetric_value: D});
-        return (f4 = this._ws) == null || f4.sendMessage({public_key: B}), (Re = this._ws) == null || Re.setSecretKey(C), console.log("secured"), !0
+        const [E, c] = jn(), C = Nn(), D = On(C, l, E), B = K.fromPartial({asymmetric_value: c, symmetric_value: D});
+        return (x4 = this._ws) == null || x4.sendMessage({public_key: B}), (Ie = this._ws) == null || Ie.setSecretKey(C), console.log("secured"), !0
     }
 
     async msgHandler(e) {
@@ -9885,12 +9900,12 @@ class Lt {
                     delay: `${o.last_delay}`,
                     target_bitrate: `${o.target_bitrate}`
                 }), (i = this._ws) == null || i.sendMessage({test_delay: o}))
-            } else if (e != null && e.login_response) this.handleLoginResponse(e == null ? void 0 : e.login_response); else if (e != null && e.video_frame) this.handleVideoFrame(e == null ? void 0 : e.video_frame); else if (e != null && e.clipboard) fe(e == null ? void 0 : e.clipboard); else if (e != null && e.multi_clipboards) nn(e == null ? void 0 : e.multi_clipboards); else if (e != null && e.cursor_data) {
+            } else if (e != null && e.login_response) this.handleLoginResponse(e == null ? void 0 : e.login_response); else if (e != null && e.video_frame) this.handleVideoFrame(e == null ? void 0 : e.video_frame); else if (e != null && e.clipboard) xe(e == null ? void 0 : e.clipboard); else if (e != null && e.multi_clipboards) ln(e == null ? void 0 : e.multi_clipboards); else if (e != null && e.cursor_data) {
                 const o = e == null ? void 0 : e.cursor_data;
-                Pe(o.colors, !1, a => {
+                Re(o.colors, !1, a => {
                     a && (o.colors = a, m("cursor_data", o))
                 })
-            } else if (e != null && e.cursor_id) m("cursor_id", {id: e == null ? void 0 : e.cursor_id}); else if (e != null && e.cursor_position) m("cursor_position", e == null ? void 0 : e.cursor_position); else if (e != null && e.misc) this.handleMisc(e == null ? void 0 : e.misc); else if (e != null && e.audio_frame) Un(e == null ? void 0 : e.audio_frame.data); else if (e != null && e.message_box) this.handleMsgBox(e == null ? void 0 : e.message_box); else if (e != null && e.peer_info) this.handleSyncPeerInfo(e.peer_info); else if (e.file_response) await this.handleFileResponse(e.file_response); else if (e.file_action) {
+            } else if (e != null && e.cursor_id) m("cursor_id", {id: e == null ? void 0 : e.cursor_id}); else if (e != null && e.cursor_position) m("cursor_position", e == null ? void 0 : e.cursor_position); else if (e != null && e.misc) this.handleMisc(e == null ? void 0 : e.misc); else if (e != null && e.audio_frame) Vn(e == null ? void 0 : e.audio_frame.data); else if (e != null && e.message_box) this.handleMsgBox(e == null ? void 0 : e.message_box); else if (e != null && e.peer_info) this.handleSyncPeerInfo(e.peer_info); else if (e.file_response) await this.handleFileResponse(e.file_response); else if (e.file_action) {
                 const o = e.file_action;
                 await this.handleFileAction(o)
             }
@@ -9915,7 +9930,7 @@ class Lt {
     }
 
     enterOrLeave(e) {
-        e === !1 ? (Ho(), Ee()) : (ce(), Yi(this))
+        e === !1 ? (Jo(), Ee(), en(!1)) : (Ce(), Tt(this))
     }
 
     makeDisplaysMsg(e) {
@@ -9932,7 +9947,7 @@ class Lt {
 
     handleMsgBox(e) {
         let i = e.link;
-        i in Ki ? i = Ki[i] : (console.warn("Message box ignore link " + i + " for security"), i = ""), this.msgbox(e.msgtype, e.title, e.text, i)
+        i in Hi ? i = Hi[i] : (console.warn("Message box ignore link " + i + " for security"), i = ""), this.msgbox(e.msgtype, e.title, e.text, i)
     }
 
     updateStatus() {
@@ -9952,39 +9967,39 @@ class Lt {
 
     handleLoginResponse(e) {
         const i = {
-            [Ka]: {
+            [Ha]: {
                 msgtype: "error",
                 title: "Login Error",
                 text: "Login screen using Wayland is not supported",
                 link: "https://rustdesk.com/docs/en/manual/linux/#login-screen",
                 try_again: !0
             },
-            [Ia]: {msgtype: "session-login", title: "", text: "", link: "", try_again: !0},
-            [Ta]: {msgtype: "session-re-login", title: "", text: "", link: "", try_again: !0},
-            [ja]: {
+            [Ta]: {msgtype: "session-login", title: "", text: "", link: "", try_again: !0},
+            [ja]: {msgtype: "session-re-login", title: "", text: "", link: "", try_again: !0},
+            [Na]: {
                 msgtype: "info-nocancel",
                 title: "another_user_login_title_tip",
                 text: "another_user_login_text_tip",
                 link: "",
                 try_again: !1
             },
-            [Na]: {
+            [Oa]: {
                 msgtype: "info-nocancel",
                 title: "xorg_not_found_title_tip",
                 text: "xorg_not_found_text_tip",
                 link: "https://rustdesk.com/docs/en/manual/linux/#login-screen",
                 try_again: !0
             },
-            [Oa]: {
+            [Ma]: {
                 msgtype: "info-nocancel",
                 title: "no_desktop_title_tip",
                 text: "no_desktop_text_tip",
                 link: "https://rustdesk.com/docs/en/manual/linux/#login-screen",
                 try_again: !0
             },
-            [Ma]: {msgtype: "session-login-password", title: "", text: "", link: "", try_again: !0},
-            [Ua]: {msgtype: "session-login-re-password", title: "", text: "", link: "", try_again: !0},
-            [qa]: {
+            [Ua]: {msgtype: "session-login-password", title: "", text: "", link: "", try_again: !0},
+            [La]: {msgtype: "session-login-re-password", title: "", text: "", link: "", try_again: !0},
+            [Ka]: {
                 msgtype: "wait-remote-accept-nook",
                 title: "Prompt",
                 text: "Please wait for the remote side to accept your session request...",
@@ -9992,10 +10007,10 @@ class Lt {
                 try_again: !0
             }
         }, o = e.error;
-        if (o) if (o == qi && (this._enableTrustedDevices = e.enable_trusted_devices), o == La && (this._password = void 0, this.msgbox("input-password", "Password Required", "", "")), o == Wa) this._password = void 0, this.msgbox("re-input-password", o, "Do you want to enter again?"); else if (o == Va || o == qi) this.getOption(b4) == "Y" && this.setOption(b4, void 0), this.msgbox("input-2fa", o, ""); else if (o in i) {
+        if (o) if (o == Ki && (this._enableTrustedDevices = e.enable_trusted_devices), o == Wa && (this._password = void 0, this.msgbox("input-password", "Password Required", "", "")), o == Va) this._password = void 0, this.msgbox("re-input-password", o, "Do you want to enter again?"); else if (o == qa || o == Ki) this.getOption(w4) == "Y" && this.setOption(w4, void 0), this.msgbox("input-2fa", o, ""); else if (o in i) {
             const a = i[o];
             this.msgbox(a.msgtype, a.title, a.text, a.link)
-        } else o.includes(Ha) ? this.msgbox("error", "Login Error", o, Bt) : this.msgbox("error", "Login Error", o); else e.peer_info && (this._firstFrame = !1, this.handlePeerInfo(e.peer_info))
+        } else o.includes(Ja) ? this.msgbox("error", "Login Error", o, Bt) : this.msgbox("error", "Login Error", o); else e.peer_info && (this._firstFrame = !1, this.handlePeerInfo(e.peer_info))
     }
 
     enableTrustedDevices() {
@@ -10012,7 +10027,7 @@ class Lt {
     }
 
     draw(e, i) {
-        Ce(e, new Uint8Array(i.data))
+        pe(e, new Uint8Array(i.data))
     }
 
     close() {
@@ -10047,9 +10062,9 @@ class Lt {
             typeof l == "string" && l.length > 0 && (i = c4(l), this._passwordSource = {type: "Undefined"})
         }
         if (!i || i.length === 0) {
-            let l = Ae("access_token"), E = await xt();
+            let l = Fe("access_token"), E = await xt();
             if (l && l === E.access_token) {
-                let c = E.ab_entries.find(C => ho(C));
+                let c = E.ab_entries.find(C => fo(C));
                 if (c) {
                     let C = c.peers.find(D => D.id == this._id);
                     if (C) {
@@ -10093,12 +10108,12 @@ class Lt {
     }
 
     _getHwid(e = void 0) {
-        return (e != null ? e : this.getOption(b4) == "Y") ? Po() : new Uint8Array
+        return (e != null ? e : this.getOption(w4) == "Y") ? Ro() : new Uint8Array
     }
 
     _sendLoginMessage(e) {
         var E;
-        const i = this._otherServer ? `${N4()}@${P4()}` : N4(), o = To();
+        const i = this._otherServer ? `${O4()}@${R4()}` : O4(), o = jo();
         let a = wt();
         if (o) try {
             const c = JSON.parse(o);
@@ -10121,7 +10136,7 @@ class Lt {
             video_ack_required: !0,
             os_login: e.os_login,
             version: se,
-            my_platform: uo,
+            my_platform: eo,
             file_transfer: t,
             hwid: s
         });
@@ -10203,7 +10218,7 @@ class Lt {
 
     handleVideoFrame(e) {
         if (!this._firstFrame) {
-            this.msgbox("", "", ""), this._firstFrame = !0, this.sendToggleVirtualDisplayMsg(), this.sendTogglePrivacyModeMsg(), ce(), Yi(this, !0);
+            this.msgbox("", "", ""), this._firstFrame = !0, this.sendToggleVirtualDisplayMsg(), this.sendTogglePrivacyModeMsg(), Ce();
             const i = 0;
             for (let o = 0; o < i; o++) this.sendVideoReceived();
             console.log(`send ${i} video received in advance for high fps`)
@@ -10234,7 +10249,7 @@ class Lt {
         try {
             for (let E = 0; E < l; E++) {
                 let c = s.frames[E];
-                const C = await Pa(t, c.data.slice(0).buffer);
+                const C = await Ra(t, c.data.slice(0).buffer);
                 if (C.data && l - 1 == E) {
                     this.draw(e.display, C.data);
                     const D = new Date().getTime();
@@ -10309,7 +10324,7 @@ class Lt {
     }
 
     handleMisc(e) {
-        if (e.audio_format) Mn(e.audio_format.channels, e.audio_format.sample_rate); else if (e.chat_message) m("chat_client_mode", {text: e.chat_message.text}); else if (e.permission_info) {
+        if (e.audio_format) Wn(e.audio_format.channels, e.audio_format.sample_rate); else if (e.chat_message) m("chat_client_mode", {text: e.chat_message.text}); else if (e.permission_info) {
             const i = e.permission_info;
             console.info("Change permission " + i.permission + " -> " + i.enabled);
             let o;
@@ -10361,16 +10376,16 @@ class Lt {
 
     handleBackMsgBlockInput(e, i) {
         switch (e) {
-            case B4.BlkOnSucceeded:
+            case A4.BlkOnSucceeded:
                 this.updateBlockInputState(!0);
                 break;
-            case B4.BlkOnFailed:
+            case A4.BlkOnFailed:
                 this.msgbox("custom-error", "Block user input", i == "" ? "Failed" : i, ""), this.updateBlockInputState(!1);
                 break;
-            case B4.BlkOffSucceeded:
+            case A4.BlkOffSucceeded:
                 this.updateBlockInputState(!1);
                 break;
-            case B4.BlkOffFailed:
+            case A4.BlkOffFailed:
                 this.msgbox("custom-error", "Unblock user input", i == "" ? "Failed" : i, "");
                 break
         }
@@ -10458,7 +10473,7 @@ class Lt {
     }
 
     saveConfig(e) {
-        this._options = e, this._options.tm = new Date().getTime(), Do(this._id, e)
+        this._options = e, this._options.tm = new Date().getTime(), Bo(this._id, e)
     }
 
     loadConfig() {
@@ -10479,7 +10494,7 @@ class Lt {
 
     inputKey(e, i, o, a, t, s, l) {
         var c;
-        const E = wo(e, Sn());
+        const E = So(e, Rn());
         !E || (a && (e == "VK_MENU" || e == "RAlt") && (a = !1), t && (e == "VK_CONTROL" || e == "RControl") && (t = !1), s && (e == "VK_SHIFT" || e == "RShift") && (s = !1), l && (e == "Meta" || e == "RWin") && (l = !1), E.down = i, E.press = o, E.modifiers = this.getMod(a, t, s, l), (c = this._ws) == null || c.sendMessage({key_event: E}))
     }
 
@@ -10506,7 +10521,7 @@ class Lt {
         var i;
         try {
             const o = JSON.parse(e), a = o.code, t = o.trust_this_device;
-            t && this.setOption(b4, "Y");
+            t && this.setOption(w4, "Y");
             const s = this._getHwid(t), l = _u.fromPartial({code: a, hwid: s});
             (i = this._ws) == null || i.sendMessage({auth_2fa: l})
         } catch {
@@ -10683,11 +10698,11 @@ class Lt {
     getImageQualityEnum(e, i) {
         switch (e) {
             case"low":
-                return w4.Low;
+                return S4.Low;
             case"best":
-                return w4.Best;
+                return S4.Best;
             case"balanced":
-                return i ? void 0 : w4.Balanced;
+                return i ? void 0 : S4.Balanced;
             default:
                 return
         }
@@ -10739,7 +10754,7 @@ class Lt {
         var i, o;
         if (e.dir) {
             let a = e.dir, t = a.entries;
-            if (!A4() && this.getPeerPlatform() == "Windows") for (let s = 0; s < t.length; s++) t[s].name = t[s].name.replace(/\\/g, "/");
+            if (!_4() && this.getPeerPlatform() == "Windows") for (let s = 0; s < t.length; s++) t[s].name = t[s].name.replace(/\\/g, "/");
             it(a.id, t, a.path, !1, !1), this._writeJobs.forEach(s => {
                 s.id == a.id && (s.files = t)
             }), this._removeJobs[a.id] && (this._removeJobs[a.id].files = t)
@@ -10810,11 +10825,11 @@ class Lt {
             } = o, D = this.enableOverwriteDetection();
             if (c) {
                 this._writeJobs.push(lu.newWrite(a, t, s, l, E, c, [], D, C));
-                const B = sn(a, t, l, E);
-                (i = this._ws) == null || i.sendMessage({file_action: B}), C && this.enableEmptyDirs() && (this._readRemoteEmptyDirsJobs.find(F => F.id == a) == null && this._readRemoteEmptyDirsJobs.push(new rn({
+                const B = dn(a, t, l, E);
+                (i = this._ws) == null || i.sendMessage({file_action: B}), C && this.enableEmptyDirs() && (this._readRemoteEmptyDirsJobs.find(F => F.id == a) == null && this._readRemoteEmptyDirsJobs.push(new En({
                     id: a,
                     path: t
-                })), this.sendMessage({file_action: mn(t, E)}))
+                })), this.sendMessage({file_action: _n(t, E)}))
             }
         } catch (o) {
             console.error("Failed to send files:", o)
@@ -10844,15 +10859,15 @@ class Lt {
                         modified_time: Math.floor(g.lastModified / 1e3)
                     })], F = [D]
                 } else {
-                    let g = await Nt(D, "");
+                    let g = await Ot(D, "");
                     B = g.map(U => U.entry), F = g.map(U => U.handle)
                 }
                 let y = lu.newRead(a, t, s, l, E, c, B, C, F);
                 it(a, B, t, !c, !0), this._readJobs.push(y), this._ftTimer || (this._ftTimer = setTimeout(this.readJobTimerCallback.bind(this), tt));
                 let S = [...B];
-                if (A4() && this.getPeerPlatform() != "Windows") for (let g = 0; g < S.length; g++) S[g].name = S[g].name.replace(/\\/g, "/");
-                if (this.sendMessage({file_action: pn(a, s, l, S, y.total_size)}), this.enableEmptyDirs()) {
-                    const g = await Ot(D, D.name);
+                if (_4() && this.getPeerPlatform() != "Windows") for (let g = 0; g < S.length; g++) S[g].name = S[g].name.replace(/\\/g, "/");
+                if (this.sendMessage({file_action: mn(a, s, l, S, y.total_size)}), this.enableEmptyDirs()) {
+                    const g = await Mt(D, D.name);
                     g.length > 0 && m("send_emptry_dirs", {dirs: g})
                 }
             } catch (D) {
@@ -10864,7 +10879,7 @@ class Lt {
     }
 
     async readJobTimerCallback() {
-        let e = await kn(this._readJobs, this.sendMessage.bind(this));
+        let e = await fn(this._readJobs, this.sendMessage.bind(this));
         this._readJobs = this._readJobs.filter(i => !e.includes(i.id)), this.update_jobs_status(), this._readJobs.length == 0 ? (clearTimeout(this._ftTimer), this._ftTimer = void 0) : this._ftTimer = setTimeout(this.readJobTimerCallback.bind(this), tt)
     }
 
@@ -10886,12 +10901,12 @@ class Lt {
                 if ((a = this._ws) == null || a.sendMessage({file_action: ut(e, s, i + 1, this._removeJobs[e].is_remote)}), new Date().getTime() - this._removeJobs[e].last_update_job_status >= 1e3) this._removeJobs[e].last_update_job_status = new Date().getTime(); else return
             } else delete this._removeJobs[e], console.log("remove jobs:", this._removeJobs)
         }
-        o ? de(e, o, i) : _n(e, i)
+        o ? ce(e, o, i) : gn(e, i)
     }
 
     cancelJob(e) {
         var o;
-        (o = this._ws) == null || o.sendMessage({file_action: dn(e)});
+        (o = this._ws) == null || o.sendMessage({file_action: pn(e)});
         let i = this._writeJobs.find(a => a.id == e);
         i && i.remove_download_file(), this._writeJobs = this._writeJobs.filter(a => a.id != e), this._readJobs = this._readJobs.filter(a => a.id != e), delete this._removeJobs[e]
     }
@@ -10900,7 +10915,7 @@ class Lt {
         var i;
         try {
             const o = JSON.parse(e);
-            (i = this._ws) == null || i.sendMessage({file_action: cn(o.id, o.path)})
+            (i = this._ws) == null || i.sendMessage({file_action: Dn(o.id, o.path)})
         } catch (o) {
             console.error("Failed to remove all empty dirs:", o)
         }
@@ -10921,8 +10936,8 @@ class Lt {
         try {
             const o = JSON.parse(e), {id: a, path: t, is_remote: s, show_hidden: l} = o;
             if (s) {
-                (i = this._ws) == null || i.sendMessage({file_action: ln(a, t, l)});
-                const E = (c, C) => (c ? C === "Windows" : A4()) ? "\\" : "/";
+                (i = this._ws) == null || i.sendMessage({file_action: cn(a, t, l)});
+                const E = (c, C) => (c ? C === "Windows" : _4()) ? "\\" : "/";
                 this._removeJobs[a] = {
                     path: t,
                     files: [],
@@ -10941,7 +10956,7 @@ class Lt {
         var i;
         try {
             const o = JSON.parse(e), {id: a, path: t, is_remote: s} = o;
-            s && ((i = this._ws) == null || i.sendMessage({file_action: En(a, t)}))
+            s && ((i = this._ws) == null || i.sendMessage({file_action: Cn(a, t)}))
         } catch (o) {
             console.error("Failed to create dir:", o)
         }
@@ -10951,14 +10966,14 @@ class Lt {
         var i;
         try {
             const o = JSON.parse(e), {id: a, path: t, new_name: s, is_remote: l} = o;
-            l && ((i = this._ws) == null || i.sendMessage({file_action: Cn(a, t, s)}))
+            l && ((i = this._ws) == null || i.sendMessage({file_action: Bn(a, t, s)}))
         } catch (o) {
             console.error("Failed to rename file:", o)
         }
     }
 
     async seletFiles(e) {
-        await vn(e, (i, o) => {
+        await hn(e, (i, o) => {
             this._fileHandles[i] = o
         })
     }
@@ -11068,48 +11083,50 @@ class Lt {
     }
 }
 
-function P4(u = !1) {
+function R4(u = !1) {
     const e = A.getItem("custom-rendezvous-server");
-    return R4(e || Ut, u)
+    return I4(e || Lt, u)
 }
 
-function R4(u, e = !1, i = 0) {
+function getrUriFromRs(uri, isRelay = false, roffset = 0) {
     const p = isHttps() ? "wss://" : "ws://"
-    const domain = uriDomain(u)
-    const uriport = uriPort(u)
+    const [domain, uriport] = uri.split(":")
     if (isHttps() && (!uriport)) {
-        return p + domain + "/ws/" + (e ? "relay" : "id");
+        return p + domain + "/ws/" + (isRelay ? "relay" : "id");
     }
-
     if (uriport) {
-        const a = parseInt(uriport);
-        u = domain + ":" + (a + (e ? i || 3 : 2))
-    } else u += ":" + (Mt + (e ? 3 : 2));
-    return p + u
+        const port = parseInt(uriport);
+        uri = domain + ":" + (port + (isRelay ? roffset || 3 : 2))
+    } else uri += ":" + (Ut + (isRelay ? 3 : 2));
+    return p + uri
 }
 
 function isHttps() {
     return window.location.protocol === "https:"
 }
 
-function uriDomain(u) {
-    return u.indexOf(":") > 0 ? u.split(":")[0] : u
+function I4(u, e = !1, i = 0) {
+    return getrUriFromRs(u, e, i)
 }
 
-function uriPort(u) {
-    return u.indexOf(":") > 0 ? u.split(":")[1] : ''
+function wn() {
+    return window.location.protocol === "https:"
+}
+
+function Sn(u) {
+    return u.indexOf(":") > 0 ? u.split(":")[0] : u
 }
 
 
 const at = (u, e, i) => e && u.type == "SharedAb" ? Z(Zu([u.value, i.salt])) === Z(e) : !1,
     ot = (u, e) => e && u.type == "PersonalAb" ? Z(u.value) === Z(e) : !1;
 
-function bn() {
-    return P4()
+function zn() {
+    return R4()
 }
 
 function nt(u, e) {
-    ye("callback_query_onlines", {onlines: u.join(","), offlines: e.join(",")})
+    be("callback_query_onlines", {onlines: u.join(","), offlines: e.join(",")})
 }
 
 const onlineCache = {}
@@ -11122,13 +11139,13 @@ async function myQueryOnline(id) {
     }
     // 映射 方便后期更新
     const maps = {
-        uri: P4(),
-        ws: j4,
+        uri: R4(),
+        ws: N4,
         conn_type: ne.DEFAULT_CONN,
         nat_type: pt.SYMMETRIC,
         token: Pt(),
         version: se,
-        licence_key: Io(),
+        licence_key: To(),
         rendezvousPunchHoleRequest: Ku,
         rendezvousPunchHoleResponse_Failure: Z0
     }
@@ -11177,7 +11194,7 @@ async function myQueryOnline(id) {
     return online
 }
 
-async function wn(u) {
+async function Pn(u) {
     let e = [];
     try {
         e = JSON.parse(u)
@@ -11200,17 +11217,17 @@ async function wn(u) {
         }
         nt(onlines, offlines)
     } else {
-        const i = bn(), o = new j4(i, !0, "query onlines");
+        const i = zn(), o = new N4(i, !0, "query onlines");
         try {
             await o.open();
-            const a = Ju.fromPartial({id: N4(), peers: e});
+            const a = Ju.fromPartial({id: O4(), peers: e});
             o.sendRendezvous({online_request: a})
         } catch (a) {
             console.error("Failed to query onlines, ", a), nt([], e), o.close();
             return
         }
         for (let a = 0; a < 2; a++) {
-            const t = await Ro(o, 3e3);
+            const t = await Io(o, 3e3);
             if (!t || (t == null ? void 0 : t.key_exchange) || (t == null ? void 0 : t.online_response) === void 0) continue;
             const s = t.online_response.states;
             let l = [], E = [];
@@ -11229,16 +11246,16 @@ async function wn(u) {
 
 window.curConn = void 0;
 window.isMobile = () => /(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|ipad|iris|kindle|Android|Silk|lge |maemo|midp|mmp|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino/i.test(navigator.userAgent) || /1207|6310|6590|3gso|4thp|50[1-6]i|770s|802s|a wa|abac|ac(er|oo|s\-)|ai(ko|rn)|al(av|ca|co)|amoi|an(ex|ny|yw)|aptu|ar(ch|go)|as(te|us)|attw|au(di|\-m|r |s )|avan|be(ck|ll|nq)|bi(lb|rd)|bl(ac|az)|br(e|v)w|bumb|bw\-(n|u)|c55\/|capi|ccwa|cdm\-|cell|chtm|cldc|cmd\-|co(mp|nd)|craw|da(it|ll|ng)|dbte|dc\-s|devi|dica|dmob|do(c|p)o|ds(12|\-d)|el(49|ai)|em(l2|ul)|er(ic|k0)|esl8|ez([4-7]0|os|wa|ze)|fetc|fly(\-|_)|g1 u|g560|gene|gf\-5|g\-mo|go(\.w|od)|gr(ad|un)|haie|hcit|hd\-(m|p|t)|hei\-|hi(pt|ta)|hp( i|ip)|hs\-c|ht(c(\-| |_|a|g|p|s|t)|tp)|hu(aw|tc)|i\-(20|go|ma)|i230|iac( |\-|\/)|ibro|idea|ig01|ikom|im1k|inno|ipaq|iris|ja(t|v)a|jbro|jemu|jigs|kddi|keji|kgt( |\/)|klon|kpt |kwc\-|kyo(c|k)|le(no|xi)|lg( g|\/(k|l|u)|50|54|\-[a-w])|libw|lynx|m1\-w|m3ga|m50\/|ma(te|ui|xo)|mc(01|21|ca)|m\-cr|me(rc|ri)|mi(o8|oa|ts)|mmef|mo(01|02|bi|de|do|t(\-| |o|v)|zz)|mt(50|p1|v )|mwbp|mywa|n10[0-2]|n20[2-3]|n30(0|2)|n50(0|2|5)|n7(0(0|1)|10)|ne((c|m)\-|on|tf|wf|wg|wt)|nok(6|i)|nzph|o2im|op(ti|wv)|oran|owg1|p800|pan(a|d|t)|pdxg|pg(13|\-([1-8]|c))|phil|pire|pl(ay|uc)|pn\-2|po(ck|rt|se)|prox|psio|pt\-g|qa\-a|qc(07|12|21|32|60|\-[2-7]|i\-)|qtek|r380|r600|raks|rim9|ro(ve|zo)|s55\/|sa(ge|ma|mm|ms|ny|va)|sc(01|h\-|oo|p\-)|sdk\/|se(c(\-|0|1)|47|mc|nd|ri)|sgh\-|shar|sie(\-|m)|sk\-0|sl(45|id)|sm(al|ar|b3|it|t5)|so(ft|ny)|sp(01|h\-|v\-|v )|sy(01|mb)|t2(18|50)|t6(00|10|18)|ta(gt|lk)|tcl\-|tdg\-|tel(i|m)|tim\-|t\-mo|to(pl|sh)|ts(70|m\-|m3|m5)|tx\-9|up(\.b|g1|si)|utst|v400|v750|veri|vi(rg|te)|vk(40|5[0-3]|\-v)|vm40|voda|vulc|vx(52|53|60|61|70|80|81|83|85|98)|w3c(\-| )|webc|whit|wi(g |nc|nw)|wmlb|wonu|x700|yas\-|your|zeto|zte\-/i.test(navigator.userAgent.substr(0, 4));
-const xe = zt(), Yu = xe === Y4, H4 = xe === De, Qu = xe === Be;
+const ye = zt(), Yu = ye === Y4, H4 = ye === Be, Qu = ye === me;
 
-function Sn() {
+function Rn() {
     return !isMobile()
 }
 
-function Wt(u, e, i, o) {
+function Vt(u, e, i, o) {
     if (!(!u || u == "error" && !i)) {
         i.toLowerCase();
-        var a = Eo(u, e, i) ? "true" : "";
+        var a = co(u, e, i) ? "true" : "";
         onGlobalEvent(JSON.stringify({
             name: "msgbox",
             type: u,
@@ -11250,34 +11267,34 @@ function Wt(u, e, i, o) {
     }
 }
 
-function zn(u, e, i) {
+function In(u, e, i) {
     onGlobalEvent(JSON.stringify({name: "toast", type: u, text: e, dur_msec: i}))
 }
 
-function Vt(u) {
+function qt(u) {
     var e = {};
     for (const [i, o] of Object.entries(u)) !i || (o instanceof String || typeof o == "string" ? e[i] = o : o instanceof Uint8Array ? e[i] = "[" + o.toString() + "]" : e[i] = JSON.stringify(o));
     return e
 }
 
 function m(u, e) {
-    e = Vt(e), e.name = u, onGlobalEvent(JSON.stringify(e))
+    e = qt(e), e.name = u, onGlobalEvent(JSON.stringify(e))
 }
 
-function ce() {
+function Ce() {
     var e;
-    ((e = Ae("input-source")) != null ? e : Hi) === Hi ? qo() : Ee()
+    ((e = Fe("input-source")) != null ? e : Ji) === Ji ? Ko() : Ee()
 }
 
-function ye(u, e) {
-    e = Vt(e), e.name = u, onRegisteredEvent(JSON.stringify(e))
+function be(u, e) {
+    e = qt(e), e.name = u, onRegisteredEvent(JSON.stringify(e))
 }
 
-function Ce(u, e) {
+function pe(u, e) {
     onRgba(u, e)
 }
 
-function be(u) {
+function we(u) {
     window.curConn = u
 }
 
@@ -11285,58 +11302,58 @@ function e0() {
     return window.curConn
 }
 
-async function qt() {
+async function Kt() {
     await curConn.start()
 }
 
-function we() {
+function Se() {
     var u;
-    (u = e0()) == null || u.close(), be(void 0)
+    (u = e0()) == null || u.close(), we(void 0)
 }
 
-function Kt() {
+function Ht() {
     var e;
     (e = window.curConn) == null || e.close();
-    const u = new Lt;
-    return be(u), u
+    const u = new Wt;
+    return we(u), u
 }
 
 let q;
 
-async function Ht() {
+async function Jt() {
     try {
-        q || (await I4.ready, q = I4)
+        q || (await T4.ready, q = T4)
     } catch (u) {
         console.error("Failed to init sodium: " + u.message)
     }
 }
 
-function Jt() {
+function Gt() {
     return q
 }
 
 async function rt(u, e) {
-    return await Ht(), typeof e == "string" && (e = Gt(e)), q.crypto_sign_open(u, e)
+    return await Jt(), typeof e == "string" && (e = Zt(e)), q.crypto_sign_open(u, e)
 }
 
-function Gt(u) {
+function Zt(u) {
     return q.from_base64(u, q.base64_variants.ORIGINAL)
 }
 
-function Pn(u) {
+function Tn(u) {
     return q.to_base64(u, q.base64_variants.ORIGINAL)
 }
 
-function Rn() {
+function jn() {
     const u = q.crypto_box_keypair(), e = u.privateKey, i = u.publicKey;
     return [e, i]
 }
 
-function In() {
+function Nn() {
     return q.crypto_secretbox_keygen()
 }
 
-function Tn(u, e, i) {
+function On(u, e, i) {
     const o = Uint8Array.from(Array(24).fill(0));
     return q.crypto_box_easy(u, o, e, i)
 }
@@ -11353,20 +11370,20 @@ function st(u, e, i) {
     return q.crypto_secretbox_easy(u, $4(e), i)
 }
 
-function jn(u, e, i) {
+function Mn(u, e, i) {
     return q.crypto_secretbox_open_easy(u, $4(e), i)
 }
 
 window.setByName = (u, e) => {
     switch (u) {
         case"connect":
-            Kt(), qt();
+            Ht(), Kt();
             break;
         case"login":
             e = JSON.parse(e), curConn.handle_login_from_ui(e.os_username, e.os_password, e.password, e.remember);
             break;
         case"close":
-            we();
+            Se();
             break;
         case"refresh":
             curConn.refresh();
@@ -11399,7 +11416,7 @@ window.setByName = (u, e) => {
             curConn.switchDisplay(e);
             break;
         case"remove_peer":
-            po(e);
+            Do(e);
             break;
         case"input_key":
             e = JSON.parse(e), curConn.inputKey(e.name, e.down == "true", e.press == "true", e.alt == "true", e.ctrl == "true", e.shift == "true", e.command == "true");
@@ -11408,10 +11425,10 @@ window.setByName = (u, e) => {
             curConn.inputString(e);
             break;
         case"flutter_key_event":
-            e = JSON.parse(e), Ko(curConn, e.usb_hid, e.down == "true", e.lock_modes);
+            e = JSON.parse(e), Ho(curConn, e.usb_hid, e.down == "true", e.lock_modes);
             break;
         case"send_mouse":
-            Nn(e);
+            Un(e);
             break;
         case"send_2fa":
             curConn == null || curConn.send2fa(e);
@@ -11428,17 +11445,17 @@ window.setByName = (u, e) => {
             if (o.name == 'access_token' && o.value) {
                 getServerConf(o.value)
             }
-            gt(o.name, o.value), o.name === "input-source" && ce(), o.name == "lang" && fo()
+            gt(o.name, o.value), o.name === "input-source" && Ce(), o.name == "lang" && xo()
         }
             break;
         case"option:flutter:local":
-            e = JSON.parse(e), Ao(e.name, e.value);
+            e = JSON.parse(e), Fo(e.name, e.value);
             break;
         case"option:flutter:peer":
             e = JSON.parse(e), curConn.setFlutterUiOption(e.name, e.value);
             break;
         case"option:user:default":
-            Kn(e);
+            Gn(e);
             break;
         case"option:session":
             e = JSON.parse(e), curConn.setOption(e.name, e.value);
@@ -11456,12 +11473,12 @@ window.setByName = (u, e) => {
             curConn.inputOsPassword(e);
             break;
         case"session_add_sync":
-            return Gn(e);
+            return Xn(e);
         case"session_start":
-            Zn();
+            Yn();
             break;
         case"session_close":
-            Qn();
+            $n();
             break;
         case"elevate_direct":
             curConn.elevateDirect();
@@ -11477,22 +11494,22 @@ window.setByName = (u, e) => {
         case"fav":
             return A.setItem("fav", e);
         case"query_onlines":
-            wn(e);
+            Pn(e);
             break;
         case"change_prefer_codec":
             curConn.changePreferCodec(e);
             break;
         case"cursor":
-            Vn(e);
+            Hn(e);
             break;
         case"enter_or_leave":
             curConn == null || curConn.enterOrLeave(e);
             break;
         case"fullscreen":
-            e == "Y" ? Yn() : $n();
+            e == "Y" ? er() : ir();
             break;
         case"send_note":
-            const i = Xt("conn");
+            const i = Yt("conn");
             i && (curConn == null || curConn.sendNote(i, e));
             break;
         case"read_remote_dir":
@@ -11532,22 +11549,22 @@ window.setByName = (u, e) => {
             curConn == null || curConn.sendChat(e);
             break;
         case"load_ab":
-            ir();
+            or();
             break;
         case"save_ab":
-            Fo(e);
+            _o(e);
             break;
         case"clear_ab":
-            _o();
+            vo();
             break;
         case"load_group":
-            tr();
+            nr();
             break;
         case"save_group":
-            vo(e);
+            ko(e);
             break;
         case"clear_group":
-            go();
+            ho();
             break;
         case"change_resolution":
             curConn == null || curConn.changeResolution(e);
@@ -11558,52 +11575,54 @@ window.setByName = (u, e) => {
     }
 };
 
-function Nn(u) {
+function Un(u) {
     if (!curConn) return;
     let e = 0;
     switch (u = JSON.parse(u), u.type) {
         case"down":
-            e = io;
+            e = to, setTimeout(() => {
+                Tt(curConn)
+            }, 100);
             break;
         case"up":
-            e = to;
+            e = ao;
             break;
         case"wheel":
-            e = Gi;
+            e = Zi;
             break;
         case"trackpad":
-            e = Zi;
+            e = Qi;
             break
     }
     switch (u.buttons) {
         case"left":
-            e |= x4 << 3;
-            break;
-        case"right":
             e |= y4 << 3;
             break;
-        case"wheel":
-            e |= ao << 3;
+        case"right":
+            e |= b4 << 3;
             break;
-        case"back":
+        case"wheel":
             e |= oo << 3;
             break;
-        case"forward":
+        case"back":
             e |= no << 3;
+            break;
+        case"forward":
+            e |= ro << 3;
             break
     }
     let i = parseInt(u.x || "0"), o = parseInt(u.y || "0");
-    (e == Gi || e == Zi) && curConn.getOption("reverse_mouse_wheel") == "Y" && (i = -i, o = -o);
-    const a = (e & x4 << 3) > 0 ? 1 : 0, t = (e & y4 << 3) > 0 ? 1 : 0;
-    a ^ t && curConn.getToggleOption("swap-left-right-mouse") && (a ? e = e & ~(x4 << 3) | y4 << 3 : e = e & ~(y4 << 3) | x4 << 3), curConn.inputMouse(e, i, o, u.alt == "true", u.ctrl == "true", u.shift == "true", u.command == "true")
+    (e == Zi || e == Qi) && curConn.getOption("reverse_mouse_wheel") == "Y" && (i = -i, o = -o);
+    const a = (e & y4 << 3) > 0 ? 1 : 0, t = (e & b4 << 3) > 0 ? 1 : 0;
+    a ^ t && curConn.getToggleOption("swap-left-right-mouse") && (a ? e = e & ~(y4 << 3) | b4 << 3 : e = e & ~(b4 << 3) | y4 << 3), curConn.inputMouse(e, i, o, u.alt == "true", u.ctrl == "true", u.shift == "true", u.command == "true")
 }
 
 window.getByName = (u, e) => {
-    let i = On(u, e);
+    let i = Ln(u, e);
     return typeof i == "string" || i instanceof String ? i : i == null || i == null ? "" : JSON.stringify(i)
 };
 
-function On(u, e) {
+function Ln(u, e) {
     var o, a, t, s;
     switch (u) {
         case"remember":
@@ -11617,19 +11636,19 @@ function On(u, e) {
                 D && (E[C] = D)
             }), JSON.stringify(E);
         case"option:local":
-            const res = Ae(e) || ""
+            const res = Fe(e) || ""
             if (e == 'access_token' && res) {
                 getServerConf(res)
             }
             return res;
         case"option:flutter:local":
-            return mo(e) || "";
+            return Ao(e) || "";
         case"option:flutter:peer":
             return curConn.getFlutterUiOption(e) || "";
         case"image_quality":
             return curConn.getImageQuality();
         case"translate":
-            return e = JSON.parse(e), xo(e.locale, e.text);
+            return e = JSON.parse(e), yo(e.locale, e.text);
         case"option:user:default":
             return u0(e);
         case"option:session":
@@ -11637,7 +11656,7 @@ function On(u, e) {
         case"option:peer":
             try {
                 const C = JSON.parse(e);
-                return (o = Bo(C.id, C.name)) != null ? o : u0(C.name)
+                return (o = mo(C.id, C.name)) != null ? o : u0(C.name)
             } catch (C) {
                 return console.error('Failed to get peer option: "' + e + '", ' + C.message), ""
             }
@@ -11650,23 +11669,23 @@ function On(u, e) {
         case"version":
             return se;
         case"load_recent_peers":
-            Hn();
+            Zn();
             break;
         case"load_fav_peers":
-            Jn();
+            Qn();
             break;
         case"fav":
             return (a = A.getItem("fav")) != null ? a : "[]";
         case"load_recent_peers_sync":
-            return JSON.stringify({peers: JSON.stringify(ze())});
+            return JSON.stringify({peers: JSON.stringify(Pe())});
         case"api_server":
-            return Qt();
+            return Xt();
         case"is_using_public_server":
             return !A.getItem("custom-rendezvous-server");
         case"get_version_number":
             return Q(e);
         case"audit_server":
-            return Xt(e);
+            return Yt(e);
         case"alternative_codecs":
             return curConn.getAlternativeCodecs();
         case"screen_info":
@@ -11692,12 +11711,12 @@ function On(u, e) {
                 scaleFactor: window.devicePixelRatio
             });
         case"langs":
-            var i = Object.entries(lo).map(([C, D]) => [C, `${D} (${C})`]);
+            var i = Object.entries(Eo).map(([C, D]) => [C, `${D} (${C})`]);
             return i.sort((C, D) => C[0].localeCompare(D[0])), JSON.stringify(i);
         case"build_date":
-            return Co;
+            return po;
         case"my_id":
-            return N4();
+            return O4();
         case"my_name":
             return wt();
         case"uuid":
@@ -11707,7 +11726,7 @@ function On(u, e) {
         case"peer_has_password":
             return ((t = (Cu()[e] || {}).password) != null ? t : "") !== "";
         case"fullscreen":
-            return ur() ? "Y" : "N";
+            return tr() ? "Y" : "N";
         case"platform":
             return curConn.getPlatform();
         case"enable_trusted_devices":
@@ -11716,34 +11735,34 @@ function On(u, e) {
     return ""
 }
 
-let Se = new Worker("./libopus.js?v=02816afa"), Zt;
+let ze = new Worker("./libopus.js?v=02816afa"), Qt;
 
-function Mn(u, e) {
-    Zt = Ln(u, e), Se.postMessage({channels: u, sampleRate: e})
+function Wn(u, e) {
+    Qt = qn(u, e), ze.postMessage({channels: u, sampleRate: e})
 }
 
-function Un(u) {
-    Se.postMessage(u, [u.buffer])
+function Vn(u) {
+    ze.postMessage(u, [u.buffer])
 }
 
 window.init = async () => {
     try {
-        Se.onmessage = u => {
-            Zt.feed(u.data)
-        }, await Ht(), await So(), await za(), await N.init(), console.log("init done"), onInitFinished()
+        ze.onmessage = u => {
+            Qt.feed(u.data)
+        }, await Jt(), await zo(), await Pa(), await N.init(), console.log("init done"), onInitFinished()
     } catch (u) {
         console.error("Failed to init: " + u.message), onInitFinished()
     }
 };
 window.onunload = () => {
-    console.log("window close"), Ra()
+    console.log("window close"), Ia()
 };
 
-function Ln(u, e) {
-    return new na({channels: u, sampleRate: e, flushingTime: 2e3})
+function qn(u, e) {
+    return new ra({channels: u, sampleRate: e, flushingTime: 2e3})
 }
 
-function Wn(u) {
+function Kn(u) {
     if (window.clipboardData && window.clipboardData.setData) return window.clipboardData.setData("Text", u);
     if (document.queryCommandSupported && document.queryCommandSupported("copy")) {
         var e = document.createElement("textarea");
@@ -11772,7 +11791,7 @@ function Q(u) {
     }
 }
 
-function Vn(u) {
+function Hn(u) {
     let e = "auto";
     if (u != "auto") try {
         const t = JSON.parse(u);
@@ -11788,13 +11807,13 @@ function Vn(u) {
     }
 }
 
-async function qn() {
-    await I4.ready;
-    const u = I4.crypto_sign_keypair();
+async function Jn() {
+    await T4.ready;
+    const u = T4.crypto_sign_keypair();
     return {publicKey: u.publicKey, privateKey: u.privateKey}
 }
 
-function Kn(u) {
+function Gn(u) {
     try {
         const e = JSON.parse(u), i = JSON.parse(A.getItem("user-default-options")) || {};
         i[e.name] = e.value, A.setItem("user-default-options", JSON.stringify(i))
@@ -11820,7 +11839,7 @@ function u0(u) {
     }
 }
 
-function ze() {
+function Pe() {
     const u = [];
     for (const [e, i] of Object.entries(Cu())) {
         if (!e) continue;
@@ -11836,49 +11855,49 @@ function ze() {
     return u.sort().reverse().map(e => e[2])
 }
 
-function Hn() {
-    const u = ze();
-    u && ye("load_recent_peers", {peers: JSON.stringify(u)})
+function Zn() {
+    const u = Pe();
+    u && be("load_recent_peers", {peers: JSON.stringify(u)})
 }
 
-function Jn() {
+function Qn() {
     var u;
     try {
-        const e = (u = A.getItem("fav")) != null ? u : "[]", i = JSON.parse(e), o = ze().filter(a => i.includes(a.id));
-        o && ye("load_fav_peers", {peers: JSON.stringify(o)})
+        const e = (u = A.getItem("fav")) != null ? u : "[]", i = JSON.parse(e), o = Pe().filter(a => i.includes(a.id));
+        o && be("load_fav_peers", {peers: JSON.stringify(o)})
     } catch (e) {
         console.error("Failed to load fav peers: " + e.message)
     }
 }
 
-function Gn(u) {
+function Xn(u) {
     var e;
     try {
         const i = JSON.parse(u), o = i.id;
         if (o) {
             (e = window.curConn) == null || e.close();
-            const a = new Lt;
-            return a.setRemoteId(o), a.setSessionInfo(i), be(a), gt("last_remote_id", o), ""
+            const a = new Wt;
+            return a.setRemoteId(o), a.setSessionInfo(i), we(a), gt("last_remote_id", o), ""
         } else return "No id found in session data " + u
     } catch (i) {
         return i.message
     }
 }
 
-function Zn(u) {
+function Yn(u) {
     try {
         if (!e0()) return;
-        qt()
+        Kt()
     } catch (e) {
-        Wt("error", "Error", e.message, "")
+        Vt("error", "Error", e.message, "")
     }
 }
 
-function Qn(u) {
-    we()
+function $n(u) {
+    Se()
 }
 
-function Xn(u, e) {
+function ur(u, e) {
     function i(o) {
         return /^([0-9a-fA-F]{0,4}:){1,7}[0-9a-fA-F]{0,4}$/.test(o)
     }
@@ -11901,24 +11920,24 @@ function Xn(u, e) {
     return u
 }
 
-function Qt() {
+function Xt() {
     const u = A.getItem("api-server");
     if (u) return u;
     const e = A.getItem("custom-rendezvous-server");
     if (e) {
-        let i = Xn(e, -2);
-        return i == e ? `http://${i}:${Mt - 2}` : `http://${i}`
+        let i = ur(e, -2);
+        return i == e ? `http://${i}:${Ut - 2}` : `http://${i}`
     }
     return "https://admin.rustdesk.com"
 }
 
-function Xt(u) {
+function Yt(u) {
     if (!Pt()) return "";
-    const e = Qt();
+    const e = Xt();
     return !e || e.includes("rustdesk.com") ? "" : e + "/api/audit/" + u
 }
 
-function Yt(u, e, i) {
+function $t(u, e, i) {
     try {
         Z4.exports.ZstdCodec.run(a => {
             var t = new a.Simple;
@@ -11929,7 +11948,7 @@ function Yt(u, e, i) {
     }
 }
 
-function Pe(u, e, i) {
+function Re(u, e, i) {
     try {
         Z4.exports.ZstdCodec.run(o => {
             var a = new o.Simple;
@@ -11940,7 +11959,7 @@ function Pe(u, e, i) {
     }
 }
 
-async function $t(u, e) {
+async function ua(u, e) {
     return new Promise((i, o) => {
         try {
             Z4.exports.ZstdCodec.run(a => {
@@ -11953,7 +11972,7 @@ async function $t(u, e) {
     })
 }
 
-async function ua(u, e) {
+async function ea(u, e) {
     return new Promise((i, o) => {
         try {
             Z4.exports.ZstdCodec.run(a => {
@@ -11966,28 +11985,28 @@ async function ua(u, e) {
     })
 }
 
-function Yn() {
+function er() {
     const u = document.documentElement;
     u.requestFullscreen ? u.requestFullscreen() : u.mozRequestFullScreen ? u.mozRequestFullScreen() : u.webkitRequestFullscreen ? u.webkitRequestFullscreen() : u.msRequestFullscreen && u.msRequestFullscreen()
 }
 
-function $n() {
+function ir() {
     document.exitFullscreen ? document.exitFullscreen() : document.mozCancelFullScreen ? document.mozCancelFullScreen() : document.webkitExitFullscreen ? document.webkitExitFullscreen() : document.msExitFullscreen && document.msExitFullscreen()
 }
 
-function ur() {
+function tr() {
     return document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement
 }
 
 var lt = !1;
 
-function er() {
+function ar() {
     lt || (console.log("listen fullscreen"), lt = !0, document.addEventListener("fullscreenchange", () => onFullscreenChanged(!!document.fullscreenElement)), document.addEventListener("mozfullscreenchange", () => onFullscreenChanged(!!document.mozFullScreen)), document.addEventListener("webkitfullscreenchange", () => onFullscreenChanged(!!document.webkitFullscreenElement)), document.addEventListener("msfullscreenchange", () => onFullscreenChanged(!!document.msFullscreenElement)))
 }
 
-er();
+ar();
 
-async function ir() {
+async function or() {
     try {
         let u = await xt();
         onLoadAbFinished(JSON.stringify(u))
@@ -11996,9 +12015,9 @@ async function ir() {
     }
 }
 
-async function tr() {
+async function nr() {
     try {
-        let u = await ko();
+        let u = await go();
         onLoadGroupFinished(JSON.stringify(u))
     } catch (u) {
         console.error("Failed to load group: " + u.message), onLoadGroupFinished("")
@@ -12047,13 +12066,13 @@ if (Et) {
         A.setItem("id", o.value);
         const a = document.querySelector("#key");
         A.setItem("key", a.value), (async () => {
-            const s = Kt();
+            const s = Ht();
             s.setMsgbox(e), s.setDraw(l => {
-                Ce(l), u.drawFrame(l)
+                pe(l), u.drawFrame(l)
             }), document.querySelector("div#status").style.display = "block", document.querySelector("div#connect").style.display = "none", document.querySelector("div#text").innerHTML = "Connecting ...", s.setPeerId(o.value), await s.start()
         })()
     }, window.cancel = () => {
-        we(), document.querySelector("div#connect").style.display = "block", document.querySelector("div#password").style.display = "none", document.querySelector("div#status").style.display = "none", document.querySelector("div#canvas").style.display = "none"
+        Se(), document.querySelector("div#connect").style.display = "block", document.querySelector("div#password").style.display = "none", document.querySelector("div#status").style.display = "none", document.querySelector("div#canvas").style.display = "none"
     }, window.confirm = () => {
         const i = document.querySelector("input#password").value;
         i && (document.querySelector("div#password").style.display = "none", e0().login(i))
