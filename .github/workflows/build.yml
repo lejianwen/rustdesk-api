@@ -162,7 +162,7 @@ jobs:
         run: |
           sudo apt update
           DEBIAN_FRONTEND=noninteractive sudo apt install -y devscripts build-essential debhelper pkg-config ${{ matrix.job.crossbuild_package }}
-          mkdir -p debian-build/${{ matrix.job.debian_platform }}/bin
+          mkdir -p debian-build/${{ matrix.job.platform }}/bin
 
       - name: Download binaries
         uses: actions/download-artifact@v4
