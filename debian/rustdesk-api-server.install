@@ -1,2 +1,6 @@
 bin/rustdesk-api usr/bin
 systemd/rustdesk-api.service lib/systemd/system
+conf var/lib/rustdesk-api
+data var/lib/rustdesk-api
+resources var/lib/rustdesk-api
+runtime var/lib/rustdesk-api
