@@ -180,6 +180,20 @@ jobs:
            cd debian-build/${{ matrix.job.platform }}/
            debuild -i -us -uc -b -a${{ matrix.job.debian_platform}}
 
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: rustdesk-api-${{ matrix.job.debian_platform }}
+          path: |
+            debian-build/*.deb
+
+      - name: Create Release
+        if: github.event_name == 'release'
+        uses: softprops/action-gh-release@v2
+        with:
+          draft: true
+          files: |
+            debian-build/rustdesk-api-server_*_${{ matrix.job.debian_platform }}.deb
   docker:
     if: false
     name: Push Docker Image
