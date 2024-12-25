@@ -26,7 +26,7 @@ func (i *WebClient) ServerConfig(c *gin.Context) {
 	u := service.AllService.UserService.CurUser(c)
 
 	peers := map[string]*api.WebClientPeerPayload{}
-	abs := service.AllService.AddressBookService.ListByUserId(u.Id, 1, 100)
+	abs := service.AllService.AddressBookService.ListByUserIdAndCollectionId(u.Id, 0, 1, 100)
 	for _, ab := range abs.AddressBooks {
 		pp := &api.WebClientPeerPayload{}
 		pp.FromAddressBook(ab)

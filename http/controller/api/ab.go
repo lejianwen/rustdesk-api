@@ -32,8 +32,8 @@ type Ab struct {
 func (a *Ab) Ab(c *gin.Context) {
 	user := service.AllService.UserService.CurUser(c)
 
-	al := service.AllService.AddressBookService.ListByUserId(user.Id, 1, 1000)
-	tags := service.AllService.TagService.ListByUserId(user.Id)
+	al := service.AllService.AddressBookService.ListByUserIdAndCollectionId(user.Id, 0, 1, 1000)
+	tags := service.AllService.TagService.ListByUserIdAndCollectionId(user.Id, 0)
 
 	tagColors := map[string]uint{}
 	//将tags中的name转成一个以逗号分割的字符串
@@ -96,23 +96,6 @@ func (a *Ab) UpAb(c *gin.Context) {
 	service.AllService.TagService.UpdateTags(user.Id, tc)
 
 	c.JSON(http.StatusOK, nil)
-}
-
-// Tags
-// @Tags 地址
-// @Summary 标签
-// @Description 标签
-// @Accept  json
-// @Produce  json
-// @Success 200 {object} []model.Tag
-// @Failure 500 {object} response.ErrorResponse
-// @Router /tags [post]
-// @Security BearerAuth
-func (a *Ab) Tags(c *gin.Context) {
-	user := service.AllService.UserService.CurUser(c)
-
-	tags := service.AllService.TagService.ListByUserId(user.Id)
-	c.JSON(http.StatusOK, tags.Tags)
 }
 
 // PTags
