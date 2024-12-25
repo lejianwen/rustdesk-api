@@ -52,6 +52,12 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - uses: actions/checkout@v4
+        with:
+          repository: lejianwen/rustdesk-api-web
+          path: rustdesk-api-web
+          ref: master
+
       - name: Set up Go environment
         uses: actions/setup-go@v4
         with:
@@ -62,14 +68,12 @@ jobs:
         with:
           node-version: '20'
 
-
       - name: build rustdesk-api-web
+        working-directory: rustdesk-api-web
         run: |
-          git clone ${{ env.WEBCLIENT_SOURCE_LOCATION }}
-          cd rustdesk-api-web
           npm install
           npm run build
-          mkdir ../resources/admin/ -p
+          mkdir -p ../resources/admin/
           cp -ar dist/* ../resources/admin/
 
       - name: tidy
@@ -117,6 +121,7 @@ jobs:
           name: rustdesk-api-${{ matrix.job.goos }}-${{ matrix.job.platform }}
           path: |
             ${{ matrix.job.goos}}-${{ matrix.job.platform }}.${{matrix.job.file_ext}}
+
       - name: Upload to GitHub Release
         uses: softprops/action-gh-release@v2
         with:
@@ -125,6 +130,65 @@ jobs:
           tag_name: test
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  deb-package:
+    name: debian package - ${{ matrix.job.platform }}
+    needs: build
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        job:
+          - { platform: "amd64", goos: "linux", debian_platform: "amd64", crossbuild_package: ""}
+          - { platform: "arm64", goos: "linux", debian_platform: "arm64", crossbuild_package: "crossbuild-essential-arm64" }
+          - { platform: "armv7l", goos: "linux", debian_platform: "armhf", crossbuild_package: "crossbuild-essential-armhf" }
+    steps:
+
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+
+      - name: Create packaging env
+        run: |
+          sudo apt update
+          DEBIAN_FRONTEND=noninteractive sudo apt install -y devscripts build-essential debhelper pkg-config ${{ matrix.job.crossbuild_package }}
+          mkdir -p debian-build/${{ matrix.job.platform }}/bin
+
+      - name: Download binaries
+        uses: actions/download-artifact@v4
+        with:
+          name: rustdesk-api-${{ matrix.job.goos }}-${{ matrix.job.platform }}.tar.gz
+          path: .
+
+      - name: Unzip binaries
+        run: |
+          mkdir -p ${{ matrix.job.platform }}
+          tar -xzf ${{ matrix.job.goos }}-${{ matrix.job.platform }}.tar.gz -C ${{ matrix.job.platform }}
+
+      - name: Build package for ${{ matrix.job.platform }} arch
+        run: |
+          mv ${{ matrix.job.platform }}/release/apimain debian-build/${{ matrix.job.platform }}/bin/rustdesk-api 
+          chmod -v a+x debian-build/${{ matrix.job.platform }}/bin/*
+          mkdir -p data
+          cp -vr debian systemd conf data resources runtime debian-build/${{ matrix.job.platform }}/
+          cat debian/control.tpl | sed 's/{{ ARCH }}/${{ matrix.job.debian_platform }}/' > debian-build/${{ matrix.job.platform }}/debian/control
+          cd debian-build/${{ matrix.job.platform }}/
+          debuild -i -us -uc -b -a${{ matrix.job.debian_platform}}
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: rustdesk-api-${{ matrix.job.debian_platform }}
+          path: |
+            debian-build/*.deb
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            debian-build/rustdesk-api-server_*_${{ matrix.job.debian_platform }}.deb
 
   docker:
     name: Push Docker Image
@@ -187,7 +251,6 @@ jobs:
         run: |
           mkdir -p ${{ matrix.job.platform }}
           tar -xzf ${{ matrix.job.goos }}-${{ matrix.job.platform }}.tar.gz -C ${{ matrix.job.platform }}
-          file ${{ matrix.job.platform }}/apimain
 
       - name: Build and push Docker image to Docker Hub ${{ matrix.job.platform }}
         if: ${{ env.SKIP_DOCKER_HUB == 'false' }}  # Only run this step if SKIP_DOCKER_HUB is false
