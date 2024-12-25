@@ -159,7 +159,7 @@ jobs:
       - name: Download binaries
         uses: actions/download-artifact@v4
         with:
-          name: rustdesk-api-${{ matrix.job.goos }}-${{ matrix.job.platform }}.tar.gz
+          name: rustdesk-api-${{ matrix.job.goos }}-${{ matrix.job.platform }}
           path: .
 
       - name: Unzip binaries
