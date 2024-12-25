@@ -43,6 +43,7 @@ env:
 jobs:
   build:
     runs-on: ubuntu-latest
+
     strategy:
       fail-fast: false
       matrix:
@@ -99,22 +100,24 @@ jobs:
           mkdir -p release/runtime
           if [ "${{ matrix.job.goos }}" = "windows" ]; then
             sudo apt-get install gcc-mingw-w64-x86-64 zip -y
-            GOOS=${{ matrix.job.goos }} GOARCH=${{ matrix.job.platform }} CC=x86_64-w64-mingw32-gcc CGO_LDFLAGS="-static" CGO_ENABLED=1 go build -ldflags "-s -w" -o ./release/rustdesk-api.exe ./cmd/apimain.go
+            GOOS=${{ matrix.job.goos }} GOARCH=${{ matrix.job.platform }} CC=x86_64-w64-mingw32-gcc CGO_LDFLAGS="-static" CGO_ENABLED=1 go build -ldflags "-s -w" -o ./release/apimain.exe ./cmd/apimain.go
+            zip -r ${{ matrix.job.goos}}-${{ matrix.job.platform }}.${{matrix.job.file_ext}} ./release
           else
             if [ "${{ matrix.job.platform }}" = "arm64" ]; then
                 wget https://musl.cc/aarch64-linux-musl-cross.tgz
                 tar -xf aarch64-linux-musl-cross.tgz
                 export PATH=$PATH:$PWD/aarch64-linux-musl-cross/bin
-                GOOS=${{ matrix.job.goos }} GOARCH=${{ matrix.job.platform }} CC=aarch64-linux-musl-gcc CGO_LDFLAGS="-static" CGO_ENABLED=1 go build -ldflags "-s -w" -o ./release/rustdesk-api ./cmd/apimain.go
+                GOOS=${{ matrix.job.goos }} GOARCH=${{ matrix.job.platform }} CC=aarch64-linux-musl-gcc CGO_LDFLAGS="-static" CGO_ENABLED=1 go build -ldflags "-s -w" -o ./release/apimain ./cmd/apimain.go
             elif [ "${{ matrix.job.platform }}" = "armv7l" ]; then
                 wget https://musl.cc/armv7l-linux-musleabihf-cross.tgz
                 tar -xf armv7l-linux-musleabihf-cross.tgz
                 export PATH=$PATH:$PWD/armv7l-linux-musleabihf-cross/bin
-                GOOS=${{ matrix.job.goos }} GOARCH=arm GOARM=7 CC=armv7l-linux-musleabihf-gcc CGO_LDFLAGS="-static" CGO_ENABLED=1 go build -ldflags "-s -w" -o ./release/rustdesk-api ./cmd/apimain.go
+                GOOS=${{ matrix.job.goos }} GOARCH=arm GOARM=7 CC=armv7l-linux-musleabihf-gcc CGO_LDFLAGS="-static" CGO_ENABLED=1 go build -ldflags "-s -w" -o ./release/apimain ./cmd/apimain.go
             else
               sudo apt-get install musl musl-dev musl-tools -y
-              GOOS=${{ matrix.job.goos }} GOARCH=${{ matrix.job.platform }} CC=musl-gcc CGO_LDFLAGS="-static" CGO_ENABLED=1 go build -ldflags "-s -w" -o ./release/rustdesk-api ./cmd/apimain.go
+              GOOS=${{ matrix.job.goos }} GOARCH=${{ matrix.job.platform }} CC=musl-gcc CGO_LDFLAGS="-static" CGO_ENABLED=1 go build -ldflags "-s -w" -o ./release/apimain ./cmd/apimain.go
             fi
+            tar -czf ${{ matrix.job.goos}}-${{ matrix.job.platform }}.${{matrix.job.file_ext}} ./release
           fi
 
       - name: Upload artifact
@@ -122,19 +125,17 @@ jobs:
         with:
           name: rustdesk-api-${{ matrix.job.goos }}-${{ matrix.job.platform }}
           path: |
-            ./release/*
+            ${{ matrix.job.goos}}-${{ matrix.job.platform }}.${{matrix.job.file_ext}}
 
       - name: Upload to GitHub Release
-        if: github.event_name == 'release'
         uses: softprops/action-gh-release@v2
         with:
           files: |
-            ${{ matrix.job.goos}}-${{ matrix.job.platform }}
+            ${{ matrix.job.goos}}-${{ matrix.job.platform }}.${{matrix.job.file_ext}}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Generate Changelog
-        if: github.event_name == 'release'
         run: npx changelogithub # or changelogithub@0.12 if ensure the stable result
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
@@ -154,7 +155,7 @@ jobs:
 
       - name: Checkout
         uses: actions/checkout@v3
-        
+
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
 
@@ -164,21 +165,39 @@ jobs:
           DEBIAN_FRONTEND=noninteractive sudo apt install -y devscripts build-essential debhelper pkg-config ${{ matrix.job.crossbuild_package }}
           mkdir -p debian-build/${{ matrix.job.platform }}/bin
 
+      - name: Get tag version
+        id: get_tag
+        run: |
+          TAG_VERSION="${GITHUB_REF##*/}"
+          VERSION="${TAG_VERSION#v}" 
+          echo "TAG_VERSION=$TAG_VERSION" >> $GITHUB_ENV
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+
+      - name: Update changelog
+        run: |
+          DATE=$(date -R)
+          sed -i "1i rustdesk-api-server (${VERSION}) stable; urgency=medium\n\n  * Automatically generated release for version ${VERSION}.\n\n -- GitHub Actions <actions@github.com>  ${DATE}\n" debian/changelog
+
       - name: Download binaries
         uses: actions/download-artifact@v4
         with:
-          name: rustdesk-api-${{ matrix.job.goos }}-${{ matrix.job.platform }}
+          name: rustdesk-api-${{ matrix.job.goos }}-${{ matrix.job.platform }}.tar.gz
           path: .
+
+      - name: Unzip binaries
+        run: |
+          mkdir -p ${{ matrix.job.platform }}
+          tar -xzf ${{ matrix.job.goos }}-${{ matrix.job.platform }}.tar.gz -C ${{ matrix.job.platform }}
 
       - name: Build package for ${{ matrix.job.platform }} arch
         run: |
-           mv rustdesk-api debian-build/${{ matrix.job.platform }}/bin/
-           chmod -v a+x debian-build/${{ matrix.job.platform }}/bin/*
-           mkdir -p data
-           cp -vr debian systemd conf data resources runtime debian-build/${{ matrix.job.platform }}/
-           cat debian/control.tpl | sed 's/{{ ARCH }}/${{ matrix.job.debian_platform }}/' > debian-build/${{ matrix.job.platform }}/debian/control
-           cd debian-build/${{ matrix.job.platform }}/
-           debuild -i -us -uc -b -a${{ matrix.job.debian_platform}}
+          mv ${{ matrix.job.platform }}/release/apimain debian-build/${{ matrix.job.platform }}/bin/rustdesk-api 
+          chmod -v a+x debian-build/${{ matrix.job.platform }}/bin/*
+          mkdir -p data
+          cp -vr debian systemd conf data resources runtime debian-build/${{ matrix.job.platform }}/
+          cat debian/control.tpl | sed 's/{{ ARCH }}/${{ matrix.job.debian_platform }}/' > debian-build/${{ matrix.job.platform }}/debian/control
+          cd debian-build/${{ matrix.job.platform }}/
+          debuild -i -us -uc -b -a${{ matrix.job.debian_platform}}
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
@@ -188,14 +207,12 @@ jobs:
             debian-build/*.deb
 
       - name: Create Release
-        if: github.event_name == 'release'
         uses: softprops/action-gh-release@v2
         with:
-          draft: true
           files: |
             debian-build/rustdesk-api-server_*_${{ matrix.job.debian_platform }}.deb
+
   docker:
-    if: false
     name: Push Docker Image
     needs: build
     runs-on: ubuntu-latest
@@ -256,7 +273,6 @@ jobs:
         run: |
           mkdir -p ${{ matrix.job.platform }}
           tar -xzf ${{ matrix.job.goos }}-${{ matrix.job.platform }}.tar.gz -C ${{ matrix.job.platform }}
-          file ${{ matrix.job.platform }}/apimain
 
       - name: Build and push Docker image to Docker Hub ${{ matrix.job.platform }}
         if: ${{ env.SKIP_DOCKER_HUB == 'false' }}  # Only run this step if SKIP_DOCKER_HUB is false
@@ -292,7 +308,6 @@ jobs:
 
   #
   docker-manifest:
-    if: false
     name: Push Docker Manifest
     needs: docker
     runs-on: ubuntu-latest
