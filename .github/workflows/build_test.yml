@@ -184,9 +184,10 @@ jobs:
           path: |
             debian-build/*.deb
 
-      - name: Create Release
+      - name: Upload to GitHub Release
         uses: softprops/action-gh-release@v2
         with:
+          tag_name: test
           files: |
             debian-build/rustdesk-api-server_*_${{ matrix.job.debian_platform }}.deb
 
