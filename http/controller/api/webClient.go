@@ -64,12 +64,15 @@ func (i *WebClient) SharedPeer(c *gin.Context) {
 		response.Fail(c, 101, "share not found")
 		return
 	}
-	//判断是否过期,created_at + expire > now
-	ca := time.Time(sr.CreatedAt)
-	if ca.Add(time.Second * time.Duration(sr.Expire)).Before(time.Now()) {
-		response.Fail(c, 101, "share expired")
-		return
+	if sr.Expire != 0 {
+		//判断是否过期,created_at + expire > now
+		ca := time.Time(sr.CreatedAt)
+		if ca.Add(time.Second * time.Duration(sr.Expire)).Before(time.Now()) {
+			response.Fail(c, 101, "share expired")
+			return
+		}
 	}
+
 	ab := service.AllService.AddressBookService.InfoByUserIdAndId(sr.UserId, sr.PeerId)
 	if ab.RowId == 0 {
 		response.Fail(c, 101, "peer not found")
