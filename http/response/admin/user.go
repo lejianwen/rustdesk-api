@@ -18,11 +18,6 @@ func (lp *LoginPayload) FromUser(user *model.User) {
 	lp.Nickname = user.Nickname
 }
 
-var UserRouteNames = []string{
-	"MyTagList", "MyAddressBookList", "MyInfo", "MyAddressBookCollection", "MyPeer", "MyShareRecordList", "MyLoginLog",
-}
-var AdminRouteNames = []string{"*"}
-
 type UserOauthItem struct {
 	Op     string `json:"op"`
 	Status int    `json:"status"`
