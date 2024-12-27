@@ -27,3 +27,8 @@ type UserList struct {
 	Users []*User `json:"list,omitempty"`
 	Pagination
 }
+
+var UserRouteNames = []string{
+	"MyTagList", "MyAddressBookList", "MyInfo", "MyAddressBookCollection", "MyPeer", "MyShareRecordList", "MyLoginLog",
+}
+var AdminRouteNames = []string{"*"}

@@ -2,7 +2,6 @@ package service
 
 import (
 	"Gwen/global"
-	adResp "Gwen/http/response/admin"
 	"Gwen/model"
 	"Gwen/utils"
 	"errors"
@@ -272,9 +271,9 @@ func (us *UserService) IsAdmin(u *model.User) bool {
 // RouteNames
 func (us *UserService) RouteNames(u *model.User) []string {
 	if us.IsAdmin(u) {
-		return adResp.AdminRouteNames
+		return model.AdminRouteNames
 	}
-	return adResp.UserRouteNames
+	return model.UserRouteNames
 }
 
 // InfoByOauthId 根据oauth的name和openId取用户信息
