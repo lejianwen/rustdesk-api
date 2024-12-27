@@ -47,3 +47,12 @@ func (us *LoginLogService) Update(u *model.LoginLog) error {
 func (us *LoginLogService) BatchDelete(ids []uint) error {
 	return global.DB.Where("id in (?)", ids).Delete(&model.LoginLog{}).Error
 }
+
+func (us *LoginLogService) SoftDelete(l *model.LoginLog) error {
+	l.IsDeleted = model.IsDeletedYes
+	return us.Update(l)
+}
+
+func (us *LoginLogService) BatchSoftDelete(uid uint, ids []uint) error {
+	return global.DB.Model(&model.LoginLog{}).Where("user_id = ? and id in (?)", uid, ids).Update("is_deleted", model.IsDeletedYes).Error
+}

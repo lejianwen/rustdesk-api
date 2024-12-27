@@ -160,8 +160,8 @@ func OauthBind(rg *gin.RouterGroup) {
 
 }
 func LoginLogBind(rg *gin.RouterGroup) {
-	aR := rg.Group("/login_log")
 	cont := &admin.LoginLog{}
+	aR := rg.Group("/login_log").Use(middleware.AdminPrivilege())
 	aR.GET("/list", cont.List)
 	aR.POST("/delete", cont.Delete)
 	aR.POST("/batchDelete", cont.BatchDelete)
@@ -273,6 +273,13 @@ func MyBind(rg *gin.RouterGroup) {
 		cont := &my.Peer{}
 		rg.GET("/my/peer/list", cont.List)
 
+	}
+
+	{
+		cont := &my.LoginLog{}
+		rg.GET("/my/login_log/list", cont.List)
+		rg.POST("/my/login_log/delete", cont.Delete)
+		rg.POST("/my/login_log/batchDelete", cont.BatchDelete)
 	}
 }
 

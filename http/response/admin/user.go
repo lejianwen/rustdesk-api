@@ -19,7 +19,7 @@ func (lp *LoginPayload) FromUser(user *model.User) {
 }
 
 var UserRouteNames = []string{
-	"MyTagList", "MyAddressBookList", "MyInfo", "MyAddressBookCollection", "MyPeer", "MyShareRecordList",
+	"MyTagList", "MyAddressBookList", "MyInfo", "MyAddressBookCollection", "MyPeer", "MyShareRecordList", "MyLoginLog",
 }
 var AdminRouteNames = []string{"*"}
 
