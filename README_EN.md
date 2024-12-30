@@ -271,5 +271,6 @@ Download the release from [release](https://github.com/lejianwen/rustdesk-api/re
 
 ## Others
 
+- [Connection Timeout](#92)
 - [Change client ID](https://github.com/abdullah-erturk/RustDesk-ID-Changer)
 - [Web client source](https://hub.docker.com/r/keyurbhole/flutter_web_desk)
