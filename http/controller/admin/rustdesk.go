@@ -2,45 +2,114 @@ package admin
 
 import (
 	"Gwen/global"
+	"Gwen/http/request/admin"
 	"Gwen/http/response"
+	"Gwen/model"
+	"Gwen/service"
 	"github.com/gin-gonic/gin"
 )
 
 type Rustdesk struct {
 }
 
-// ServerConfig RUSTDESK服务配置
-// @Tags ADMIN
-// @Summary RUSTDESK服务配置
-// @Description 服务配置,给webclient提供api-server
-// @Accept  json
-// @Produce  json
-// @Success 200 {object} response.Response
-// @Failure 500 {object} response.Response
-// @Router /admin/server-config [get]
-// @Security token
-func (r *Rustdesk) ServerConfig(c *gin.Context) {
-	cf := &response.ServerConfigResponse{
-		IdServer:    global.Config.Rustdesk.IdServer,
-		Key:         global.Config.Rustdesk.Key,
-		RelayServer: global.Config.Rustdesk.RelayServer,
-		ApiServer:   global.Config.Rustdesk.ApiServer,
-	}
-	response.Success(c, cf)
+type RustdeskCmd struct {
+	Cmd    string `json:"cmd"`
+	Option string `json:"option"`
 }
 
-// AppConfig APP服务配置
-// @Tags ADMIN
-// @Summary APP服务配置
-// @Description APP服务配置
-// @Accept  json
-// @Produce  json
-// @Success 200 {object} response.Response
-// @Failure 500 {object} response.Response
-// @Router /admin/app-config [get]
-// @Security token
-func (r *Rustdesk) AppConfig(c *gin.Context) {
-	response.Success(c, &gin.H{
-		"web_client": global.Config.App.WebClient,
-	})
+func (r *Rustdesk) CmdList(c *gin.Context) {
+	q := &admin.PageQuery{}
+	if err := c.ShouldBindQuery(q); err != nil {
+		response.Fail(c, 101, response.TranslateMsg(c, "ParamsError")+err.Error())
+		return
+	}
+	res := service.AllService.ServerCmdService.List(q.Page, 9999)
+	//在列表前添加系统命令
+	list := make([]*model.ServerCmd, 0)
+	list = append(list, model.SysServerCmds...)
+	list = append(list, res.ServerCmds...)
+	res.ServerCmds = list
+	response.Success(c, res)
+}
+
+func (r *Rustdesk) CmdDelete(c *gin.Context) {
+	f := &model.ServerCmd{}
+	if err := c.ShouldBindJSON(f); err != nil {
+		response.Fail(c, 101, response.TranslateMsg(c, "ParamsError")+err.Error())
+		return
+	}
+	if f.Id == 0 {
+		response.Fail(c, 101, response.TranslateMsg(c, "ParamsError"))
+		return
+	}
+
+	ex := service.AllService.ServerCmdService.Info(f.Id)
+	if ex.Id == 0 {
+		response.Fail(c, 101, response.TranslateMsg(c, "ItemNotFound"))
+		return
+	}
+
+	err := service.AllService.ServerCmdService.Delete(ex)
+	if err != nil {
+		response.Fail(c, 101, err.Error())
+		return
+	}
+	response.Success(c, nil)
+}
+func (r *Rustdesk) CmdCreate(c *gin.Context) {
+	f := &model.ServerCmd{}
+	if err := c.ShouldBindJSON(f); err != nil {
+		response.Fail(c, 101, response.TranslateMsg(c, "ParamsError")+err.Error())
+		return
+	}
+	errList := global.Validator.ValidStruct(c, f)
+	if len(errList) > 0 {
+		response.Fail(c, 101, errList[0])
+		return
+	}
+	err := service.AllService.ServerCmdService.Create(f)
+	if err != nil {
+		response.Fail(c, 101, err.Error())
+		return
+	}
+	response.Success(c, nil)
+}
+
+func (r *Rustdesk) CmdUpdate(c *gin.Context) {
+	f := &model.ServerCmd{}
+	if err := c.ShouldBindJSON(f); err != nil {
+		response.Fail(c, 101, response.TranslateMsg(c, "ParamsError")+err.Error())
+		return
+	}
+	errList := global.Validator.ValidStruct(c, f)
+	if len(errList) > 0 {
+		response.Fail(c, 101, errList[0])
+		return
+	}
+	ex := service.AllService.ServerCmdService.Info(f.Id)
+	if ex.Id == 0 {
+		response.Fail(c, 101, response.TranslateMsg(c, "ItemNotFound"))
+		return
+	}
+	err := service.AllService.ServerCmdService.Update(f)
+	if err != nil {
+		response.Fail(c, 101, err.Error())
+		return
+	}
+	response.Success(c, nil)
+}
+
+func (r *Rustdesk) SendCmd(c *gin.Context) {
+	rc := &RustdeskCmd{}
+	c.ShouldBindJSON(rc)
+	if rc.Cmd == "" {
+		response.Fail(c, 101, "cmd is required")
+		return
+	}
+	res, err := service.AllService.ServerCmdService.SendCmd(rc.Cmd, rc.Option)
+	if err != nil {
+		response.Fail(c, 101, err.Error())
+		return
+	}
+	response.Success(c, res)
 }

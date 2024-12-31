@@ -46,8 +46,19 @@ func Init(g *gin.Engine) {
 	ShareRecordBind(adg)
 	MyBind(adg)
 
+	RustdeskCmdBind(adg)
+
 	//访问静态文件
 	//g.StaticFS("/upload", http.Dir(global.Config.Gin.ResourcesPath+"/upload"))
+}
+
+func RustdeskCmdBind(adg *gin.RouterGroup) {
+	cont := &admin.Rustdesk{}
+	rg := adg.Group("/rustdesk")
+	rg.POST("/sendCmd", cont.SendCmd)
+	rg.GET("/cmdList", cont.CmdList)
+	rg.POST("/cmdDelete", cont.CmdDelete)
+	rg.POST("/cmdCreate", cont.CmdCreate)
 }
 func LoginBind(rg *gin.RouterGroup) {
 	cont := &admin.Login{}

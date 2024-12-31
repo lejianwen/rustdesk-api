@@ -2,9 +2,8 @@ FROM alpine
 
 ARG BUILDARCH
 WORKDIR /app
-RUN apk add --no-cache tzdata file
+RUN apk add --no-cache tzdata
 COPY ./${BUILDARCH}/release /app/
-RUN file /app/apimain
 VOLUME /app/data
 
 EXPOSE 21114
