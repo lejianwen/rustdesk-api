@@ -292,6 +292,21 @@ jobs:
             ${{ env.DOCKERHUB_IMAGE_NAMESPACE }}/rustdesk-api:${{ env.TAG }}-${{ matrix.job.platform }}
           labels: ${{ steps.meta.outputs.labels }}
 
+      - name: Build and push Docker Full S6 image to Docker Hub ${{ matrix.job.platform }}
+        if: ${{ env.SKIP_DOCKER_HUB == 'false' }}  # Only run this step if SKIP_DOCKER_HUB is false
+        uses: docker/build-push-action@v5
+        with:
+          context: "."
+          file: ./Dockerfile_full_s6
+          platforms: ${{ matrix.job.docker_platform }}
+          push: true
+          provenance: false
+          build-args: |
+            BUILDARCH=${{ matrix.job.platform }}
+          tags: |
+            ${{ env.DOCKERHUB_IMAGE_NAMESPACE }}/rustdesk-api:full-s6-${{ matrix.job.platform }}
+          labels: ${{ steps.meta.outputs.labels }}
+
       - name: Build and push Docker image to GHCR ${{ matrix.job.platform }}
         if: ${{ env.SKIP_GHCR == 'false' }}  # Only run this step if SKIP_GHCR is false
         uses: docker/build-push-action@v5
@@ -306,6 +321,21 @@ jobs:
           tags: |
             ghcr.io/${{ env.GHCR_IMAGE_NAMESPACE }}/rustdesk-api:${{ env.LATEST_TAG }}-${{ matrix.job.platform }},
             ghcr.io/${{ env.GHCR_IMAGE_NAMESPACE }}/rustdesk-api:${{ env.TAG }}-${{ matrix.job.platform }}
+          labels: ${{ steps.meta.outputs.labels }}
+
+      - name: Build and push Docker Full S6 image to GHCR ${{ matrix.job.platform }}
+        if: ${{ env.SKIP_GHCR == 'false' }}  # Only run this step if SKIP_GHCR is false
+        uses: docker/build-push-action@v5
+        with:
+          context: "."
+          file: ./Dockerfile
+          platforms: ${{ matrix.job.docker_platform }}
+          push: true
+          provenance: false
+          build-args: |
+            BUILDARCH=${{ matrix.job.platform }}
+          tags: |
+            ghcr.io/${{ env.GHCR_IMAGE_NAMESPACE }}/rustdesk-api:full-s6-${{ matrix.job.platform }}
           labels: ${{ steps.meta.outputs.labels }}
 
   #
@@ -377,5 +407,27 @@ jobs:
           extra-images: ghcr.io/${{ env.GHCR_IMAGE_NAMESPACE }}/rustdesk-api:latest-amd64,
             ghcr.io/${{ env.GHCR_IMAGE_NAMESPACE }}/rustdesk-api:latest-armv7l,
             ghcr.io/${{ env.GHCR_IMAGE_NAMESPACE }}/rustdesk-api:latest-arm64
+          push: true
+          amend: true
+
+      - name: Create and push Full S6 manifest Docker Hub (:version)
+        if: ${{ env.SKIP_DOCKER_HUB == 'false' }}
+        uses: Noelware/docker-manifest-action@master
+        with:
+          base-image: ${{ env.BASE_IMAGE_NAMESPACE }}/rustdesk-api:full-s6
+          extra-images: ${{ env.DOCKERHUB_IMAGE_NAMESPACE }}/rustdesk-api:full-s6-amd64,
+            ${{ env.DOCKERHUB_IMAGE_NAMESPACE }}/rustdesk-api:full-s6-armv7l,
+            ${{ env.DOCKERHUB_IMAGE_NAMESPACE }}/rustdesk-api:full-s6-arm64
+          push: true
+          amend: true
+
+      - name: Create and push Full S6 manifest GHCR (:latest)
+        if: ${{ env.SKIP_GHCR == 'false' }}
+        uses: Noelware/docker-manifest-action@master
+        with:
+          base-image: ghcr.io/${{ env.BASE_IMAGE_NAMESPACE }}/rustdesk-api:full-s6
+          extra-images: ghcr.io/${{ env.GHCR_IMAGE_NAMESPACE }}/rustdesk-api:full-s6-amd64,
+            ghcr.io/${{ env.GHCR_IMAGE_NAMESPACE }}/rustdesk-api:full-s6-armv7l,
+            ghcr.io/${{ env.GHCR_IMAGE_NAMESPACE }}/rustdesk-api:full-s6-arm64
           push: true
           amend: true

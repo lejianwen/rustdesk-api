@@ -17,6 +17,7 @@ type Service struct {
 	*LoginLogService
 	*AuditService
 	*ShareRecordService
+	*ServerCmdService
 }
 
 func New() *Service {
