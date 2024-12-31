@@ -19,6 +19,6 @@ var SysServerCmds = []*ServerCmd{
 	{Cmd: "relay-servers", Alias: "rs", Option: "<separated by ,>", Explain: "set or show relay servers"},
 	{Cmd: "ip-blocker", Alias: "ib", Option: "[<ip>|<number>] [-]", Explain: "block or unblock ip or show blocked ip"},
 	{Cmd: "ip-changes", Alias: "ic", Option: "[<id>|<number>] [-]", Explain: "ip-changes(ic) [<id>|<number>] [-]"},
-	{Cmd: "always-use-relay(aur)", Alias: "aur", Option: "[y|n]", Explain: "always use relay"},
+	{Cmd: "always-use-relay", Alias: "aur", Option: "[y|n]", Explain: "always use relay"},
 	{Cmd: "test-geo", Alias: "tg", Option: "<ip1> <ip2>", Explain: "test geo"},
 }
