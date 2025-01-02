@@ -103,7 +103,7 @@ func (r *Rustdesk) SendCmd(c *gin.Context) {
 	rc := &RustdeskCmd{}
 	c.ShouldBindJSON(rc)
 	if rc.Cmd == "" {
-		response.Fail(c, 101, "cmd is required")
+		response.Fail(c, 101, response.TranslateMsg(c, "ParamsError"))
 		return
 	}
 	res, err := service.AllService.ServerCmdService.SendCmd(rc.Cmd, rc.Option)

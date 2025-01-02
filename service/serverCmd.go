@@ -3,7 +3,6 @@ package service
 import (
 	"Gwen/global"
 	"Gwen/model"
-	"fmt"
 	"net"
 	"time"
 )
@@ -66,14 +65,14 @@ func (is *ServerCmdService) SendSocketCmd(ty string, cmd string) (string, error)
 	}
 	conn, err := net.Dial(tcp, addr+":21115")
 	if err != nil {
-		fmt.Printf("connect to id %s server failed: %v\n", ty, err)
+		global.Logger.Debugf("%s connect to id server failed: %v", ty, err)
 		return "", err
 	}
 	defer conn.Close()
 	//发送命令
 	_, err = conn.Write([]byte(cmd))
 	if err != nil {
-		fmt.Printf("send cmd failed: %v\n", err)
+		global.Logger.Debugf("%s send cmd failed: %v", ty, err)
 		return "", err
 	}
 	time.Sleep(100 * time.Millisecond)
@@ -81,7 +80,7 @@ func (is *ServerCmdService) SendSocketCmd(ty string, cmd string) (string, error)
 	buf := make([]byte, 1024)
 	n, err := conn.Read(buf)
 	if err != nil && err.Error() != "EOF" {
-		fmt.Printf("read response failed: %v\n", err)
+		global.Logger.Debugf("%s read response failed: %v", ty, err)
 		return "", err
 	}
 	return string(buf[:n]), nil
