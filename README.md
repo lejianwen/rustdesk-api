@@ -34,6 +34,7 @@
     - 快速使用web client
     - i18n
     - 通过 web client 分享给游客
+    - server控制(一些官方的简单的指令 [WIKI](https://github.com/lejianwen/rustdesk-api/wiki/Rustdesk-Command))
 - Web Client
     - 自动获取API server
     - 自动获取ID服务器和KEY

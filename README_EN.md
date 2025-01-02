@@ -33,6 +33,7 @@ desktop software that provides self-hosted solutions.
     - Quick access to web client
     - i18n
     - Share to guest by web client
+    - Server control (some simple official commands [WIKI](https://github.com/lejianwen/rustdesk-api/wiki/Rustdesk-Command))
 - Web Client
     - Automatically obtain API server
     - Automatically obtain ID server and KEY
