@@ -3,6 +3,7 @@ package service
 import (
 	"Gwen/global"
 	"Gwen/model"
+	"fmt"
 	"net"
 	"time"
 )
@@ -40,15 +41,15 @@ func (is *ServerCmdService) Create(u *model.ServerCmd) error {
 }
 
 // SendCmd 发送命令
-func (is *ServerCmdService) SendCmd(cmd string, arg string) (string, error) {
+func (is *ServerCmdService) SendCmd(port string, cmd string, arg string) (string, error) {
 	//组装命令
 	cmd = cmd + " " + arg
-	res, err := is.SendSocketCmd("v6", cmd)
+	res, err := is.SendSocketCmd("v6", port, cmd)
 	if err == nil {
 		return res, nil
 	}
 	//v6连接失败，尝试v4
-	res, err = is.SendSocketCmd("v4", cmd)
+	res, err = is.SendSocketCmd("v4", port, cmd)
 	if err == nil {
 		return res, nil
 	}
@@ -56,14 +57,14 @@ func (is *ServerCmdService) SendCmd(cmd string, arg string) (string, error) {
 }
 
 // SendSocketCmd
-func (is *ServerCmdService) SendSocketCmd(ty string, cmd string) (string, error) {
+func (is *ServerCmdService) SendSocketCmd(ty string, port string, cmd string) (string, error) {
 	addr := "[::1]"
 	tcp := "tcp6"
 	if ty == "v4" {
 		tcp = "tcp"
 		addr = "127.0.0.1"
 	}
-	conn, err := net.Dial(tcp, addr+":21115")
+	conn, err := net.Dial(tcp, fmt.Sprintf("%s:%s", addr, port))
 	if err != nil {
 		global.Logger.Debugf("%s connect to id server failed: %v", ty, err)
 		return "", err

@@ -15,6 +15,7 @@ type Rustdesk struct {
 type RustdeskCmd struct {
 	Cmd    string `json:"cmd"`
 	Option string `json:"option"`
+	Target string `json:"target"`
 }
 
 func (r *Rustdesk) CmdList(c *gin.Context) {
@@ -26,7 +27,8 @@ func (r *Rustdesk) CmdList(c *gin.Context) {
 	res := service.AllService.ServerCmdService.List(q.Page, 9999)
 	//在列表前添加系统命令
 	list := make([]*model.ServerCmd, 0)
-	list = append(list, model.SysServerCmds...)
+	list = append(list, model.SysIdServerCmds...)
+	list = append(list, model.SysRelayServerCmds...)
 	list = append(list, res.ServerCmds...)
 	res.ServerCmds = list
 	response.Success(c, res)
@@ -101,12 +103,23 @@ func (r *Rustdesk) CmdUpdate(c *gin.Context) {
 
 func (r *Rustdesk) SendCmd(c *gin.Context) {
 	rc := &RustdeskCmd{}
-	c.ShouldBindJSON(rc)
+	if err := c.ShouldBindJSON(rc); err != nil {
+		response.Fail(c, 101, response.TranslateMsg(c, "ParamsError")+err.Error())
+		return
+	}
 	if rc.Cmd == "" {
 		response.Fail(c, 101, response.TranslateMsg(c, "ParamsError"))
 		return
 	}
-	res, err := service.AllService.ServerCmdService.SendCmd(rc.Cmd, rc.Option)
+	if rc.Target == "" {
+		response.Fail(c, 101, response.TranslateMsg(c, "ParamsError"))
+		return
+	}
+	if rc.Target != model.ServerCmdTargetIdServer && rc.Target != model.ServerCmdTargetRelayServer {
+		response.Fail(c, 101, response.TranslateMsg(c, "ParamsError"))
+		return
+	}
+	res, err := service.AllService.ServerCmdService.SendCmd(rc.Target, rc.Cmd, rc.Option)
 	if err != nil {
 		response.Fail(c, 101, err.Error())
 		return

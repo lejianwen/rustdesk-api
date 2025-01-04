@@ -169,7 +169,7 @@ func InitGlobal() {
 	global.Lock = lock.NewLocal()
 }
 func DatabaseAutoUpdate() {
-	version := 251
+	version := 260
 
 	db := global.DB
 
