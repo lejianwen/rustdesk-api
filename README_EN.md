@@ -79,12 +79,11 @@ installation are `admin` `admin`, please change the password immediately.
    In the top right corner, you can change the password, switch languages, and toggle between `day/night` mode.
 
    ![web_resetpwd](docs/en_img/web_resetpwd.png)
-3. Groups can be customized for easy management. Currently, two types are supported: `shared group` and `regular group`.
-   ![web_admin_gr](docs/en_img/web_admin_gr.png)
-4. You can directly launch the client or open the web client for convenience; you can also share it with guests, who can remotely access the device via the web client.
-
+3. Each user can have multiple address books, which can also be shared with other users.
+4. Groups can be customized for easy management. Currently, two types are supported: `shared group` and `regular group`.
+5. You can directly launch the client or open the web client for convenience; you can also share it with guests, who can remotely access the device via the web client.
    ![web_webclient](docs/en_img/admin_webclient.png)
-5. OAuth support: Currently, `GitHub`, `Google` and `OIDC`  are supported. You need to create an `OAuth App` and configure it in
+6. OAuth support: Currently, `GitHub`, `Google` and `OIDC`  are supported. You need to create an `OAuth App` and configure it in
    the admin panel.
    ![web_admin_oauth](docs/en_img/web_admin_oauth.png)
     - For `Google` and `Github`, you don't need to fill the `Issuer` and `Scpoes`
@@ -93,6 +92,23 @@ installation are `admin` `admin`, please change the password immediately.
       at `Settings` -> `Developer settings` -> `OAuth Apps` -> `New OAuth App` [here](https://github.com/settings/developers).
     - Set the `Authorization callback URL` to `http://<your server[:port]>/api/oauth/callback`,
       e.g., `http://127.0.0.1:21114/api/oauth/callback`.
+   
+7. Login logs
+8. Connection logs
+9. File transfer logs
+10. Server control
+
+- `Simple mode`, some simple commands have been GUI-ized and can be executed directly in the backend
+  ![rustdesk_command_simple](./docs/en_img/rustdesk_command_simple.png)
+
+- `Advanced mode`, commands can be executed directly in the backend
+    * Official commands can be used
+    * Custom commands can be added
+    * Custom commands can be executed
+
+  ![rustdesk_command_advance](./docs/en_img/rustdesk_command_advance.png)
+
+
 
 ### Web Client:
 
