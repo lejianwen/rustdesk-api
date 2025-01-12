@@ -31,7 +31,7 @@ rustdesk:
   webclient-magic-queryonline: 0
 logger:
   path: "./runtime/log.txt"
-  level: "warn" #trace,debug,info,warn,error,fatal
+  level: "debug" #trace,debug,info,warn,error,fatal
   report-caller: true
 proxy:
   enable: false
