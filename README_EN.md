@@ -269,9 +269,46 @@ Download the release from [release](https://github.com/lejianwen/rustdesk-api/re
 6. Open your browser and visit `http://<your server[:port]>/_admin/`, with default credentials `admin admin`. Please
    change the password promptly.
 
+#### Running with my forked server-s6 image
 
+- github https://github.com/lejianwen/rustdesk-server
+- docker hub https://hub.docker.com/r/lejianwen/rustdesk-server-s6
+
+```yaml
+ networks:
+   rustdesk-net:
+     external: false
+ services:
+   rustdesk:
+     ports:
+       - 21114:21114
+       - 21115:21115
+       - 21116:21116
+       - 21116:21116/udp
+       - 21117:21117
+       - 21118:21118
+       - 21119:21119
+     image: lejianwen/rustdesk-server-s6:latest
+     environment:
+       - RELAY=<relay_server[:port]>
+       - ENCRYPTED_ONLY=1
+       - MUST_LOGIN=N
+       - TZ=Asia/Shanghai
+       - RUSTDESK_API_RUSTDESK_ID_SERVER=<id_server[:21116]>
+       - RUSTDESK_API_RUSTDESK_RELAY_SERVER=<relay_server[:21117]>
+       - RUSTDESK_API_RUSTDESK_API_SERVER=http://<api_server[:21114]>
+     volumes:
+       - /data/rustdesk/server:/data
+       - /data/rustdesk/api:/app/data #将数据库挂载
+       - /data/rustdesk/server:/app/conf/data #挂载key文件到api容器，可以不用使用 RUSTDESK_API_RUSTDESK_KEY
+     networks:
+       - rustdesk-net
+     restart: unless-stopped
+       
+```
 ## Others
 
+- [WIKI](https://github.com/lejianwen/rustdesk-api/wiki)
 - [Connection Timeout](https://github.com/lejianwen/rustdesk-api/issues/92)
 - [Change client ID](https://github.com/abdullah-erturk/RustDesk-ID-Changer)
 - [Web client source](https://hub.docker.com/r/keyurbhole/flutter_web_desk)
