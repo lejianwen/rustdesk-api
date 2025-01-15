@@ -1,6 +1,7 @@
 package middleware
 
 import (
+	"Gwen/global"
 	"Gwen/service"
 	"github.com/gin-gonic/gin"
 )
@@ -27,7 +28,21 @@ func RustAuth() gin.HandlerFunc {
 		//提取token，格式是Bearer {token}
 		//这里只是简单的提取
 		token = token[7:]
+
 		//验证token
+
+		//检查是否设置了jwt key
+		if global.Config.Jwt.Key != "" {
+			uid, _ := service.AllService.UserService.VerifyJWT(token)
+			if uid == 0 {
+				c.JSON(401, gin.H{
+					"error": "Unauthorized",
+				})
+				c.Abort()
+				return
+			}
+		}
+
 		user, ut := service.AllService.UserService.InfoByAccessToken(token)
 		if user.Id == 0 {
 			c.JSON(401, gin.H{
@@ -38,7 +53,7 @@ func RustAuth() gin.HandlerFunc {
 		}
 		if !service.AllService.UserService.CheckUserEnable(user) {
 			c.JSON(401, gin.H{
-				"error": "账号已被禁用",
+				"error": "Unauthorized",
 			})
 			c.Abort()
 			return

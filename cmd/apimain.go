@@ -5,6 +5,7 @@ import (
 	"Gwen/global"
 	"Gwen/http"
 	"Gwen/lib/cache"
+	"Gwen/lib/jwt"
 	"Gwen/lib/lock"
 	"Gwen/lib/logger"
 	"Gwen/lib/orm"
@@ -17,6 +18,7 @@ import (
 	"github.com/spf13/cobra"
 	"os"
 	"strconv"
+	"time"
 )
 
 // @title 管理系统API
@@ -163,7 +165,7 @@ func InitGlobal() {
 
 	//jwt
 	//fmt.Println(global.Config.Jwt.PrivateKey)
-	//global.Jwt = jwt.NewJwt(global.Config.Jwt.PrivateKey, global.Config.Jwt.ExpireDuration*time.Second)
+	global.Jwt = jwt.NewJwt(global.Config.Jwt.Key, global.Config.Jwt.ExpireDuration*time.Second)
 
 	//locker
 	global.Lock = lock.NewLocal()
