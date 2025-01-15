@@ -3,6 +3,6 @@ package config
 import "time"
 
 type Jwt struct {
-	PrivateKey     string        `mapstructure:"private-key"`
+	Key            string        `mapstructure:"key"`
 	ExpireDuration time.Duration `mapstructure:"expire-duration"`
 }

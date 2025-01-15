@@ -68,6 +68,9 @@ func (us *UserService) InfoByAccessToken(token string) (*model.User, *model.User
 
 // GenerateToken 生成token
 func (us *UserService) GenerateToken(u *model.User) string {
+	if global.Config.Jwt.Key != "" {
+		return global.Jwt.GenerateToken(u.Id)
+	}
 	return utils.Md5(u.Username + time.Now().String())
 }
 
@@ -460,4 +463,8 @@ func (us *UserService) AutoRefreshAccessToken(ut *model.UserToken) {
 
 func (us *UserService) BatchDeleteUserToken(ids []uint) error {
 	return global.DB.Where("id in ?", ids).Delete(&model.UserToken{}).Error
+}
+
+func (us *UserService) VerifyJWT(token string) (uint, error) {
+	return global.Jwt.ParseToken(token)
 }
