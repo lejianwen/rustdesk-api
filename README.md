@@ -176,6 +176,9 @@ logger:
 proxy:
   enable: false
   host: ""
+jwt:
+  key: ""
+  expire-duration: 360000
 ```
 
 ### 环境变量
@@ -214,6 +217,9 @@ proxy:
 | ----PROXY配置-----                                  | ---------------                                         | ----------                   |
 | RUSTDESK_API_PROXY_ENABLE                         | 是否启用代理:`false`, `true`                                  | `false`                      |
 | RUSTDESK_API_PROXY_HOST                           | 代理地址                                                    | `http://127.0.0.1:1080`      |
+| ----JWT配置----                                     | --------                                                | --------                     |
+| RUSTDESK_API_JWT_KEY                              | 自定义JWT KEY,为空则不启用JWT                                    |                              |
+| RUSTDESK_API_JWT_EXPIRE_DURATION                  | JWT有效时间                                                 | 360000                       |
 
 
 ### 运行
@@ -307,10 +313,11 @@ proxy:
        - RUSTDESK_API_RUSTDESK_ID_SERVER=<id_server[:21116]>
        - RUSTDESK_API_RUSTDESK_RELAY_SERVER=<relay_server[:21117]>
        - RUSTDESK_API_RUSTDESK_API_SERVER=http://<api_server[:21114]>
+       - RUSTDESK_API_KEY_FILE=/data/id_ed25519.pub
+       - RUSTDESK_API_JWT_KEY=xxxxxx # jwt key
      volumes:
        - /data/rustdesk/server:/data
        - /data/rustdesk/api:/app/data #将数据库挂载
-       - /data/rustdesk/server:/app/conf/data #挂载key文件到api容器，可以不用使用 RUSTDESK_API_RUSTDESK_KEY
      networks:
        - rustdesk-net
      restart: unless-stopped
