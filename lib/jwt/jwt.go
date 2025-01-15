@@ -24,6 +24,10 @@ func NewJwt(key string, tokenExpireDuration time.Duration) *Jwt {
 }
 
 func (s *Jwt) GenerateToken(userId uint) string {
+	if len(s.Key) == 0 {
+		fmt.Println("jwt key is nil")
+		return ""
+	}
 	t := jwt.NewWithClaims(jwt.SigningMethodHS256,
 		UserClaims{
 			UserId: userId,
@@ -33,7 +37,7 @@ func (s *Jwt) GenerateToken(userId uint) string {
 		})
 	token, err := t.SignedString(s.Key)
 	if err != nil {
-		fmt.Println(err)
+		fmt.Printf("jwt token generate error: %v", err)
 		return ""
 	}
 	return token
