@@ -68,7 +68,7 @@ func (us *UserService) InfoByAccessToken(token string) (*model.User, *model.User
 
 // GenerateToken 生成token
 func (us *UserService) GenerateToken(u *model.User) string {
-	if global.Config.Jwt.Key != "" {
+	if len(global.Jwt.Key) > 0 {
 		return global.Jwt.GenerateToken(u.Id)
 	}
 	return utils.Md5(u.Username + time.Now().String())
