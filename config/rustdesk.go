@@ -2,31 +2,56 @@ package config
 
 import (
 	"os"
+	"strconv"
+	"strings"
+)
+
+const (
+	DefaultIdServerPort    = 21116
+	DefaultRelayServerPort = 21117
 )
 
 type Rustdesk struct {
-	IdServer    string `mapstructure:"id-server"`
-	RelayServer string `mapstructure:"relay-server"`
-	ApiServer   string `mapstructure:"api-server"`
-	Key         string `mapstructure:"key"`
-	KeyFile     string `mapstructure:"key-file"`
-	Personal    int    `mapstructure:"personal"`
+	IdServer     string `mapstructure:"id-server"`
+	IdServerPort int    `mapstructure:"-"`
+	RelayServer  string `mapstructure:"relay-server"`
+	RelayPort    int    `mapstructure:"-"`
+	ApiServer    string `mapstructure:"api-server"`
+	Key          string `mapstructure:"key"`
+	KeyFile      string `mapstructure:"key-file"`
+	Personal     int    `mapstructure:"personal"`
 	//webclient-magic-queryonline
 	WebclientMagicQueryonline int `mapstructure:"webclient-magic-queryonline"`
 }
 
-func LoadKeyFile(rustdesk *Rustdesk) {
+func (rd *Rustdesk) LoadKeyFile() {
 	// Load key file
-	if rustdesk.Key != "" {
+	if rd.Key != "" {
 		return
 	}
-	if rustdesk.KeyFile != "" {
+	if rd.KeyFile != "" {
 		// Load key from file
-		b, err := os.ReadFile(rustdesk.KeyFile)
+		b, err := os.ReadFile(rd.KeyFile)
 		if err != nil {
 			return
 		}
-		rustdesk.Key = string(b)
+		rd.Key = string(b)
 		return
+	}
+}
+func (rd *Rustdesk) ParsePort() {
+	// Parse port
+	idres := strings.Split(rd.IdServer, ":")
+	if len(idres) == 1 {
+		rd.IdServerPort = DefaultIdServerPort
+	} else if len(idres) == 2 {
+		rd.IdServerPort, _ = strconv.Atoi(idres[1])
+	}
+
+	relayres := strings.Split(rd.RelayServer, ":")
+	if len(relayres) == 1 {
+		rd.RelayPort = DefaultRelayServerPort
+	} else if len(relayres) == 2 {
+		rd.RelayPort, _ = strconv.Atoi(relayres[1])
 	}
 }

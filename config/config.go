@@ -40,7 +40,7 @@ type Config struct {
 }
 
 // Init 初始化配置
-func Init(rowVal interface{}, path string) *viper.Viper {
+func Init(rowVal *Config, path string) *viper.Viper {
 	if path == "" {
 		path = DefaultConfig
 	}
@@ -61,11 +61,14 @@ func Init(rowVal interface{}, path string) *viper.Viper {
 		if err2 := v.Unmarshal(rowVal); err2 != nil {
 			fmt.Println(err2)
 		}
+		rowVal.Rustdesk.LoadKeyFile()
+		rowVal.Rustdesk.ParsePort()
 	})
 	if err := v.Unmarshal(rowVal); err != nil {
 		fmt.Println(err)
 	}
-
+	rowVal.Rustdesk.LoadKeyFile()
+	rowVal.Rustdesk.ParsePort()
 	return v
 }
 

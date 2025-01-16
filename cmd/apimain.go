@@ -102,9 +102,6 @@ func InitGlobal() {
 	//配置解析
 	global.Viper = config.Init(&global.Config, global.ConfigPath)
 
-	//从配置文件中加载密钥
-	config.LoadKeyFile(&global.Config.Rustdesk)
-
 	//日志
 	global.Logger = logger.New(&logger.Config{
 		Path:         global.Config.Logger.Path,
