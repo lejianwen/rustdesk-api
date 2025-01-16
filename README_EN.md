@@ -47,22 +47,22 @@ desktop software that provides self-hosted solutions.
 ### API Service
 Basic implementation of the PC client's primary interfaces.Supports the Personal version api, which can be enabled by configuring the `rustdesk.personal` file or the `RUSTDESK_API_RUSTDESK_PERSONAL` environment variable.
 
-#### Login
-
-- Added `GitHub`, `Google` and `OIDC` login, which can be used after configuration in the admin panel. See the OAuth
-  configuration section for details.
-- Added authorization login for the web admin panel.
-
-![pc_login](docs/en_img/pc_login.png)
-
-#### Address Book
-
-![pc_ab](docs/en_img/pc_ab.png)
-
-#### Groups
-Groups are divided into `shared groups` and `regular groups`. In shared groups, everyone can see the peers of all group members, while in regular groups, only administrators can see all members' peers.
-
-![pc_gr](docs/en_img/pc_gr.png)
+<table>
+    <tr>
+      <td width="50%" align="center" colspan="2"><b>Login</b></td>
+    </tr>
+    <tr>
+        <td width="50%" align="center" colspan="2"><img src="docs/en_img/pc_login.png"></td>
+    </tr>
+     <tr>
+      <td width="50%" align="center"><b>Address Book</b></td>
+      <td width="50%" align="center"><b>Groups</b></td>
+    </tr>
+    <tr>
+        <td width="50%" align="center"><img src="docs/en_img/pc_ab.png"></td>
+        <td width="50%" align="center"><img src="docs/en_img/pc_gr.png"></td>
+    </tr>
+</table>
 
 ### Web Admin
 

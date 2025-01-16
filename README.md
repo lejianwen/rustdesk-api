@@ -49,21 +49,22 @@
 ### API 服务 
 基本实现了PC端基础的接口。支持Personal版本接口，可以通过配置文件`rustdesk.personal`或环境变量`RUSTDESK_API_RUSTDESK_PERSONAL`来控制是否启用
 
-#### 登录
-
-- 添加了`github`, `google` 以及`OIDC`授权登录，需要在后台配置好就可以用了，具体可看后台OAuth配置
-- 添加了web后台授权登录,点击后直接登录后台就自动登录客户端了
-
-![pc_login](docs/pc_login.png)
-
-#### 地址簿
-
-![pc_ab](docs/pc_ab.png)
-
-#### 群组
-群组分为`共享组`和`普通组`，共享组中所有人都能看到小组成员的设备，普通组只有管理员能看到所有小组成员的设备
-
-![pc_gr](docs/pc_gr.png)
+<table>
+    <tr>
+      <td width="50%" align="center" colspan="2"><b>登录</b></td>
+    </tr>
+    <tr>
+        <td width="50%" align="center" colspan="2"><img src="docs/pc_login.png"></td>
+    </tr>
+     <tr>
+      <td width="50%" align="center"><b>地址簿</b></td>
+      <td width="50%" align="center"><b>群组</b></td>
+    </tr>
+    <tr>
+        <td width="50%" align="center"><img src="docs/pc_ab.png"></td>
+        <td width="50%" align="center"><img src="docs/pc_gr.png"></td>
+    </tr>
+</table>
 
 ### Web Admin:
 
@@ -75,6 +76,7 @@
    ![web_admin](docs/web_admin.png)
 2. 普通用户界面
    ![web_user](docs/web_admin_user.png)
+
    右上角可以更改密码,可以切换语言，可以切换`白天/黑夜`模式
 
    ![web_resetpwd](docs/web_resetpwd.png)
@@ -331,3 +333,14 @@ jwt:
 - [链接超时问题](https://github.com/lejianwen/rustdesk-api/issues/92)
 - [修改客户端ID](https://github.com/abdullah-erturk/RustDesk-ID-Changer)
 - [webclient来源](https://hub.docker.com/r/keyurbhole/flutter_web_desk)
+
+
+## 鸣谢
+
+感谢所有做过贡献的人!
+
+<a href="https://github.com/lejianwen/rustdesk-api/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=lejianwen/rustdesk-api" />
+</a>
+
+
