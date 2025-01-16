@@ -41,7 +41,14 @@ func (is *ServerCmdService) Create(u *model.ServerCmd) error {
 }
 
 // SendCmd 发送命令
-func (is *ServerCmdService) SendCmd(port string, cmd string, arg string) (string, error) {
+func (is *ServerCmdService) SendCmd(target string, cmd string, arg string) (string, error) {
+	port := 0
+	switch target {
+	case model.ServerCmdTargetIdServer:
+		port = global.Config.Rustdesk.IdServerPort - 1
+	case model.ServerCmdTargetRelayServer:
+		port = global.Config.Rustdesk.RelayServerPort
+	}
 	//组装命令
 	cmd = cmd + " " + arg
 	res, err := is.SendSocketCmd("v6", port, cmd)
@@ -57,14 +64,14 @@ func (is *ServerCmdService) SendCmd(port string, cmd string, arg string) (string
 }
 
 // SendSocketCmd
-func (is *ServerCmdService) SendSocketCmd(ty string, port string, cmd string) (string, error) {
+func (is *ServerCmdService) SendSocketCmd(ty string, port int, cmd string) (string, error) {
 	addr := "[::1]"
 	tcp := "tcp6"
 	if ty == "v4" {
 		tcp = "tcp"
 		addr = "127.0.0.1"
 	}
-	conn, err := net.Dial(tcp, fmt.Sprintf("%s:%s", addr, port))
+	conn, err := net.Dial(tcp, fmt.Sprintf("%s:%v", addr, port))
 	if err != nil {
 		global.Logger.Debugf("%s connect to id server failed: %v", ty, err)
 		return "", err

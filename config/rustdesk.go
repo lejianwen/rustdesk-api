@@ -12,14 +12,14 @@ const (
 )
 
 type Rustdesk struct {
-	IdServer     string `mapstructure:"id-server"`
-	IdServerPort int    `mapstructure:"-"`
-	RelayServer  string `mapstructure:"relay-server"`
-	RelayPort    int    `mapstructure:"-"`
-	ApiServer    string `mapstructure:"api-server"`
-	Key          string `mapstructure:"key"`
-	KeyFile      string `mapstructure:"key-file"`
-	Personal     int    `mapstructure:"personal"`
+	IdServer        string `mapstructure:"id-server"`
+	IdServerPort    int    `mapstructure:"-"`
+	RelayServer     string `mapstructure:"relay-server"`
+	RelayServerPort int    `mapstructure:"-"`
+	ApiServer       string `mapstructure:"api-server"`
+	Key             string `mapstructure:"key"`
+	KeyFile         string `mapstructure:"key-file"`
+	Personal        int    `mapstructure:"personal"`
 	//webclient-magic-queryonline
 	WebclientMagicQueryonline int `mapstructure:"webclient-magic-queryonline"`
 }
@@ -50,8 +50,8 @@ func (rd *Rustdesk) ParsePort() {
 
 	relayres := strings.Split(rd.RelayServer, ":")
 	if len(relayres) == 1 {
-		rd.RelayPort = DefaultRelayServerPort
+		rd.RelayServerPort = DefaultRelayServerPort
 	} else if len(relayres) == 2 {
-		rd.RelayPort, _ = strconv.Atoi(relayres[1])
+		rd.RelayServerPort, _ = strconv.Atoi(relayres[1])
 	}
 }
