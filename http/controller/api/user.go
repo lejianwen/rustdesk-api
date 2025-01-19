@@ -34,7 +34,7 @@ type User struct {
 // @Produce  json
 // @Success 200 {object} apiResp.UserPayload
 // @Failure 500 {object} response.Response
-// @Router /api [get]
+// @Router /currentUser [get]
 // @Security token
 func (u *User) Info(c *gin.Context) {
 	user := service.AllService.UserService.CurUser(c)
