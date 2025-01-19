@@ -4,18 +4,19 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/locales/en"
 	"github.com/go-playground/locales/es"
+	"github.com/go-playground/locales/fr"
 	"github.com/go-playground/locales/ko"
 	"github.com/go-playground/locales/ru"
-	"github.com/go-playground/locales/fr"
 	"github.com/go-playground/locales/zh_Hans_CN"
-
+	"github.com/go-playground/locales/zh_Hant"
 	ut "github.com/go-playground/universal-translator"
 	"github.com/go-playground/validator/v10"
 	en_translations "github.com/go-playground/validator/v10/translations/en"
 	es_translations "github.com/go-playground/validator/v10/translations/es"
+	fr_translations "github.com/go-playground/validator/v10/translations/fr"
 	ru_translations "github.com/go-playground/validator/v10/translations/ru"
 	zh_translations "github.com/go-playground/validator/v10/translations/zh"
-	fr_translations "github.com/go-playground/validator/v10/translations/fr"
+	zh_tw_translations "github.com/go-playground/validator/v10/translations/zh_tw"
 	"reflect"
 )
 
@@ -29,8 +30,9 @@ func ApiInitValidator() {
 	ruT := ru.New()
 	esT := es.New()
 	frT := fr.New()
+	zhTwT := zh_Hant.New()
 
-	uni := ut.New(enT, cn, koT, ruT, esT, frT)
+	uni := ut.New(enT, cn, koT, ruT, esT, frT, zhTwT)
 
 	enTrans, _ := uni.GetTranslator("en")
 	zhTrans, _ := uni.GetTranslator("zh_Hans_CN")
@@ -38,6 +40,7 @@ func ApiInitValidator() {
 	ruTrans, _ := uni.GetTranslator("ru")
 	esTrans, _ := uni.GetTranslator("es")
 	frTrans, _ := uni.GetTranslator("fr")
+	zhTwTrans, _ := uni.GetTranslator("zh_Hant")
 
 	err := zh_translations.RegisterDefaultTranslations(validate, zhTrans)
 	if err != nil {
@@ -62,6 +65,10 @@ func ApiInitValidator() {
 		panic(err)
 	}
 	err = fr_translations.RegisterDefaultTranslations(validate, frTrans)
+	if err != nil {
+		panic(err)
+	}
+	err = zh_tw_translations.RegisterDefaultTranslations(validate, zhTwTrans)
 	if err != nil {
 		panic(err)
 	}
@@ -124,6 +131,13 @@ func getTranslatorForLang(lang string) ut.Translator {
 		fallthrough
 	case "zh":
 		trans, _ := Validator.UT.GetTranslator("zh_Hans_CN")
+		return trans
+	case "zh_TW":
+		fallthrough
+	case "zh-TW":
+		fallthrough
+	case "zh-tw":
+		trans, _ := Validator.UT.GetTranslator("zh_Hant")
 		return trans
 	case "ko":
 		trans, _ := Validator.UT.GetTranslator("ko")
