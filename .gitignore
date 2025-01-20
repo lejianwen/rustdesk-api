@@ -1,13 +1,8 @@
 .idea
 runtime/*
 !runtime
-!runtime/cache
 !runtime/cache/.gitkeep
 go.sum
-resources/*
-!resources/public/upload/.gitignore
-!resources/web
-!resources/web2
-!resources/i18n
+resources/admin
 release
 data
