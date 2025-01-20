@@ -21,10 +21,13 @@ func ApiInit(g *gin.Engine) {
 
 	frg := g.Group("/api")
 
-	i := &api.Index{}
-	frg.GET("/", i.Index)
+	{
+		i := &api.Index{}
+		frg.GET("/", i.Index)
+		frg.GET("/version", i.Version)
 
-	frg.POST("/heartbeat", i.Heartbeat)
+		frg.POST("/heartbeat", i.Heartbeat)
+	}
 
 	{
 		l := &api.Login{}
@@ -33,6 +36,7 @@ func ApiInit(g *gin.Engine) {
 		frg.POST("/login", l.Login)
 
 	}
+
 	{
 		o := &api.Oauth{}
 		// [method:POST] [uri:/api/oidc/auth]
@@ -52,11 +56,15 @@ func ApiInit(g *gin.Engine) {
 	if global.Config.App.WebClient == 1 {
 		WebClientRoutes(frg)
 	}
-	au := &api.Audit{}
-	//[method:POST] [uri:/api/audit/conn]
-	frg.POST("/audit/conn", au.AuditConn)
-	//[method:POST] [uri:/api/audit/file]
-	frg.POST("/audit/file", au.AuditFile)
+
+	{
+		au := &api.Audit{}
+		//[method:POST] [uri:/api/audit/conn]
+		frg.POST("/audit/conn", au.AuditConn)
+		//[method:POST] [uri:/api/audit/file]
+		frg.POST("/audit/file", au.AuditFile)
+	}
+
 	frg.Use(middleware.RustAuth())
 	{
 		u := &api.User{}

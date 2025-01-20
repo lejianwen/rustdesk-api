@@ -7,6 +7,7 @@ import (
 	"Gwen/service"
 	"github.com/gin-gonic/gin"
 	"net/http"
+	"os"
 	"time"
 )
 
@@ -60,4 +61,26 @@ func (i *Index) Heartbeat(c *gin.Context) {
 		service.AllService.PeerService.Update(upp)
 	}
 	c.JSON(http.StatusOK, gin.H{})
+}
+
+// Version 版本
+// @Tags 首页
+// @Summary 版本
+// @Description 版本
+// @Accept  json
+// @Produce  json
+// @Success 200 {object} response.Response
+// @Failure 500 {object} response.Response
+// @Router /version [get]
+func (i *Index) Version(c *gin.Context) {
+	//读取resources/version文件
+	v, err := os.ReadFile("resources/version")
+	if err != nil {
+		response.Fail(c, 101, err.Error())
+		return
+	}
+	response.Success(
+		c,
+		string(v),
+	)
 }

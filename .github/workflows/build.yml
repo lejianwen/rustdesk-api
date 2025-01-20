@@ -84,6 +84,15 @@ jobs:
       - name: tidy
         run: go mod tidy
 
+      - name: Get tag version
+        run: |
+          TAG_VERSION="${GITHUB_REF##*/}"
+          VERSION="${TAG_VERSION#v}" 
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+
+      - name: Write version to resources/version
+        run:  echo $VERSION > resources/version
+
       - name: swag
         run: |
           go install github.com/swaggo/swag/cmd/swag@latest
