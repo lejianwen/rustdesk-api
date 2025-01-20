@@ -598,27 +598,6 @@ paths:
       summary: 标签
       tags:
       - 地址[Personal]
-  /api:
-    get:
-      consumes:
-      - application/json
-      description: 用户信息
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/api.UserPayload'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/response.Response'
-      security:
-      - token: []
-      summary: 用户信息
-      tags:
-      - 用户
   /audit/conn:
     post:
       consumes:
@@ -671,6 +650,27 @@ paths:
       summary: 审计文件
       tags:
       - 审计
+  /currentUser:
+    get:
+      consumes:
+      - application/json
+      description: 用户信息
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/api.UserPayload'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - token: []
+      summary: 用户信息
+      tags:
+      - 用户
   /heartbeat:
     post:
       consumes:
@@ -934,29 +934,6 @@ paths:
           schema:
             $ref: '#/definitions/response.ErrorResponse'
       summary: 提交系统信息
-      tags:
-      - 地址
-  /tags:
-    post:
-      consumes:
-      - application/json
-      description: 标签
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            items:
-              $ref: '#/definitions/model.Tag'
-            type: array
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/response.ErrorResponse'
-      security:
-      - BearerAuth: []
-      summary: 标签
       tags:
       - 地址
   /users:
