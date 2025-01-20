@@ -29,6 +29,7 @@ func (s *TagService) ListByUserId(userId uint) (res *model.TagList) {
 func (s *TagService) ListByUserIdAndCollectionId(userId, cid uint) (res *model.TagList) {
 	res = s.List(1, 1000, func(tx *gorm.DB) {
 		tx.Where("user_id = ? and collection_id = ?", userId, cid)
+		tx.Order("name asc")
 	})
 	return
 }
