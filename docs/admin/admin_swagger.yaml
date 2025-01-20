@@ -531,6 +531,8 @@ definitions:
         type: integer
       ip:
         type: string
+      is_deleted:
+        type: integer
       platform:
         description: windows,linux,mac,android,ios
         type: string
@@ -1347,27 +1349,6 @@ paths:
       summary: 地址簿规则编辑
       tags:
       - 地址簿规则
-  /admin/app-config:
-    get:
-      consumes:
-      - application/json
-      description: APP服务配置
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/response.Response'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/response.Response'
-      security:
-      - token: []
-      summary: APP服务配置
-      tags:
-      - ADMIN
   /admin/audit_conn/batchDelete:
     post:
       consumes:
@@ -1892,7 +1873,7 @@ paths:
       summary: 登录选项
       tags:
       - 登录
-  /admin/login_log/delete:
+  /admin/login_log/batchDelete:
     post:
       consumes:
       - application/json
@@ -1918,6 +1899,34 @@ paths:
       security:
       - token: []
       summary: 登录日志批量删除
+      tags:
+      - 登录日志
+  /admin/login_log/delete:
+    post:
+      consumes:
+      - application/json
+      description: 登录日志删除
+      parameters:
+      - description: 登录日志信息
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/model.LoginLog'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - token: []
+      summary: 登录日志删除
       tags:
       - 登录日志
   /admin/login_log/detail/{id}:
@@ -2413,6 +2422,101 @@ paths:
       summary: 地址簿规则编辑
       tags:
       - 我的地址簿规则
+  /admin/my/login_log/batchDelete:
+    post:
+      consumes:
+      - application/json
+      description: 登录日志批量删除
+      parameters:
+      - description: 登录日志
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/admin.LoginLogIds'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - token: []
+      summary: 登录日志批量删除
+      tags:
+      - 我的登录日志
+  /admin/my/login_log/delete:
+    post:
+      consumes:
+      - application/json
+      description: 登录日志删除
+      parameters:
+      - description: 登录日志信息
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/model.LoginLog'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - token: []
+      summary: 登录日志删除
+      tags:
+      - 我的登录日志
+  /admin/my/login_log/list:
+    get:
+      consumes:
+      - application/json
+      description: 登录日志列表
+      parameters:
+      - description: 页码
+        in: query
+        name: page
+        type: integer
+      - description: 页大小
+        in: query
+        name: page_size
+        type: integer
+      - description: 用户ID
+        in: query
+        name: user_id
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.LoginLogList'
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - token: []
+      summary: 登录日志列表
+      tags:
+      - 我的登录日志
   /admin/my/peer/list:
     get:
       consumes:
@@ -3088,27 +3192,6 @@ paths:
       summary: 设备编辑
       tags:
       - 设备
-  /admin/server-config:
-    get:
-      consumes:
-      - application/json
-      description: 服务配置,给webclient提供api-server
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/response.Response'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/response.Response'
-      security:
-      - token: []
-      summary: RUSTDESK服务配置
-      tags:
-      - ADMIN
   /admin/share_record/batchDelete:
     post:
       consumes:
