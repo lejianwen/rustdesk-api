@@ -39,7 +39,7 @@ var rootCmd = &cobra.Command{
 		InitGlobal()
 	},
 	Run: func(cmd *cobra.Command, args []string) {
-		//gin
+		global.Logger.Info("API SERVER START")
 		http.ApiInit()
 	},
 }
