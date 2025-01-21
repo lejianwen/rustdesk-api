@@ -18,7 +18,6 @@ var h = (u, e, i) => (ue(u, e, "read from private field"), i ? i.call(u) : e.get
     }
 }), je = (u, e, i) => (ue(u, e, "access private method"), i);
 
-
 const sa = function () {
     const e = document.createElement("link").relList;
     if (e && e.supports && e.supports("modulepreload")) return;
@@ -7590,7 +7589,7 @@ class N4 {
             let i = new Uint8Array(e.data);
             this._recvDataCount += i.length;
             const o = this._secretKey;
-            o && (o[2] += 1, i = Mn(i, o[2], o[0]));
+            o && (o[2] += 1, i = Kn(i, o[2], o[0]));
             let a;
             i.length == 0 ? a = new Uint8Array : a = this._isRendezvous ? this.parseRendezvous(i) : this.parseMessage(i), this._buf.push(a), this._eventHandlers.message && (this._isProcessing || this.processQueue())
         }
@@ -7817,7 +7816,7 @@ const Co = {
     RShift: "RShift",
     CTRL_ALT_DEL: "CtrlAltDel",
     LOCK_SCREEN: "LockScreen"
-}, se = "1.3.6", po = "2024-12-22 23:23";
+}, se = "1.3.7", po = "2025-01-21 01:12";
 
 class A {
     static setItem(e, i) {
@@ -8036,7 +8035,7 @@ async function zo() {
 }
 
 function Z(u) {
-    return Tn(u)
+    return Ln(u)
 }
 
 function c4(u) {
@@ -8044,7 +8043,7 @@ function c4(u) {
 }
 
 async function Po() {
-    return await Jn()
+    return await $n()
 }
 
 function O4() {
@@ -9176,7 +9175,7 @@ async function rn(u) {
 function xe(u, e = void 0) {
     const i = () => {
         try {
-            Kn(new TextDecoder().decode(u.content)), fe(), e == null || e()
+            Xn(new TextDecoder().decode(u.content)), fe(), e == null || e()
         } catch (o) {
             console.error("Failed to copy to clipboard, ", o), document.hasFocus() || (q4 = u)
         }
@@ -9240,7 +9239,7 @@ async function Nt(u, e, i = void 0) {
 }
 
 function $i() {
-    In("info", "Clipboard is synchronized", 2e3)
+    Un("info", "Clipboard is synchronized", 2e3)
 }
 
 window.addEventListener("focus", function () {
@@ -9887,7 +9886,7 @@ class Wt {
             (f4 = this._ws) == null || f4.sendMessage({public_key: T});
             return
         }
-        const [E, c] = jn(), C = Nn(), D = On(C, l, E), B = K.fromPartial({asymmetric_value: c, symmetric_value: D});
+        const [E, c] = Wn(), C = Vn(), D = qn(C, l, E), B = K.fromPartial({asymmetric_value: c, symmetric_value: D});
         return (x4 = this._ws) == null || x4.sendMessage({public_key: B}), (Ie = this._ws) == null || Ie.setSecretKey(C), console.log("secured"), !0
     }
 
@@ -9905,7 +9904,7 @@ class Wt {
                 Re(o.colors, !1, a => {
                     a && (o.colors = a, m("cursor_data", o))
                 })
-            } else if (e != null && e.cursor_id) m("cursor_id", {id: e == null ? void 0 : e.cursor_id}); else if (e != null && e.cursor_position) m("cursor_position", e == null ? void 0 : e.cursor_position); else if (e != null && e.misc) this.handleMisc(e == null ? void 0 : e.misc); else if (e != null && e.audio_frame) Vn(e == null ? void 0 : e.audio_frame.data); else if (e != null && e.message_box) this.handleMsgBox(e == null ? void 0 : e.message_box); else if (e != null && e.peer_info) this.handleSyncPeerInfo(e.peer_info); else if (e.file_response) await this.handleFileResponse(e.file_response); else if (e.file_action) {
+            } else if (e != null && e.cursor_id) m("cursor_id", {id: e == null ? void 0 : e.cursor_id}); else if (e != null && e.cursor_position) m("cursor_position", e == null ? void 0 : e.cursor_position); else if (e != null && e.misc) this.handleMisc(e == null ? void 0 : e.misc); else if (e != null && e.audio_frame) Zn(e == null ? void 0 : e.audio_frame.data); else if (e != null && e.message_box) this.handleMsgBox(e == null ? void 0 : e.message_box); else if (e != null && e.peer_info) this.handleSyncPeerInfo(e.peer_info); else if (e.file_response) await this.handleFileResponse(e.file_response); else if (e.file_action) {
                 const o = e.file_action;
                 await this.handleFileAction(o)
             }
@@ -10324,7 +10323,7 @@ class Wt {
     }
 
     handleMisc(e) {
-        if (e.audio_format) Wn(e.audio_format.channels, e.audio_format.sample_rate); else if (e.chat_message) m("chat_client_mode", {text: e.chat_message.text}); else if (e.permission_info) {
+        if (e.audio_format) Gn(e.audio_format.channels, e.audio_format.sample_rate); else if (e.chat_message) m("chat_client_mode", {text: e.chat_message.text}); else if (e.permission_info) {
             const i = e.permission_info;
             console.info("Change permission " + i.permission + " -> " + i.enabled);
             let o;
@@ -10494,7 +10493,7 @@ class Wt {
 
     inputKey(e, i, o, a, t, s, l) {
         var c;
-        const E = So(e, Rn());
+        const E = So(e, Mn());
         !E || (a && (e == "VK_MENU" || e == "RAlt") && (a = !1), t && (e == "VK_CONTROL" || e == "RControl") && (t = !1), s && (e == "VK_SHIFT" || e == "RShift") && (s = !1), l && (e == "Meta" || e == "RWin") && (l = !1), E.down = i, E.press = o, E.modifiers = this.getMod(a, t, s, l), (c = this._ws) == null || c.sendMessage({key_event: E}))
     }
 
@@ -11117,7 +11116,6 @@ function Sn(u) {
     return u.indexOf(":") > 0 ? u.split(":")[0] : u
 }
 
-
 const at = (u, e, i) => e && u.type == "SharedAb" ? Z(Zu([u.value, i.salt])) === Z(e) : !1,
     ot = (u, e) => e && u.type == "PersonalAb" ? Z(u.value) === Z(e) : !1;
 
@@ -11241,14 +11239,66 @@ async function Pn(u) {
         o.close(), console.error("Failed to query online states, no online response")
     }
 
+    
+}
 
+const Rn = "rustdesk-client";
+
+function In() {
+    if (typeof navigator != "undefined") {
+        const u = navigator.platform.toLowerCase();
+        return u.includes("win") ? "windows" : u.includes("mac") ? "macos" : u.includes("linux") ? "linux" : u
+    }
+    return "unknown"
+}
+
+function Tn() {
+    const u = In();
+    return u === "windows" ? navigator.userAgent.includes("Win64") ? "x86_64" : "x86" : u === "macos" ? navigator.userAgent.includes("Intel") ? "x86_64" : "arm64" : navigator.userAgent.includes("x64") ? "x86_64" : "x86"
+}
+
+function jn() {
+    const u = navigator.userAgent;
+    let e = "", i = "";
+    if (u.includes("Windows")) {
+        e = "windows";
+        const o = u.match(/Windows NT (\d+\.\d+)/);
+        o && (i = o[1])
+    } else if (u.includes("Mac OS X")) {
+        e = "macos";
+        const o = u.match(/Mac OS X (\d+[._]\d+[._]\d+)/);
+        o && (i = o[1].replace(/_/g, "."))
+    } else if (u.includes("Linux")) {
+        e = "linux";
+        const o = u.match(/Linux\s*([\d.]+)?/);
+        o && o[1] && (i = o[1])
+    } else e = "unknown", i = "";
+    return e += "-" + navigator.userAgent, {os: e, os_version: i}
+}
+
+async function Nn(u) {
+    const e = "https://api.rustdesk.com/version/latest", {os: i, os_version: o} = jn(), a = Tn();
+    return [{os: i, os_version: o, arch: a, device_id: [], typ: u}, e]
+}
+
+async function On() {
+    try {
+        const [u, e] = await Nn(Rn);
+        return await (await fetch(e, {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify(u)
+        })).json()
+    } catch {
+        return null
+    }
 }
 
 window.curConn = void 0;
 window.isMobile = () => /(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|ipad|iris|kindle|Android|Silk|lge |maemo|midp|mmp|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino/i.test(navigator.userAgent) || /1207|6310|6590|3gso|4thp|50[1-6]i|770s|802s|a wa|abac|ac(er|oo|s\-)|ai(ko|rn)|al(av|ca|co)|amoi|an(ex|ny|yw)|aptu|ar(ch|go)|as(te|us)|attw|au(di|\-m|r |s )|avan|be(ck|ll|nq)|bi(lb|rd)|bl(ac|az)|br(e|v)w|bumb|bw\-(n|u)|c55\/|capi|ccwa|cdm\-|cell|chtm|cldc|cmd\-|co(mp|nd)|craw|da(it|ll|ng)|dbte|dc\-s|devi|dica|dmob|do(c|p)o|ds(12|\-d)|el(49|ai)|em(l2|ul)|er(ic|k0)|esl8|ez([4-7]0|os|wa|ze)|fetc|fly(\-|_)|g1 u|g560|gene|gf\-5|g\-mo|go(\.w|od)|gr(ad|un)|haie|hcit|hd\-(m|p|t)|hei\-|hi(pt|ta)|hp( i|ip)|hs\-c|ht(c(\-| |_|a|g|p|s|t)|tp)|hu(aw|tc)|i\-(20|go|ma)|i230|iac( |\-|\/)|ibro|idea|ig01|ikom|im1k|inno|ipaq|iris|ja(t|v)a|jbro|jemu|jigs|kddi|keji|kgt( |\/)|klon|kpt |kwc\-|kyo(c|k)|le(no|xi)|lg( g|\/(k|l|u)|50|54|\-[a-w])|libw|lynx|m1\-w|m3ga|m50\/|ma(te|ui|xo)|mc(01|21|ca)|m\-cr|me(rc|ri)|mi(o8|oa|ts)|mmef|mo(01|02|bi|de|do|t(\-| |o|v)|zz)|mt(50|p1|v )|mwbp|mywa|n10[0-2]|n20[2-3]|n30(0|2)|n50(0|2|5)|n7(0(0|1)|10)|ne((c|m)\-|on|tf|wf|wg|wt)|nok(6|i)|nzph|o2im|op(ti|wv)|oran|owg1|p800|pan(a|d|t)|pdxg|pg(13|\-([1-8]|c))|phil|pire|pl(ay|uc)|pn\-2|po(ck|rt|se)|prox|psio|pt\-g|qa\-a|qc(07|12|21|32|60|\-[2-7]|i\-)|qtek|r380|r600|raks|rim9|ro(ve|zo)|s55\/|sa(ge|ma|mm|ms|ny|va)|sc(01|h\-|oo|p\-)|sdk\/|se(c(\-|0|1)|47|mc|nd|ri)|sgh\-|shar|sie(\-|m)|sk\-0|sl(45|id)|sm(al|ar|b3|it|t5)|so(ft|ny)|sp(01|h\-|v\-|v )|sy(01|mb)|t2(18|50)|t6(00|10|18)|ta(gt|lk)|tcl\-|tdg\-|tel(i|m)|tim\-|t\-mo|to(pl|sh)|ts(70|m\-|m3|m5)|tx\-9|up(\.b|g1|si)|utst|v400|v750|veri|vi(rg|te)|vk(40|5[0-3]|\-v)|vm40|voda|vulc|vx(52|53|60|61|70|80|81|83|85|98)|w3c(\-| )|webc|whit|wi(g |nc|nw)|wmlb|wonu|x700|yas\-|your|zeto|zte\-/i.test(navigator.userAgent.substr(0, 4));
 const ye = zt(), Yu = ye === Y4, H4 = ye === Be, Qu = ye === me;
 
-function Rn() {
+function Mn() {
     return !isMobile()
 }
 
@@ -11267,7 +11317,7 @@ function Vt(u, e, i, o) {
     }
 }
 
-function In(u, e, i) {
+function Un(u, e, i) {
     onGlobalEvent(JSON.stringify({name: "toast", type: u, text: e, dur_msec: i}))
 }
 
@@ -11340,20 +11390,20 @@ function Zt(u) {
     return q.from_base64(u, q.base64_variants.ORIGINAL)
 }
 
-function Tn(u) {
+function Ln(u) {
     return q.to_base64(u, q.base64_variants.ORIGINAL)
 }
 
-function jn() {
+function Wn() {
     const u = q.crypto_box_keypair(), e = u.privateKey, i = u.publicKey;
     return [e, i]
 }
 
-function Nn() {
+function Vn() {
     return q.crypto_secretbox_keygen()
 }
 
-function On(u, e, i) {
+function qn(u, e, i) {
     const o = Uint8Array.from(Array(24).fill(0));
     return q.crypto_box_easy(u, o, e, i)
 }
@@ -11370,7 +11420,7 @@ function st(u, e, i) {
     return q.crypto_secretbox_easy(u, $4(e), i)
 }
 
-function Mn(u, e, i) {
+function Kn(u, e, i) {
     return q.crypto_secretbox_open_easy(u, $4(e), i)
 }
 
@@ -11428,7 +11478,7 @@ window.setByName = (u, e) => {
             e = JSON.parse(e), Ho(curConn, e.usb_hid, e.down == "true", e.lock_modes);
             break;
         case"send_mouse":
-            Un(e);
+            Hn(e);
             break;
         case"send_2fa":
             curConn == null || curConn.send2fa(e);
@@ -11455,7 +11505,7 @@ window.setByName = (u, e) => {
             e = JSON.parse(e), curConn.setFlutterUiOption(e.name, e.value);
             break;
         case"option:user:default":
-            Gn(e);
+            ur(e);
             break;
         case"option:session":
             e = JSON.parse(e), curConn.setOption(e.name, e.value);
@@ -11473,12 +11523,12 @@ window.setByName = (u, e) => {
             curConn.inputOsPassword(e);
             break;
         case"session_add_sync":
-            return Xn(e);
+            return tr(e);
         case"session_start":
-            Yn();
+            ar();
             break;
         case"session_close":
-            $n();
+            or();
             break;
         case"elevate_direct":
             curConn.elevateDirect();
@@ -11500,13 +11550,13 @@ window.setByName = (u, e) => {
             curConn.changePreferCodec(e);
             break;
         case"cursor":
-            Hn(e);
+            Yn(e);
             break;
         case"enter_or_leave":
             curConn == null || curConn.enterOrLeave(e);
             break;
         case"fullscreen":
-            e == "Y" ? er() : ir();
+            e == "Y" ? rr() : sr();
             break;
         case"send_note":
             const i = Yt("conn");
@@ -11549,7 +11599,7 @@ window.setByName = (u, e) => {
             curConn == null || curConn.sendChat(e);
             break;
         case"load_ab":
-            or();
+            dr();
             break;
         case"save_ab":
             _o(e);
@@ -11558,7 +11608,7 @@ window.setByName = (u, e) => {
             vo();
             break;
         case"load_group":
-            nr();
+            cr();
             break;
         case"save_group":
             ko(e);
@@ -11575,7 +11625,7 @@ window.setByName = (u, e) => {
     }
 };
 
-function Un(u) {
+function Hn(u) {
     if (!curConn) return;
     let e = 0;
     switch (u = JSON.parse(u), u.type) {
@@ -11618,11 +11668,11 @@ function Un(u) {
 }
 
 window.getByName = (u, e) => {
-    let i = Ln(u, e);
+    let i = Jn(u, e);
     return typeof i == "string" || i instanceof String ? i : i == null || i == null ? "" : JSON.stringify(i)
 };
 
-function Ln(u, e) {
+function Jn(u, e) {
     var o, a, t, s;
     switch (u) {
         case"remember":
@@ -11669,10 +11719,10 @@ function Ln(u, e) {
         case"version":
             return se;
         case"load_recent_peers":
-            Zn();
+            er();
             break;
         case"load_fav_peers":
-            Qn();
+            ir();
             break;
         case"fav":
             return (a = A.getItem("fav")) != null ? a : "[]";
@@ -11726,7 +11776,7 @@ function Ln(u, e) {
         case"peer_has_password":
             return ((t = (Cu()[e] || {}).password) != null ? t : "") !== "";
         case"fullscreen":
-            return tr() ? "Y" : "N";
+            return lr() ? "Y" : "N";
         case"platform":
             return curConn.getPlatform();
         case"enable_trusted_devices":
@@ -11737,11 +11787,11 @@ function Ln(u, e) {
 
 let ze = new Worker("./libopus.js?v=02816afa"), Qt;
 
-function Wn(u, e) {
-    Qt = qn(u, e), ze.postMessage({channels: u, sampleRate: e})
+function Gn(u, e) {
+    Qt = Qn(u, e), ze.postMessage({channels: u, sampleRate: e})
 }
 
-function Vn(u) {
+function Zn(u) {
     ze.postMessage(u, [u.buffer])
 }
 
@@ -11749,7 +11799,7 @@ window.init = async () => {
     try {
         ze.onmessage = u => {
             Qt.feed(u.data)
-        }, await Jt(), await zo(), await Pa(), await N.init(), console.log("init done"), onInitFinished()
+        }, await Jt(), await zo(), await Pa(), await N.init(), console.log("init done"), onInitFinished(), await On()
     } catch (u) {
         console.error("Failed to init: " + u.message), onInitFinished()
     }
@@ -11758,11 +11808,11 @@ window.onunload = () => {
     console.log("window close"), Ia()
 };
 
-function qn(u, e) {
+function Qn(u, e) {
     return new ra({channels: u, sampleRate: e, flushingTime: 2e3})
 }
 
-function Kn(u) {
+function Xn(u) {
     if (window.clipboardData && window.clipboardData.setData) return window.clipboardData.setData("Text", u);
     if (document.queryCommandSupported && document.queryCommandSupported("copy")) {
         var e = document.createElement("textarea");
@@ -11791,7 +11841,7 @@ function Q(u) {
     }
 }
 
-function Hn(u) {
+function Yn(u) {
     let e = "auto";
     if (u != "auto") try {
         const t = JSON.parse(u);
@@ -11807,13 +11857,13 @@ function Hn(u) {
     }
 }
 
-async function Jn() {
+async function $n() {
     await T4.ready;
     const u = T4.crypto_sign_keypair();
     return {publicKey: u.publicKey, privateKey: u.privateKey}
 }
 
-function Gn(u) {
+function ur(u) {
     try {
         const e = JSON.parse(u), i = JSON.parse(A.getItem("user-default-options")) || {};
         i[e.name] = e.value, A.setItem("user-default-options", JSON.stringify(i))
@@ -11855,22 +11905,23 @@ function Pe() {
     return u.sort().reverse().map(e => e[2])
 }
 
-function Zn() {
+function er() {
     const u = Pe();
     u && be("load_recent_peers", {peers: JSON.stringify(u)})
 }
 
-function Qn() {
+function ir() {
     var u;
     try {
-        const e = (u = A.getItem("fav")) != null ? u : "[]", i = JSON.parse(e), o = Pe().filter(a => i.includes(a.id));
+        const e = (u = A.getItem("fav")) != null ? u : "[]", i = JSON.parse(e),
+            o = Pe().filter(a => i.includes(a.id));
         o && be("load_fav_peers", {peers: JSON.stringify(o)})
     } catch (e) {
         console.error("Failed to load fav peers: " + e.message)
     }
 }
 
-function Xn(u) {
+function tr(u) {
     var e;
     try {
         const i = JSON.parse(u), o = i.id;
@@ -11884,7 +11935,7 @@ function Xn(u) {
     }
 }
 
-function Yn(u) {
+function ar(u) {
     try {
         if (!e0()) return;
         Kt()
@@ -11893,11 +11944,11 @@ function Yn(u) {
     }
 }
 
-function $n(u) {
+function or(u) {
     Se()
 }
 
-function ur(u, e) {
+function nr(u, e) {
     function i(o) {
         return /^([0-9a-fA-F]{0,4}:){1,7}[0-9a-fA-F]{0,4}$/.test(o)
     }
@@ -11925,7 +11976,7 @@ function Xt() {
     if (u) return u;
     const e = A.getItem("custom-rendezvous-server");
     if (e) {
-        let i = ur(e, -2);
+        let i = nr(e, -2);
         return i == e ? `http://${i}:${Ut - 2}` : `http://${i}`
     }
     return "https://admin.rustdesk.com"
@@ -11985,28 +12036,28 @@ async function ea(u, e) {
     })
 }
 
-function er() {
+function rr() {
     const u = document.documentElement;
     u.requestFullscreen ? u.requestFullscreen() : u.mozRequestFullScreen ? u.mozRequestFullScreen() : u.webkitRequestFullscreen ? u.webkitRequestFullscreen() : u.msRequestFullscreen && u.msRequestFullscreen()
 }
 
-function ir() {
+function sr() {
     document.exitFullscreen ? document.exitFullscreen() : document.mozCancelFullScreen ? document.mozCancelFullScreen() : document.webkitExitFullscreen ? document.webkitExitFullscreen() : document.msExitFullscreen && document.msExitFullscreen()
 }
 
-function tr() {
+function lr() {
     return document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement
 }
 
 var lt = !1;
 
-function ar() {
+function Er() {
     lt || (console.log("listen fullscreen"), lt = !0, document.addEventListener("fullscreenchange", () => onFullscreenChanged(!!document.fullscreenElement)), document.addEventListener("mozfullscreenchange", () => onFullscreenChanged(!!document.mozFullScreen)), document.addEventListener("webkitfullscreenchange", () => onFullscreenChanged(!!document.webkitFullscreenElement)), document.addEventListener("msfullscreenchange", () => onFullscreenChanged(!!document.msFullscreenElement)))
 }
 
-ar();
+Er();
 
-async function or() {
+async function dr() {
     try {
         let u = await xt();
         onLoadAbFinished(JSON.stringify(u))
@@ -12015,7 +12066,7 @@ async function or() {
     }
 }
 
-async function nr() {
+async function cr() {
     try {
         let u = await go();
         onLoadGroupFinished(JSON.stringify(u))
