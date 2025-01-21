@@ -82,7 +82,7 @@ func (us *UserService) Login(u *model.User, llog *model.LoginLog) *model.UserTok
 		Token:      token,
 		DeviceUuid: llog.Uuid,
 		DeviceId:   llog.DeviceId,
-		ExpiredAt:  time.Now().Add(time.Hour * 24 * 7).Unix(),
+		ExpiredAt:  time.Now().Add(time.Second * time.Duration(global.Config.App.TokenExpire)).Unix(),
 	}
 	global.DB.Create(ut)
 	llog.UserTokenId = ut.UserId
@@ -452,7 +452,7 @@ func (us *UserService) getAdminUserCount() int64 {
 }
 
 func (us *UserService) RefreshAccessToken(ut *model.UserToken) {
-	ut.ExpiredAt = time.Now().Add(time.Hour * 24 * 7).Unix()
+	ut.ExpiredAt = time.Now().Add(time.Second * time.Duration(global.Config.App.TokenExpire)).Unix()
 	global.DB.Model(ut).Update("expired_at", ut.ExpiredAt)
 }
 func (us *UserService) AutoRefreshAccessToken(ut *model.UserToken) {

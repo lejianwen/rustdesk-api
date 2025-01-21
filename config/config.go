@@ -17,6 +17,7 @@ type App struct {
 	WebClient   int  `mapstructure:"web-client"`
 	Register    bool `mapstructure:"register"`
 	ShowSwagger int  `mapstructure:"show-swagger"`
+	TokenExpire int  `mapstructure:"token-expire"`
 }
 type Admin struct {
 	Title     string `mapstructure:"title"`
