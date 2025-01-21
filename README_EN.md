@@ -194,6 +194,7 @@ The prefix for variable names is `RUSTDESK_API`. If environment variables exist,
 | RUSTDESK_API_APP_WEB_CLIENT                       | web client on/off; 1: on, 0 off, default: 1                                                                  | 1                             |
 | RUSTDESK_API_APP_REGISTER                         | register enable; `true`, `false`; default:`false`                                                            | `false`                       |
 | RUSTDESK_API_APP_SHOW_SWAGGER                     | swagger visible; 1: yes, 0: no; default: 0                                                                   | `0`                           |
+| RUSTDESK_API_APP_TOKEN_EXPIRE                     | token expire duration(second)                                                                                | `3600`                        |
 | ----- ADMIN Configuration-----                    | ----------                                                                                                   | ----------                    |
 | RUSTDESK_API_ADMIN_TITLE                          | Admin Title                                                                                                  | `RustDesk Api Admin`          |
 | RUSTDESK_API_ADMIN_HELLO                          | Admin welcome message, you can use `html`                                                                    |                               |
