@@ -9649,7 +9649,7 @@ const hn = async (u, e) => {
         o = !1
     }
     return o && i.push(K4(e, "")), i
-}, Ut = 21116, Lt = "rs-ny.rustdesk.com", tt = 100, w4 = "trust-this-device";
+}, Ut = 21116, defaultIdServerPort = 21116, Lt = "rs-ny.rustdesk.com", tt = 100, w4 = "trust-this-device";
 
 class Wt {
     constructor() {
@@ -11087,7 +11087,7 @@ function R4(u = !1) {
     return I4(e || Lt, u)
 }
 
-function getrUriFromRs(uri, isRelay = false, roffset = 0) {
+function getUriFromRs(uri, isRelay = false, roffset = 0) {
     const p = isHttps() ? "wss://" : "ws://"
     const [domain, uriport] = uri.split(":")
     if (isHttps() && (!uriport)) {
@@ -11096,7 +11096,7 @@ function getrUriFromRs(uri, isRelay = false, roffset = 0) {
     if (uriport) {
         const port = parseInt(uriport);
         uri = domain + ":" + (port + (isRelay ? roffset || 3 : 2))
-    } else uri += ":" + (Ut + (isRelay ? 3 : 2));
+    } else uri += ":" + (defaultIdServerPort + (isRelay ? 3 : 2));
     return p + uri
 }
 
@@ -11105,7 +11105,7 @@ function isHttps() {
 }
 
 function I4(u, e = !1, i = 0) {
-    return getrUriFromRs(u, e, i)
+    return getUriFromRs(u, e, i)
 }
 
 function wn() {
@@ -11239,7 +11239,7 @@ async function Pn(u) {
         o.close(), console.error("Failed to query online states, no online response")
     }
 
-    
+
 }
 
 const Rn = "rustdesk-client";
