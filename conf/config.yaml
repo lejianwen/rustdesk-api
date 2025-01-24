@@ -58,3 +58,30 @@ oss:
   expire-time: 30
   max-byte: 10240
 
+ldap:
+  enable: true
+  url: "ldap://ldap.example.com:389"
+  tls: false
+  base-dn: "dc=example,dc=com"
+  bind-dn: "cn=admin,dc=example,dc=com"
+  bind-password: "password"
+
+  user:
+    base-dn: "ou=users,dc=example,dc=com"
+    filter: "(cn=*)"
+    username: "uid"
+    email: "mail"
+    first-name: "givenName"
+    last-name: "sn"
+    sync: false
+
+  group:
+    base-dn: "ou=groups,dc=example,dc=com"
+    name: "cn"
+    filter: "(objectClass=groupOfNames)"
+    admin: "cn=admins,ou=groups,dc=example,dc=com"
+    member: "member"
+    mode: "map"
+    map:
+      developer: "cn=devs,ou=groups,dc=example,dc=com"
+      ops: "cn=ops,ou=groups,dc=example,dc=com"

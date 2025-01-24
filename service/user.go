@@ -46,6 +46,12 @@ func (us *UserService) InfoByOpenid(openid string) *model.User {
 
 // InfoByUsernamePassword 根据用户名密码取用户信息
 func (us *UserService) InfoByUsernamePassword(username, password string) *model.User {
+	if global.Config.Ldap.Enable {
+		u, err := AllService.LdapService.Authenticate(username, password)
+		if err == nil {
+			return u
+		}
+	}
 	u := &model.User{}
 	global.DB.Where("username = ? and password = ?", username, us.EncryptPassword(password)).First(u)
 	return u
