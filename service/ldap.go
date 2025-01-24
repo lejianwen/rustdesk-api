@@ -305,20 +305,27 @@ func (ls *LdapService) fieldMemberOf()string{
     return "memberOf"
 }
 
+func (ls *LdapService) fieldGroupName(cfg *config.Ldap) string {
+    if cfg.Group.Name == "" {
+        return "cn"
+    }
+    return cfg.Group.Name
+}
+
 // baseDnUser returns the user-specific base DN or the global base DN if none is set.
 func (ls *LdapService) baseDnUser(cfg *config.Ldap) string {
-    if cfg.User.UserBaseDn == "" {
+    if cfg.User.BaseDn == "" {
         return cfg.BaseDn
     }
-    return cfg.User.UserBaseDn
+    return cfg.User.BaseDn
 }
 
 // baseDnGroup returns the group-specific base DN or the global base DN if none is set.
 func (ls *LdapService) baseDnGroup(cfg *config.Ldap) string {
-    if cfg.Group.GroupBaseDn == "" {
+    if cfg.Group.BaseDn == "" {
         return cfg.BaseDn
     }
-    return cfg.Group.GroupBaseDn
+    return cfg.Group.BaseDn
 }
 
 // isUserAdmin checks if the user is a member of the admin group.
@@ -382,4 +389,48 @@ func (ls *LdapService) isUserAdmin(cfg *config.Ldap, ldapUser *LdapUser) bool {
     return false
 }
 
+// getAllGroupsDn retrieves the DNs of all groups in LDAP and maps them to their names.
+func (ls *LdapService) getAllGroupsDn(cfg *config.Ldap) (map[string]string, error) {
+    // Get the group name field and filter
+    groupNameField := ls.fieldGroupName(cfg) // Retrieves the attribute for group names, e.g., "cn"
+    filter := ls.filterGroupCfg(cfg)         // Builds the filter for searching groups
 
+    // Create the LDAP search request
+    searchRequest := ldap.NewSearchRequest(
+        ls.baseDnGroup(cfg),                 // Base DN for group search
+        ldap.ScopeWholeSubtree,              // Search the entire subtree
+        ldap.NeverDerefAliases,              // Never dereference aliases
+        0, 0, false,                         // Unlimited results and no time limit
+        filter,                              // Group search filter
+        []string{"dn", groupNameField},      // Retrieve "dn" and group name field
+        nil,
+    )
+
+    // Perform the search
+    sr, err := ls.searchResult(cfg, searchRequest)
+    if err != nil {
+        return nil, fmt.Errorf("failed to search groups in LDAP: %w", err)
+    }
+
+    // Map group DNs to their names
+    groups := make(map[string]string)
+    for _, entry := range sr.Entries {
+        groupName := entry.GetAttributeValue(groupNameField)
+        groups[groupName] = entry.DN
+    }
+
+    return groups, nil
+}
+
+func (ls *LdapService) filterGroupCfg(cfg *config.Ldap) string {
+    filter:= cfg.Group.Filter
+    if filter == "" {
+        filter = "(cn=*)"
+    }
+    return filter
+}
+
+// combineDn combines a base DN, field name, and value into a full DN. E.g., "cn=admins,dc=example,dc=com"
+func (ls *LdapService) combineDn(baseDn, fieldName, value string) string {
+    return fmt.Sprintf("%s=%s,%s", fieldName, value, baseDn)
+}
