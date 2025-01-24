@@ -51,7 +51,8 @@ func (ls *LdapService) connectAndBind(cfg *config.Ldap, username,password string
 
     if cfg.TLS {
         // WARNING: InsecureSkipVerify: true is not recommended for production
-        if err = conn.StartTLS(&tls.Config{InsecureSkipVerify: true}); err != nil {
+        tlsVerify: = cfg.TlsVerify
+        if err = conn.StartTLS(&tls.Config{InsecureSkipVerify: tlsVerify}); err != nil {
             conn.Close()
             return nil, fmt.Errorf("failed to start TLS: %w", err)
         }

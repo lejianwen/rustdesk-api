@@ -24,6 +24,7 @@ type Ldap struct {
 	Enable       bool      `mapstructure:"enable"`
 	Url          string    `mapstructure:"url"`
 	TLS          bool      `mapstructure:"tls"`
+	TlsVerify 	 bool      `mapstructure:"tls-verify"`
 	BaseDn       string    `mapstructure:"base-dn"`
 	BindDn       string    `mapstructure:"bind-dn"`
 	BindPassword string    `mapstructure:"bind-password"`

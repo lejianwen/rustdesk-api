@@ -62,6 +62,7 @@ ldap:
   enable: true
   url: "ldap://ldap.example.com:389"
   tls: false
+  tls-verify: false
   base-dn: "dc=example,dc=com"
   bind-dn: "cn=admin,dc=example,dc=com"
   bind-password: "password"
