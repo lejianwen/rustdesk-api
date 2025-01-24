@@ -1,13 +1,15 @@
 package config
 
 type LdapUser struct {
-	BaseDn 	   string `mapstructure:"base-dn"` 				// The base DN of the user for searching
-	Filter     string `mapstructure:"filter"`
-	Username   string `mapstructure:"username"`
-	Email      string `mapstructure:"email"`
-	FirstName  string `mapstructure:"first-name"`
-	LastName   string `mapstructure:"last-name"`
-	Sync       bool   `mapstructure:"sync"` 			// Will sync the user's information to the internal database
+	BaseDn 	   		string `mapstructure:"base-dn"` 				// The base DN of the user for searching
+	EnableAttr 		string `mapstructure:"enable-attr"` 			// The attribute name of the user for enabling, in AD it is "userAccountControl", empty means no enable attribute, all users are enabled
+	EnableAttrValue string `mapstructure:"enable-attr-value"` 		// The value of the enable attribute when the user is enabled
+	Filter     		string `mapstructure:"filter"`
+	Username   		string `mapstructure:"username"`
+	Email      		string `mapstructure:"email"`
+	FirstName  		string `mapstructure:"first-name"`
+	LastName   		string `mapstructure:"last-name"`
+	Sync       		bool   `mapstructure:"sync"` 				// Will sync the user's information to the internal database
 }
 
 type LdapGroup struct {

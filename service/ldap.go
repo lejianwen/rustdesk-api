@@ -18,12 +18,14 @@ type LdapService struct {
 
 // LdapUser represents the user attributes retrieved from LDAP.
 type LdapUser struct {
-    Dn        string
-    Username  string
-    Email     string
-    FirstName string
-    LastName  string
-    MemberOf  []string
+    Dn                  string
+    Username            string
+    Email               string
+    FirstName           string
+    LastName            string
+    MemberOf            []string
+    EnableAttrValue     string
+    Enabled             bool
 }
 
 type LdapGroup struct {
@@ -107,6 +109,9 @@ func (ls *LdapService) Authenticate(username, password string) (*model.User, err
         return nil, fmt.Errorf("LDAP authentication failed: %w", err)
     }
     ldapUser := ls.userResultToLdapUser(cfg,entry)
+    if !ldapUser.Enabled {
+        return nil, errors.New("UserDisabledAtLdap")
+    }
     user, err := ls.mapToLocalUser(cfg,ldapUser)
     if err != nil {
         return nil, fmt.Errorf("failed to map LDAP user to local user: %w", err)
@@ -249,19 +254,25 @@ func (ls *LdapService) buildUserAttributes(cfg *config.Ldap) []string {
         ls.fieldFirstName(cfg),
         ls.fieldLastName(cfg),
         ls.fieldMemberOf(),
+        ls.fieldUserEnableAttr(cfg),
     }
 }
 
 // userResultToLdapUser maps an *ldap.Entry to our LdapUser struct.
 func (ls *LdapService) userResultToLdapUser(cfg *config.Ldap,entry *ldap.Entry) *LdapUser {
-    return &LdapUser{
-        Dn:        entry.DN,
-        Username:  entry.GetAttributeValue(ls.fieldUsername(cfg)),
-        Email:     entry.GetAttributeValue(ls.fieldEmail(cfg)),
-        FirstName: entry.GetAttributeValue(ls.fieldFirstName(cfg)),
-        LastName:  entry.GetAttributeValue(ls.fieldLastName(cfg)),
-        MemberOf:  entry.GetAttributeValues(ls.fieldMemberOf()),
+    lu := &LdapUser{
+        Dn:                 entry.DN,
+        Username:           entry.GetAttributeValue(ls.fieldUsername(cfg)),
+        Email:              entry.GetAttributeValue(ls.fieldEmail(cfg)),
+        FirstName:          entry.GetAttributeValue(ls.fieldFirstName(cfg)),
+        LastName:           entry.GetAttributeValue(ls.fieldLastName(cfg)),
+        MemberOf:           entry.GetAttributeValues(ls.fieldMemberOf()),
+        EnableAttrValue:    entry.GetAttributeValue(ls.fieldUserEnableAttr(cfg)),
+
     }
+    // Check if the user is enabled based on the LDAP configuration
+    ls.isUserEnabled(cfg,lu)
+    return lu
 }
 
 // filterField helps build simple attribute filters, e.g. (uid=username).
@@ -310,6 +321,13 @@ func (ls *LdapService) fieldGroupName(cfg *config.Ldap) string {
         return "cn"
     }
     return cfg.Group.Name
+}
+
+func (ls *LdapService) fieldUserEnableAttr(cfg *config.Ldap) string {
+    if cfg.User.EnableAttr == "" {
+        return "userAccountControl"
+    }
+    return cfg.User.EnableAttr
 }
 
 // baseDnUser returns the user-specific base DN or the global base DN if none is set.
@@ -433,4 +451,23 @@ func (ls *LdapService) filterGroupCfg(cfg *config.Ldap) string {
 // combineDn combines a base DN, field name, and value into a full DN. E.g., "cn=admins,dc=example,dc=com"
 func (ls *LdapService) combineDn(baseDn, fieldName, value string) string {
     return fmt.Sprintf("%s=%s,%s", fieldName, value, baseDn)
+}
+
+
+// isUserEnabled checks if the user is enabled based on the LDAP configuration.
+// If no enable attribute or value is set, all users are considered enabled by default.
+func (ls *LdapService) isUserEnabled(cfg *config.Ldap, ldapUser *LdapUser) bool {
+    // Retrieve the enable attribute and expected value from the configuration
+    enableAttr := cfg.User.EnableAttr
+    enableAttrValue := cfg.User.EnableAttrValue
+
+    // If no enable attribute or value is configured, consider all users as enabled
+    if enableAttr == "" || enableAttrValue == "" {
+        ldapUser.Enabled = true
+        return true
+    }
+
+    // Compare the user's enable attribute value with the expected value
+    ldapUser.Enabled = (ldapUser.EnableAttrValue == enableAttrValue)
+    return ldapUser.Enabled
 }

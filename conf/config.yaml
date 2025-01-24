@@ -1,7 +1,7 @@
 lang: "zh-CN"
 app:
   web-client: 1  # 1:启用 0:禁用
-  register: false #是否开启注册
+  register: true #是否开启注册
   show-swagger: 0 # 1:启用 0:禁用
   token-expire: 360000
 admin:
@@ -69,20 +69,22 @@ ldap:
 
   user:
     base-dn: "ou=users,dc=example,dc=com"
+    enable-attr: "" #The attribute name of the user for enabling, in AD it is "userAccountControl", empty means no enable attribute, all users are enabled
+    enable-attr-value: "" # The value of the enable attribute when the user is enabled, for AD it is "512", empty means no enable attribute, all users are enabled
     filter: "(cn=*)"
     username: "uid"
     email: "mail"
     first-name: "givenName"
     last-name: "sn"
-    sync: false
+    sync: true
 
   group:
     base-dn: "ou=groups,dc=example,dc=com"
     name: "cn"
-    filter: "(objectClass=groupOfNames)"
+    filter: "(&(|(objectClass=group)(objectClass=groupOfNames))(!cn=nosync))" # (cn=*)
     admin: "cn=admins,ou=groups,dc=example,dc=com"
     member: "member"
     mode: "map"
     map:
-      developer: "cn=devs,ou=groups,dc=example,dc=com"
-      ops: "cn=ops,ou=groups,dc=example,dc=com"
+      developer: "devs" # The DN of the group in LDAP is ('name'=devs,'base-dn'), e.g. ('cn=devs,ou=groups,dc=example,dc=com')
+      ops: "ops,"
