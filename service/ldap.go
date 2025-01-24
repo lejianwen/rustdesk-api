@@ -4,7 +4,7 @@ import (
     "crypto/tls"
     "errors"
     "fmt"
-
+    "strings"
     "github.com/go-ldap/ldap/v3"
 
     "Gwen/config"
@@ -23,6 +23,12 @@ type LdapUser struct {
     Email     string
     FirstName string
     LastName  string
+    MemberOf  []string
+}
+
+type LdapGroup struct {
+    Dn   string
+    Name string
 }
 
 // Name returns the full name of an LDAP user.
@@ -51,8 +57,7 @@ func (ls *LdapService) connectAndBind(cfg *config.Ldap, username,password string
 
     if cfg.TLS {
         // WARNING: InsecureSkipVerify: true is not recommended for production
-        tlsVerify: = cfg.TlsVerify
-        if err = conn.StartTLS(&tls.Config{InsecureSkipVerify: tlsVerify}); err != nil {
+        if err = conn.StartTLS(&tls.Config{InsecureSkipVerify: ! cfg.TlsVerify}); err != nil {
             conn.Close()
             return nil, fmt.Errorf("failed to start TLS: %w", err)
         }
@@ -114,14 +119,13 @@ func (ls *LdapService) Authenticate(username, password string) (*model.User, err
 func (ls *LdapService) mapToLocalUser(cfg *config.Ldap,lu *LdapUser) (*model.User, error) {
     userService := &UserService{}
     localUser := userService.InfoByUsername(lu.Username)
-
+    isAdmin:=ls.isUserAdmin(cfg,lu)
     // If the user doesn't exist in local DB, create a new one
     if localUser.Id == 0 {
-        fmt.Printf("[DEBUG] User not found in local DB. Creating a new user...\n")
         newUser := lu.ToUser(nil)
         // Typically, you don’t store LDAP user passwords locally.
         // If needed, you can set a random password here.
-
+        newUser.IsAdmin=&isAdmin
         if err := global.DB.Create(newUser).Error; err != nil {
             return nil, fmt.Errorf("failed to create new user: %w", err)
         }
@@ -132,15 +136,14 @@ func (ls *LdapService) mapToLocalUser(cfg *config.Ldap,lu *LdapUser) (*model.Use
     if cfg.User.Sync {
         originalEmail := localUser.Email
         originalNickname := localUser.Nickname
-
+        originalIsAdmin:= localUser.IsAdmin
         lu.ToUser(localUser) // merges LDAP data into the existing user
-        fmt.Printf("[DEBUG] Updating local user from LDAP: %v\n", localUser)
-
+        localUser.IsAdmin=&isAdmin
         if err := userService.Update(localUser); err != nil {
             // If the update fails, revert to original data
             localUser.Email = originalEmail
             localUser.Nickname = originalNickname
-            fmt.Printf("Failed to update user from LDAP: %v. Keeping local information.\n", err)
+            localUser.IsAdmin=originalIsAdmin
         }
     }
 
@@ -191,30 +194,25 @@ func (ls *LdapService) usernameSearchResult(cfg *config.Ldap,username string) (*
     // Create the *ldap.SearchRequest
     searchRequest := ls.buildUserSearchRequest(cfg,filter)
 
-    // Connect & bind as the service account
-    ldapConn, err := ls.connectAndBindAdmin(cfg)
-    if err != nil {
-        return nil, err
-    }
-    defer ldapConn.Close()
-
-    // Perform the search
-    return ldapConn.Search(searchRequest)
+    return ls.searchResult(cfg,searchRequest)
 }
 
 // emailSearchResult returns the search result for the given email.
 func (ls *LdapService) emailSearchResult(cfg *config.Ldap,email string) (*ldap.SearchResult, error) {
     filter := ls.filterField(ls.fieldEmail(cfg), email)
     searchRequest := ls.buildUserSearchRequest(cfg,filter)
+    return ls.searchResult(cfg,searchRequest)
+}
 
+func (ls *LdapService) searchResult(cfg *config.Ldap,searchRequest *ldap.SearchRequest) (*ldap.SearchResult, error) {
     ldapConn, err := ls.connectAndBindAdmin(cfg)
     if err != nil {
         return nil, err
     }
     defer ldapConn.Close()
-
     return ldapConn.Search(searchRequest)
 }
+
 
 // buildUserSearchRequest constructs an LDAP SearchRequest for users given a filter.
 func (ls *LdapService) buildUserSearchRequest(cfg *config.Ldap,filter string) *ldap.SearchRequest {
@@ -250,6 +248,7 @@ func (ls *LdapService) buildUserAttributes(cfg *config.Ldap) []string {
         ls.fieldEmail(cfg),
         ls.fieldFirstName(cfg),
         ls.fieldLastName(cfg),
+        ls.fieldMemberOf(),
     }
 }
 
@@ -261,6 +260,7 @@ func (ls *LdapService) userResultToLdapUser(cfg *config.Ldap,entry *ldap.Entry) 
         Email:     entry.GetAttributeValue(ls.fieldEmail(cfg)),
         FirstName: entry.GetAttributeValue(ls.fieldFirstName(cfg)),
         LastName:  entry.GetAttributeValue(ls.fieldLastName(cfg)),
+        MemberOf:  entry.GetAttributeValues(ls.fieldMemberOf()),
     }
 }
 
@@ -301,6 +301,10 @@ func (ls *LdapService) fieldLastName(cfg *config.Ldap) string {
     return cfg.User.LastName
 }
 
+func (ls *LdapService) fieldMemberOf()string{
+    return "memberOf"
+}
+
 // baseDnUser returns the user-specific base DN or the global base DN if none is set.
 func (ls *LdapService) baseDnUser(cfg *config.Ldap) string {
     if cfg.User.UserBaseDn == "" {
@@ -316,3 +320,66 @@ func (ls *LdapService) baseDnGroup(cfg *config.Ldap) string {
     }
     return cfg.Group.GroupBaseDn
 }
+
+// isUserAdmin checks if the user is a member of the admin group.
+func (ls *LdapService) isUserAdmin(cfg *config.Ldap, ldapUser *LdapUser) bool {
+    // Check if the admin group is configured
+    adminGroup := cfg.Group.Admin
+    if adminGroup == "" {
+        return false
+    }
+
+    // Determine the attribute for group membership
+    member := strings.ToLower(cfg.Group.Member)
+    if member == "" {
+        member = "member" // Default to "member"
+    }
+
+    // Check "memberOf" directly
+    if member == "memberof" {
+        for _, group := range ldapUser.MemberOf {
+            if group == adminGroup {
+                return true
+            }
+        }
+        return false
+    }
+
+    // For "member" attribute, perform a reverse search on the group
+    if member == "member" {
+        userDN := ldap.EscapeFilter(ldapUser.Dn)
+        adminGroupDn:=ldap.EscapeFilter(adminGroup)
+        groupFilter := fmt.Sprintf("(member=%s)",userDN)
+
+        // Create the LDAP search request
+        groupSearchRequest := ldap.NewSearchRequest(
+            adminGroupDn,
+            ldap.ScopeWholeSubtree,
+            ldap.NeverDerefAliases,
+            0,     // Unlimited search results
+            0,     // No time limit
+            false, // Return both attributes and DN
+            groupFilter,
+            []string{"dn"},
+            nil,
+        )
+
+        // Perform the group search
+        groupResult, err := ls.searchResult(cfg,groupSearchRequest)
+        if err != nil {
+            return false
+        }
+
+        // If any results are returned, the user is part of the admin group
+        if len(groupResult.Entries) > 0 {
+            return true
+        }
+        return false
+    }
+
+    // Unsupported membership attribute
+    fmt.Printf("[ERROR] Unsupported group membership attribute: %s\n", member)
+    return false
+}
+
+
