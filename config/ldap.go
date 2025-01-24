@@ -1,18 +1,18 @@
 package config
 
 type LdapUser struct {
-	UserBaseDn string `mapstructure:"base-dn"`
+	BaseDn 	   string `mapstructure:"base-dn"` 				// The base DN of the user for searching
 	Filter     string `mapstructure:"filter"`
 	Username   string `mapstructure:"username"`
 	Email      string `mapstructure:"email"`
 	FirstName  string `mapstructure:"first-name"`
 	LastName   string `mapstructure:"last-name"`
-	Sync       bool   `mapstructure:"sync"` // Will sync the user's information to the internal database
+	Sync       bool   `mapstructure:"sync"` 			// Will sync the user's information to the internal database
 }
 
 type LdapGroup struct {
-	GroupBaseDn string            `mapstructure:"base-dn"`
-	Name        string            `mapstructure:"name"`
+	BaseDn 		string            `mapstructure:"base-dn"` // The base DN of the group for searching
+	Name        string            `mapstructure:"name"`    // The attribute name of the group
 	Filter      string            `mapstructure:"filter"`
 	Admin       string            `mapstructure:"admin"`   // Which group is the admin group
 	Member      string            `mapstructure:"member"`  // How to get the member of the group: member, uniqueMember, or memberOf (default: member)
