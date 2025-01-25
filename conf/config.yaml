@@ -77,4 +77,4 @@ ldap:
     first-name: "givenName"
     last-name: "sn"
     sync: false         # If true, the user will be synchronized to the database when the user logs in. If false, the user will be synchronized to the database when the user be created.
-    admin: "cn=admin,dc=example,dc=com"
+    admin-group: "cn=admin,dc=example,dc=com" # The group name of the admin group, if the user is in this group, the user will be an admin.

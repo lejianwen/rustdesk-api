@@ -316,7 +316,7 @@ func (ls *LdapService) baseDnUser(cfg *config.Ldap) string {
 // isUserAdmin checks if the user is a member of the admin group.
 func (ls *LdapService) isUserAdmin(cfg *config.Ldap, ldapUser *LdapUser) bool {
 	// Check if the admin group is configured
-	adminGroup := cfg.User.Admin
+	adminGroup := cfg.User.AdminGroup
 	if adminGroup == "" {
 		return false
 	}
