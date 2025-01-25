@@ -5,6 +5,7 @@ import (
     "errors"
     "fmt"
     "strings"
+    "strconv"
     "github.com/go-ldap/ldap/v3"
 
     "Gwen/config"
@@ -92,7 +93,6 @@ func (ls *LdapService) verifyCredentials(cfg *config.Ldap,username, password str
 // Returns the corresponding *model.User if successful, or an error if not.
 func (ls *LdapService) Authenticate(username, password string) (*model.User, error) {
     cfg := &global.Config.Ldap
-
     // 1. Use a service bind to search for the user DN
     sr, err := ls.usernameSearchResult(cfg,username)
     if err != nil {
@@ -198,7 +198,6 @@ func (ls *LdapService) usernameSearchResult(cfg *config.Ldap,username string) (*
     filter := ls.filterField(ls.fieldUsername(cfg), username)
     // Create the *ldap.SearchRequest
     searchRequest := ls.buildUserSearchRequest(cfg,filter)
-
     return ls.searchResult(cfg,searchRequest)
 }
 
@@ -268,7 +267,6 @@ func (ls *LdapService) userResultToLdapUser(cfg *config.Ldap,entry *ldap.Entry) 
         LastName:           entry.GetAttributeValue(ls.fieldLastName(cfg)),
         MemberOf:           entry.GetAttributeValues(ls.fieldMemberOf()),
         EnableAttrValue:    entry.GetAttributeValue(ls.fieldUserEnableAttr(cfg)),
-
     }
     // Check if the user is enabled based on the LDAP configuration
     ls.isUserEnabled(cfg,lu)
@@ -407,38 +405,6 @@ func (ls *LdapService) isUserAdmin(cfg *config.Ldap, ldapUser *LdapUser) bool {
     return false
 }
 
-// getAllGroupsDn retrieves the DNs of all groups in LDAP and maps them to their names.
-func (ls *LdapService) getAllGroupsDn(cfg *config.Ldap) (map[string]string, error) {
-    // Get the group name field and filter
-    groupNameField := ls.fieldGroupName(cfg) // Retrieves the attribute for group names, e.g., "cn"
-    filter := ls.filterGroupCfg(cfg)         // Builds the filter for searching groups
-
-    // Create the LDAP search request
-    searchRequest := ldap.NewSearchRequest(
-        ls.baseDnGroup(cfg),                 // Base DN for group search
-        ldap.ScopeWholeSubtree,              // Search the entire subtree
-        ldap.NeverDerefAliases,              // Never dereference aliases
-        0, 0, false,                         // Unlimited results and no time limit
-        filter,                              // Group search filter
-        []string{"dn", groupNameField},      // Retrieve "dn" and group name field
-        nil,
-    )
-
-    // Perform the search
-    sr, err := ls.searchResult(cfg, searchRequest)
-    if err != nil {
-        return nil, fmt.Errorf("failed to search groups in LDAP: %w", err)
-    }
-
-    // Map group DNs to their names
-    groups := make(map[string]string)
-    for _, entry := range sr.Entries {
-        groupName := entry.GetAttributeValue(groupNameField)
-        groups[groupName] = entry.DN
-    }
-
-    return groups, nil
-}
 
 func (ls *LdapService) filterGroupCfg(cfg *config.Ldap) string {
     filter:= cfg.Group.Filter
@@ -467,7 +433,128 @@ func (ls *LdapService) isUserEnabled(cfg *config.Ldap, ldapUser *LdapUser) bool 
         return true
     }
 
-    // Compare the user's enable attribute value with the expected value
+    // Normalize the enable attribute for comparison
+    enableAttr = strings.ToLower(enableAttr)
+
+    // Handle Active Directory's userAccountControl attribute
+    if enableAttr == "useraccountcontrol" {
+        // Parse the userAccountControl value
+        userAccountControl, err := strconv.Atoi(ldapUser.EnableAttrValue)
+        if err != nil {
+            fmt.Printf("[ERROR] Invalid userAccountControl value: %v\n", err)
+            ldapUser.Enabled = false
+            return false
+        }
+
+        // Account is disabled if the ACCOUNTDISABLE flag (0x2) is set
+        const ACCOUNTDISABLE = 0x2
+        ldapUser.Enabled = (userAccountControl&ACCOUNTDISABLE == 0)
+        return ldapUser.Enabled
+    }
+
+    // For other attributes, perform a direct comparison with the expected value
     ldapUser.Enabled = (ldapUser.EnableAttrValue == enableAttrValue)
     return ldapUser.Enabled
+}
+
+
+// getGroupNameOfDn retrieves the name of a group from its DN.
+func (ls *LdapService) getGroupNameOfDn(cfg *config.Ldap,dn string) string {
+    return ls.getAttrOfDn(cfg,dn,ls.fieldGroupName(cfg))
+}
+
+// getGroupNameOfDns retrieves the names of groups from their DNs.
+func (ls *LdapService) getGroupNameOfDns(cfg *config.Ldap,dns []string) []string {
+    names := make([]string, 0, len(dns))
+    for _, dn := range dns {
+        names = append(names, ls.getGroupNameOfDn(cfg,dn))
+    }
+    return names
+}
+
+// getAttrOfDn retrieves the value of an attribute for a given DN.
+func (ls *LdapService) getAttrOfDn(cfg *config.Ldap,dn,attr string) string {
+    searchRequest := ldap.NewSearchRequest(
+        ldap.EscapeFilter(dn),
+        ldap.ScopeBaseObject,
+        ldap.NeverDerefAliases,
+        0,     // unlimited search results
+        0,     // no server-side time limit
+        false, // typesOnly
+        "(objectClass=*)",
+        []string{attr},
+        nil,
+    )
+    sr, err := ls.searchResult(cfg,searchRequest)
+    if err != nil {
+        return ""
+    }
+    if len(sr.Entries) == 0 {
+        return ""
+    }
+    return sr.Entries[0].GetAttributeValue(attr)
+}
+
+// getUserGroups retrieves the groups that a user belongs to from LDAP.
+func (ls *LdapService) getUserGroups(cfg *config.Ldap, ldapUser *LdapUser) ([]string, error) {
+    // If the "MemberOf" attribute is already populated, return it
+    if len(ldapUser.MemberOf) > 0 {
+        return ldapUser.MemberOf, nil
+    }
+
+    // Determine the group membership attribute to use
+    memberAttr := strings.ToLower(cfg.Group.Member)
+    if memberAttr == "" {
+        memberAttr = "member" // Default to "member"
+    }
+
+    // Build the filter for groups based on membership and additional configuration
+    groupFilterCfg := ls.filterGroupCfg(cfg)
+    userDN := ldap.EscapeFilter(ldapUser.Dn)
+
+    // Construct the filter
+    var groupFilter string
+    if memberAttr == "member" {
+        groupFilter = fmt.Sprintf("(&(%s=%s)%s)", memberAttr, userDN, groupFilterCfg)
+    } else {
+        return nil, fmt.Errorf("unsupported group membership attribute: %s", memberAttr)
+    }
+
+    // Retrieve the group name field
+    groupNameField := ls.fieldGroupName(cfg)
+
+    // Create the LDAP search request
+    searchRequest := ldap.NewSearchRequest(
+        ls.baseDnGroup(cfg),    // Base DN for group search
+        ldap.ScopeWholeSubtree, // Search the entire subtree
+        ldap.NeverDerefAliases, // Never dereference aliases
+        0,                      // Unlimited results
+        0,                      // No server-side time limit
+        false,                  // Retrieve both attributes and DN
+        groupFilter,            // Filter to find groups
+        []string{"dn", groupNameField},
+        nil,
+    )
+
+    // Execute the search
+    sr, err := ls.searchResult(cfg, searchRequest)
+    if err != nil {
+        return nil, fmt.Errorf("failed to search groups in LDAP: %w", err)
+    }
+
+    // Collect group names and DNs
+    groups := make([]string, 0, len(sr.Entries))
+    groupDNs := make([]string, 0, len(sr.Entries))
+    for _, entry := range sr.Entries {
+        groupName := entry.GetAttributeValue(groupNameField)
+        if groupName != "" {
+            groups = append(groups, groupName)
+            groupDNs = append(groupDNs, entry.DN)
+        }
+    }
+
+    // Cache the group DNs in the ldapUser object for future calls
+    ldapUser.MemberOf = groupDNs
+
+    return groups, nil
 }
