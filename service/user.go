@@ -51,6 +51,8 @@ func (us *UserService) InfoByUsernamePassword(username, password string) *model.
 		if err == nil {
 			return u
 		}
+		global.Logger.Error("LDAP authentication failed, %v", err)
+		global.Logger.Warn("Fallback to local database")
 	}
 	u := &model.User{}
 	global.DB.Where("username = ? and password = ?", username, us.EncryptPassword(password)).First(u)
