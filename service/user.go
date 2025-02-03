@@ -90,7 +90,7 @@ func (us *UserService) Login(u *model.User, llog *model.LoginLog) *model.UserTok
 		Token:      token,
 		DeviceUuid: llog.Uuid,
 		DeviceId:   llog.DeviceId,
-		ExpiredAt:  time.Now().Add(time.Second * time.Duration(global.Config.App.TokenExpire)).Unix(),
+		ExpiredAt:  us.UserTokenExpireTimestamp(),
 	}
 	global.DB.Create(ut)
 	llog.UserTokenId = ut.UserId
@@ -462,8 +462,17 @@ func (us *UserService) getAdminUserCount() int64 {
 	return count
 }
 
+// UserTokenExpireTimestamp 生成用户token过期时间
+func (us *UserService) UserTokenExpireTimestamp() int64 {
+	exp := global.Config.App.TokenExpire
+	if exp == 0 {
+		exp = 3600 * 24 * 7
+	}
+	return time.Now().Add(time.Second * time.Duration(exp)).Unix()
+}
+
 func (us *UserService) RefreshAccessToken(ut *model.UserToken) {
-	ut.ExpiredAt = time.Now().Add(time.Second * time.Duration(global.Config.App.TokenExpire)).Unix()
+	ut.ExpiredAt = us.UserTokenExpireTimestamp()
 	global.DB.Model(ut).Update("expired_at", ut.ExpiredAt)
 }
 func (us *UserService) AutoRefreshAccessToken(ut *model.UserToken) {
