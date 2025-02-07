@@ -46,6 +46,7 @@
 
 ## 功能
 
+
 ### API 服务 
 基本实现了PC端基础的接口。支持Personal版本接口，可以通过配置文件`rustdesk.personal`或环境变量`RUSTDESK_API_RUSTDESK_PERSONAL`来控制是否启用
 
@@ -70,23 +71,20 @@
 
 * 使用前后端分离，提供用户友好的管理界面，主要用来管理和展示。前端代码在[rustdesk-api-web](https://github.com/lejianwen/rustdesk-api-web)
 
-* 后台访问地址是`http://<your server>[:port]/_admin/`初次安装管理员为用户名密码为`admin` `admin`，请即时更改密码
+* 后台访问地址是`http://<your server>[:port]/_admin/`
+* 初次安装管理员为用户名为`admin`，密码将在控制台打印，可以通过[命令行](#CLI)更改密码
+
+  ![img.png](./docs/init_admin_pwd.png)
 
 1. 管理员界面
    ![web_admin](docs/web_admin.png)
 2. 普通用户界面
    ![web_user](docs/web_admin_user.png)
 
-   右上角可以更改密码,可以切换语言，可以切换`白天/黑夜`模式
-
-   ![web_resetpwd](docs/web_resetpwd.png)
-
 3. 每个用户可以多个地址簿，也可以将地址簿共享给其他用户
 4. 分组可以自定义，方便管理，暂时支持两种类型: `共享组` 和 `普通组`
 5. 可以直接打开webclient，方便使用；也可以分享给游客，游客可以直接通过webclient远程到设备
-   ![web_webclient](docs/admin_webclient.png)
 6. Oauth,支持了`Github`, `Google` 以及 `OIDC`, 需要创建一个`OAuth App`，然后配置到后台
-   ![web_admin_oauth](docs/web_admin_oauth.png)
     - 对于`Google` 和 `Github`, `Issuer` 和 `Scopes`不需要填写.
     - 对于`OIDC`, `Issuer`是必须的。`Scopes`是可选的，默认为 `openid,profile,email`. 确保可以获取 `sub`,`email` 和`preferred_username`
     - `github oauth app`在`Settings`->`Developer settings`->`OAuth Apps`->`New OAuth App`
@@ -127,6 +125,7 @@
    ![api_swag](docs/api_swag.png)
 
 ### CLI
+
 ```bash
 # 查看帮助
 ./apimain -h

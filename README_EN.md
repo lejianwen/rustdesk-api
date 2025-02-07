@@ -69,23 +69,22 @@ Basic implementation of the PC client's primary interfaces.Supports the Personal
 * The frontend and backend are separated to provide a user-friendly management interface, primarily for managing and
 displaying data.Frontend code is available at [rustdesk-api-web](https://github.com/lejianwen/rustdesk-api-web)
 
-* Admin panel URL: `http://<your server[:port]>/_admin/`. The default username and password for the initial
-installation are `admin` `admin`, please change the password immediately.
+* Admin panel URL: `http://<your server[:port]>/_admin/`
+* For the initial installation, the admin username is `admin`, and the password will be printed in the console. You can change the password via the [command line](#CLI).
+
+  ![img.png](./docs/init_admin_pwd.png)
+
 
 1. Admin interface:
    ![web_admin](docs/en_img/web_admin.png)
 2. Regular user interface:
    ![web_user](docs/en_img/web_admin_user.png)
-   In the top right corner, you can change the password, switch languages, and toggle between `day/night` mode.
 
-   ![web_resetpwd](docs/en_img/web_resetpwd.png)
 3. Each user can have multiple address books, which can also be shared with other users.
 4. Groups can be customized for easy management. Currently, two types are supported: `shared group` and `regular group`.
 5. You can directly launch the client or open the web client for convenience; you can also share it with guests, who can remotely access the device via the web client.
-   ![web_webclient](docs/en_img/admin_webclient.png)
 6. OAuth support: Currently, `GitHub`, `Google` and `OIDC`  are supported. You need to create an `OAuth App` and configure it in
    the admin panel.
-   ![web_admin_oauth](docs/en_img/web_admin_oauth.png)
     - For `Google` and `Github`, you don't need to fill the `Issuer` and `Scpoes`
     - For `OIDC`, you must set the `Issuer`. And `Scopes` is optional which default is `openid,email,profile`, please make sure this `Oauth App` can access `sub`, `email` and `preferred_username`
     - Create a `GitHub OAuth App`
@@ -97,16 +96,15 @@ installation are `admin` `admin`, please change the password immediately.
 8. Connection logs
 9. File transfer logs
 10. Server control
+  - `Simple mode`, some simple commands have been GUI-ized and can be executed directly in the backend
+    ![rustdesk_command_simple](./docs/en_img/rustdesk_command_simple.png)
 
-- `Simple mode`, some simple commands have been GUI-ized and can be executed directly in the backend
-  ![rustdesk_command_simple](./docs/en_img/rustdesk_command_simple.png)
-
-- `Advanced mode`, commands can be executed directly in the backend
+  - `Advanced mode`, commands can be executed directly in the backend
     * Official commands can be used
     * Custom commands can be added
     * Custom commands can be executed
 
-  ![rustdesk_command_advance](./docs/en_img/rustdesk_command_advance.png)
+    ![rustdesk_command_advance](./docs/en_img/rustdesk_command_advance.png)
 
 
 
