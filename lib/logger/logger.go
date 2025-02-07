@@ -21,7 +21,7 @@ type Config struct {
 func New(c *Config) *log.Logger {
 	log.SetFormatter(&nested.Formatter{
 		// HideKeys:        true,
-		TimestampFormat: "2006-01-02 15:04:05",
+		TimestampFormat: "[2006-01-02 15:04:05]",
 		NoColors:        true,
 		NoFieldsColors:  true,
 		//FieldsOrder:     []string{"name", "age"},
