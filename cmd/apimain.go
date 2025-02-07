@@ -12,7 +12,7 @@ import (
 	"Gwen/lib/upload"
 	"Gwen/model"
 	"Gwen/service"
-	"fmt"
+	"Gwen/utils"
 	"github.com/go-redis/redis/v8"
 	"github.com/nicksnyder/go-i18n/v2/i18n"
 	"github.com/spf13/cobra"
@@ -54,10 +54,10 @@ var resetPwdCmd = &cobra.Command{
 		admin := service.AllService.UserService.InfoById(1)
 		err := service.AllService.UserService.UpdatePassword(admin, pwd)
 		if err != nil {
-			fmt.Printf("reset password fail! %v \n", err)
+			global.Logger.Error("reset password fail! ", err)
 			return
 		}
-		fmt.Printf("reset password success! \n")
+		global.Logger.Info("reset password success! ")
 	},
 }
 var resetUserPwdCmd = &cobra.Command{
@@ -70,20 +70,20 @@ var resetUserPwdCmd = &cobra.Command{
 		pwd := args[1]
 		uid, err := strconv.Atoi(userId)
 		if err != nil {
-			fmt.Printf("userId must be int! \n")
+			global.Logger.Warn("userId must be int!")
 			return
 		}
 		if uid <= 0 {
-			fmt.Printf("userId must be greater than 0! \n")
+			global.Logger.Warn("userId must be greater than 0! ")
 			return
 		}
 		u := service.AllService.UserService.InfoById(uint(uid))
 		err = service.AllService.UserService.UpdatePassword(u, pwd)
 		if err != nil {
-			fmt.Printf("reset password fail! %v \n", err)
+			global.Logger.Warn("reset password fail! ", err)
 			return
 		}
-		fmt.Printf("reset password success! \n")
+		global.Logger.Info("reset password success!")
 	},
 }
 
@@ -93,7 +93,7 @@ func init() {
 }
 func main() {
 	if err := rootCmd.Execute(); err != nil {
-		fmt.Println(err)
+		global.Logger.Error(err)
 		os.Exit(1)
 	}
 }
@@ -175,7 +175,6 @@ func DatabaseAutoUpdate() {
 	if global.Config.Gorm.Type == config.TypeMysql {
 		//检查存不存在数据库，不存在则创建
 		dbName := db.Migrator().CurrentDatabase()
-		fmt.Println("dbName", dbName)
 		if dbName == "" {
 			dbName = global.Config.Mysql.Dbname
 			// 移除 DSN 中的数据库名称，以便初始连接时不指定数据库
@@ -187,18 +186,18 @@ func DatabaseAutoUpdate() {
 			// 获取底层的 *sql.DB 对象，并确保在程序退出时关闭连接
 			sqlDBWithoutDB, err := dbWithoutDB.DB()
 			if err != nil {
-				fmt.Printf("获取底层 *sql.DB 对象失败: %v\n", err)
+				global.Logger.Error("获取底层 *sql.DB 对象失败: %v\n", err)
 				return
 			}
 			defer func() {
 				if err := sqlDBWithoutDB.Close(); err != nil {
-					fmt.Printf("关闭连接失败: %v\n", err)
+					global.Logger.Error("关闭连接失败: %v\n", err)
 				}
 			}()
 
 			err = dbWithoutDB.Exec("CREATE DATABASE IF NOT EXISTS " + dbName + " DEFAULT CHARSET utf8mb4").Error
 			if err != nil {
-				fmt.Println(err)
+				global.Logger.Error(err)
 				return
 			}
 		}
@@ -235,7 +234,7 @@ func DatabaseAutoUpdate() {
 
 }
 func Migrate(version uint) {
-	fmt.Println("migrating....", version)
+	global.Logger.Info("migrating....", version)
 	err := global.DB.AutoMigrate(
 		&model.Version{},
 		&model.User{},
@@ -255,7 +254,7 @@ func Migrate(version uint) {
 		&model.ServerCmd{},
 	)
 	if err != nil {
-		fmt.Println("migrate err :=>", err)
+		global.Logger.Error("migrate err :=>", err)
 	}
 	global.DB.Create(&model.Version{Version: version})
 	//如果是初次则创建一个默认用户
@@ -289,7 +288,11 @@ func Migrate(version uint) {
 			IsAdmin:  &is_admin,
 			GroupId:  1,
 		}
-		admin.Password = service.AllService.UserService.EncryptPassword("admin")
+
+		// 生成随机密码
+		pwd := utils.RandomString(8)
+		global.Logger.Info("Admin Password Is: ", pwd)
+		admin.Password = service.AllService.UserService.EncryptPassword(pwd)
 		global.DB.Create(admin)
 	}
 
