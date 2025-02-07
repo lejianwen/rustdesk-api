@@ -85,7 +85,9 @@ func (l *Login) Login(c *gin.Context) {
 // @Router /login-options [get]
 func (l *Login) LoginOptions(c *gin.Context) {
 	ops := service.AllService.OauthService.GetOauthProviders()
-	ops = append(ops, model.OauthTypeWebauth)
+	if global.Config.App.WebSso {
+		ops = append(ops, model.OauthTypeWebauth)
+	}
 	var oidcItems []map[string]string
 	for _, v := range ops {
 		oidcItems = append(oidcItems, map[string]string{"name": v})
