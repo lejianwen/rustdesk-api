@@ -17,6 +17,7 @@ type App struct {
 	Register    bool `mapstructure:"register"`
 	ShowSwagger int  `mapstructure:"show-swagger"`
 	TokenExpire int  `mapstructure:"token-expire"`
+	WebSso      bool `mapstructure:"web-sso"`
 }
 type Admin struct {
 	Title     string `mapstructure:"title"`
