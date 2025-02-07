@@ -367,4 +367,4 @@ ldap:
   <img src="https://contrib.rocks/image?repo=lejianwen/rustdesk-api" />
 </a>
 
-## 如果觉得这个项目对你有帮助，请给一个star，谢谢！
+## 感谢你的支持！如果这个项目对你有帮助，请点个⭐️鼓励一下，谢谢！
