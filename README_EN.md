@@ -367,4 +367,4 @@ Thanks to everyone who contributed!
   <img src="https://contrib.rocks/image?repo=lejianwen/rustdesk-api" />
 </a>
 
-## If you find this project helpful, please give it a star, thank you!
+## Thanks for your support! If you find this project useful, please give it a ⭐️. Thank you!
