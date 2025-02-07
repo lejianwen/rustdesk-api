@@ -40,6 +40,27 @@ proxy:
 jwt:
   key: ""
   expire-duration: 360000
+ldap:
+  enable: false
+  url: "ldap://ldap.example.com:389"
+  tls: false
+  tls-verify: false
+  base-dn: "dc=example,dc=com"
+  bind-dn: "cn=admin,dc=example,dc=com"
+  bind-password: "password"
+
+  user:
+    base-dn: "ou=users,dc=example,dc=com"
+    enable-attr: ""       #The attribute name of the user for enabling, in AD it is "userAccountControl", empty means no enable attribute, all users are enabled
+    enable-attr-value: "" # The value of the enable attribute when the user is enabled. If you are using AD, just set random value, it will be ignored.
+    filter: "(cn=*)"
+    username: "uid"       # The attribute name of the user for usernamem if you are using AD, it should be "sAMAccountName"
+    email: "mail"
+    first-name: "givenName"
+    last-name: "sn"
+    sync: false         # If true, the user will be synchronized to the database when the user logs in. If false, the user will be synchronized to the database when the user be created.
+    admin-group: "cn=admin,dc=example,dc=com" # The group name of the admin group, if the user is in this group, the user will be an admin.
+
 redis:
   addr: "127.0.0.1:6379"
   password: ""
@@ -58,23 +79,3 @@ oss:
   expire-time: 30
   max-byte: 10240
 
-ldap:
-  enable: false
-  url: "ldap://ldap.example.com:389"
-  tls: false
-  tls-verify: false
-  base-dn: "dc=example,dc=com"
-  bind-dn: "cn=admin,dc=example,dc=com"
-  bind-password: "password"
-
-  user:
-    base-dn: "ou=users,dc=example,dc=com"
-    enable-attr: ""       #The attribute name of the user for enabling, in AD it is "userAccountControl", empty means no enable attribute, all users are enabled
-    enable-attr-value: "" # The value of the enable attribute when the user is enabled. If you are using AD, just set random value, it will be ignored. 
-    filter: "(cn=*)"
-    username: "uid"       # The attribute name of the user for usernamem if you are using AD, it should be "sAMAccountName"
-    email: "mail"
-    first-name: "givenName"
-    last-name: "sn"
-    sync: false         # If true, the user will be synchronized to the database when the user logs in. If false, the user will be synchronized to the database when the user be created.
-    admin-group: "cn=admin,dc=example,dc=com" # The group name of the admin group, if the user is in this group, the user will be an admin.
