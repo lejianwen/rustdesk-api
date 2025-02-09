@@ -20,7 +20,10 @@
     - 登录
     - 地址簿
     - 群组
-    - 授权登录，支持`github`, `google` 和 `OIDC` 登录，支持`web后台`授权登录
+    - 授权登录
+      - 支持`github`, `google` 和 `OIDC` 登录，
+      - 支持`web后台`授权登录
+      - 支持`LDAP`(AD和OpenLDAP已测试), 如果API Server配置了LDAP
     - i18n
 - Web Admin
     - 用户管理
@@ -29,6 +32,7 @@
     - 标签管理
     - 群组管理
     - Oauth 管理
+    - 配置LDAP, 配置文件或者环境变量
     - 登录日志
     - 链接日志
     - 文件传输日志
@@ -107,6 +111,7 @@
     
     ![rustdesk_command_advance](./docs/rustdesk_command_advance.png)
  
+11. **LDAP 支持**, 当在API Server上设置了LDAP(已测试AD和LDAP),可以通过LDAP中的用户信息进行登录 https://github.com/lejianwen/rustdesk-api/issues/114 ,如果LDAP验证失败，返回本地用户
 
 ### Web Client:
 

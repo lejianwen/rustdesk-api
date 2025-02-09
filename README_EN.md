@@ -19,7 +19,10 @@ desktop software that provides self-hosted solutions.
     - Login
     - Address Book
     - Groups
-    - Authorized login, supports `GitHub`, `Google` and `OIDC` login, supports `web admin` authorized login
+    - Authorized login, 
+      - supports `GitHub`, `Google` and `OIDC` login, 
+      - supports `web admin` authorized login, 
+      - supports LDAP(test AD and openladp) if API Server config
     - i18n
 - Web Admin
     - User Management
@@ -28,6 +31,7 @@ desktop software that provides self-hosted solutions.
     - Tag Management
     - Group Management
     - OAuth Management
+    - LDAP Config by config file or ENV
     - Login Logs
     - Connection Logs
     - File Transfer Logs
@@ -107,8 +111,8 @@ displaying data.Frontend code is available at [rustdesk-api-web](https://github.
 
     ![rustdesk_command_advance](./docs/en_img/rustdesk_command_advance.png)
 
-
-
+11. **LDAP Support**, When you setup the LDAP(test for OpenLDAP and AD), you can login with the LDAP's user. https://github.com/lejianwen/rustdesk-api/issues/114 , if LDAP fail fallback local user
+  
 ### Web Client:
 
 1. If you're already logged into the admin panel, the web client will log in automatically.
