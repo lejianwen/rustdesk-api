@@ -56,19 +56,20 @@ func Init(rowVal *Config, path string) *viper.Viper {
 	if err != nil {
 		panic(fmt.Errorf("Fatal error config file: %s \n", err))
 	}
-	v.WatchConfig()
-
 	/*
-		//监听配置修改没什么必要
-		v.OnConfigChange(func(e fsnotify.Event) {
-			//配置文件修改监听
-			fmt.Println("config file changed:", e.Name)
-			if err2 := v.Unmarshal(rowVal); err2 != nil {
-				fmt.Println(err2)
-			}
-			rowVal.Rustdesk.LoadKeyFile()
-			rowVal.Rustdesk.ParsePort()
-		})
+		v.WatchConfig()
+
+
+			//监听配置修改没什么必要
+			v.OnConfigChange(func(e fsnotify.Event) {
+				//配置文件修改监听
+				fmt.Println("config file changed:", e.Name)
+				if err2 := v.Unmarshal(rowVal); err2 != nil {
+					fmt.Println(err2)
+				}
+				rowVal.Rustdesk.LoadKeyFile()
+				rowVal.Rustdesk.ParsePort()
+			})
 	*/
 	if err := v.Unmarshal(rowVal); err != nil {
 		fmt.Println(err)
