@@ -326,7 +326,7 @@ func (us *UserService) RegisterByOauth(oauthUser *model.OauthUser, op string) (e
 		// call this, if find user by email, it will update the email to local database
 		user, ldapErr := AllService.LdapService.GetUserInfoByEmailLocal(email)
 		// If we enable ldap, and the error is not ErrLdapUserNotFound, return the error because we could not sure if the user is not found in ldap
-		if !(errors.Is(ldapErr, ErrLdapNotEnabled) || errors.Is(ldapErr, ErrLdapUserNotFound)) {
+		if !(errors.Is(ldapErr, ErrLdapNotEnabled) || errors.Is(ldapErr, ErrLdapUserNotFound) || ldapErr == nil) {
 			return ldapErr, user
 		}
 		if user.Id == 0 {
