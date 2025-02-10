@@ -5,12 +5,13 @@ import (
 	"Gwen/model"
 	"Gwen/utils"
 	"errors"
-	"github.com/gin-gonic/gin"
-	"gorm.io/gorm"
 	"math/rand"
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/gin-gonic/gin"
+	"gorm.io/gorm"
 )
 
 type UserService struct {
@@ -322,7 +323,16 @@ func (us *UserService) RegisterByOauth(oauthUser *model.OauthUser, op string) (e
 		email = strings.ToLower(email)
 		// update email to oauthUser, in case it contain upper case
 		oauthUser.Email = email
-		user := us.InfoByEmail(email)
+		// call this, if find user by email, it will update the email to local database
+		user, ldapErr := AllService.LdapService.GetUserInfoByEmailLocal(email)
+		// If we enable ldap, and the error is not ErrLdapUserNotFound, return the error because we could not sure if the user is not found in ldap
+		if !(errors.Is(ldapErr, ErrLdapNotEnabled) || errors.Is(ldapErr, ErrLdapUserNotFound)) {
+			return ldapErr, user
+		}
+		if user.Id == 0 {
+			// this means the user is not found in ldap, maybe ldao is not enabled
+			user = us.InfoByEmail(email)
+		}
 		if user.Id != 0 {
 			ut.FromOauthUser(user.Id, oauthUser, oauthType, op)
 			global.DB.Create(ut)
@@ -491,8 +501,15 @@ func (us *UserService) VerifyJWT(token string) (uint, error) {
 
 // IsUsernameExists 判断用户名是否存在, it will check the internal database and LDAP(if enabled)
 func (us *UserService) IsUsernameExists(username string) bool {
+	return us.IsUsernameExistsLocal(username) || AllService.LdapService.IsUsernameExists(username)
+}
+
+func (us *UserService) IsUsernameExistsLocal(username string) bool {
 	u := &model.User{}
 	global.DB.Where("username = ?", username).First(u)
-	existsInLdap := AllService.LdapService.IsUsernameExists(username)
-	return u.Id != 0 || existsInLdap
+	return u.Id != 0
+}
+
+func (us *UserService) IsEmailExistsLdap(email string) bool {
+	return AllService.LdapService.IsEmailExists(email)
 }
