@@ -51,6 +51,11 @@ func (l *Login) Login(c *gin.Context) {
 		return
 	}
 
+	if !service.AllService.UserService.CheckUserEnable(u) {
+		response.Error(c, response.TranslateMsg(c, "UserDisabled"))
+		return
+	}
+
 	//根据refer判断是webclient还是app
 	ref := c.GetHeader("referer")
 	if ref != "" {

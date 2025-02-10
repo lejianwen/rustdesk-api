@@ -24,6 +24,14 @@ func AdminAuth() gin.HandlerFunc {
 			return
 		}
 
+		if !service.AllService.UserService.CheckUserEnable(user) {
+			c.JSON(401, gin.H{
+				"error": "Unauthorized",
+			})
+			c.Abort()
+			return
+		}
+
 		c.Set("curUser", user)
 		c.Set("token", token)
 		//如果时间小于1天,token自动续期
