@@ -4,13 +4,28 @@ import (
 	"crypto/tls"
 	"errors"
 	"fmt"
-	"github.com/go-ldap/ldap/v3"
 	"strconv"
 	"strings"
+
+	"github.com/go-ldap/ldap/v3"
 
 	"Gwen/config"
 	"Gwen/global"
 	"Gwen/model"
+)
+
+var (
+	ErrLdapNotEnabled        = errors.New("LdapNotEnabled")
+	ErrLdapUserDisabled      = errors.New("UserDisabledAtLdap")
+	ErrLdapUserNotFound      = errors.New("UserNotFound")
+	ErrLdapMailNotMatch      = errors.New("MailNotMatch")
+	ErrLdapConnectFailed     = errors.New("LdapConnectFailed")
+	ErrLdapSearchFailed      = errors.New("LdapSearchRequestFailed")
+	ErrLdapTlsFailed         = errors.New("LdapStartTLSFailed")
+	ErrLdapBindService       = errors.New("LdapBindServiceFailed")
+	ErrLdapBindFailed        = errors.New("LdapBindFailed")
+	ErrLdapToLocalUserFailed = errors.New("LdapToLocalUserFailed")
+	ErrLdapCreateUserFailed  = errors.New("LdapCreateUserFailed")
 )
 
 // LdapService is responsible for LDAP authentication and user synchronization.
@@ -43,6 +58,11 @@ func (lu *LdapUser) ToUser(u *model.User) *model.User {
 	u.Username = lu.Username
 	u.Email = lu.Email
 	u.Nickname = lu.Name()
+	if lu.Enabled {
+		u.Status = model.COMMON_STATUS_ENABLE
+	} else {
+		u.Status = model.COMMON_STATUS_DISABLED
+	}
 	return u
 }
 
@@ -50,21 +70,21 @@ func (lu *LdapUser) ToUser(u *model.User) *model.User {
 func (ls *LdapService) connectAndBind(cfg *config.Ldap, username, password string) (*ldap.Conn, error) {
 	conn, err := ldap.DialURL(cfg.Url)
 	if err != nil {
-		return nil, fmt.Errorf("failed to dial LDAP: %w", err)
+		return nil, errors.Join(ErrLdapConnectFailed, err)
 	}
 
 	if cfg.TLS {
 		// WARNING: InsecureSkipVerify: true is not recommended for production
 		if err = conn.StartTLS(&tls.Config{InsecureSkipVerify: !cfg.TlsVerify}); err != nil {
 			conn.Close()
-			return nil, fmt.Errorf("failed to start TLS: %w", err)
+			return nil, errors.Join(ErrLdapTlsFailed, err)
 		}
 	}
 
 	// Bind as the "service" user
 	if err = conn.Bind(username, password); err != nil {
 		conn.Close()
-		return nil, fmt.Errorf("failed to bind with service account: %w", err)
+		return nil, errors.Join(ErrLdapBindService, err)
 	}
 	return conn, nil
 }
@@ -87,29 +107,17 @@ func (ls *LdapService) verifyCredentials(cfg *config.Ldap, username, password st
 // Authenticate checks the provided username and password against LDAP.
 // Returns the corresponding *model.User if successful, or an error if not.
 func (ls *LdapService) Authenticate(username, password string) (*model.User, error) {
-	cfg := &global.Config.Ldap
-	// 1. Use a service bind to search for the user DN
-	sr, err := ls.usernameSearchResult(cfg, username)
+	ldapUser, err := ls.GetUserInfoByUsernameLdap(username)
 	if err != nil {
-		return nil, fmt.Errorf("LDAP search request failed: %w", err)
+		return nil, err
 	}
-	if len(sr.Entries) != 1 {
-		return nil, errors.New("user does not exist or too many entries returned")
-	}
-	entry := sr.Entries[0]
-	userDN := entry.DN
-
-	err = ls.verifyCredentials(cfg, userDN, password)
-	if err != nil {
-		return nil, fmt.Errorf("LDAP authentication failed: %w", err)
-	}
-	ldapUser := ls.userResultToLdapUser(cfg, entry)
 	if !ldapUser.Enabled {
-		return nil, errors.New("UserDisabledAtLdap")
+		return nil, ErrLdapUserDisabled
 	}
+	cfg := &global.Config.Ldap
 	user, err := ls.mapToLocalUser(cfg, ldapUser)
 	if err != nil {
-		return nil, fmt.Errorf("failed to map LDAP user to local user: %w", err)
+		return nil, errors.Join(ErrLdapToLocalUserFailed, err)
 	}
 	return user, nil
 }
@@ -126,8 +134,9 @@ func (ls *LdapService) mapToLocalUser(cfg *config.Ldap, lu *LdapUser) (*model.Us
 		// Typically, you don’t store LDAP user passwords locally.
 		// If needed, you can set a random password here.
 		newUser.IsAdmin = &isAdmin
+		newUser.GroupId = 1
 		if err := global.DB.Create(newUser).Error; err != nil {
-			return nil, fmt.Errorf("failed to create new user: %w", err)
+			return nil, errors.Join(ErrLdapCreateUserFailed, err)
 		}
 		return userService.InfoByUsername(lu.Username), nil
 	}
@@ -137,6 +146,7 @@ func (ls *LdapService) mapToLocalUser(cfg *config.Ldap, lu *LdapUser) (*model.Us
 		originalEmail := localUser.Email
 		originalNickname := localUser.Nickname
 		originalIsAdmin := localUser.IsAdmin
+		originalStatus := localUser.Status
 		lu.ToUser(localUser) // merges LDAP data into the existing user
 		localUser.IsAdmin = &isAdmin
 		if err := userService.Update(localUser); err != nil {
@@ -144,6 +154,7 @@ func (ls *LdapService) mapToLocalUser(cfg *config.Ldap, lu *LdapUser) (*model.Us
 			localUser.Email = originalEmail
 			localUser.Nickname = originalNickname
 			localUser.IsAdmin = originalIsAdmin
+			localUser.Status = originalStatus
 		}
 	}
 
@@ -175,6 +186,56 @@ func (ls *LdapService) IsEmailExists(email string) bool {
 		return false
 	}
 	return len(sr.Entries) > 0
+}
+
+// GetUserInfoByUsernameLdap returns the user info from LDAP for the given username.
+func (ls *LdapService) GetUserInfoByUsernameLdap(username string) (*LdapUser, error) {
+	cfg := &global.Config.Ldap
+	if !cfg.Enable {
+		return nil, ErrLdapNotEnabled
+	}
+	sr, err := ls.usernameSearchResult(cfg, username)
+	if err != nil {
+		return nil, errors.Join(ErrLdapSearchFailed, err)
+	}
+	if len(sr.Entries) != 1 {
+		return nil, ErrLdapUserNotFound
+	}
+	return ls.userResultToLdapUser(cfg, sr.Entries[0]), nil
+}
+
+// GetUserInfoByUsernameLocal returns the user info from LDAP for the given username. If the user exists, it will sync the user info to the local database.
+func (ls *LdapService) GetUserInfoByUsernameLocal(username string) (*model.User, error) {
+	ldapUser, err := ls.GetUserInfoByUsernameLdap(username)
+	if err != nil {
+		return &model.User{}, err
+	}
+	return ls.mapToLocalUser(&global.Config.Ldap, ldapUser)
+}
+
+// GetUserInfoByEmailLdap returns the user info from LDAP for the given email.
+func (ls *LdapService) GetUserInfoByEmailLdap(email string) (*LdapUser, error) {
+	cfg := &global.Config.Ldap
+	if !cfg.Enable {
+		return nil, ErrLdapNotEnabled
+	}
+	sr, err := ls.emailSearchResult(cfg, email)
+	if err != nil {
+		return nil, errors.Join(ErrLdapSearchFailed, err)
+	}
+	if len(sr.Entries) != 1 {
+		return nil, ErrLdapUserNotFound
+	}
+	return ls.userResultToLdapUser(cfg, sr.Entries[0]), nil
+}
+
+// GetUserInfoByEmailLocal returns the user info from LDAP for the given email. if the user exists, it will synchronize the user information to local database.
+func (ls *LdapService) GetUserInfoByEmailLocal(email string) (*model.User, error) {
+	ldapUser, err := ls.GetUserInfoByEmailLdap(email)
+	if err != nil {
+		return &model.User{}, err
+	}
+	return ls.mapToLocalUser(&global.Config.Ldap, ldapUser)
 }
 
 // usernameSearchResult returns the search result for the given username.
