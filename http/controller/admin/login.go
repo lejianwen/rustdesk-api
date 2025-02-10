@@ -182,12 +182,17 @@ func (ct *Login) Login(c *gin.Context) {
 		global.Logger.Warn(fmt.Sprintf("Login Fail: %s %s %s", "UsernameOrPasswordError", c.RemoteIP(), clientIp))
 		loginLimiter.RecordFailure(clientIp)
 		if loginLimiter.NeedsCaptcha(clientIp) {
-			// 移除原验证码，重新生成
 			loginLimiter.RemoveCaptcha(clientIp)
-			response.Fail(c, 110, response.TranslateMsg(c, "UsernameOrPasswordError"))
-			return
 		}
 		response.Fail(c, 101, response.TranslateMsg(c, "UsernameOrPasswordError"))
+		return
+	}
+
+	if !service.AllService.UserService.CheckUserEnable(u) {
+		if loginLimiter.NeedsCaptcha(clientIp) {
+			loginLimiter.RemoveCaptcha(clientIp)
+		}
+		response.Fail(c, 101, response.TranslateMsg(c, "UserDisabled"))
 		return
 	}
 
