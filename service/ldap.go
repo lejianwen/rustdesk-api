@@ -134,6 +134,7 @@ func (ls *LdapService) mapToLocalUser(cfg *config.Ldap, lu *LdapUser) (*model.Us
 		// Typically, you don’t store LDAP user passwords locally.
 		// If needed, you can set a random password here.
 		newUser.IsAdmin = &isAdmin
+		newUser.GroupId = 1
 		if err := global.DB.Create(newUser).Error; err != nil {
 			return nil, errors.Join(ErrLdapCreateUserFailed, err)
 		}
