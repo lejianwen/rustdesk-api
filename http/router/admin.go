@@ -25,7 +25,7 @@ func Init(g *gin.Engine) {
 
 	ConfigBind(adg)
 
-	adg.Use(middleware.AdminAuth())
+	adg.Use(middleware.BackendUserAuth())
 	//FileBind(adg)
 	UserBind(adg)
 	GroupBind(adg)
@@ -226,7 +226,7 @@ func ConfigBind(rg *gin.RouterGroup) {
 
 	aR.GET("/admin", rs.AdminConfig)
 
-	aR.Use(middleware.AdminAuth())
+	aR.Use(middleware.BackendUserAuth())
 	aR.GET("/server", rs.ServerConfig)
 	aR.GET("/app", rs.AppConfig)
 

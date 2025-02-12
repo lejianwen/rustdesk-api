@@ -6,8 +6,8 @@ import (
 	"github.com/lejianwen/rustdesk-api/v2/service"
 )
 
-// AdminAuth 后台权限验证中间件
-func AdminAuth() gin.HandlerFunc {
+// BackendUserAuth 后台权限验证中间件
+func BackendUserAuth() gin.HandlerFunc {
 	return func(c *gin.Context) {
 
 		//测试先关闭
