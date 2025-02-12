@@ -2,18 +2,18 @@ package main
 
 import (
 	"github.com/go-redis/redis/v8"
-	"github.com/lejianwen/rustdesk-api/config"
-	"github.com/lejianwen/rustdesk-api/global"
-	"github.com/lejianwen/rustdesk-api/http"
-	"github.com/lejianwen/rustdesk-api/lib/cache"
-	"github.com/lejianwen/rustdesk-api/lib/jwt"
-	"github.com/lejianwen/rustdesk-api/lib/lock"
-	"github.com/lejianwen/rustdesk-api/lib/logger"
-	"github.com/lejianwen/rustdesk-api/lib/orm"
-	"github.com/lejianwen/rustdesk-api/lib/upload"
-	"github.com/lejianwen/rustdesk-api/model"
-	"github.com/lejianwen/rustdesk-api/service"
-	"github.com/lejianwen/rustdesk-api/utils"
+	"github.com/lejianwen/rustdesk-api/v2/config"
+	"github.com/lejianwen/rustdesk-api/v2/global"
+	"github.com/lejianwen/rustdesk-api/v2/http"
+	"github.com/lejianwen/rustdesk-api/v2/lib/cache"
+	"github.com/lejianwen/rustdesk-api/v2/lib/jwt"
+	"github.com/lejianwen/rustdesk-api/v2/lib/lock"
+	"github.com/lejianwen/rustdesk-api/v2/lib/logger"
+	"github.com/lejianwen/rustdesk-api/v2/lib/orm"
+	"github.com/lejianwen/rustdesk-api/v2/lib/upload"
+	"github.com/lejianwen/rustdesk-api/v2/model"
+	"github.com/lejianwen/rustdesk-api/v2/service"
+	"github.com/lejianwen/rustdesk-api/v2/utils"
 	"github.com/nicksnyder/go-i18n/v2/i18n"
 	"github.com/spf13/cobra"
 	"os"
@@ -186,12 +186,12 @@ func DatabaseAutoUpdate() {
 			// 获取底层的 *sql.DB 对象，并确保在程序退出时关闭连接
 			sqlDBWithoutDB, err := dbWithoutDB.DB()
 			if err != nil {
-				global.Logger.Error("获取底层 *sql.DB 对象失败: %v\n", err)
+				global.Logger.Errorf("获取底层 *sql.DB 对象失败: %v", err)
 				return
 			}
 			defer func() {
 				if err := sqlDBWithoutDB.Close(); err != nil {
-					global.Logger.Error("关闭连接失败: %v\n", err)
+					global.Logger.Errorf("关闭连接失败: %v", err)
 				}
 			}()
 

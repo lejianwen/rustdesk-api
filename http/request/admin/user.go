@@ -1,7 +1,7 @@
 package admin
 
 import (
-	"github.com/lejianwen/rustdesk-api/model"
+	"github.com/lejianwen/rustdesk-api/v2/model"
 )
 
 type UserForm struct {

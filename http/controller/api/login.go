@@ -4,12 +4,12 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/gin-gonic/gin"
-	"github.com/lejianwen/rustdesk-api/global"
-	"github.com/lejianwen/rustdesk-api/http/request/api"
-	"github.com/lejianwen/rustdesk-api/http/response"
-	apiResp "github.com/lejianwen/rustdesk-api/http/response/api"
-	"github.com/lejianwen/rustdesk-api/model"
-	"github.com/lejianwen/rustdesk-api/service"
+	"github.com/lejianwen/rustdesk-api/v2/global"
+	"github.com/lejianwen/rustdesk-api/v2/http/request/api"
+	"github.com/lejianwen/rustdesk-api/v2/http/response"
+	apiResp "github.com/lejianwen/rustdesk-api/v2/http/response/api"
+	"github.com/lejianwen/rustdesk-api/v2/model"
+	"github.com/lejianwen/rustdesk-api/v2/service"
 	"net/http"
 )
 

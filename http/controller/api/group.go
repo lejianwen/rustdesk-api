@@ -2,11 +2,11 @@ package api
 
 import (
 	"github.com/gin-gonic/gin"
-	apiReq "github.com/lejianwen/rustdesk-api/http/request/api"
-	"github.com/lejianwen/rustdesk-api/http/response"
-	apiResp "github.com/lejianwen/rustdesk-api/http/response/api"
-	"github.com/lejianwen/rustdesk-api/model"
-	"github.com/lejianwen/rustdesk-api/service"
+	apiReq "github.com/lejianwen/rustdesk-api/v2/http/request/api"
+	"github.com/lejianwen/rustdesk-api/v2/http/response"
+	apiResp "github.com/lejianwen/rustdesk-api/v2/http/response/api"
+	"github.com/lejianwen/rustdesk-api/v2/model"
+	"github.com/lejianwen/rustdesk-api/v2/service"
 	"net/http"
 )
 
