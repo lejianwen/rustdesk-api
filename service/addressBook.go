@@ -1,10 +1,10 @@
 package service
 
 import (
-	"Gwen/global"
-	"Gwen/model"
 	"encoding/json"
 	"github.com/google/uuid"
+	"github.com/lejianwen/rustdesk-api/global"
+	"github.com/lejianwen/rustdesk-api/model"
 	"gorm.io/gorm"
 	"strings"
 )

@@ -1,7 +1,7 @@
 package model
 
 import (
-	"Gwen/model/custom_types"
+	"github.com/lejianwen/rustdesk-api/model/custom_types"
 )
 
 type StatusCode int

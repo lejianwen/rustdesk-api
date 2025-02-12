@@ -1,6 +1,6 @@
 package admin
 
-import "Gwen/model"
+import "github.com/lejianwen/rustdesk-api/model"
 
 type LoginPayload struct {
 	Username   string   `json:"username"`

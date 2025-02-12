@@ -1,10 +1,10 @@
 package service
 
 import (
-	"Gwen/global"
-	"Gwen/model"
-	"Gwen/utils"
 	"errors"
+	"github.com/lejianwen/rustdesk-api/global"
+	"github.com/lejianwen/rustdesk-api/model"
+	"github.com/lejianwen/rustdesk-api/utils"
 	"math/rand"
 	"strconv"
 	"strings"

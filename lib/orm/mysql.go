@@ -1,8 +1,8 @@
 package orm
 
 import (
-	"Gwen/global"
 	"fmt"
+	"github.com/lejianwen/rustdesk-api/global"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"

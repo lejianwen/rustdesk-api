@@ -1,12 +1,12 @@
 package api
 
 import (
-	request "Gwen/http/request/api"
-	"Gwen/http/response"
-	"Gwen/model"
-	"Gwen/service"
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
+	request "github.com/lejianwen/rustdesk-api/http/request/api"
+	"github.com/lejianwen/rustdesk-api/http/response"
+	"github.com/lejianwen/rustdesk-api/model"
+	"github.com/lejianwen/rustdesk-api/service"
 	"time"
 )
 

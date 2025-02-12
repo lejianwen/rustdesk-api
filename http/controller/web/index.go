@@ -1,8 +1,8 @@
 package web
 
 import (
-	"Gwen/global"
 	"github.com/gin-gonic/gin"
+	"github.com/lejianwen/rustdesk-api/global"
 	"strconv"
 )
 

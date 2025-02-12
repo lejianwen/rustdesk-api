@@ -1,11 +1,11 @@
 package api
 
 import (
-	requstform "Gwen/http/request/api"
-	"Gwen/http/response"
-	"Gwen/service"
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
+	requstform "github.com/lejianwen/rustdesk-api/http/request/api"
+	"github.com/lejianwen/rustdesk-api/http/response"
+	"github.com/lejianwen/rustdesk-api/service"
 	"net/http"
 )
 

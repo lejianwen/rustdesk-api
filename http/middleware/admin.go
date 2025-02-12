@@ -1,9 +1,9 @@
 package middleware
 
 import (
-	"Gwen/http/response"
-	"Gwen/service"
 	"github.com/gin-gonic/gin"
+	"github.com/lejianwen/rustdesk-api/http/response"
+	"github.com/lejianwen/rustdesk-api/service"
 )
 
 // AdminAuth 后台权限验证中间件

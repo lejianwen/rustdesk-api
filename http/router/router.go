@@ -1,9 +1,9 @@
 package router
 
 import (
-	"Gwen/global"
-	"Gwen/http/controller/web"
 	"github.com/gin-gonic/gin"
+	"github.com/lejianwen/rustdesk-api/global"
+	"github.com/lejianwen/rustdesk-api/http/controller/web"
 	"net/http"
 )
 

@@ -1,11 +1,11 @@
 package admin
 
 import (
-	"Gwen/global"
-	"Gwen/http/request/admin"
-	"Gwen/http/response"
-	"Gwen/service"
 	"github.com/gin-gonic/gin"
+	"github.com/lejianwen/rustdesk-api/global"
+	"github.com/lejianwen/rustdesk-api/http/request/admin"
+	"github.com/lejianwen/rustdesk-api/http/response"
+	"github.com/lejianwen/rustdesk-api/service"
 	"gorm.io/gorm"
 	"strconv"
 )

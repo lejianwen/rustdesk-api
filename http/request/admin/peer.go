@@ -1,6 +1,6 @@
 package admin
 
-import "Gwen/model"
+import "github.com/lejianwen/rustdesk-api/model"
 
 type PeerForm struct {
 	RowId    uint   `json:"row_id" `

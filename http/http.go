@@ -1,10 +1,10 @@
 package http
 
 import (
-	"Gwen/global"
-	"Gwen/http/middleware"
-	"Gwen/http/router"
 	"github.com/gin-gonic/gin"
+	"github.com/lejianwen/rustdesk-api/global"
+	"github.com/lejianwen/rustdesk-api/http/middleware"
+	"github.com/lejianwen/rustdesk-api/http/router"
 	"github.com/sirupsen/logrus"
 	"net/http"
 	"strings"

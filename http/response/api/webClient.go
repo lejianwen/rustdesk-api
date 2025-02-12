@@ -1,7 +1,7 @@
 package api
 
 import (
-	"Gwen/model"
+	"github.com/lejianwen/rustdesk-api/model"
 	"time"
 )
 

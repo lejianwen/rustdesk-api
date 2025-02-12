@@ -1,16 +1,16 @@
 package api
 
 import (
-	"Gwen/global"
-	requstform "Gwen/http/request/api"
-	"Gwen/http/response"
-	"Gwen/http/response/api"
-	"Gwen/model"
-	"Gwen/service"
-	"Gwen/utils"
 	"encoding/json"
 	"errors"
 	"github.com/gin-gonic/gin"
+	"github.com/lejianwen/rustdesk-api/global"
+	requstform "github.com/lejianwen/rustdesk-api/http/request/api"
+	"github.com/lejianwen/rustdesk-api/http/response"
+	"github.com/lejianwen/rustdesk-api/http/response/api"
+	"github.com/lejianwen/rustdesk-api/model"
+	"github.com/lejianwen/rustdesk-api/service"
+	"github.com/lejianwen/rustdesk-api/utils"
 	"net/http"
 	"strconv"
 	"strings"

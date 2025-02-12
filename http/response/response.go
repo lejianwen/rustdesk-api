@@ -1,9 +1,9 @@
 package response
 
 import (
-	"Gwen/global"
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"github.com/lejianwen/rustdesk-api/global"
 	"github.com/nicksnyder/go-i18n/v2/i18n"
 	"net/http"
 )
