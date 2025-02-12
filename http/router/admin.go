@@ -22,6 +22,9 @@ func Init(g *gin.Engine) {
 	adg := g.Group("/api/admin")
 	LoginBind(adg)
 	adg.POST("/user/register", (&admin.User{}).Register)
+
+	ConfigBind(adg)
+
 	adg.Use(middleware.AdminAuth())
 	//FileBind(adg)
 	UserBind(adg)
@@ -35,7 +38,6 @@ func Init(g *gin.Engine) {
 	AddressBookCollectionBind(adg)
 	AddressBookCollectionRuleBind(adg)
 	UserTokenBind(adg)
-	ConfigBind(adg)
 
 	//deprecated by ConfigBind
 	//rs := &admin.Rustdesk{}
@@ -221,9 +223,13 @@ func UserTokenBind(rg *gin.RouterGroup) {
 func ConfigBind(rg *gin.RouterGroup) {
 	aR := rg.Group("/config")
 	rs := &admin.Config{}
+
+	aR.GET("/admin", rs.AdminConfig)
+
+	aR.Use(middleware.AdminAuth())
 	aR.GET("/server", rs.ServerConfig)
 	aR.GET("/app", rs.AppConfig)
-	aR.GET("/admin", rs.AdminConfig)
+
 }
 
 /*
