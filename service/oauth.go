@@ -1,12 +1,12 @@
 package service
 
 import (
-	"Gwen/global"
-	"Gwen/model"
-	"Gwen/utils"
 	"context"
 	"encoding/json"
 	"errors"
+	"github.com/lejianwen/rustdesk-api/global"
+	"github.com/lejianwen/rustdesk-api/model"
+	"github.com/lejianwen/rustdesk-api/utils"
 	"golang.org/x/oauth2"
 	"golang.org/x/oauth2/github"
 	// "golang.org/x/oauth2/google"

@@ -1,9 +1,9 @@
 package api
 
 import (
-	apiResp "Gwen/http/response/api"
-	"Gwen/service"
 	"github.com/gin-gonic/gin"
+	apiResp "github.com/lejianwen/rustdesk-api/http/response/api"
+	"github.com/lejianwen/rustdesk-api/service"
 	"net/http"
 )
 

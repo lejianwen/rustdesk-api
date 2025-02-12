@@ -1,9 +1,9 @@
 package service
 
 import (
-	"Gwen/global"
-	"Gwen/model"
 	"fmt"
+	"github.com/lejianwen/rustdesk-api/global"
+	"github.com/lejianwen/rustdesk-api/model"
 	"net"
 	"time"
 )

@@ -1,7 +1,7 @@
 package service
 
 import (
-	"Gwen/model"
+	"github.com/lejianwen/rustdesk-api/model"
 	"gorm.io/gorm"
 )
 

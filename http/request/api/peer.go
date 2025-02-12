@@ -1,6 +1,6 @@
 package api
 
-import "Gwen/model"
+import "github.com/lejianwen/rustdesk-api/model"
 
 type AddressBookFormData struct {
 	Tags      []string             `json:"tags"`

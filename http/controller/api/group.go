@@ -1,12 +1,12 @@
 package api
 
 import (
-	apiReq "Gwen/http/request/api"
-	"Gwen/http/response"
-	apiResp "Gwen/http/response/api"
-	"Gwen/model"
-	"Gwen/service"
 	"github.com/gin-gonic/gin"
+	apiReq "github.com/lejianwen/rustdesk-api/http/request/api"
+	"github.com/lejianwen/rustdesk-api/http/response"
+	apiResp "github.com/lejianwen/rustdesk-api/http/response/api"
+	"github.com/lejianwen/rustdesk-api/model"
+	"github.com/lejianwen/rustdesk-api/service"
 	"net/http"
 )
 

@@ -9,9 +9,9 @@ import (
 
 	"github.com/go-ldap/ldap/v3"
 
-	"Gwen/config"
-	"Gwen/global"
-	"Gwen/model"
+	"github.com/lejianwen/rustdesk-api/config"
+	"github.com/lejianwen/rustdesk-api/global"
+	"github.com/lejianwen/rustdesk-api/model"
 )
 
 var (

@@ -1,4 +1,4 @@
-module Gwen
+module github.com/lejianwen/rustdesk-api
 
 go 1.22
 

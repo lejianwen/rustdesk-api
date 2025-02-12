@@ -1,11 +1,11 @@
 package router
 
 import (
-	_ "Gwen/docs/api"
-	"Gwen/global"
-	"Gwen/http/controller/api"
-	"Gwen/http/middleware"
 	"github.com/gin-gonic/gin"
+	_ "github.com/lejianwen/rustdesk-api/docs/api"
+	"github.com/lejianwen/rustdesk-api/global"
+	"github.com/lejianwen/rustdesk-api/http/controller/api"
+	"github.com/lejianwen/rustdesk-api/http/middleware"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 	"net/http"

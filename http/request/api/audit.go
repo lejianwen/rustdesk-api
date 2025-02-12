@@ -1,9 +1,9 @@
 package api
 
 import (
-	"Gwen/global"
-	"Gwen/model"
 	"encoding/json"
+	"github.com/lejianwen/rustdesk-api/global"
+	"github.com/lejianwen/rustdesk-api/model"
 	"strconv"
 )
 

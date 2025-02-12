@@ -1,11 +1,11 @@
 package admin
 
 import (
-	"Gwen/global"
-	"Gwen/http/response"
-	"Gwen/lib/upload"
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"github.com/lejianwen/rustdesk-api/global"
+	"github.com/lejianwen/rustdesk-api/http/response"
+	"github.com/lejianwen/rustdesk-api/lib/upload"
 	"os"
 	"time"
 )
