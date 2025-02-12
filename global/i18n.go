@@ -15,7 +15,6 @@ func InitI18n() {
 	fileInfos, err := os.ReadDir(dir)
 	if err != nil {
 		panic(err)
-		return
 	}
 	for _, fileInfo := range fileInfos {
 		//如果文件名不是.toml结尾

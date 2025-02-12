@@ -2,9 +2,9 @@ package http
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/lejianwen/rustdesk-api/global"
-	"github.com/lejianwen/rustdesk-api/http/middleware"
-	"github.com/lejianwen/rustdesk-api/http/router"
+	"github.com/lejianwen/rustdesk-api/v2/global"
+	"github.com/lejianwen/rustdesk-api/v2/http/middleware"
+	"github.com/lejianwen/rustdesk-api/v2/http/router"
 	"github.com/sirupsen/logrus"
 	"net/http"
 	"strings"

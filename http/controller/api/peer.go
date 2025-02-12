@@ -3,9 +3,9 @@ package api
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
-	requstform "github.com/lejianwen/rustdesk-api/http/request/api"
-	"github.com/lejianwen/rustdesk-api/http/response"
-	"github.com/lejianwen/rustdesk-api/service"
+	requstform "github.com/lejianwen/rustdesk-api/v2/http/request/api"
+	"github.com/lejianwen/rustdesk-api/v2/http/response"
+	"github.com/lejianwen/rustdesk-api/v2/service"
 	"net/http"
 )
 

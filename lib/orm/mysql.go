@@ -2,7 +2,7 @@ package orm
 
 import (
 	"fmt"
-	"github.com/lejianwen/rustdesk-api/global"
+	"github.com/lejianwen/rustdesk-api/v2/global"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
