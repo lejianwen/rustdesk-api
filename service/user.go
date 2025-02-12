@@ -280,7 +280,7 @@ func (us *UserService) UpdatePassword(u *model.User, password string) error {
 
 // IsAdmin 是否管理员
 func (us *UserService) IsAdmin(u *model.User) bool {
-	return *u.IsAdmin
+	return u != nil && *u.IsAdmin
 }
 
 // RouteNames

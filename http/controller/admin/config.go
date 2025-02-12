@@ -61,6 +61,12 @@ func (co *Config) AppConfig(c *gin.Context) {
 func (co *Config) AdminConfig(c *gin.Context) {
 
 	u := service.AllService.UserService.CurUser(c)
+	if u == nil || u.Id == 0 {
+		response.Success(c, &gin.H{
+			"title": global.Config.Admin.Title,
+		})
+		return
+	}
 	hello := global.Config.Admin.Hello
 	helloFile := global.Config.Admin.HelloFile
 	if helloFile != "" {
