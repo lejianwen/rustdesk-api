@@ -1,19 +1,5 @@
 basePath: /api
 definitions:
-  Gwen_http_request_admin.Login:
-    properties:
-      captcha:
-        type: string
-      password:
-        type: string
-      platform:
-        type: string
-      username:
-        type: string
-    required:
-    - password
-    - username
-    type: object
   admin.AddressBookForm:
     properties:
       alias:
@@ -291,6 +277,20 @@ definitions:
         type: array
     required:
     - ids
+    type: object
+  github_com_lejianwen_rustdesk-api_http_request_admin.Login:
+    properties:
+      captcha:
+        type: string
+      password:
+        type: string
+      platform:
+        type: string
+      username:
+        type: string
+    required:
+    - password
+    - username
     type: object
   model.AddressBook:
     properties:
@@ -1830,7 +1830,7 @@ paths:
         name: body
         required: true
         schema:
-          $ref: '#/definitions/Gwen_http_request_admin.Login'
+          $ref: '#/definitions/github_com_lejianwen_rustdesk-api_http_request_admin.Login'
       produces:
       - application/json
       responses:

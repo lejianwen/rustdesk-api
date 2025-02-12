@@ -1783,7 +1783,7 @@ const docTemplateadmin = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/Gwen_http_request_admin.Login"
+                            "$ref": "#/definitions/github_com_lejianwen_rustdesk-api_http_request_admin.Login"
                         }
                     }
                 ],
@@ -5104,27 +5104,6 @@ const docTemplateadmin = `{
         }
     },
     "definitions": {
-        "Gwen_http_request_admin.Login": {
-            "type": "object",
-            "required": [
-                "password",
-                "username"
-            ],
-            "properties": {
-                "captcha": {
-                    "type": "string"
-                },
-                "password": {
-                    "type": "string"
-                },
-                "platform": {
-                    "type": "string"
-                },
-                "username": {
-                    "type": "string"
-                }
-            }
-        },
         "admin.AddressBookForm": {
             "type": "object",
             "required": [
@@ -5539,6 +5518,27 @@ const docTemplateadmin = `{
                     "items": {
                         "type": "integer"
                     }
+                }
+            }
+        },
+        "github_com_lejianwen_rustdesk-api_http_request_admin.Login": {
+            "type": "object",
+            "required": [
+                "password",
+                "username"
+            ],
+            "properties": {
+                "captcha": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                },
+                "platform": {
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string"
                 }
             }
         },
