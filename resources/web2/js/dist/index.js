@@ -11093,7 +11093,7 @@ function getUriFromRs(uri, isRelay = false, roffset = 0) {
     if (!isHttps()) {
         // http 直接走端口
         const port = uriport ? parseInt(uriport) : defaultIdServerPort;
-        return p + domain + ":" + (port + (isRelay ? roffset || 3 : 2))
+        return p + domain + ":" + (port + (isRelay ? 3 : 2))
     }
     // https 分情况
     if (!window.location.port) {
