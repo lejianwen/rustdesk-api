@@ -133,3 +133,8 @@ other = "Captcha required."
 description = "Captcha error."
 one = "Captcha error."
 other = "Captcha error."
+
+[PwdLoginDisabled]
+description = "Password login disabled."
+one = "Password login disabled."
+other = "Password login disabled."

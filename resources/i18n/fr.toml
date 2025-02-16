@@ -142,3 +142,8 @@ other = "Captcha requis."
 description = "Captcha error."
 one = "Erreur de captcha."
 other = "Erreur de captcha."
+
+[PwdLoginDisabled]
+description = "Password login disabled."
+one = "Connexion par mot de passe désactivée."
+other = "Connexion par mot de passe désactivée."

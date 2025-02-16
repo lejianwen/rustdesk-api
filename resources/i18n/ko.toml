@@ -136,3 +136,8 @@ other = "Captcha가 필요합니다."
 description = "Captcha error."
 one = "Captcha 오류."
 other = "Captcha 오류."
+
+[PwdLoginDisabled]
+description = "Password login disabled."
+one = "비밀번호 로그인이 비활성화되었습니다."
+other = "비밀번호 로그인이 비활성화되었습니다."

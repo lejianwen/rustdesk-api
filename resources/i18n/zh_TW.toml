@@ -135,3 +135,8 @@ other = "需要驗證碼。"
 description = "Captcha error."
 one = "驗證碼錯誤。"
 other = "驗證碼錯誤。"
+
+[PwdLoginDisabled]
+description = "Password login disabled."
+one = "密碼登錄已禁用。"
+other = "密碼登錄已禁用。"
