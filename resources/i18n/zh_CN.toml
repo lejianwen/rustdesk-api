@@ -135,3 +135,8 @@ other = "需要验证码。"
 description = "Captcha error."
 one = "验证码错误。"
 other = "验证码错误。"
+
+[PwdLoginDisabled]
+description = "Password login disabled."
+one = "密码登录已禁用。"
+other = "密码登录已禁用。"

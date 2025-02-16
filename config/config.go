@@ -13,11 +13,12 @@ const (
 )
 
 type App struct {
-	WebClient   int  `mapstructure:"web-client"`
-	Register    bool `mapstructure:"register"`
-	ShowSwagger int  `mapstructure:"show-swagger"`
-	TokenExpire int  `mapstructure:"token-expire"`
-	WebSso      bool `mapstructure:"web-sso"`
+	WebClient       int  `mapstructure:"web-client"`
+	Register        bool `mapstructure:"register"`
+	ShowSwagger     int  `mapstructure:"show-swagger"`
+	TokenExpire     int  `mapstructure:"token-expire"`
+	WebSso          bool `mapstructure:"web-sso"`
+	DisablePwdLogin bool `mapstructure:"disable-pwd-login"`
 }
 type Admin struct {
 	Title     string `mapstructure:"title"`

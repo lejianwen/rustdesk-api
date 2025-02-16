@@ -152,6 +152,10 @@ var loginLimiter = NewLoginLimiter(3, 5*time.Minute)
 // @Router /admin/login [post]
 // @Security token
 func (ct *Login) Login(c *gin.Context) {
+	if global.Config.App.DisablePwdLogin {
+		response.Fail(c, 101, response.TranslateMsg(c, "PwdLoginDisabled"))
+		return
+	}
 	f := &admin.Login{}
 	err := c.ShouldBindJSON(f)
 	clientIp := c.ClientIP()

@@ -142,3 +142,8 @@ other = "Требуется капча."
 description = "Captcha error."
 one = "Ошибка капчи."
 other = "Ошибка капчи."
+
+[PwdLoginDisabled]
+description = "Password login disabled."
+one = "Вход по паролю отключен."
+other = "Вход по паролю отключен."
