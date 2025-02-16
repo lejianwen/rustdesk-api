@@ -11090,15 +11090,20 @@ function R4(u = !1) {
 function getUriFromRs(uri, isRelay = false, roffset = 0) {
     const p = isHttps() ? "wss://" : "ws://"
     const [domain, uriport] = uri.split(":")
-    if (isHttps() && (!uriport)) {
-        return p + domain + "/ws/" + (isRelay ? "relay" : "id");
+    if (!isHttps()) {
+        // http 直接走端口
+        const port = uriport ? parseInt(uriport) : defaultIdServerPort;
+        return p + domain + ":" + port + (isRelay ? roffset || 3 : 2)
     }
-    if (uriport) {
-        const port = parseInt(uriport);
-        uri = domain + ":" + (port + (isRelay ? roffset || 3 : 2))
-    } else uri += ":" + (defaultIdServerPort + (isRelay ? 3 : 2));
-    return p + uri
+    // https 分情况
+    if (!window.location.port) {
+        // 443
+        return p + domain + "/ws/" + (isRelay ? "relay" : "id")
+    }
+    // 非443
+    return p + domain + ":" + window.location.port + "/ws/" + (isRelay ? "relay" : "id")
 }
+
 
 function isHttps() {
     return window.location.protocol === "https:"
