@@ -18,7 +18,6 @@ import (
 	"github.com/spf13/cobra"
 	"os"
 	"strconv"
-	"time"
 )
 
 // @title 管理系统API
@@ -162,8 +161,7 @@ func InitGlobal() {
 
 	//jwt
 	//fmt.Println(global.Config.Jwt.PrivateKey)
-	global.Jwt = jwt.NewJwt(global.Config.Jwt.Key, global.Config.Jwt.ExpireDuration*time.Second)
-
+	global.Jwt = jwt.NewJwt(global.Config.Jwt.Key, global.Config.Jwt.ExpireDuration)
 	//locker
 	global.Lock = lock.NewLocal()
 }

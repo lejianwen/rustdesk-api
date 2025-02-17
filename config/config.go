@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/spf13/viper"
 	"strings"
+	"time"
 )
 
 const (
@@ -13,12 +14,12 @@ const (
 )
 
 type App struct {
-	WebClient       int  `mapstructure:"web-client"`
-	Register        bool `mapstructure:"register"`
-	ShowSwagger     int  `mapstructure:"show-swagger"`
-	TokenExpire     int  `mapstructure:"token-expire"`
-	WebSso          bool `mapstructure:"web-sso"`
-	DisablePwdLogin bool `mapstructure:"disable-pwd-login"`
+	WebClient       int           `mapstructure:"web-client"`
+	Register        bool          `mapstructure:"register"`
+	ShowSwagger     int           `mapstructure:"show-swagger"`
+	TokenExpire     time.Duration `mapstructure:"token-expire"`
+	WebSso          bool          `mapstructure:"web-sso"`
+	DisablePwdLogin bool          `mapstructure:"disable-pwd-login"`
 }
 type Admin struct {
 	Title     string `mapstructure:"title"`
@@ -73,7 +74,7 @@ func Init(rowVal *Config, path string) *viper.Viper {
 			})
 	*/
 	if err := v.Unmarshal(rowVal); err != nil {
-		fmt.Println(err)
+		panic(fmt.Errorf("Fatal error config: %s \n", err))
 	}
 	rowVal.Rustdesk.LoadKeyFile()
 	rowVal.Rustdesk.ParsePort()
