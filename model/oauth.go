@@ -14,6 +14,8 @@ const (
 	OauthTypeGoogle  string = "google"
 	OauthTypeOidc    string = "oidc"
 	OauthTypeWebauth string = "webauth"
+	PKCEMethodS256   string = "S256"
+	PKCEMethodPlain  string = "plain"
 )
 
 // Validate the oauth type
@@ -41,6 +43,8 @@ type Oauth struct {
 	AutoRegister *bool  `json:"auto_register"`
 	Scopes       string `json:"scopes"`
 	Issuer       string `json:"issuer"`
+	PkceEnable	 *bool  `json:"pkce_enable"`
+	PkceMethod	 string `json:"pkce_method"`
 	TimeModel
 }
 
@@ -67,6 +71,13 @@ func (oa *Oauth) FormatOauthInfo() error {
 	// If the oauth type is google and the issuer is empty, set the issuer to the default value
 	if oauthType == OauthTypeGoogle && issuer == "" {
 		oa.Issuer = IssuerGoogle
+	}
+	if oa.PkceEnable == nil {
+		oa.PkceEnable = new(bool)
+		*oa.PkceEnable = false
+	}
+	if oa.PkceMethod == "" {
+		oa.PkceMethod = PKCEMethodS256
 	}
 	return nil
 }
