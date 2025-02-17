@@ -3,7 +3,7 @@ app:
   web-client: 1  # 1:启用 0:禁用
   register: false #是否开启注册
   show-swagger: 0 # 1:启用 0:禁用
-  token-expire: 360000
+  token-expire: 168h
   web-sso: true #web auth sso
   disable-pwd-login: false #禁用密码登录
 admin:
@@ -41,7 +41,7 @@ proxy:
   host: "http://127.0.0.1:1080"
 jwt:
   key: ""
-  expire-duration: 360000
+  expire-duration: 168h
 ldap:
   enable: false
   url: "ldap://ldap.example.com:389"

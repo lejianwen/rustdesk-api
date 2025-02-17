@@ -476,9 +476,10 @@ func (us *UserService) getAdminUserCount() int64 {
 func (us *UserService) UserTokenExpireTimestamp() int64 {
 	exp := global.Config.App.TokenExpire
 	if exp == 0 {
-		exp = 3600 * 24 * 7
+		//默认七天
+		exp = 604800
 	}
-	return time.Now().Add(time.Second * time.Duration(exp)).Unix()
+	return time.Now().Add(exp).Unix()
 }
 
 func (us *UserService) RefreshAccessToken(ut *model.UserToken) {
