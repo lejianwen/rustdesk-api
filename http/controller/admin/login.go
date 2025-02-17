@@ -283,13 +283,13 @@ func (ct *Login) OidcAuth(c *gin.Context) {
 		return
 	}
 
-	err, code, url := service.AllService.OauthService.BeginAuth(f.Op)
+	err, state, verifier, url := service.AllService.OauthService.BeginAuth(f.Op)
 	if err != nil {
 		response.Error(c, response.TranslateMsg(c, err.Error()))
 		return
 	}
 
-	service.AllService.OauthService.SetOauthCache(code, &service.OauthCacheItem{
+	service.AllService.OauthService.SetOauthCache(state, &service.OauthCacheItem{
 		Action:     service.OauthActionTypeLogin,
 		Op:         f.Op,
 		Id:         f.Id,
@@ -297,10 +297,11 @@ func (ct *Login) OidcAuth(c *gin.Context) {
 		// DeviceOs: ct.Platform(c),
 		DeviceOs: f.DeviceInfo.Os,
 		Uuid:     f.Uuid,
+		Verifier: verifier,
 	}, 5*60)
 
 	response.Success(c, gin.H{
-		"code": code,
+		"code": state,
 		"url":  url,
 	})
 }

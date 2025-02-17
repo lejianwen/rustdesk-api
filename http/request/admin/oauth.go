@@ -24,6 +24,8 @@ type OauthForm struct {
 	ClientSecret string `json:"client_secret" validate:"required"`
 	RedirectUrl  string `json:"redirect_url" validate:"required"`
 	AutoRegister *bool  `json:"auto_register"`
+	PkceEnable   *bool  `json:"pkce_enable"`
+	PkceMethod   string `json:"pkce_method"`
 }
 
 func (of *OauthForm) ToOauth() *model.Oauth {
@@ -36,6 +38,8 @@ func (of *OauthForm) ToOauth() *model.Oauth {
 		AutoRegister: of.AutoRegister,
 		Issuer:       of.Issuer,
 		Scopes:       of.Scopes,
+		PkceEnable:   of.PkceEnable,
+		PkceMethod:   of.PkceMethod,
 	}
 	oa.Id = of.Id
 	return oa

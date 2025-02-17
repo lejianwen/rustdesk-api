@@ -166,7 +166,7 @@ func InitGlobal() {
 	global.Lock = lock.NewLocal()
 }
 func DatabaseAutoUpdate() {
-	version := 260
+	version := 261
 
 	db := global.DB
 
@@ -209,6 +209,12 @@ func DatabaseAutoUpdate() {
 		db.Last(&v)
 		if v.Version < uint(version) {
 			Migrate(uint(version))
+		}
+		// 261迁移
+		if v.Version < 261 {
+			// 在oauths表中添加pkce_enable 和 pkce_method 字段
+			db.Exec("ALTER TABLE oauths ADD COLUMN pkce_enable TINYINT(1) NOT NULL DEFAULT 0")
+			db.Exec("ALTER TABLE oauths ADD COLUMN pkce_method VARCHAR(20) NOT NULL DEFAULT 'S256'")
 		}
 		// 245迁移
 		if v.Version < 245 {
