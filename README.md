@@ -156,6 +156,8 @@ app:
   web-client: 1  # 1:启用 0:禁用
   register: false #是否开启注册
   show-swagger: 0 #是否显示swagger文档
+  web-sso: true #是否显示web sso
+  token-expire: 168h #token有效时长
   disable-pwd-login: false #是否禁用密码登录
 gin:
   api-addr: "0.0.0.0:21114"
@@ -186,7 +188,7 @@ proxy:
   host: ""
 jwt:
   key: ""
-  expire-duration: 360000
+  expire-duration: 168h
 ldap:
   enable: false
   url: "ldap://ldap.example.com:389"
@@ -221,7 +223,7 @@ ldap:
 | RUSTDESK_API_APP_WEB_CLIENT                            | 是否启用web-client; 1:启用,0:不启用; 默认启用                                               | 1                            |
 | RUSTDESK_API_APP_REGISTER                              | 是否开启注册; `true`, `false`  默认`false`                                             | `false`                      |
 | RUSTDESK_API_APP_SHOW_SWAGGER                          | 是否可见swagger文档;`1`显示，`0`不显示，默认`0`不显示                                            | `1`                          |
-| RUSTDESK_API_APP_TOKEN_EXPIRE                          | token有效时长（秒）                                                                   | `3600`                       |
+| RUSTDESK_API_APP_TOKEN_EXPIRE                          | token有效时长                                                                      | `168h`                       |
 | RUSTDESK_API_APP_DISABLE_PWD_LOGIN                     | 是否禁用密码登录;  `true`, `false`  默认`false`                                          | `false`                      |
 | -----ADMIN配置-----                                      | ----------                                                                     | ----------                   |
 | RUSTDESK_API_ADMIN_TITLE                               | 后台标题                                                                           | `RustDesk Api Admin`         |
@@ -251,7 +253,7 @@ ldap:
 | RUSTDESK_API_PROXY_HOST                                | 代理地址                                                                           | `http://127.0.0.1:1080`      |
 | ----JWT配置----                                          | --------                                                                       | --------                     |
 | RUSTDESK_API_JWT_KEY                                   | 自定义JWT KEY,为空则不启用JWT<br/>如果没使用`lejianwen/rustdesk-server`中的`MUST_LOGIN`，建议设置为空 |                              |
-| RUSTDESK_API_JWT_EXPIRE_DURATION                       | JWT有效时间                                                                        | 360000                       |
+| RUSTDESK_API_JWT_EXPIRE_DURATION                       | JWT有效时间                                                                        | `168h`                       |
 
 
 ### 运行
