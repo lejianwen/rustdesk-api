@@ -23,5 +23,6 @@ localStorage.setItem(ws2_prefix+'api-server', "` + apiServer + `")
 
 window.webclient_magic_queryonline = ` + magicQueryonline + ``
 
+	c.Header("Content-Type", "application/javascript")
 	c.String(200, tmp)
 }
