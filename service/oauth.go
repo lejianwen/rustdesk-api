@@ -45,6 +45,7 @@ type OauthCacheItem struct {
 	Username   string `json:"username"`
 	Name       string `json:"name"`
 	Email      string `json:"email"`
+	Verifier   string `json:"verifier"`  // used for oauth pkce
 }
 
 func (oci *OauthCacheItem) ToOauthUser() *model.OauthUser {
@@ -92,19 +93,32 @@ func (os *OauthService) DeleteOauthCache(key string) {
 	OauthCache.Delete(key)
 }
 
-func (os *OauthService) BeginAuth(op string) (error error, code, url string) {
-	code = utils.RandomString(10) + strconv.FormatInt(time.Now().Unix(), 10)
+func (os *OauthService) BeginAuth(op string) (error error, state, verifier, url string) {
+	state = utils.RandomString(10) + strconv.FormatInt(time.Now().Unix(), 10)
+	verifier = ""
 	if op == string(model.OauthTypeWebauth) {
-		url = global.Config.Rustdesk.ApiServer + "/_admin/#/oauth/" + code
+		url = global.Config.Rustdesk.ApiServer + "/_admin/#/oauth/" + state
 		//url = "http://localhost:8888/_admin/#/oauth/" + code
-		return nil, code, url
+		return nil, state, verifier, url
 	}
-	err, _, oauthConfig := os.GetOauthConfig(op)
+	err, oauthInfo, oauthConfig := os.GetOauthConfig(op)
 	if err == nil {
-		return err, code, oauthConfig.AuthCodeURL(code)
+		extras := make([]oauth2.AuthCodeOption, 0, 3)
+		if oauthInfo.PkceEnable != nil && *oauthInfo.PkceEnable {
+			extras = append(extras, oauth2.AccessTypeOffline)
+			verifier = oauth2.GenerateVerifier()
+			switch oauthInfo.PkceMethod {
+			case model.PKCEMethodS256:
+				extras = append(extras, oauth2.S256ChallengeOption(verifier))
+			case model.PKCEMethodPlain:
+				// oauth2 does not have a plain challenge option, so we add it manually
+				extras = append(extras, oauth2.SetAuthURLParam("code_challenge_method", "plain"), oauth2.SetAuthURLParam("code_challenge", verifier))
+			}
+		}
+		return err, state, verifier, oauthConfig.AuthCodeURL(state, extras...)
 	}
 
-	return err, code, ""
+	return err, state, verifier, ""
 }
 
 // Method to fetch OIDC configuration dynamically
@@ -207,15 +221,20 @@ func getHTTPClientWithProxy() *http.Client {
 	return http.DefaultClient
 }
 
-func (os *OauthService) callbackBase(oauthConfig *oauth2.Config, code string, userEndpoint string, userData interface{}) (err error, client *http.Client) {
+func (os *OauthService) callbackBase(oauthConfig *oauth2.Config, code string, verifier string, userEndpoint string, userData interface{}) (err error, client *http.Client) {
 
 	// 设置代理客户端
 	httpClient := getHTTPClientWithProxy()
 	ctx := context.WithValue(context.Background(), oauth2.HTTPClient, httpClient)
 
+	var exchangeOpts []oauth2.AuthCodeOption
+	if verifier != "" {
+		exchangeOpts = []oauth2.AuthCodeOption{oauth2.VerifierOption(verifier)}
+	}
+
 	// 使用 code 换取 token
 	var token *oauth2.Token
-	token, err = oauthConfig.Exchange(ctx, code)
+	token, err = oauthConfig.Exchange(ctx, code, exchangeOpts...)
 	if err != nil {
 		global.Logger.Warn("oauthConfig.Exchange() failed: ", err)
 		return errors.New("GetOauthTokenError"), nil
@@ -244,9 +263,9 @@ func (os *OauthService) callbackBase(oauthConfig *oauth2.Config, code string, us
 }
 
 // githubCallback github回调
-func (os *OauthService) githubCallback(oauthConfig *oauth2.Config, code string) (error, *model.OauthUser) {
+func (os *OauthService) githubCallback(oauthConfig *oauth2.Config, code string, verifier string) (error, *model.OauthUser) {
 	var user = &model.GithubUser{}
-	err, client := os.callbackBase(oauthConfig, code, model.UserEndpointGithub, user)
+	err, client := os.callbackBase(oauthConfig, code, verifier, model.UserEndpointGithub, user)
 	if err != nil {
 		return err, nil
 	}
@@ -258,16 +277,16 @@ func (os *OauthService) githubCallback(oauthConfig *oauth2.Config, code string) 
 }
 
 // oidcCallback oidc回调, 通过code获取用户信息
-func (os *OauthService) oidcCallback(oauthConfig *oauth2.Config, code string, userInfoEndpoint string) (error, *model.OauthUser) {
+func (os *OauthService) oidcCallback(oauthConfig *oauth2.Config, code string, verifier string, userInfoEndpoint string) (error, *model.OauthUser) {
 	var user = &model.OidcUser{}
-	if err, _ := os.callbackBase(oauthConfig, code, userInfoEndpoint, user); err != nil {
+	if err, _ := os.callbackBase(oauthConfig, code, verifier, userInfoEndpoint, user); err != nil {
 		return err, nil
 	}
 	return nil, user.ToOauthUser()
 }
 
 // Callback: Get user information by code and op(Oauth provider)
-func (os *OauthService) Callback(code string, op string) (err error, oauthUser *model.OauthUser) {
+func (os *OauthService) Callback(code, verifier, op string) (err error, oauthUser *model.OauthUser) {
 	var oauthInfo *model.Oauth
 	var oauthConfig *oauth2.Config
 	err, oauthInfo, oauthConfig = os.GetOauthConfig(op)
@@ -278,13 +297,13 @@ func (os *OauthService) Callback(code string, op string) (err error, oauthUser *
 	oauthType := oauthInfo.OauthType
 	switch oauthType {
 	case model.OauthTypeGithub:
-		err, oauthUser = os.githubCallback(oauthConfig, code)
+		err, oauthUser = os.githubCallback(oauthConfig, code, verifier)
 	case model.OauthTypeOidc, model.OauthTypeGoogle:
 		err, endpoint := os.FetchOidcEndpoint(oauthInfo.Issuer)
 		if err != nil {
 			return err, nil
 		}
-		err, oauthUser = os.oidcCallback(oauthConfig, code, endpoint.UserInfo)
+		err, oauthUser = os.oidcCallback(oauthConfig, code, verifier, endpoint.UserInfo)
 	default:
 		return errors.New("unsupported OAuth type"), nil
 	}
