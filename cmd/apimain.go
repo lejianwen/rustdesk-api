@@ -210,12 +210,7 @@ func DatabaseAutoUpdate() {
 		if v.Version < uint(version) {
 			Migrate(uint(version))
 		}
-		// 261迁移
-		if v.Version < 261 {
-			// 在oauths表中添加pkce_enable 和 pkce_method 字段
-			db.Exec("ALTER TABLE oauths ADD COLUMN pkce_enable TINYINT(1) NOT NULL DEFAULT 0")
-			db.Exec("ALTER TABLE oauths ADD COLUMN pkce_method VARCHAR(20) NOT NULL DEFAULT 'S256'")
-		}
+
 		// 245迁移
 		if v.Version < 245 {
 			//oauths 表的 oauth_type 字段设置为 op同样的值
@@ -238,7 +233,7 @@ func DatabaseAutoUpdate() {
 
 }
 func Migrate(version uint) {
-	global.Logger.Info("migrating....", version)
+	global.Logger.Info("Migrating....", version)
 	err := global.DB.AutoMigrate(
 		&model.Version{},
 		&model.User{},
