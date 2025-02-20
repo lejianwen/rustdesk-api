@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/lejianwen/rustdesk-api/v2/global"
 	"github.com/lejianwen/rustdesk-api/v2/http/response"
+	"github.com/lejianwen/rustdesk-api/v2/model"
 	"github.com/lejianwen/rustdesk-api/v2/service"
 	"os"
 	"strings"
@@ -60,13 +61,22 @@ func (co *Config) AppConfig(c *gin.Context) {
 // @Security token
 func (co *Config) AdminConfig(c *gin.Context) {
 
-	u := service.AllService.UserService.CurUser(c)
-	if u == nil || u.Id == 0 {
+	u := &model.User{}
+	token := c.GetHeader("api-token")
+	if token != "" {
+		u, _ = service.AllService.UserService.InfoByAccessToken(token)
+		if !service.AllService.UserService.CheckUserEnable(u) {
+			u.Id = 0
+		}
+	}
+
+	if u.Id == 0 {
 		response.Success(c, &gin.H{
 			"title": global.Config.Admin.Title,
 		})
 		return
 	}
+
 	hello := global.Config.Admin.Hello
 	helloFile := global.Config.Admin.HelloFile
 	if helloFile != "" {
