@@ -49,7 +49,7 @@ func Init(g *gin.Engine) {
 	MyBind(adg)
 
 	RustdeskCmdBind(adg)
-
+	DeviceGroupBind(adg)
 	//访问静态文件
 	//g.StaticFS("/upload", http.Dir(global.Config.Gin.ResourcesPath+"/upload"))
 }
@@ -98,6 +98,18 @@ func GroupBind(rg *gin.RouterGroup) {
 	aR := rg.Group("/group").Use(middleware.AdminPrivilege())
 	{
 		cont := &admin.Group{}
+		aR.GET("/list", cont.List)
+		aR.GET("/detail/:id", cont.Detail)
+		aR.POST("/create", cont.Create)
+		aR.POST("/update", cont.Update)
+		aR.POST("/delete", cont.Delete)
+	}
+}
+
+func DeviceGroupBind(rg *gin.RouterGroup) {
+	aR := rg.Group("/device_group").Use(middleware.AdminPrivilege())
+	{
+		cont := &admin.DeviceGroup{}
 		aR.GET("/list", cont.List)
 		aR.GET("/detail/:id", cont.Detail)
 		aR.POST("/create", cont.Create)

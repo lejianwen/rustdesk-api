@@ -60,7 +60,7 @@ func (gpp *GroupPeerPayload) FromAddressBook(a *model.AddressBook, username stri
 	gpp.UserName = username
 }
 
-func (gpp *GroupPeerPayload) FromPeer(p *model.Peer, username string) {
+func (gpp *GroupPeerPayload) FromPeer(p *model.Peer, username string, dGroupName string) {
 	gpp.Id = p.Id
 	gpp.Info = &PeerPayloadInfo{
 		DeviceName: p.Hostname,
@@ -69,4 +69,5 @@ func (gpp *GroupPeerPayload) FromPeer(p *model.Peer, username string) {
 	}
 	gpp.Note = ""
 	gpp.UserName = username
+	gpp.DeviceGroupName = dGroupName
 }
