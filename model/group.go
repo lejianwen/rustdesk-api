@@ -16,3 +16,14 @@ type GroupList struct {
 	Groups []*Group `json:"list"`
 	Pagination
 }
+
+type DeviceGroup struct {
+	IdModel
+	Name string `json:"name" gorm:"default:'';not null;"`
+	TimeModel
+}
+
+type DeviceGroupList struct {
+	DeviceGroups []*DeviceGroup `json:"list"`
+	Pagination
+}

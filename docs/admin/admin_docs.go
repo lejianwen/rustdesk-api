@@ -1407,6 +1407,280 @@ const docTemplateadmin = `{
                 }
             }
         },
+        "/admin/device_group/create": {
+            "post": {
+                "security": [
+                    {
+                        "token": []
+                    }
+                ],
+                "description": "创建设备群组",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "设备群组"
+                ],
+                "summary": "创建设备群组",
+                "parameters": [
+                    {
+                        "description": "设备群组信息",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/admin.DeviceGroupForm"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/model.DeviceGroup"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/device_group/delete": {
+            "post": {
+                "security": [
+                    {
+                        "token": []
+                    }
+                ],
+                "description": "设备群组删除",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "设备群组"
+                ],
+                "summary": "设备群组删除",
+                "parameters": [
+                    {
+                        "description": "群组信息",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/admin.DeviceGroupForm"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/device_group/detail/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "token": []
+                    }
+                ],
+                "description": "设备群组详情",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "设备群组"
+                ],
+                "summary": "设备群组详情",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/model.Group"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/device_group/list": {
+            "get": {
+                "security": [
+                    {
+                        "token": []
+                    }
+                ],
+                "description": "群组列表",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "群组"
+                ],
+                "summary": "群组列表",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "页码",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "页大小",
+                        "name": "page_size",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/model.GroupList"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/device_group/update": {
+            "post": {
+                "security": [
+                    {
+                        "token": []
+                    }
+                ],
+                "description": "设备群组编辑",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "设备群组"
+                ],
+                "summary": "设备群组编辑",
+                "parameters": [
+                    {
+                        "description": "群组信息",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/admin.DeviceGroupForm"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/model.Group"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
         "/admin/file/oss_token": {
             "get": {
                 "security": [
@@ -1783,7 +2057,7 @@ const docTemplateadmin = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_lejianwen_rustdesk-api_http_request_admin.Login"
+                            "$ref": "#/definitions/github_com_lejianwen_rustdesk-api_v2_http_request_admin.Login"
                         }
                     }
                 ],
@@ -5219,6 +5493,20 @@ const docTemplateadmin = `{
                 }
             }
         },
+        "admin.DeviceGroupForm": {
+            "type": "object",
+            "required": [
+                "name"
+            ],
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
         "admin.GroupForm": {
             "type": "object",
             "required": [
@@ -5306,6 +5594,12 @@ const docTemplateadmin = `{
                 "op": {
                     "type": "string"
                 },
+                "pkce_enable": {
+                    "type": "boolean"
+                },
+                "pkce_method": {
+                    "type": "string"
+                },
                 "redirect_url": {
                     "type": "string"
                 },
@@ -5333,6 +5627,9 @@ const docTemplateadmin = `{
             "properties": {
                 "cpu": {
                     "type": "string"
+                },
+                "group_id": {
+                    "type": "integer"
                 },
                 "hostname": {
                     "type": "string"
@@ -5521,7 +5818,7 @@ const docTemplateadmin = `{
                 }
             }
         },
-        "github_com_lejianwen_rustdesk-api_http_request_admin.Login": {
+        "github_com_lejianwen_rustdesk-api_v2_http_request_admin.Login": {
             "type": "object",
             "required": [
                 "password",
@@ -5842,6 +6139,23 @@ const docTemplateadmin = `{
                 }
             }
         },
+        "model.DeviceGroup": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                }
+            }
+        },
         "model.Group": {
             "type": "object",
             "properties": {
@@ -5973,6 +6287,12 @@ const docTemplateadmin = `{
                 "op": {
                     "type": "string"
                 },
+                "pkce_enable": {
+                    "type": "boolean"
+                },
+                "pkce_method": {
+                    "type": "string"
+                },
                 "redirect_url": {
                     "type": "string"
                 },
@@ -6012,6 +6332,9 @@ const docTemplateadmin = `{
                 },
                 "created_at": {
                     "type": "string"
+                },
+                "group_id": {
+                    "type": "integer"
                 },
                 "hostname": {
                     "type": "string"

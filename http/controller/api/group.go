@@ -94,6 +94,11 @@ func (g *Group) Peers(c *gin.Context) {
 		namesById[user.Id] = user.Username
 		userIds = append(userIds, user.Id)
 	}
+	dGroupNameById := make(map[uint]string)
+	allGroup := service.AllService.GroupService.DeviceGroupList(1, 999, nil)
+	for _, group := range allGroup.DeviceGroups {
+		dGroupNameById[group.Id] = group.Name
+	}
 	peerList := service.AllService.PeerService.ListByUserIds(userIds, q.Page, q.PageSize)
 	data := make([]*apiResp.GroupPeerPayload, 0, len(peerList.Peers))
 	for _, peer := range peerList.Peers {
@@ -101,9 +106,12 @@ func (g *Group) Peers(c *gin.Context) {
 		if !ok {
 			uname = ""
 		}
+		dGroupName, ok2 := dGroupNameById[peer.GroupId]
+		if !ok2 {
+			dGroupName = ""
+		}
 		pp := &apiResp.GroupPeerPayload{}
-		pp.FromPeer(peer, uname)
-		//pp.DeviceGroupName = uname
+		pp.FromPeer(peer, uname, dGroupName)
 		data = append(data, pp)
 
 	}
@@ -128,8 +136,15 @@ func (g *Group) Peers(c *gin.Context) {
 // @Router /device-group/accessible [get]
 // @Security BearerAuth
 func (g *Group) Device(c *gin.Context) {
+	u := service.AllService.UserService.CurUser(c)
+	if !service.AllService.UserService.IsAdmin(u) {
+		response.Error(c, "Permission denied")
+		return
+	}
+	allGroup := service.AllService.GroupService.DeviceGroupList(1, 999, nil)
+
 	c.JSON(http.StatusOK, response.DataResponse{
 		Total: 0,
-		Data:  nil,
+		Data:  allGroup.DeviceGroups,
 	})
 }

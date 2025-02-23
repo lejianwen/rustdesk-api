@@ -22,3 +22,15 @@ func (gf *GroupForm) ToGroup() *model.Group {
 	group.Type = gf.Type
 	return group
 }
+
+type DeviceGroupForm struct {
+	Id   uint   `json:"id"`
+	Name string `json:"name" validate:"required"`
+}
+
+func (gf *DeviceGroupForm) ToDeviceGroup() *model.DeviceGroup {
+	group := &model.DeviceGroup{}
+	group.Id = gf.Id
+	group.Name = gf.Name
+	return group
+}

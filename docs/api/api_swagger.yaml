@@ -671,6 +671,44 @@ paths:
       summary: 用户信息
       tags:
       - 用户
+  /device-group/accessible:
+    get:
+      consumes:
+      - application/json
+      description: 机器
+      parameters:
+      - description: 页码
+        in: query
+        name: page
+        type: integer
+      - description: 每页数量
+        in: query
+        name: pageSize
+        type: integer
+      - description: 状态
+        in: query
+        name: status
+        type: integer
+      - description: accessible
+        in: query
+        name: accessible
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.DataResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - BearerAuth: []
+      summary: 设备
+      tags:
+      - 群组
   /heartbeat:
     post:
       consumes:

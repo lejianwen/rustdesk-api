@@ -77,6 +77,15 @@ definitions:
     - new_password
     - old_password
     type: object
+  admin.DeviceGroupForm:
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+    required:
+    - name
+    type: object
   admin.GroupForm:
     properties:
       id:
@@ -130,6 +139,10 @@ definitions:
         type: string
       op:
         type: string
+      pkce_enable:
+        type: boolean
+      pkce_method:
+        type: string
       redirect_url:
         type: string
       scopes:
@@ -153,6 +166,8 @@ definitions:
     properties:
       cpu:
         type: string
+      group_id:
+        type: integer
       hostname:
         type: string
       id:
@@ -278,7 +293,7 @@ definitions:
     required:
     - ids
     type: object
-  github_com_lejianwen_rustdesk-api_http_request_admin.Login:
+  github_com_lejianwen_rustdesk-api_v2_http_request_admin.Login:
     properties:
       captcha:
         type: string
@@ -492,6 +507,17 @@ definitions:
       total:
         type: integer
     type: object
+  model.DeviceGroup:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      updated_at:
+        type: string
+    type: object
   model.Group:
     properties:
       created_at:
@@ -579,6 +605,10 @@ definitions:
         type: string
       op:
         type: string
+      pkce_enable:
+        type: boolean
+      pkce_method:
+        type: string
       redirect_url:
         type: string
       scopes:
@@ -605,6 +635,8 @@ definitions:
         type: string
       created_at:
         type: string
+      group_id:
+        type: integer
       hostname:
         type: string
       id:
@@ -1610,6 +1642,167 @@ paths:
       summary: RUSTDESK服务配置
       tags:
       - ADMIN
+  /admin/device_group/create:
+    post:
+      consumes:
+      - application/json
+      description: 创建设备群组
+      parameters:
+      - description: 设备群组信息
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/admin.DeviceGroupForm'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.DeviceGroup'
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - token: []
+      summary: 创建设备群组
+      tags:
+      - 设备群组
+  /admin/device_group/delete:
+    post:
+      consumes:
+      - application/json
+      description: 设备群组删除
+      parameters:
+      - description: 群组信息
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/admin.DeviceGroupForm'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - token: []
+      summary: 设备群组删除
+      tags:
+      - 设备群组
+  /admin/device_group/detail/{id}:
+    get:
+      consumes:
+      - application/json
+      description: 设备群组详情
+      parameters:
+      - description: ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.Group'
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - token: []
+      summary: 设备群组详情
+      tags:
+      - 设备群组
+  /admin/device_group/list:
+    get:
+      consumes:
+      - application/json
+      description: 群组列表
+      parameters:
+      - description: 页码
+        in: query
+        name: page
+        type: integer
+      - description: 页大小
+        in: query
+        name: page_size
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.GroupList'
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - token: []
+      summary: 群组列表
+      tags:
+      - 群组
+  /admin/device_group/update:
+    post:
+      consumes:
+      - application/json
+      description: 设备群组编辑
+      parameters:
+      - description: 群组信息
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/admin.DeviceGroupForm'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.Group'
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - token: []
+      summary: 设备群组编辑
+      tags:
+      - 设备群组
   /admin/file/oss_token:
     get:
       consumes:
@@ -1830,7 +2023,7 @@ paths:
         name: body
         required: true
         schema:
-          $ref: '#/definitions/github_com_lejianwen_rustdesk-api_http_request_admin.Login'
+          $ref: '#/definitions/github_com_lejianwen_rustdesk-api_v2_http_request_admin.Login'
       produces:
       - application/json
       responses:
