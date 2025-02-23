@@ -79,6 +79,8 @@ func ApiInit(g *gin.Engine) {
 		gr := &api.Group{}
 		frg.GET("/users", gr.Users)
 		frg.GET("/peers", gr.Peers)
+		// /api/device-group/accessible?current=1&pageSize=100
+		frg.GET("/device-group/accessible", gr.Device)
 	}
 
 	{
@@ -88,6 +90,7 @@ func ApiInit(g *gin.Engine) {
 		//更新地址
 		frg.POST("/ab", ab.UpAb)
 	}
+
 	PersonalRoutes(frg)
 	//访问静态文件
 	g.StaticFS("/upload", http.Dir(global.Config.Gin.ResourcesPath+"/public/upload"))

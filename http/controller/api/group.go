@@ -45,7 +45,7 @@ func (g *Group) Users(c *gin.Context) {
 		userList = service.AllService.UserService.ListByGroupId(u.GroupId, q.Page, q.PageSize)
 	}
 
-	var data []*apiResp.UserPayload
+	data := make([]*apiResp.UserPayload, 0, len(userList.Users))
 	for _, user := range userList.Users {
 		up := &apiResp.UserPayload{}
 		up.FromUser(user)
@@ -88,14 +88,14 @@ func (g *Group) Peers(c *gin.Context) {
 		users = service.AllService.UserService.ListIdAndNameByGroupId(u.GroupId)
 	}
 
-	namesById := make(map[uint]string)
-	userIds := make([]uint, 0)
+	namesById := make(map[uint]string, len(users))
+	userIds := make([]uint, 0, len(users))
 	for _, user := range users {
 		namesById[user.Id] = user.Username
 		userIds = append(userIds, user.Id)
 	}
 	peerList := service.AllService.PeerService.ListByUserIds(userIds, q.Page, q.PageSize)
-	var data []*apiResp.GroupPeerPayload
+	data := make([]*apiResp.GroupPeerPayload, 0, len(peerList.Peers))
 	for _, peer := range peerList.Peers {
 		uname, ok := namesById[peer.UserId]
 		if !ok {
@@ -103,11 +103,33 @@ func (g *Group) Peers(c *gin.Context) {
 		}
 		pp := &apiResp.GroupPeerPayload{}
 		pp.FromPeer(peer, uname)
+		//pp.DeviceGroupName = uname
 		data = append(data, pp)
 
 	}
 	c.JSON(http.StatusOK, response.DataResponse{
 		Total: uint(peerList.Total),
 		Data:  data,
+	})
+}
+
+// Device
+// @Tags 群组
+// @Summary 设备
+// @Description 机器
+// @Accept  json
+// @Produce  json
+// @Param page query int false "页码"
+// @Param pageSize query int false "每页数量"
+// @Param status query int false "状态"
+// @Param accessible query string false "accessible"
+// @Success 200 {object} response.DataResponse
+// @Failure 500 {object} response.Response
+// @Router /device-group/accessible [get]
+// @Security BearerAuth
+func (g *Group) Device(c *gin.Context) {
+	c.JSON(http.StatusOK, response.DataResponse{
+		Total: 0,
+		Data:  nil,
 	})
 }
