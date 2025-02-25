@@ -18,6 +18,8 @@ func ApiInit(g *gin.Engine) {
 	if global.Config.App.ShowSwagger == 1 {
 		g.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler, ginSwagger.InstanceName("api")))
 	}
+	// 加载 HTML 模板
+	g.LoadHTMLGlob("http/templates/*")
 
 	frg := g.Group("/api")
 

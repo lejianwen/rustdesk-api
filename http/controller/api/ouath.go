@@ -145,7 +145,9 @@ func (o *Oauth) OidcAuthQuery(c *gin.Context) {
 func (o *Oauth) OauthCallback(c *gin.Context) {
 	state := c.Query("state")
 	if state == "" {
-		c.String(http.StatusInternalServerError, response.TranslateParamMsg(c, "ParamIsEmpty", "state"))
+		c.HTML(http.StatusOK, "oauth_fail.html", gin.H{
+			"message": response.TranslateParamMsg(c, "ParamIsEmpty", "state"),
+		})
 		return
 	}
 	cacheKey := state
@@ -153,7 +155,9 @@ func (o *Oauth) OauthCallback(c *gin.Context) {
 	//从缓存中获取
 	oauthCache := oauthService.GetOauthCache(cacheKey)
 	if oauthCache == nil {
-		c.String(http.StatusInternalServerError, response.TranslateMsg(c, "OauthExpired"))
+		c.HTML(http.StatusOK, "oauth_fail.html", gin.H{
+			"message": response.TranslateMsg(c, "OauthExpired"),
+		})
 		return
 	}
 	op := oauthCache.Op
@@ -164,7 +168,9 @@ func (o *Oauth) OauthCallback(c *gin.Context) {
 	code := c.Query("code")
 	err, oauthUser := oauthService.Callback(code, verifier, op)
 	if err != nil {
-		c.String(http.StatusInternalServerError, response.TranslateMsg(c, "OauthFailed")+response.TranslateMsg(c, err.Error()))
+		c.HTML(http.StatusOK, "oauth_fail.html", gin.H{
+			"message": response.TranslateMsg(c, "OauthFailed") + response.TranslateMsg(c, err.Error()),
+		})
 		return
 	}
 	userId := oauthCache.UserId
@@ -175,28 +181,38 @@ func (o *Oauth) OauthCallback(c *gin.Context) {
 		// 检查此openid是否已经绑定过
 		utr := oauthService.UserThirdInfo(op, openid)
 		if utr.UserId > 0 {
-			c.String(http.StatusInternalServerError, response.TranslateMsg(c, "OauthHasBindOtherUser"))
+			c.HTML(http.StatusOK, "oauth_fail.html", gin.H{
+				"message": response.TranslateMsg(c, "OauthHasBindOtherUser"),
+			})
 			return
 		}
 		//绑定
 		user = service.AllService.UserService.InfoById(userId)
 		if user == nil {
-			c.String(http.StatusInternalServerError, response.TranslateMsg(c, "ItemNotFound"))
+			c.HTML(http.StatusOK, "oauth_fail.html", gin.H{
+				"message": response.TranslateMsg(c, "ItemNotFound"),
+			})
 			return
 		}
 		//绑定
 		err := oauthService.BindOauthUser(userId, oauthUser, op)
 		if err != nil {
-			c.String(http.StatusInternalServerError, response.TranslateMsg(c, "BindFail"))
+			c.HTML(http.StatusOK, "oauth_fail.html", gin.H{
+				"message": response.TranslateMsg(c, "BindFail"),
+			})
 			return
 		}
-		c.String(http.StatusOK, response.TranslateMsg(c, "BindSuccess"))
+		c.HTML(http.StatusOK, "oauth_success.html", gin.H{
+			"message": response.TranslateMsg(c, "BindSuccess"),
+		})
 		return
 
 	} else if action == service.OauthActionTypeLogin {
 		//登录
 		if userId != 0 {
-			c.String(http.StatusInternalServerError, response.TranslateMsg(c, "OauthHasBeenSuccess"))
+			c.HTML(http.StatusOK, "oauth_fail.html", gin.H{
+				"message": response.TranslateMsg(c, "OauthHasBeenSuccess"),
+			})
 			return
 		}
 		user = service.AllService.UserService.InfoByOauthId(op, openid)
@@ -213,7 +229,9 @@ func (o *Oauth) OauthCallback(c *gin.Context) {
 			//自动注册
 			err, user = service.AllService.UserService.RegisterByOauth(oauthUser, op)
 			if err != nil {
-				c.String(http.StatusInternalServerError, response.TranslateMsg(c, err.Error()))
+				c.HTML(http.StatusOK, "oauth_fail.html", gin.H{
+					"message": response.TranslateMsg(c, err.Error()),
+				})
 				return
 			}
 		}
@@ -233,10 +251,14 @@ func (o *Oauth) OauthCallback(c *gin.Context) {
 			c.Redirect(http.StatusFound, url)
 			return
 		}
-		c.String(http.StatusOK, response.TranslateMsg(c, "OauthSuccess"))
+		c.HTML(http.StatusOK, "oauth_success.html", gin.H{
+			"message": response.TranslateMsg(c, "OauthSuccess"),
+		})
 		return
 	} else {
-		c.String(http.StatusInternalServerError, response.TranslateMsg(c, "ParamsError"))
+		c.HTML(http.StatusOK, "oauth_fail.html", gin.H{
+			"message": response.TranslateMsg(c, "ParamsError"),
+		})
 		return
 	}
 
