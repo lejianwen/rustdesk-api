@@ -32,10 +32,8 @@ func (o *Oauth) OidcAuth(c *gin.Context) {
 	}
 
 	oauthService := service.AllService.OauthService
-	var state string
-	var url string
-	var verifier string
-	err, state, verifier, url = oauthService.BeginAuth(f.Op)
+
+	err, state, verifier, nonce, url := oauthService.BeginAuth(f.Op)
 	if err != nil {
 		response.Error(c, response.TranslateMsg(c, err.Error()))
 		return
@@ -50,6 +48,7 @@ func (o *Oauth) OidcAuth(c *gin.Context) {
 		DeviceOs:   f.DeviceInfo.Os,
 		DeviceType: f.DeviceInfo.Type,
 		Verifier:   verifier,
+		Nonce:      nonce,
 	}, 5*60)
 	//fmt.Println("code url", code, url)
 	c.JSON(http.StatusOK, gin.H{
@@ -160,13 +159,14 @@ func (o *Oauth) OauthCallback(c *gin.Context) {
 		})
 		return
 	}
+	nonce := oauthCache.Nonce
 	op := oauthCache.Op
 	action := oauthCache.Action
 	verifier := oauthCache.Verifier
 	var user *model.User
 	// 获取用户信息
 	code := c.Query("code")
-	err, oauthUser := oauthService.Callback(code, verifier, op)
+	err, oauthUser := oauthService.Callback(code, verifier, op, nonce)
 	if err != nil {
 		c.HTML(http.StatusOK, "oauth_fail.html", gin.H{
 			"message": response.TranslateMsg(c, "OauthFailed") + response.TranslateMsg(c, err.Error()),

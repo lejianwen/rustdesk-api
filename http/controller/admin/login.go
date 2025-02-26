@@ -283,7 +283,7 @@ func (ct *Login) OidcAuth(c *gin.Context) {
 		return
 	}
 
-	err, state, verifier, url := service.AllService.OauthService.BeginAuth(f.Op)
+	err, state, verifier, nonce, url := service.AllService.OauthService.BeginAuth(f.Op)
 	if err != nil {
 		response.Error(c, response.TranslateMsg(c, err.Error()))
 		return
@@ -298,6 +298,7 @@ func (ct *Login) OidcAuth(c *gin.Context) {
 		DeviceOs: f.DeviceInfo.Os,
 		Uuid:     f.Uuid,
 		Verifier: verifier,
+		Nonce:    nonce,
 	}, 5*60)
 
 	response.Success(c, gin.H{

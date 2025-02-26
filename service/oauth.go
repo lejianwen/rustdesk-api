@@ -47,6 +47,7 @@ type OauthCacheItem struct {
 	Name       string `json:"name"`
 	Email      string `json:"email"`
 	Verifier   string `json:"verifier"` // used for oauth pkce
+	Nonce      string `json:"nonce"`
 }
 
 func (oci *OauthCacheItem) ToOauthUser() *model.OauthUser {
@@ -93,17 +94,22 @@ func (os *OauthService) DeleteOauthCache(key string) {
 	OauthCache.Delete(key)
 }
 
-func (os *OauthService) BeginAuth(op string) (error error, state, verifier, url string) {
+func (os *OauthService) BeginAuth(op string) (error error, state, verifier, nonce, url string) {
 	state = utils.RandomString(10) + strconv.FormatInt(time.Now().Unix(), 10)
 	verifier = ""
+	nonce = ""
 	if op == model.OauthTypeWebauth {
 		url = global.Config.Rustdesk.ApiServer + "/_admin/#/oauth/" + state
 		//url = "http://localhost:8888/_admin/#/oauth/" + code
-		return nil, state, verifier, url
+		return nil, state, verifier, nonce, url
 	}
 	err, oauthInfo, oauthConfig, _ := os.GetOauthConfig(op)
 	if err == nil {
 		extras := make([]oauth2.AuthCodeOption, 0, 3)
+
+		nonce = utils.RandomString(10)
+		extras = append(extras, oauth2.SetAuthURLParam("nonce", nonce))
+
 		if oauthInfo.PkceEnable != nil && *oauthInfo.PkceEnable {
 			extras = append(extras, oauth2.AccessTypeOffline)
 			verifier = oauth2.GenerateVerifier()
@@ -115,10 +121,11 @@ func (os *OauthService) BeginAuth(op string) (error error, state, verifier, url 
 				extras = append(extras, oauth2.SetAuthURLParam("code_challenge_method", "plain"), oauth2.SetAuthURLParam("code_challenge", verifier))
 			}
 		}
-		return err, state, verifier, oauthConfig.AuthCodeURL(state, extras...)
+
+		return err, state, verifier, nonce, oauthConfig.AuthCodeURL(state, extras...)
 	}
 
-	return err, state, verifier, ""
+	return err, state, verifier, nonce, ""
 }
 
 func (os *OauthService) FetchOidcProvider(issuer string) (error, *oidc.Provider) {
@@ -280,9 +287,9 @@ func (os *OauthService) callbackBase(oauthConfig *oauth2.Config, provider *oidc.
 }
 
 // githubCallback github回调
-func (os *OauthService) githubCallback(oauthConfig *oauth2.Config, provider *oidc.Provider, code string, verifier string) (error, *model.OauthUser) {
+func (os *OauthService) githubCallback(oauthConfig *oauth2.Config, provider *oidc.Provider, code, verifier, nonce string) (error, *model.OauthUser) {
 	var user = &model.GithubUser{}
-	err, client := os.callbackBase(oauthConfig, provider, code, verifier, "", user)
+	err, client := os.callbackBase(oauthConfig, provider, code, verifier, nonce, user)
 	if err != nil {
 		return err, nil
 	}
@@ -294,16 +301,16 @@ func (os *OauthService) githubCallback(oauthConfig *oauth2.Config, provider *oid
 }
 
 // oidcCallback oidc回调, 通过code获取用户信息
-func (os *OauthService) oidcCallback(oauthConfig *oauth2.Config, provider *oidc.Provider, code string, verifier string) (error, *model.OauthUser) {
+func (os *OauthService) oidcCallback(oauthConfig *oauth2.Config, provider *oidc.Provider, code, verifier, nonce string) (error, *model.OauthUser) {
 	var user = &model.OidcUser{}
-	if err, _ := os.callbackBase(oauthConfig, provider, code, verifier, "", user); err != nil {
+	if err, _ := os.callbackBase(oauthConfig, provider, code, verifier, nonce, user); err != nil {
 		return err, nil
 	}
 	return nil, user.ToOauthUser()
 }
 
 // Callback: Get user information by code and op(Oauth provider)
-func (os *OauthService) Callback(code, verifier, op string) (err error, oauthUser *model.OauthUser) {
+func (os *OauthService) Callback(code, verifier, op, nonce string) (err error, oauthUser *model.OauthUser) {
 	err, oauthInfo, oauthConfig, provider := os.GetOauthConfig(op)
 	// oauthType is already validated in GetOauthConfig
 	if err != nil {
@@ -312,9 +319,9 @@ func (os *OauthService) Callback(code, verifier, op string) (err error, oauthUse
 	oauthType := oauthInfo.OauthType
 	switch oauthType {
 	case model.OauthTypeGithub:
-		err, oauthUser = os.githubCallback(oauthConfig, provider, code, verifier)
+		err, oauthUser = os.githubCallback(oauthConfig, provider, code, verifier, nonce)
 	case model.OauthTypeOidc, model.OauthTypeGoogle:
-		err, oauthUser = os.oidcCallback(oauthConfig, provider, code, verifier)
+		err, oauthUser = os.oidcCallback(oauthConfig, provider, code, verifier, nonce)
 	default:
 		return errors.New("unsupported OAuth type"), nil
 	}
