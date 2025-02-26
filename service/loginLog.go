@@ -1,7 +1,6 @@
 package service
 
 import (
-	"github.com/lejianwen/rustdesk-api/v2/global"
 	"github.com/lejianwen/rustdesk-api/v2/model"
 	"gorm.io/gorm"
 )
@@ -12,7 +11,7 @@ type LoginLogService struct {
 // InfoById 根据用户id取用户信息
 func (us *LoginLogService) InfoById(id uint) *model.LoginLog {
 	u := &model.LoginLog{}
-	global.DB.Where("id = ?", id).First(u)
+	DB.Where("id = ?", id).First(u)
 	return u
 }
 
@@ -20,7 +19,7 @@ func (us *LoginLogService) List(page, pageSize uint, where func(tx *gorm.DB)) (r
 	res = &model.LoginLogList{}
 	res.Page = int64(page)
 	res.PageSize = int64(pageSize)
-	tx := global.DB.Model(&model.LoginLog{})
+	tx := DB.Model(&model.LoginLog{})
 	if where != nil {
 		where(tx)
 	}
@@ -32,20 +31,20 @@ func (us *LoginLogService) List(page, pageSize uint, where func(tx *gorm.DB)) (r
 
 // Create 创建
 func (us *LoginLogService) Create(u *model.LoginLog) error {
-	res := global.DB.Create(u).Error
+	res := DB.Create(u).Error
 	return res
 }
 func (us *LoginLogService) Delete(u *model.LoginLog) error {
-	return global.DB.Delete(u).Error
+	return DB.Delete(u).Error
 }
 
 // Update 更新
 func (us *LoginLogService) Update(u *model.LoginLog) error {
-	return global.DB.Model(u).Updates(u).Error
+	return DB.Model(u).Updates(u).Error
 }
 
 func (us *LoginLogService) BatchDelete(ids []uint) error {
-	return global.DB.Where("id in (?)", ids).Delete(&model.LoginLog{}).Error
+	return DB.Where("id in (?)", ids).Delete(&model.LoginLog{}).Error
 }
 
 func (us *LoginLogService) SoftDelete(l *model.LoginLog) error {
@@ -54,5 +53,5 @@ func (us *LoginLogService) SoftDelete(l *model.LoginLog) error {
 }
 
 func (us *LoginLogService) BatchSoftDelete(uid uint, ids []uint) error {
-	return global.DB.Model(&model.LoginLog{}).Where("user_id = ? and id in (?)", uid, ids).Update("is_deleted", model.IsDeletedYes).Error
+	return DB.Model(&model.LoginLog{}).Where("user_id = ? and id in (?)", uid, ids).Update("is_deleted", model.IsDeletedYes).Error
 }

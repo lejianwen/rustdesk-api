@@ -1,7 +1,6 @@
 package service
 
 import (
-	"github.com/lejianwen/rustdesk-api/v2/global"
 	"github.com/lejianwen/rustdesk-api/v2/model"
 	"gorm.io/gorm"
 )
@@ -11,12 +10,12 @@ type TagService struct {
 
 func (s *TagService) Info(id uint) *model.Tag {
 	p := &model.Tag{}
-	global.DB.Where("id = ?", id).First(p)
+	DB.Where("id = ?", id).First(p)
 	return p
 }
 func (s *TagService) InfoByUserIdAndNameAndCollectionId(userid uint, name string, cid uint) *model.Tag {
 	p := &model.Tag{}
-	global.DB.Where("user_id = ? and name = ? and collection_id = ?", userid, name, cid).First(p)
+	DB.Where("user_id = ? and name = ? and collection_id = ?", userid, name, cid).First(p)
 	return p
 }
 
@@ -34,7 +33,7 @@ func (s *TagService) ListByUserIdAndCollectionId(userId, cid uint) (res *model.T
 	return
 }
 func (s *TagService) UpdateTags(userId uint, tags map[string]uint) {
-	tx := global.DB.Begin()
+	tx := DB.Begin()
 	//先查询所有tag
 	var allTags []*model.Tag
 	tx.Where("user_id = ?", userId).Find(&allTags)
@@ -66,7 +65,7 @@ func (s *TagService) UpdateTags(userId uint, tags map[string]uint) {
 // InfoById 根据用户id取用户信息
 func (s *TagService) InfoById(id uint) *model.Tag {
 	u := &model.Tag{}
-	global.DB.Where("id = ?", id).First(u)
+	DB.Where("id = ?", id).First(u)
 	return u
 }
 
@@ -74,7 +73,7 @@ func (s *TagService) List(page, pageSize uint, where func(tx *gorm.DB)) (res *mo
 	res = &model.TagList{}
 	res.Page = int64(page)
 	res.PageSize = int64(pageSize)
-	tx := global.DB.Model(&model.Tag{})
+	tx := DB.Model(&model.Tag{})
 	if where != nil {
 		where(tx)
 	}
@@ -86,14 +85,14 @@ func (s *TagService) List(page, pageSize uint, where func(tx *gorm.DB)) (res *mo
 
 // Create 创建
 func (s *TagService) Create(u *model.Tag) error {
-	res := global.DB.Create(u).Error
+	res := DB.Create(u).Error
 	return res
 }
 func (s *TagService) Delete(u *model.Tag) error {
-	return global.DB.Delete(u).Error
+	return DB.Delete(u).Error
 }
 
 // Update 更新
 func (s *TagService) Update(u *model.Tag) error {
-	return global.DB.Model(u).Select("*").Omit("created_at").Updates(u).Error
+	return DB.Model(u).Select("*").Omit("created_at").Updates(u).Error
 }

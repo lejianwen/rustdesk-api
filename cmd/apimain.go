@@ -164,6 +164,9 @@ func InitGlobal() {
 	global.Jwt = jwt.NewJwt(global.Config.Jwt.Key, global.Config.Jwt.ExpireDuration)
 	//locker
 	global.Lock = lock.NewLocal()
+
+	//service
+	service.New(&global.Config, global.DB, global.Logger, global.Jwt, global.Lock)
 }
 func DatabaseAutoUpdate() {
 	version := 262

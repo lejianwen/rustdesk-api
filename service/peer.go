@@ -1,7 +1,6 @@
 package service
 
 import (
-	"github.com/lejianwen/rustdesk-api/v2/global"
 	"github.com/lejianwen/rustdesk-api/v2/model"
 	"gorm.io/gorm"
 )
@@ -12,24 +11,24 @@ type PeerService struct {
 // FindById 根据id查找
 func (ps *PeerService) FindById(id string) *model.Peer {
 	p := &model.Peer{}
-	global.DB.Where("id = ?", id).First(p)
+	DB.Where("id = ?", id).First(p)
 	return p
 }
 func (ps *PeerService) FindByUuid(uuid string) *model.Peer {
 	p := &model.Peer{}
-	global.DB.Where("uuid = ?", uuid).First(p)
+	DB.Where("uuid = ?", uuid).First(p)
 	return p
 }
 func (ps *PeerService) InfoByRowId(id uint) *model.Peer {
 	p := &model.Peer{}
-	global.DB.Where("row_id = ?", id).First(p)
+	DB.Where("row_id = ?", id).First(p)
 	return p
 }
 
 // FindByUserIdAndUuid 根据用户id和uuid查找peer
 func (ps *PeerService) FindByUserIdAndUuid(uuid string, userId uint) *model.Peer {
 	p := &model.Peer{}
-	global.DB.Where("uuid = ? and user_id = ?", uuid, userId).First(p)
+	DB.Where("uuid = ? and user_id = ?", uuid, userId).First(p)
 	return p
 }
 
@@ -43,7 +42,7 @@ func (ps *PeerService) UuidBindUserId(deviceId string, uuid string, userId uint)
 	} else {
 		// 不存在则创建
 		/*if deviceId != "" {
-			global.DB.Create(&model.Peer{
+			DB.Create(&model.Peer{
 				Id:     deviceId,
 				Uuid:   uuid,
 				UserId: userId,
@@ -56,13 +55,13 @@ func (ps *PeerService) UuidBindUserId(deviceId string, uuid string, userId uint)
 func (ps *PeerService) UuidUnbindUserId(uuid string, userId uint) {
 	peer := ps.FindByUserIdAndUuid(uuid, userId)
 	if peer.RowId > 0 {
-		global.DB.Model(peer).Update("user_id", 0)
+		DB.Model(peer).Update("user_id", 0)
 	}
 }
 
 // EraseUserId 清除用户id, 用于用户删除
 func (ps *PeerService) EraseUserId(userId uint) error {
-	return global.DB.Model(&model.Peer{}).Where("user_id = ?", userId).Update("user_id", 0).Error
+	return DB.Model(&model.Peer{}).Where("user_id = ?", userId).Update("user_id", 0).Error
 }
 
 // ListByUserIds 根据用户id取列表
@@ -70,7 +69,7 @@ func (ps *PeerService) ListByUserIds(userIds []uint, page, pageSize uint) (res *
 	res = &model.PeerList{}
 	res.Page = int64(page)
 	res.PageSize = int64(pageSize)
-	tx := global.DB.Model(&model.Peer{})
+	tx := DB.Model(&model.Peer{})
 	tx.Where("user_id in (?)", userIds)
 	tx.Count(&res.Total)
 	tx.Scopes(Paginate(page, pageSize))
@@ -82,7 +81,7 @@ func (ps *PeerService) List(page, pageSize uint, where func(tx *gorm.DB)) (res *
 	res = &model.PeerList{}
 	res.Page = int64(page)
 	res.PageSize = int64(pageSize)
-	tx := global.DB.Model(&model.Peer{})
+	tx := DB.Model(&model.Peer{})
 	if where != nil {
 		where(tx)
 	}
@@ -106,14 +105,14 @@ func (ps *PeerService) ListFilterByUserId(page, pageSize uint, where func(tx *go
 
 // Create 创建
 func (ps *PeerService) Create(u *model.Peer) error {
-	res := global.DB.Create(u).Error
+	res := DB.Create(u).Error
 	return res
 }
 
 // Delete 删除, 同时也应该删除token
 func (ps *PeerService) Delete(u *model.Peer) error {
 	uuid := u.Uuid
-	err := global.DB.Delete(u).Error
+	err := DB.Delete(u).Error
 	if err != nil {
 		return err
 	}
@@ -124,7 +123,7 @@ func (ps *PeerService) Delete(u *model.Peer) error {
 // GetUuidListByIDs 根据ids获取uuid列表
 func (ps *PeerService) GetUuidListByIDs(ids []uint) ([]string, error) {
 	var uuids []string
-	err := global.DB.Model(&model.Peer{}).
+	err := DB.Model(&model.Peer{}).
 		Where("row_id in (?)", ids).
 		Pluck("uuid", &uuids).Error
 	return uuids, err
@@ -133,7 +132,7 @@ func (ps *PeerService) GetUuidListByIDs(ids []uint) ([]string, error) {
 // BatchDelete 批量删除, 同时也应该删除token
 func (ps *PeerService) BatchDelete(ids []uint) error {
 	uuids, err := ps.GetUuidListByIDs(ids)
-	err = global.DB.Where("row_id in (?)", ids).Delete(&model.Peer{}).Error
+	err = DB.Where("row_id in (?)", ids).Delete(&model.Peer{}).Error
 	if err != nil {
 		return err
 	}
@@ -143,5 +142,5 @@ func (ps *PeerService) BatchDelete(ids []uint) error {
 
 // Update 更新
 func (ps *PeerService) Update(u *model.Peer) error {
-	return global.DB.Model(u).Updates(u).Error
+	return DB.Model(u).Updates(u).Error
 }

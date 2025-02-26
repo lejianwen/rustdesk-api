@@ -3,7 +3,6 @@ package service
 import (
 	"encoding/json"
 	"github.com/google/uuid"
-	"github.com/lejianwen/rustdesk-api/v2/global"
 	"github.com/lejianwen/rustdesk-api/v2/model"
 	"gorm.io/gorm"
 	"strings"
@@ -14,24 +13,24 @@ type AddressBookService struct {
 
 func (s *AddressBookService) Info(id string) *model.AddressBook {
 	p := &model.AddressBook{}
-	global.DB.Where("id = ?", id).First(p)
+	DB.Where("id = ?", id).First(p)
 	return p
 }
 
 func (s *AddressBookService) InfoByUserIdAndId(userid uint, id string) *model.AddressBook {
 	p := &model.AddressBook{}
-	global.DB.Where("user_id = ? and id = ?", userid, id).First(p)
+	DB.Where("user_id = ? and id = ?", userid, id).First(p)
 	return p
 }
 
 func (s *AddressBookService) InfoByUserIdAndIdAndCid(userid uint, id string, cid uint) *model.AddressBook {
 	p := &model.AddressBook{}
-	global.DB.Where("user_id = ? and id = ? and collection_id = ?", userid, id, cid).First(p)
+	DB.Where("user_id = ? and id = ? and collection_id = ?", userid, id, cid).First(p)
 	return p
 }
 func (s *AddressBookService) InfoByRowId(id uint) *model.AddressBook {
 	p := &model.AddressBook{}
-	global.DB.Where("row_id = ?", id).First(p)
+	DB.Where("row_id = ?", id).First(p)
 	return p
 }
 func (s *AddressBookService) ListByUserId(userId, page, pageSize uint) (res *model.AddressBookList) {
@@ -49,14 +48,14 @@ func (s *AddressBookService) ListByUserIds(userIds []uint, page, pageSize uint) 
 
 // AddAddressBook
 func (s *AddressBookService) AddAddressBook(ab *model.AddressBook) error {
-	return global.DB.Create(ab).Error
+	return DB.Create(ab).Error
 }
 
 // UpdateAddressBook
 func (s *AddressBookService) UpdateAddressBook(abs []*model.AddressBook, userId uint) error {
 	//比较peers和数据库中的数据，如果peers中的数据在数据库中不存在，则添加，如果存在则更新，如果数据库中的数据在peers中不存在，则删除
 	// 开始事务
-	tx := global.DB.Begin()
+	tx := DB.Begin()
 	//1. 获取数据库中的数据
 	var dbABs []*model.AddressBook
 	tx.Where("user_id = ?", userId).Find(&dbABs)
@@ -107,7 +106,7 @@ func (s *AddressBookService) List(page, pageSize uint, where func(tx *gorm.DB)) 
 	res = &model.AddressBookList{}
 	res.Page = int64(page)
 	res.PageSize = int64(pageSize)
-	tx := global.DB.Model(&model.AddressBook{})
+	tx := DB.Model(&model.AddressBook{})
 	if where != nil {
 		where(tx)
 	}
@@ -129,38 +128,38 @@ func (s *AddressBookService) FromPeer(peer *model.Peer) (a *model.AddressBook) {
 
 // Create 创建
 func (s *AddressBookService) Create(u *model.AddressBook) error {
-	res := global.DB.Create(u).Error
+	res := DB.Create(u).Error
 	return res
 }
 func (s *AddressBookService) Delete(u *model.AddressBook) error {
-	return global.DB.Delete(u).Error
+	return DB.Delete(u).Error
 }
 
 // Update 更新
 func (s *AddressBookService) Update(u *model.AddressBook) error {
-	return global.DB.Model(u).Updates(u).Error
+	return DB.Model(u).Updates(u).Error
 }
 
 // UpdateByMap 更新
 func (s *AddressBookService) UpdateByMap(u *model.AddressBook, data map[string]interface{}) error {
-	return global.DB.Model(u).Updates(data).Error
+	return DB.Model(u).Updates(data).Error
 }
 
 // UpdateAll 更新
 func (s *AddressBookService) UpdateAll(u *model.AddressBook) error {
-	return global.DB.Model(u).Select("*").Omit("created_at").Updates(u).Error
+	return DB.Model(u).Select("*").Omit("created_at").Updates(u).Error
 }
 
 // ShareByWebClient 分享
 func (s *AddressBookService) ShareByWebClient(m *model.ShareRecord) error {
 	m.ShareToken = uuid.New().String()
-	return global.DB.Create(m).Error
+	return DB.Create(m).Error
 }
 
 // SharedPeer
 func (s *AddressBookService) SharedPeer(shareToken string) *model.ShareRecord {
 	m := &model.ShareRecord{}
-	global.DB.Where("share_token = ?", shareToken).First(m)
+	DB.Where("share_token = ?", shareToken).First(m)
 	return m
 }
 
@@ -190,7 +189,7 @@ func (s *AddressBookService) ListCollection(page, pageSize uint, where func(tx *
 	res = &model.AddressBookCollectionList{}
 	res.Page = int64(page)
 	res.PageSize = int64(pageSize)
-	tx := global.DB.Model(&model.AddressBookCollection{})
+	tx := DB.Model(&model.AddressBookCollection{})
 	if where != nil {
 		where(tx)
 	}
@@ -200,7 +199,7 @@ func (s *AddressBookService) ListCollection(page, pageSize uint, where func(tx *
 	return
 }
 func (s *AddressBookService) ListCollectionByIds(ids []uint) (res []*model.AddressBookCollection) {
-	global.DB.Where("id in ?", ids).Find(&res)
+	DB.Where("id in ?", ids).Find(&res)
 	return res
 }
 
@@ -212,20 +211,20 @@ func (s *AddressBookService) ListCollectionByUserId(userId uint) (res *model.Add
 }
 func (s *AddressBookService) CollectionInfoById(id uint) *model.AddressBookCollection {
 	p := &model.AddressBookCollection{}
-	global.DB.Where("id = ?", id).First(p)
+	DB.Where("id = ?", id).First(p)
 	return p
 }
 
 func (s *AddressBookService) CollectionReadRules(user *model.User) (res []*model.AddressBookCollectionRule) {
 	// personalRules
 	var personalRules []*model.AddressBookCollectionRule
-	tx2 := global.DB.Model(&model.AddressBookCollectionRule{})
+	tx2 := DB.Model(&model.AddressBookCollectionRule{})
 	tx2.Where("type = ? and to_id = ? and rule > 0", model.ShareAddressBookRuleTypePersonal, user.Id).Find(&personalRules)
 	res = append(res, personalRules...)
 
 	//group
 	var groupRules []*model.AddressBookCollectionRule
-	tx3 := global.DB.Model(&model.AddressBookCollectionRule{})
+	tx3 := DB.Model(&model.AddressBookCollectionRule{})
 	tx3.Where("type = ? and to_id = ? and rule > 0", model.ShareAddressBookRuleTypeGroup, user.GroupId).Find(&groupRules)
 	res = append(res, groupRules...)
 	return
@@ -238,7 +237,7 @@ func (s *AddressBookService) UserMaxRule(user *model.User, uid, cid uint) int {
 	}
 	max := 0
 	personalRules := &model.AddressBookCollectionRule{}
-	tx := global.DB.Model(personalRules)
+	tx := DB.Model(personalRules)
 	tx.Where("type = ? and collection_id = ? and to_id = ?", model.ShareAddressBookRuleTypePersonal, cid, user.Id).First(&personalRules)
 	if personalRules.Id != 0 {
 		max = personalRules.Rule
@@ -248,7 +247,7 @@ func (s *AddressBookService) UserMaxRule(user *model.User, uid, cid uint) int {
 	}
 
 	groupRules := &model.AddressBookCollectionRule{}
-	tx2 := global.DB.Model(groupRules)
+	tx2 := DB.Model(groupRules)
 	tx2.Where("type = ? and collection_id = ? and to_id = ?", model.ShareAddressBookRuleTypeGroup, cid, user.GroupId).First(&groupRules)
 	if groupRules.Id != 0 {
 		if groupRules.Rule > max {
@@ -272,16 +271,16 @@ func (s *AddressBookService) CheckUserFullControlPrivilege(user *model.User, uid
 }
 
 func (s *AddressBookService) CreateCollection(t *model.AddressBookCollection) error {
-	return global.DB.Create(t).Error
+	return DB.Create(t).Error
 }
 
 func (s *AddressBookService) UpdateCollection(t *model.AddressBookCollection) error {
-	return global.DB.Model(t).Updates(t).Error
+	return DB.Model(t).Updates(t).Error
 }
 
 func (s *AddressBookService) DeleteCollection(t *model.AddressBookCollection) error {
 	//删除集合下的所有规则、地址簿，再删除集合
-	tx := global.DB.Begin()
+	tx := DB.Begin()
 	tx.Where("collection_id = ?", t.Id).Delete(&model.AddressBookCollectionRule{})
 	tx.Where("collection_id = ?", t.Id).Delete(&model.AddressBook{})
 	tx.Delete(t)
@@ -290,23 +289,23 @@ func (s *AddressBookService) DeleteCollection(t *model.AddressBookCollection) er
 
 func (s *AddressBookService) RuleInfoById(u uint) *model.AddressBookCollectionRule {
 	p := &model.AddressBookCollectionRule{}
-	global.DB.Where("id = ?", u).First(p)
+	DB.Where("id = ?", u).First(p)
 	return p
 }
 func (s *AddressBookService) RulePersonalInfoByToIdAndCid(toid, cid uint) *model.AddressBookCollectionRule {
 	p := &model.AddressBookCollectionRule{}
-	global.DB.Where("type = ? and to_id = ? and collection_id = ?", model.ShareAddressBookRuleTypePersonal, toid, cid).First(p)
+	DB.Where("type = ? and to_id = ? and collection_id = ?", model.ShareAddressBookRuleTypePersonal, toid, cid).First(p)
 	return p
 }
 func (s *AddressBookService) CreateRule(t *model.AddressBookCollectionRule) error {
-	return global.DB.Create(t).Error
+	return DB.Create(t).Error
 }
 
 func (s *AddressBookService) ListRules(page uint, size uint, f func(tx *gorm.DB)) *model.AddressBookCollectionRuleList {
 	res := &model.AddressBookCollectionRuleList{}
 	res.Page = int64(page)
 	res.PageSize = int64(size)
-	tx := global.DB.Model(&model.AddressBookCollectionRule{})
+	tx := DB.Model(&model.AddressBookCollectionRule{})
 	if f != nil {
 		f(tx)
 	}
@@ -317,11 +316,11 @@ func (s *AddressBookService) ListRules(page uint, size uint, f func(tx *gorm.DB)
 }
 
 func (s *AddressBookService) UpdateRule(t *model.AddressBookCollectionRule) error {
-	return global.DB.Model(t).Updates(t).Error
+	return DB.Model(t).Updates(t).Error
 }
 
 func (s *AddressBookService) DeleteRule(t *model.AddressBookCollectionRule) error {
-	return global.DB.Delete(t).Error
+	return DB.Delete(t).Error
 }
 
 // CheckCollectionOwner 检查Collection的所有者
@@ -336,5 +335,5 @@ func (s *AddressBookService) BatchUpdateTags(abs []*model.AddressBook, tags []st
 		ids = append(ids, ab.RowId)
 	}
 	tagsv, _ := json.Marshal(tags)
-	return global.DB.Model(&model.AddressBook{}).Where("row_id in ?", ids).Update("tags", tagsv).Error
+	return DB.Model(&model.AddressBook{}).Where("row_id in ?", ids).Update("tags", tagsv).Error
 }
