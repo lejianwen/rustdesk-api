@@ -2,8 +2,11 @@ package service
 
 import (
 	"crypto/tls"
+	"crypto/x509"
 	"errors"
 	"fmt"
+	"net/url"
+	"os"
 	"strconv"
 	"strings"
 
@@ -14,6 +17,8 @@ import (
 )
 
 var (
+	ErrUrlParseFailed        = errors.New("UrlParseFailed")
+	ErrFileReadFailed        = errors.New("FileReadFailed")
 	ErrLdapNotEnabled        = errors.New("LdapNotEnabled")
 	ErrLdapUserDisabled      = errors.New("UserDisabledAtLdap")
 	ErrLdapUserNotFound      = errors.New("UserNotFound")
@@ -67,21 +72,38 @@ func (lu *LdapUser) ToUser(u *model.User) *model.User {
 
 // connectAndBind creates an LDAP connection, optionally starts TLS, and then binds using the provided credentials.
 func (ls *LdapService) connectAndBind(cfg *config.Ldap, username, password string) (*ldap.Conn, error) {
-	conn, err := ldap.DialURL(cfg.Url)
+	u, err := url.Parse(cfg.Url)
+	if err != nil {
+		return nil, errors.Join(ErrUrlParseFailed, err)
+	}
+
+	var conn *ldap.Conn
+	if u.Scheme == "ldaps" {
+		// WARNING: InsecureSkipVerify: true is not recommended for production
+		tlsConfig := &tls.Config{InsecureSkipVerify: !cfg.TlsVerify}
+		if cfg.TlsCaFile != "" {
+			caCert, err := os.ReadFile(cfg.TlsCaFile)
+			if err != nil {
+				return nil, errors.Join(ErrFileReadFailed, err)
+			}
+			caCertPool := x509.NewCertPool()
+			if !caCertPool.AppendCertsFromPEM(caCert) {
+				return nil, errors.Join(ErrLdapTlsFailed, errors.New("failed to append CA certificate"))
+			}
+			tlsConfig.RootCAs = caCertPool
+		}
+		conn, err = ldap.DialURL(cfg.Url, ldap.DialWithTLSConfig(tlsConfig))
+	} else {
+		conn, err = ldap.DialURL(cfg.Url)
+	}
+
 	if err != nil {
 		return nil, errors.Join(ErrLdapConnectFailed, err)
 	}
 
-	if cfg.TLS {
-		// WARNING: InsecureSkipVerify: true is not recommended for production
-		if err = conn.StartTLS(&tls.Config{InsecureSkipVerify: !cfg.TlsVerify}); err != nil {
-			conn.Close()
-			return nil, errors.Join(ErrLdapTlsFailed, err)
-		}
-	}
-
 	// Bind as the "service" user
 	if err = conn.Bind(username, password); err != nil {
+		fmt.Println("Bind failed")
 		conn.Close()
 		return nil, errors.Join(ErrLdapBindService, err)
 	}
