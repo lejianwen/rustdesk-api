@@ -45,7 +45,7 @@ jwt:
 ldap:
   enable: false
   url: "ldap://ldap.example.com:389"
-  tls: false
+  tls-ca-file: ""
   tls-verify: false
   base-dn: "dc=example,dc=com"
   bind-dn: "cn=admin,dc=example,dc=com"

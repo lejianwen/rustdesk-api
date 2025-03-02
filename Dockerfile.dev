@@ -76,6 +76,7 @@ COPY --from=builder-backend /app/release /app/
 COPY --from=builder-backend /app/conf /app/conf/
 COPY --from=builder-backend /app/resources /app/resources/
 COPY --from=builder-backend /app/docs /app/docs/
+COPY --from=builder-backend /app/http/templates /app/http/templates
 # Copy frontend build from builder2 stage
 COPY --from=builder-admin-frontend /frontend/dist/ /app/resources/admin/
 
