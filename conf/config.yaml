@@ -32,6 +32,7 @@ rustdesk:
   key-file: "/data/id_ed25519.pub"
   personal: 1
   webclient-magic-queryonline: 0
+  ws-host: ""
 logger:
   path: "./runtime/log.txt"
   level: "info" #trace,debug,info,warn,error,fatal

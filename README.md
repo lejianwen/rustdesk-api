@@ -108,8 +108,7 @@
       * 可以官方指令
       * 可以添加自定义指令
       * 可以执行自定义指令
-    
-    ![rustdesk_command_advance](./docs/rustdesk_command_advance.png)
+
  
 11. **LDAP 支持**, 当在API Server上设置了LDAP(已测试AD和LDAP),可以通过LDAP中的用户信息进行登录 https://github.com/lejianwen/rustdesk-api/issues/114 ,如果LDAP验证失败，返回本地用户
 
@@ -146,71 +145,10 @@
 
 ### 相关配置
 
+* [配置文件](./conf/config.yaml)
 * 参考`conf/config.yaml`配置文件，修改相关配置。
 * 如果`gorm.type`是`sqlite`，则不需要配置mysql相关配置。
 * 语言如果不设置默认为`zh-CN`
-
-```yaml
-lang: "en"
-app:
-  web-client: 1  # 1:启用 0:禁用
-  register: false #是否开启注册
-  show-swagger: 0 #是否显示swagger文档
-  web-sso: true #是否显示web sso
-  token-expire: 168h #token有效时长
-  disable-pwd-login: false #是否禁用密码登录
-gin:
-  api-addr: "0.0.0.0:21114"
-  mode: "release"
-  resources-path: 'resources'
-  trust-proxy: ""
-gorm:
-  type: "sqlite"
-  max-idle-conns: 10
-  max-open-conns: 100
-mysql:
-  username: "root"
-  password: "111111"
-  addr: "192.168.1.66:3308"
-  dbname: "rustdesk"
-rustdesk:
-  id-server: "192.168.1.66:21116"
-  relay-server: "192.168.1.66:21117"
-  api-server: "http://192.168.1.66:21114"
-  key: "123456789"
-  personal: 1
-logger:
-  path: "./runtime/log.txt"
-  level: "warn" #trace,debug,info,warn,error,fatal
-  report-caller: true
-proxy:
-  enable: false
-  host: ""
-jwt:
-  key: ""
-  expire-duration: 168h
-ldap:
-  enable: false
-  url: "ldap://ldap.example.com:389"
-  tls: false
-  tls-verify: false
-  base-dn: "dc=example,dc=com"
-  bind-dn: "cn=admin,dc=example,dc=com"
-  bind-password: "password"
-
-  user:
-    base-dn: "ou=users,dc=example,dc=com"
-    enable-attr: ""       #The attribute name of the user for enabling, in AD it is "userAccountControl", empty means no enable attribute, all users are enabled
-    enable-attr-value: "" # The value of the enable attribute when the user is enabled. If you are using AD, just set random value, it will be ignored.
-    filter: "(cn=*)"
-    username: "uid"       # The attribute name of the user for usernamem if you are using AD, it should be "sAMAccountName"
-    email: "mail"
-    first-name: "givenName"
-    last-name: "sn"
-    sync: false         # If true, the user will be synchronized to the database when the user logs in. If false, the user will be synchronized to the database when the user be created.
-    admin-group: "cn=admin,dc=example,dc=com" # The group name of the admin group, if the user is in this group, the user will be an admin.
-
-```
 
 ### 环境变量
 环境变量和配置文件`conf/config.yaml`中的配置一一对应，变量名前缀是`RUSTDESK_API`
@@ -248,6 +186,7 @@ ldap:
 | RUSTDESK_API_RUSTDESK_KEY                              | Rustdesk的key                                                                   | 123456789                    |
 | RUSTDESK_API_RUSTDESK_KEY_FILE                         | Rustdesk存放key的文件                                                               | `./conf/data/id_ed25519.pub` |
 | RUSTDESK_API_RUSTDESK_WEBCLIENT<br/>_MAGIC_QUERYONLINE | Web client v2 中是否启用新的在线状态查询方法; `1`:启用,`0`:不启用,默认不启用                            | `0`                          |
+| RUSTDESK_API_RUSTDESK_WS_HOST                          | 自定义Websocket Host                                                              |                              |
 | ----PROXY配置-----                                       | ----------                                                                     | ----------                   |
 | RUSTDESK_API_PROXY_ENABLE                              | 是否启用代理:`false`, `true`                                                         | `false`                      |
 | RUSTDESK_API_PROXY_HOST                                | 代理地址                                                                           | `http://127.0.0.1:1080`      |
