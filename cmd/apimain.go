@@ -51,6 +51,10 @@ var resetPwdCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		pwd := args[0]
 		admin := service.AllService.UserService.InfoById(1)
+		if admin.Id == 0 {
+			global.Logger.Warn("user not found! ")
+			return
+		}
 		err := service.AllService.UserService.UpdatePassword(admin, pwd)
 		if err != nil {
 			global.Logger.Error("reset password fail! ", err)
@@ -77,6 +81,10 @@ var resetUserPwdCmd = &cobra.Command{
 			return
 		}
 		u := service.AllService.UserService.InfoById(uint(uid))
+		if u.Id == 0 {
+			global.Logger.Warn("user not found! ")
+			return
+		}
 		err = service.AllService.UserService.UpdatePassword(u, pwd)
 		if err != nil {
 			global.Logger.Warn("reset password fail! ", err)
@@ -144,7 +152,6 @@ func InitGlobal() {
 			MaxOpenConns: global.Config.Gorm.MaxOpenConns,
 		})
 	}
-	DatabaseAutoUpdate()
 
 	//validator
 	global.ApiInitValidator()
@@ -167,6 +174,8 @@ func InitGlobal() {
 
 	//service
 	service.New(&global.Config, global.DB, global.Logger, global.Jwt, global.Lock)
+
+	DatabaseAutoUpdate()
 }
 func DatabaseAutoUpdate() {
 	version := 262
