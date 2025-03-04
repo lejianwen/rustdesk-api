@@ -186,7 +186,7 @@
 | RUSTDESK_API_RUSTDESK_KEY                              | Rustdesk的key                                                                   | 123456789                    |
 | RUSTDESK_API_RUSTDESK_KEY_FILE                         | Rustdesk存放key的文件                                                               | `./conf/data/id_ed25519.pub` |
 | RUSTDESK_API_RUSTDESK_WEBCLIENT<br/>_MAGIC_QUERYONLINE | Web client v2 中是否启用新的在线状态查询方法; `1`:启用,`0`:不启用,默认不启用                            | `0`                          |
-| RUSTDESK_API_RUSTDESK_WS_HOST                          | 自定义Websocket Host                                                              |                              |
+| RUSTDESK_API_RUSTDESK_WS_HOST                          | 自定义Websocket Host                                                              | `wss://192.168.1.123:1234`   |
 | ----PROXY配置-----                                       | ----------                                                                     | ----------                   |
 | RUSTDESK_API_PROXY_ENABLE                              | 是否启用代理:`false`, `true`                                                         | `false`                      |
 | RUSTDESK_API_PROXY_HOST                                | 代理地址                                                                           | `http://127.0.0.1:1080`      |
