@@ -109,8 +109,6 @@ displaying data.Frontend code is available at [rustdesk-api-web](https://github.
     * Custom commands can be added
     * Custom commands can be executed
 
-    ![rustdesk_command_advance](./docs/en_img/rustdesk_command_advance.png)
-
 11. **LDAP Support**, When you setup the LDAP(test for OpenLDAP and AD), you can login with the LDAP's user. https://github.com/lejianwen/rustdesk-api/issues/114 , if LDAP fail fallback local user
   
 ### Web Client:
@@ -145,71 +143,11 @@ displaying data.Frontend code is available at [rustdesk-api-web](https://github.
 
 ### Configuration
 
+* [Config File](./conf/config.yaml)
 * Modify the configuration in `conf/config.yaml`. 
 * If `gorm.type` is set to `sqlite`, MySQL-related configurations are not required.
 * Language support: `en` and `zh-CN` are supported. The default is `zh-CN`.
 
-```yaml
-lang: "en"
-app:
-  web-client: 1  # web client route 1:open 0:close  
-  register: false #register enable
-  show-swagger: 0 #show swagger 1:open 0:close
-  web-sso: true #web sso
-  token-expire: 168h #token expire duration
-  disable-pwd-login: false #disable password login
-gin:
-  api-addr: "0.0.0.0:21114"
-  mode: "release"
-  resources-path: 'resources'
-  trust-proxy: ""
-gorm:
-  type: "sqlite"
-  max-idle-conns: 10
-  max-open-conns: 100
-mysql:
-  username: "root"
-  password: "111111"
-  addr: "192.168.1.66:3308"
-  dbname: "rustdesk"
-rustdesk:
-  id-server: "192.168.1.66:21116"
-  relay-server: "192.168.1.66:21117"
-  api-server: "http://192.168.1.66:21114"
-  key: "123456789"
-  personal: 1
-logger:
-  path: "./runtime/log.txt"
-  level: "warn" #trace,debug,info,warn,error,fatal
-  report-caller: true
-proxy:
-  enable: false
-  host: ""
-jwt:
-  key: ""
-  expire-duration: 360000
-ldap:
-  enable: false
-  url: "ldap://ldap.example.com:389"
-  tls: false
-  tls-verify: false
-  base-dn: "dc=example,dc=com"
-  bind-dn: "cn=admin,dc=example,dc=com"
-  bind-password: "password"
-
-  user:
-    base-dn: "ou=users,dc=example,dc=com"
-    enable-attr: ""       #The attribute name of the user for enabling, in AD it is "userAccountControl", empty means no enable attribute, all users are enabled
-    enable-attr-value: "" # The value of the enable attribute when the user is enabled. If you are using AD, just set random value, it will be ignored.
-    filter: "(cn=*)"
-    username: "uid"       # The attribute name of the user for usernamem if you are using AD, it should be "sAMAccountName"
-    email: "mail"
-    first-name: "givenName"
-    last-name: "sn"
-    sync: false         # If true, the user will be synchronized to the database when the user logs in. If false, the user will be synchronized to the database when the user be created.
-    admin-group: "cn=admin,dc=example,dc=com" # The group name of the admin group, if the user is in this group, the user will be an admin.
-
-```
 
 ### Environment Variables
 The environment variables correspond one-to-one with the configurations in the `conf/config.yaml` file. The prefix for variable names is `RUSTDESK_API`.
@@ -247,6 +185,7 @@ The table below does not list all configurations. Please refer to the configurat
 | RUSTDESK_API_RUSTDESK_KEY                              | Rustdesk key                                                                                                                                        | 123456789                     |
 | RUSTDESK_API_RUSTDESK_KEY_FILE                         | Rustdesk key file                                                                                                                                   | `./conf/data/id_ed25519.pub`  |
 | RUSTDESK_API_RUSTDESK<br/>_WEBCLIENT_MAGIC_QUERYONLINE | New online query method is enabled in the web client v2; '1': Enabled, '0': Disabled, not enabled by default                                        | `0`                           |
+| RUSTDESK_API_RUSTDESK_WS_HOST                          | Custom Websocket Host                                                                                                                               |                               |
 | ---- PROXY -----                                       | ---------------                                                                                                                                     | ----------                    |
 | RUSTDESK_API_PROXY_ENABLE                              | proxy_enable :`false`, `true`                                                                                                                       | `false`                       |
 | RUSTDESK_API_PROXY_HOST                                | proxy_host                                                                                                                                          | `http://127.0.0.1:1080`       |
