@@ -11088,10 +11088,10 @@ function R4(u = !1) {
 }
 
 function getUriFromRs(uri, isRelay = false, roffset = 0) {
-    const p = isHttps() ? "wss://" : "ws://"
     if (window.ws_host) {
-        return p + window.ws_host + "/ws/" + (isRelay ? "relay" : "id")
+        return window.ws_host + "/ws/" + (isRelay ? "relay" : "id")
     }
+    const p = isHttps() ? "wss://" : "ws://"
     const [domain, uriport] = uri.split(":")
     if (!isHttps()) {
         // http 直接走端口
