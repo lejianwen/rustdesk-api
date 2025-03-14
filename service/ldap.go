@@ -30,6 +30,7 @@ var (
 	ErrLdapBindFailed        = errors.New("LdapBindFailed")
 	ErrLdapToLocalUserFailed = errors.New("LdapToLocalUserFailed")
 	ErrLdapCreateUserFailed  = errors.New("LdapCreateUserFailed")
+	ErrLdapPasswordNotMatch  = errors.New("PasswordNotMatch")
 )
 
 // LdapService is responsible for LDAP authentication and user synchronization.
@@ -119,7 +120,7 @@ func (ls *LdapService) connectAndBindAdmin(cfg *config.Ldap) (*ldap.Conn, error)
 func (ls *LdapService) verifyCredentials(cfg *config.Ldap, username, password string) error {
 	ldapConn, err := ls.connectAndBind(cfg, username, password)
 	if err != nil {
-		return err
+		return ErrLdapPasswordNotMatch
 	}
 	defer ldapConn.Close()
 	return nil
@@ -136,6 +137,10 @@ func (ls *LdapService) Authenticate(username, password string) (*model.User, err
 		return nil, ErrLdapUserDisabled
 	}
 	cfg := &Config.Ldap
+	err = ls.verifyCredentials(cfg, ldapUser.Dn, password)
+	if err != nil {
+		return nil, err
+	}
 	user, err := ls.mapToLocalUser(cfg, ldapUser)
 	if err != nil {
 		return nil, errors.Join(ErrLdapToLocalUserFailed, err)
