@@ -126,7 +126,14 @@ func (ps *PeerService) GetUuidListByIDs(ids []uint) ([]string, error) {
 	err := DB.Model(&model.Peer{}).
 		Where("row_id in (?)", ids).
 		Pluck("uuid", &uuids).Error
-	return uuids, err
+	//过滤uuids中的空字符串
+	var newUuids []string
+	for _, uuid := range uuids {
+		if uuid != "" {
+			newUuids = append(newUuids, uuid)
+		}
+	}
+	return newUuids, err
 }
 
 // BatchDelete 批量删除, 同时也应该删除token
