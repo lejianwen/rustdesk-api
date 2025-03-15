@@ -108,6 +108,12 @@ func (ct *Peer) List(c *gin.Context) {
 		if query.Uuids != "" {
 			tx.Where("uuid in (?)", query.Uuids)
 		}
+		if query.Username != "" {
+			tx.Where("username like ?", "%"+query.Username+"%")
+		}
+		if query.Ip != "" {
+			tx.Where("last_online_ip like ?", "%"+query.Ip+"%")
+		}
 	})
 	response.Success(c, res)
 }

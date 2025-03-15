@@ -41,6 +41,8 @@ type PeerQuery struct {
 	Id       string `json:"id" form:"id"`
 	Hostname string `json:"hostname" form:"hostname"`
 	Uuids    string `json:"uuids" form:"uuids"`
+	Ip       string `json:"ip" form:"ip"`
+	Username string `json:"username" form:"username"`
 }
 
 type SimpleDataQuery struct {
