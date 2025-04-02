@@ -14,6 +14,7 @@ import (
 	en_translations "github.com/go-playground/validator/v10/translations/en"
 	es_translations "github.com/go-playground/validator/v10/translations/es"
 	fr_translations "github.com/go-playground/validator/v10/translations/fr"
+	ko_translations "github.com/go-playground/validator/v10/translations/ko"
 	ru_translations "github.com/go-playground/validator/v10/translations/ru"
 	zh_translations "github.com/go-playground/validator/v10/translations/zh"
 	zh_tw_translations "github.com/go-playground/validator/v10/translations/zh_tw"
@@ -51,8 +52,7 @@ func ApiInitValidator() {
 		panic(err)
 	}
 
-	//validate没有ko的翻译，使用zh的翻译
-	err = zh_translations.RegisterDefaultTranslations(validate, koTrans)
+	err = ko_translations.RegisterDefaultTranslations(validate, koTrans)
 	if err != nil {
 		panic(err)
 	}
