@@ -30,7 +30,7 @@ func (p *Peer) SysInfo(c *gin.Context) {
 		return
 	}
 	fpe := f.ToPeer()
-	pe := service.AllService.PeerService.FindById(f.Id)
+	pe := service.AllService.PeerService.FindByUuid(f.Uuid)
 	if pe.RowId == 0 {
 		pe = f.ToPeer()
 		pe.UserId = service.AllService.UserService.FindLatestUserIdFromLoginLogByUuid(pe.Uuid)
