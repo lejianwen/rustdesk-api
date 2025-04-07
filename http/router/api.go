@@ -53,6 +53,7 @@ func ApiInit(g *gin.Engine) {
 		pe := &api.Peer{}
 		//提交系统信息
 		frg.POST("/sysinfo", pe.SysInfo)
+		frg.POST("/sysinfo_ver", pe.SysInfoVer)
 	}
 
 	if global.Config.App.WebClient == 1 {

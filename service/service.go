@@ -23,6 +23,7 @@ type Service struct {
 	*ShareRecordService
 	*ServerCmdService
 	*LdapService
+	*AppService
 }
 
 type Dependencies struct {

@@ -7,7 +7,6 @@ import (
 	"github.com/lejianwen/rustdesk-api/v2/model"
 	"github.com/lejianwen/rustdesk-api/v2/service"
 	"net/http"
-	"os"
 	"time"
 )
 
@@ -74,13 +73,9 @@ func (i *Index) Heartbeat(c *gin.Context) {
 // @Router /version [get]
 func (i *Index) Version(c *gin.Context) {
 	//读取resources/version文件
-	v, err := os.ReadFile("resources/version")
-	if err != nil {
-		response.Fail(c, 101, err.Error())
-		return
-	}
+	v := service.AllService.AppService.GetAppVersion()
 	response.Success(
 		c,
-		string(v),
+		v,
 	)
 }
