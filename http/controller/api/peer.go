@@ -56,3 +56,9 @@ func (p *Peer) SysInfo(c *gin.Context) {
 	//直接响应文本
 	c.String(http.StatusOK, "SYSINFO_UPDATED")
 }
+
+func (p *Peer) SysInfoVer(c *gin.Context) {
+	//读取resources/version文件
+	v := service.AllService.AppService.GetAppVersion()
+	c.String(http.StatusOK, v)
+}
