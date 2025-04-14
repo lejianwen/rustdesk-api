@@ -147,3 +147,8 @@ other = "Ошибка капчи."
 description = "Password login disabled."
 one = "Вход по паролю отключен."
 other = "Вход по паролю отключен."
+
+[CannotShareToSelf]
+description = "Cannot share to self."
+one = "Нельзя поделиться с собой."
+other = "Нельзя поделиться с собой."

@@ -147,3 +147,8 @@ other = "Erreur de captcha."
 description = "Password login disabled."
 one = "Connexion par mot de passe désactivée."
 other = "Connexion par mot de passe désactivée."
+
+[CannotShareToSelf]
+description = "Cannot share to self."
+one = "Impossible de partager avec soi-même."
+other = "Impossible de partager avec soi-même."

@@ -140,3 +140,8 @@ other = "验证码错误。"
 description = "Password login disabled."
 one = "密码登录已禁用。"
 other = "密码登录已禁用。"
+
+[CannotShareToSelf]
+description = "Cannot share to self."
+one = "不能共享给自己。"
+other = "不能共享给自己。"

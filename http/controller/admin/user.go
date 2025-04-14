@@ -296,32 +296,12 @@ func (ct *User) MyOauth(c *gin.Context) {
 
 // groupUsers
 func (ct *User) GroupUsers(c *gin.Context) {
-	q := &admin.GroupUsersQuery{}
-	if err := c.ShouldBindJSON(q); err != nil {
-		response.Fail(c, 101, response.TranslateMsg(c, "ParamsError")+err.Error())
-		return
-	}
-	u := service.AllService.UserService.CurUser(c)
-	gid := u.GroupId
-	uid := u.Id
-	if service.AllService.UserService.IsAdmin(u) && q.UserId > 0 {
-		nu := service.AllService.UserService.InfoById(q.UserId)
-		gid = nu.GroupId
-		uid = q.UserId
-	}
-	res := service.AllService.UserService.List(1, 999, func(tx *gorm.DB) {
-		tx.Where("group_id = ?", gid)
+	aG := service.AllService.GroupService.List(1, 999, nil)
+	aU := service.AllService.UserService.List(1, 9999, nil)
+	response.Success(c, gin.H{
+		"groups": aG.Groups,
+		"users":  aU.Users,
 	})
-	var data []*adResp.GroupUsersPayload
-	for _, _u := range res.Users {
-		gup := &adResp.GroupUsersPayload{}
-		gup.FromUser(_u)
-		if _u.Id == uid {
-			gup.Status = 0
-		}
-		data = append(data, gup)
-	}
-	response.Success(c, data)
 }
 
 // Register

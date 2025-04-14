@@ -141,3 +141,8 @@ other = "Captcha 오류."
 description = "Password login disabled."
 one = "비밀번호 로그인이 비활성화되었습니다."
 other = "비밀번호 로그인이 비활성화되었습니다."
+
+[CannotShareToSelf]
+description = "Cannot share to self."
+one = "자기 자신에게 공유할 수 없습니다."
+other = "자기 자신에게 공유할 수 없습니다."

@@ -22,15 +22,3 @@ type UserOauthItem struct {
 	Op     string `json:"op"`
 	Status int    `json:"status"`
 }
-
-type GroupUsersPayload struct {
-	Id       uint   `json:"id"`
-	Username string `json:"username"`
-	Status   int    `json:"status"`
-}
-
-func (g *GroupUsersPayload) FromUser(user *model.User) {
-	g.Id = user.Id
-	g.Username = user.Username
-	g.Status = 1
-}

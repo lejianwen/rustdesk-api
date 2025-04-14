@@ -293,8 +293,11 @@ func (s *AddressBookService) RuleInfoById(u uint) *model.AddressBookCollectionRu
 	return p
 }
 func (s *AddressBookService) RulePersonalInfoByToIdAndCid(toid, cid uint) *model.AddressBookCollectionRule {
+	return s.RuleInfoByToIdAndCid(model.ShareAddressBookRuleTypePersonal, toid, cid)
+}
+func (s *AddressBookService) RuleInfoByToIdAndCid(t int, toid, cid uint) *model.AddressBookCollectionRule {
 	p := &model.AddressBookCollectionRule{}
-	DB.Where("type = ? and to_id = ? and collection_id = ?", model.ShareAddressBookRuleTypePersonal, toid, cid).First(p)
+	DB.Where("type = ? and to_id = ? and collection_id = ?", t, toid, cid).First(p)
 	return p
 }
 func (s *AddressBookService) CreateRule(t *model.AddressBookCollectionRule) error {

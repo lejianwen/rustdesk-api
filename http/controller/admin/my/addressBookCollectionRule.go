@@ -100,21 +100,21 @@ func (abcr *AddressBookCollectionRule) CheckForm(u *model.User, t *model.Address
 	//check to_id
 	if t.Type == model.ShareAddressBookRuleTypePersonal {
 		if t.ToId == t.UserId {
-			return "ParamsError", false
+			return "CannotShareToSelf", false
 		}
 		tou := service.AllService.UserService.InfoById(t.ToId)
 		if tou.Id == 0 {
 			return "ItemNotFound", false
 		}
 		//非管理员不能分享给非本组织用户
-		if tou.GroupId != u.GroupId {
-			return "NoAccess", false
-		}
+		//if tou.GroupId != u.GroupId {
+		//	return "NoAccess", false
+		//}
 	} else if t.Type == model.ShareAddressBookRuleTypeGroup {
 		//非管理员不能分享给其他组
-		if t.ToId != u.GroupId {
-			return "NoAccess", false
-		}
+		//if t.ToId != u.GroupId {
+		//	return "NoAccess", false
+		//}
 
 		tog := service.AllService.GroupService.InfoById(t.ToId)
 		if tog.Id == 0 {
@@ -124,7 +124,7 @@ func (abcr *AddressBookCollectionRule) CheckForm(u *model.User, t *model.Address
 		return "ParamsError", false
 	}
 	// 重复检查
-	ex := service.AllService.AddressBookService.RulePersonalInfoByToIdAndCid(t.ToId, t.CollectionId)
+	ex := service.AllService.AddressBookService.RuleInfoByToIdAndCid(t.Type, t.ToId, t.CollectionId)
 	if t.Id == 0 && ex.Id > 0 {
 		return "ItemExists", false
 	}
