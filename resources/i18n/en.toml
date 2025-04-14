@@ -138,3 +138,8 @@ other = "Captcha error."
 description = "Password login disabled."
 one = "Password login disabled."
 other = "Password login disabled."
+
+[CannotShareToSelf]
+description = "Cannot share to self."
+one = "Cannot share to self."
+other = "Cannot share to self."
