@@ -64,21 +64,3 @@ ldap:
     sync: false         # If true, the user will be synchronized to the database when the user logs in. If false, the user will be synchronized to the database when the user be created.
     admin-group: "cn=admin,dc=example,dc=com" # The group name of the admin group, if the user is in this group, the user will be an admin.
 
-redis:
-  addr: "127.0.0.1:6379"
-  password: ""
-  db: 0
-cache:
-  type: "file"
-  file-dir: "./runtime/cache"
-  redis-addr: "127.0.0.1:6379"
-  redis-pwd: ""
-  redis-db: 0
-oss:
-  access-key-id: ""
-  access-key-secret: ""
-  host: ""
-  callback-url: ""
-  expire-time: 30
-  max-byte: 10240
-
