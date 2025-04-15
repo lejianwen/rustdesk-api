@@ -46,7 +46,7 @@ if (share_token) {
                 password: peer.tmppwd,
             }*/
             //修改location
-            window.location.href = `/webclient2/#/${peer.info.id}?password=${peer.tmppwd}`
+            window.location.href = `/webclient2/#/${peer.info.id}?password=${encodeURIComponent(peer.tmppwd)}`
         }
     })
 }
