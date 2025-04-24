@@ -7,6 +7,7 @@ import (
 	"math/rand"
 	"reflect"
 	"runtime/debug"
+	"strings"
 )
 
 func Md5(str string) string {
@@ -99,4 +100,12 @@ func InArray(k string, arr []string) bool {
 		}
 	}
 	return false
+}
+
+func StringConcat(strs ...string) string {
+	var builder strings.Builder
+	for _, str := range strs {
+		builder.WriteString(str)
+	}
+	return builder.String()
 }

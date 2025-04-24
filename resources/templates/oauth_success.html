@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>授权成功 - RustDesk API</title>
+    <title>OauthSuccess - RustDesk API</title>
     <style>
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
@@ -56,18 +56,27 @@
             background-color: #45a049;
         }
     </style>
+    <script>
+        var lang = navigator.language || navigator.userLanguage || 'zh-CN';
+        var title = 'OauthSuccess'
+        var msg = '{{.message}}'
+        var btn = 'Close'
+        document.writeln('<script src="/api/oauth/msg?lang=' + lang + '&msg=' + msg + '&title=OauthSuccess"><\/script>');
+    </script>
 </head>
 <body>
 <div class="success-container">
     <i class="fas fa-check-circle checkmark"></i>
-    <h1>授权成功！</h1>
-    <p>您已成功授权访问您的账户。</p>
-    <p>现在可以关闭本页面或返回应用继续操作。</p>
-    <a href="javascript:window.close()" class="return-link">关闭页面</a>
+    <h1 id="h1"></h1>
+<!--    <p>您已成功授权访问您的账户。</p>-->
+<!--    <p>现在可以关闭本页面或返回应用继续操作。</p>-->
+    <a href="javascript:window.close()" class="return-link">Close</a>
 </div>
 
 <script>
-
+    document.title = title + ' - RustDesk API';
+    document.getElementById('h1').innerText = title;
+    document.getElementById('msg').innerText = msg;
 </script>
 </body>
 </html>

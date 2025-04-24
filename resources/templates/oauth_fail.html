@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>授权失败 - RustDesk API</title>
+    <title>OauthFailed - RustDesk API</title>
     <style>
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
@@ -57,17 +57,25 @@
         }
     </style>
     <link rel="stylesheet" href="https://lf9-cdn-tos.bytecdntp.com/cdn/expire-1-M/font-awesome/6.0.0/css/all.min.css">
+    <script>
+        var lang = navigator.language || navigator.userLanguage || 'zh-CN';
+        var title = 'OauthFailed'
+        var msg = '{{.message}}'
+        var btn = 'Close'
+        document.writeln('<script src="/api/oauth/msg?lang=' + lang + '&msg=' + msg + '&title=OauthFailed"><\/script>');
+    </script>
 </head>
 <body>
 <div class="success-container">
-    <i class="fas fa-triangle-exclamation    checkmark"></i>
-    <h1>授权失败！</h1>
-    <p>{{.message}}</p>
-    <a href="javascript:window.close()" class="return-link">关闭页面</a>
+    <i class="fas fa-triangle-exclamation checkmark"></i>
+    <h1 id="h1"></h1>
+    <p id="msg"></p>
+    <a href="javascript:window.close()" class="return-link" id="btn">Close</a>
 </div>
-
 <script>
-
+    document.title = title + ' - RustDesk API';
+    document.getElementById('h1').innerText = title;
+    document.getElementById('msg').innerText = msg;
 </script>
 </body>
 </html>
