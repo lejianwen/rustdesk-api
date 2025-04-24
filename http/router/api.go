@@ -48,6 +48,7 @@ func ApiInit(g *gin.Engine) {
 		//api/oauth/callback
 		frg.GET("/oauth/callback", o.OauthCallback)
 		frg.GET("/oauth/login", o.OauthCallback)
+		frg.GET("/oauth/msg", o.Message)
 	}
 	{
 		pe := &api.Peer{}

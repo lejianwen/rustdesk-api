@@ -8,6 +8,8 @@ import (
 	apiResp "github.com/lejianwen/rustdesk-api/v2/http/response/api"
 	"github.com/lejianwen/rustdesk-api/v2/model"
 	"github.com/lejianwen/rustdesk-api/v2/service"
+	"github.com/lejianwen/rustdesk-api/v2/utils"
+	"github.com/nicksnyder/go-i18n/v2/i18n"
 	"net/http"
 )
 
@@ -145,7 +147,8 @@ func (o *Oauth) OauthCallback(c *gin.Context) {
 	state := c.Query("state")
 	if state == "" {
 		c.HTML(http.StatusOK, "oauth_fail.html", gin.H{
-			"message": response.TranslateParamMsg(c, "ParamIsEmpty", "state"),
+			"message":     "ParamIsEmpty",
+			"sub_message": "state",
 		})
 		return
 	}
@@ -155,7 +158,7 @@ func (o *Oauth) OauthCallback(c *gin.Context) {
 	oauthCache := oauthService.GetOauthCache(cacheKey)
 	if oauthCache == nil {
 		c.HTML(http.StatusOK, "oauth_fail.html", gin.H{
-			"message": response.TranslateMsg(c, "OauthExpired"),
+			"message": "OauthExpired",
 		})
 		return
 	}
@@ -169,7 +172,8 @@ func (o *Oauth) OauthCallback(c *gin.Context) {
 	err, oauthUser := oauthService.Callback(code, verifier, op, nonce)
 	if err != nil {
 		c.HTML(http.StatusOK, "oauth_fail.html", gin.H{
-			"message": response.TranslateMsg(c, "OauthFailed") + response.TranslateMsg(c, err.Error()),
+			"message":     "OauthFailed",
+			"sub_message": err.Error(),
 		})
 		return
 	}
@@ -182,7 +186,7 @@ func (o *Oauth) OauthCallback(c *gin.Context) {
 		utr := oauthService.UserThirdInfo(op, openid)
 		if utr.UserId > 0 {
 			c.HTML(http.StatusOK, "oauth_fail.html", gin.H{
-				"message": response.TranslateMsg(c, "OauthHasBindOtherUser"),
+				"message": "OauthHasBindOtherUser",
 			})
 			return
 		}
@@ -190,7 +194,7 @@ func (o *Oauth) OauthCallback(c *gin.Context) {
 		user = service.AllService.UserService.InfoById(userId)
 		if user == nil {
 			c.HTML(http.StatusOK, "oauth_fail.html", gin.H{
-				"message": response.TranslateMsg(c, "ItemNotFound"),
+				"message": "ItemNotFound",
 			})
 			return
 		}
@@ -198,12 +202,12 @@ func (o *Oauth) OauthCallback(c *gin.Context) {
 		err := oauthService.BindOauthUser(userId, oauthUser, op)
 		if err != nil {
 			c.HTML(http.StatusOK, "oauth_fail.html", gin.H{
-				"message": response.TranslateMsg(c, "BindFail"),
+				"message": "BindFail",
 			})
 			return
 		}
 		c.HTML(http.StatusOK, "oauth_success.html", gin.H{
-			"message": response.TranslateMsg(c, "BindSuccess"),
+			"message": "BindSuccess",
 		})
 		return
 
@@ -211,7 +215,7 @@ func (o *Oauth) OauthCallback(c *gin.Context) {
 		//登录
 		if userId != 0 {
 			c.HTML(http.StatusOK, "oauth_fail.html", gin.H{
-				"message": response.TranslateMsg(c, "OauthHasBeenSuccess"),
+				"message": "OauthHasBeenSuccess",
 			})
 			return
 		}
@@ -230,7 +234,7 @@ func (o *Oauth) OauthCallback(c *gin.Context) {
 			err, user = service.AllService.UserService.RegisterByOauth(oauthUser, op)
 			if err != nil {
 				c.HTML(http.StatusOK, "oauth_fail.html", gin.H{
-					"message": response.TranslateMsg(c, err.Error()),
+					"message": err.Error(),
 				})
 				return
 			}
@@ -252,14 +256,50 @@ func (o *Oauth) OauthCallback(c *gin.Context) {
 			return
 		}
 		c.HTML(http.StatusOK, "oauth_success.html", gin.H{
-			"message": response.TranslateMsg(c, "OauthSuccess"),
+			"message": "OauthSuccess",
 		})
 		return
 	} else {
 		c.HTML(http.StatusOK, "oauth_fail.html", gin.H{
-			"message": response.TranslateMsg(c, "ParamsError"),
+			"message": "ParamsError",
 		})
 		return
 	}
 
+}
+
+type MessageParams struct {
+	Lang  string `json:"lang" form:"lang"`
+	Title string `json:"title" form:"title"`
+	Msg   string `json:"msg" form:"msg"`
+}
+
+func (o *Oauth) Message(c *gin.Context) {
+	mp := &MessageParams{}
+	if err := c.ShouldBindQuery(mp); err != nil {
+		return
+	}
+	localizer := global.Localizer(mp.Lang)
+	res := ""
+	if mp.Title != "" {
+		title, err := localizer.LocalizeMessage(&i18n.Message{
+			ID: mp.Title,
+		})
+		if err == nil {
+			res = utils.StringConcat(";title='", title, "';")
+		}
+
+	}
+	if mp.Msg != "" {
+		msg, err := localizer.LocalizeMessage(&i18n.Message{
+			ID: mp.Msg,
+		})
+		if err == nil {
+			res = utils.StringConcat(res, "msg = '", msg, "';")
+		}
+	}
+
+	//返回js内容
+	c.Header("Content-Type", "application/javascript")
+	c.String(http.StatusOK, res)
 }
