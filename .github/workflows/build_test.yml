@@ -317,20 +317,20 @@ jobs:
 
       - name: Create and push manifest Docker Hub (:version)
         if: ${{ env.SKIP_DOCKER_HUB == 'false' }}
-        uses: Noelware/docker-manifest-action@master
+        uses: Noelware/docker-manifest-action@v0.2.3
         with:
-          inputs: ${{ env.BASE_IMAGE_NAMESPACE }}/rustdesk-api:${{ env.TAG }}
-          tags: ${{ env.DOCKERHUB_IMAGE_NAMESPACE }}/rustdesk-api:${{ env.TAG }}-amd64,
+          base-image: ${{ env.BASE_IMAGE_NAMESPACE }}/rustdesk-api:${{ env.TAG }}
+          extra-images: ${{ env.DOCKERHUB_IMAGE_NAMESPACE }}/rustdesk-api:${{ env.TAG }}-amd64,
             ${{ env.DOCKERHUB_IMAGE_NAMESPACE }}/rustdesk-api:${{ env.TAG }}-armv7l,
             ${{ env.DOCKERHUB_IMAGE_NAMESPACE }}/rustdesk-api:${{ env.TAG }}-arm64
           push: true
 
       - name: Create and push manifest GHCR (:version)
         if: ${{ env.SKIP_GHCR == 'false' }}
-        uses: Noelware/docker-manifest-action@master
+        uses: Noelware/docker-manifest-action@v0.2.3
         with:
-          inputs: ghcr.io/${{ env.BASE_IMAGE_NAMESPACE }}/rustdesk-api:${{ env.TAG }}
-          tags: ghcr.io/${{ env.GHCR_IMAGE_NAMESPACE }}/rustdesk-api:${{ env.TAG }}-amd64,
+          base-image: ghcr.io/${{ env.BASE_IMAGE_NAMESPACE }}/rustdesk-api:${{ env.TAG }}
+          extra-images: ghcr.io/${{ env.GHCR_IMAGE_NAMESPACE }}/rustdesk-api:${{ env.TAG }}-amd64,
             ghcr.io/${{ env.GHCR_IMAGE_NAMESPACE }}/rustdesk-api:${{ env.TAG }}-armv7l,
             ghcr.io/${{ env.GHCR_IMAGE_NAMESPACE }}/rustdesk-api:${{ env.TAG }}-arm64
           push: true
