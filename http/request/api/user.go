@@ -40,14 +40,14 @@ type LoginForm struct {
 
 type UserListQuery struct {
 	Page       uint   `json:"page" form:"page" validate:"required" label:"页码"`
-	PageSize   uint   `json:"page_size" form:"page_size" validate:"required" label:"每页数量"`
+	PageSize   uint   `json:"pageSize" form:"pageSize" validate:"required" label:"每页数量"`
 	Status     int    `json:"status" form:"status" label:"状态"`
 	Accessible string `json:"accessible" form:"accessible"`
 }
 
 type PeerListQuery struct {
 	Page       uint   `json:"page" form:"page" validate:"required" label:"页码"`
-	PageSize   uint   `json:"page_size" form:"page_size" validate:"required" label:"每页数量"`
+	PageSize   uint   `json:"pageSize" form:"pageSize" validate:"required" label:"每页数量"`
 	Status     int    `json:"status" form:"status" label:"状态"`
 	Accessible string `json:"accessible" form:"accessible"`
 }
