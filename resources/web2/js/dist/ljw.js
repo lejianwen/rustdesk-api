@@ -1,5 +1,11 @@
 window._gwen = {}
 window._gwen.kv = {}
+
+//fix 语言
+if(!localStorage.getItem('wc-option:local:lang') && navigator.language){
+    localStorage.setItem('wc-option:local:lang', navigator.language.toLowerCase())
+}
+
 const storage_prefix = 'wc-'
 const apiserver = localStorage.getItem('wc-api-server')
 
