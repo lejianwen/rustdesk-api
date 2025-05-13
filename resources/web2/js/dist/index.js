@@ -12390,7 +12390,8 @@ async function Lr() {
 }
 
 function pa() {
-    return cr.indexOf(new TextDecoder().decode(be("cnVzdGRlc2suY29t"))) < 0
+    // return cr.indexOf(new TextDecoder().decode(be("cnVzdGRlc2suY29t"))) < 0
+    return false
 }
 
 function Ba(u) {
