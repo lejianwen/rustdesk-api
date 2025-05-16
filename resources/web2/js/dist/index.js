@@ -9889,7 +9889,7 @@ const qo = async (u, e) => {
         n = !1
     }
     return n && i.push(Xe(e, "")), i
-}, Bt = 21116, ia = "rs-ny.rustdesk.com";
+}, Bt = 21116,defaultIdServerPort = 21116, ia = "rs-ny.rustdesk.com";
 
 function Zo() {
     const u = window.location.host;
