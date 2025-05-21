@@ -411,7 +411,7 @@ func (ls *LdapService) isUserAdmin(cfg *config.Ldap, ldapUser *LdapUser) bool {
 	// Check "memberOf" directly
 	if len(ldapUser.MemberOf) > 0 {
 		for _, group := range ldapUser.MemberOf {
-			if group == adminGroup {
+			if strings.EqualFold(group, adminGroup) {
 				return true
 			}
 		}
