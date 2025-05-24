@@ -146,3 +146,8 @@ other = "비밀번호 로그인이 비활성화되었습니다."
 description = "Cannot share to self."
 one = "자기 자신에게 공유할 수 없습니다."
 other = "자기 자신에게 공유할 수 없습니다."
+
+[Banned]
+description = "Banned."
+one = "금지됨."
+other = "금지됨."

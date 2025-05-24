@@ -31,10 +31,16 @@ func (l *Login) Login(c *gin.Context) {
 		response.Error(c, response.TranslateMsg(c, "PwdLoginDisabled"))
 		return
 	}
+
+	// 检查登录限制
+	loginLimiter := global.LoginLimiter
+	clientIp := c.ClientIP()
+
 	f := &api.LoginForm{}
 	err := c.ShouldBindJSON(f)
 	//fmt.Println(f)
 	if err != nil {
+		loginLimiter.RecordFailedAttempt(clientIp)
 		global.Logger.Warn(fmt.Sprintf("Login Fail: %s %s %s", "ParamsError", c.RemoteIP(), c.ClientIP()))
 		response.Error(c, response.TranslateMsg(c, "ParamsError")+err.Error())
 		return
@@ -42,6 +48,7 @@ func (l *Login) Login(c *gin.Context) {
 
 	errList := global.Validator.ValidStruct(c, f)
 	if len(errList) > 0 {
+		loginLimiter.RecordFailedAttempt(clientIp)
 		global.Logger.Warn(fmt.Sprintf("Login Fail: %s %s %s", "ParamsError", c.RemoteIP(), c.ClientIP()))
 		response.Error(c, errList[0])
 		return
@@ -50,6 +57,7 @@ func (l *Login) Login(c *gin.Context) {
 	u := service.AllService.UserService.InfoByUsernamePassword(f.Username, f.Password)
 
 	if u.Id == 0 {
+		loginLimiter.RecordFailedAttempt(clientIp)
 		global.Logger.Warn(fmt.Sprintf("Login Fail: %s %s %s", "UsernameOrPasswordError", c.RemoteIP(), c.ClientIP()))
 		response.Error(c, response.TranslateMsg(c, "UsernameOrPasswordError"))
 		return

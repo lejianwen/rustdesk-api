@@ -143,3 +143,8 @@ other = "Password login disabled."
 description = "Cannot share to self."
 one = "Cannot share to self."
 other = "Cannot share to self."
+
+[Banned]
+description = "Banned."
+one = "Banned."
+other = "Banned."

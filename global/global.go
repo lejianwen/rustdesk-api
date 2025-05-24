@@ -10,6 +10,7 @@ import (
 	"github.com/lejianwen/rustdesk-api/v2/lib/jwt"
 	"github.com/lejianwen/rustdesk-api/v2/lib/lock"
 	"github.com/lejianwen/rustdesk-api/v2/lib/upload"
+	"github.com/lejianwen/rustdesk-api/v2/utils"
 	"github.com/nicksnyder/go-i18n/v2/i18n"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
@@ -31,8 +32,9 @@ var (
 		ValidStruct func(*gin.Context, interface{}) []string
 		ValidVar    func(ctx *gin.Context, field interface{}, tag string) []string
 	}
-	Oss       *upload.Oss
-	Jwt       *jwt.Jwt
-	Lock      lock.Locker
-	Localizer func(lang string) *i18n.Localizer
+	Oss          *upload.Oss
+	Jwt          *jwt.Jwt
+	Lock         lock.Locker
+	Localizer    func(lang string) *i18n.Localizer
+	LoginLimiter *utils.LoginLimiter
 )
