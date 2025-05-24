@@ -152,3 +152,8 @@ other = "Inicio de sesión con contraseña deshabilitado."
 description = "Cannot share to self."
 one = "No se puede compartir con uno mismo."
 other = "No se puede compartir con uno mismo."
+
+[Banned]
+description = "Banned."
+one = "Prohibido."
+other = "Prohibido."

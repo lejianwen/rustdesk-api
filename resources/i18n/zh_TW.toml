@@ -145,3 +145,8 @@ other = "密碼登錄已禁用。"
 description = "Cannot share to self."
 one = "無法共享給自己。"
 other = "無法共享給自己。"
+
+[Banned]
+description = "Banned."
+one = "禁止使用。"
+other = "禁止使用。"

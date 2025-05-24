@@ -18,6 +18,7 @@ import (
 	"github.com/spf13/cobra"
 	"os"
 	"strconv"
+	"time"
 )
 
 // @title 管理系统API
@@ -175,8 +176,16 @@ func InitGlobal() {
 	//service
 	service.New(&global.Config, global.DB, global.Logger, global.Jwt, global.Lock)
 
+	global.LoginLimiter = utils.NewLoginLimiter(utils.SecurityPolicy{
+		CaptchaThreshold: global.Config.App.CaptchaThreshold,
+		BanThreshold:     global.Config.App.BanThreshold,
+		AttemptsWindow:   10 * time.Minute,
+		BanDuration:      30 * time.Minute,
+	})
+	global.LoginLimiter.RegisterProvider(utils.B64StringCaptchaProvider{})
 	DatabaseAutoUpdate()
 }
+
 func DatabaseAutoUpdate() {
 	version := 262
 

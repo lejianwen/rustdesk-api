@@ -152,3 +152,8 @@ other = "Вход по паролю отключен."
 description = "Cannot share to self."
 one = "Нельзя поделиться с собой."
 other = "Нельзя поделиться с собой."
+
+[Banned]
+description = "Banned."
+one = "Заблокировано."
+other = "Заблокировано."

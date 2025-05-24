@@ -152,3 +152,8 @@ other = "Connexion par mot de passe désactivée."
 description = "Cannot share to self."
 one = "Impossible de partager avec soi-même."
 other = "Impossible de partager avec soi-même."
+
+[Banned]
+description = "Banned."
+one = "Banni."
+other = "Banni."

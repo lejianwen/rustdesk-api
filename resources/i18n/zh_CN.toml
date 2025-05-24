@@ -145,3 +145,8 @@ other = "密码登录已禁用。"
 description = "Cannot share to self."
 one = "不能共享给自己。"
 other = "不能共享给自己。"
+
+[Banned]
+description = "Banned."
+one = "已被封禁。"
+other = "已被封禁。"

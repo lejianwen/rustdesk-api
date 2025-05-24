@@ -2,10 +2,13 @@ lang: "zh-CN"
 app:
   web-client: 1  # 1:启用 0:禁用
   register: false #是否开启注册
+  captcha-threshold: 3 #   <0:disabled, 0 always, >0:enabled
+  ban-threshold: 0 # 0:disabled, >0:enabled
   show-swagger: 0 # 1:启用 0:禁用
   token-expire: 168h
   web-sso: true #web auth sso
   disable-pwd-login: false #禁用密码登录
+
 admin:
   title: "RustDesk Api Admin"
   hello-file: "./conf/admin/hello.html"  #优先使用file
