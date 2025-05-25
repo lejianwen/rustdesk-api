@@ -157,3 +157,8 @@ other = "No se puede compartir con uno mismo."
 description = "Banned."
 one = "Prohibido."
 other = "Prohibido."
+
+[RegisterSuccessWaitAdminConfirm]
+description = "Register success, wait admin confirm."
+one = "Registro exitoso, espere la confirmación del administrador."
+other = "Registro exitoso, espere la confirmación del administrador."

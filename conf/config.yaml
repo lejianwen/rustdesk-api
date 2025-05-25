@@ -2,6 +2,7 @@ lang: "zh-CN"
 app:
   web-client: 1  # 1:启用 0:禁用
   register: false #是否开启注册
+  register-status: 1 # 注册用户默认状态 1:启用 2:禁用
   captcha-threshold: 3 #   <0:disabled, 0 always, >0:enabled
   ban-threshold: 0 # 0:disabled, >0:enabled
   show-swagger: 0 # 1:启用 0:禁用

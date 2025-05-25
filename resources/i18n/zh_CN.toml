@@ -150,3 +150,8 @@ other = "不能共享给自己。"
 description = "Banned."
 one = "已被封禁。"
 other = "已被封禁。"
+
+[RegisterSuccessWaitAdminConfirm]
+description = "Register success, wait for admin confirm."
+one = "注册成功，请等待管理员审核。"
+other = "注册成功，请等待管理员审核。"

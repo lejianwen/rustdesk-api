@@ -157,3 +157,8 @@ other = "Нельзя поделиться с собой."
 description = "Banned."
 one = "Заблокировано."
 other = "Заблокировано."
+
+[RegisterSuccessWaitAdminConfirm]
+description = "Register success wait admin confirm."
+one = "Регистрация прошла успешно, ожидайте подтверждения администратора."
+other = "Регистрация прошла успешно, ожидайте подтверждения администратора."
