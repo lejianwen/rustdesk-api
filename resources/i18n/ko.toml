@@ -151,3 +151,8 @@ other = "자기 자신에게 공유할 수 없습니다."
 description = "Banned."
 one = "금지됨."
 other = "금지됨."
+
+[RegisterSuccessWaitAdminConfirm]
+description = "Register success wait admin confirm."
+one = "가입 성공, 관리자 확인 대기 중."
+other = "가입 성공, 관리자 확인 대기 중."

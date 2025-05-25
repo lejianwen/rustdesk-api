@@ -148,3 +148,8 @@ other = "Cannot share to self."
 description = "Banned."
 one = "Banned."
 other = "Banned."
+
+[RegisterSuccessWaitAdminConfirm]
+description = "Register success, wait admin confirm."
+one = "Register success, wait admin confirm."
+other = "Register success, wait admin confirm."

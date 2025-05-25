@@ -412,12 +412,13 @@ func (us *UserService) IsPasswordEmptyByUser(u *model.User) bool {
 }
 
 // Register 注册, 如果用户名已存在则返回nil
-func (us *UserService) Register(username string, email string, password string) *model.User {
+func (us *UserService) Register(username string, email string, password string, status model.StatusCode) *model.User {
 	u := &model.User{
 		Username: username,
 		Email:    email,
 		Password: password,
 		GroupId:  1,
+		Status:   status,
 	}
 	err := us.Create(u)
 	if err != nil {

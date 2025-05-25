@@ -320,9 +320,20 @@ func (ct *User) Register(c *gin.Context) {
 		response.Fail(c, 101, errList[0])
 		return
 	}
-	u := service.AllService.UserService.Register(f.Username, f.Email, f.Password)
+	regStatus := model.StatusCode(global.Config.App.RegisterStatus)
+	// 注册状态可能未配置，默认启用
+	if regStatus != model.COMMON_STATUS_DISABLED && regStatus != model.COMMON_STATUS_ENABLE {
+		regStatus = model.COMMON_STATUS_ENABLE
+	}
+
+	u := service.AllService.UserService.Register(f.Username, f.Email, f.Password, regStatus)
 	if u == nil || u.Id == 0 {
 		response.Fail(c, 101, response.TranslateMsg(c, "OperationFailed"))
+		return
+	}
+	if regStatus == model.COMMON_STATUS_DISABLED {
+		// 需要管理员审核
+		response.Fail(c, 101, response.TranslateMsg(c, "RegisterSuccessWaitAdminConfirm"))
 		return
 	}
 	// 注册成功后自动登录
