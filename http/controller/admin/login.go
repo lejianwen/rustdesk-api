@@ -57,7 +57,7 @@ func (ct *Login) Login(c *gin.Context) {
 
 	// 检查是否需要验证码
 	if needCaptcha {
-		if f.Captcha == "" || !loginLimiter.VerifyCaptcha(clientIp, f.Captcha) {
+		if f.CaptchaId == "" || f.Captcha == "" || !loginLimiter.VerifyCaptcha(f.CaptchaId, f.Captcha) {
 			response.Fail(c, 101, response.TranslateMsg(c, "CaptchaError"))
 			return
 		}
@@ -68,8 +68,6 @@ func (ct *Login) Login(c *gin.Context) {
 	if u.Id == 0 {
 		global.Logger.Warn(fmt.Sprintf("Login Fail: %s %s %s", "UsernameOrPasswordError", c.RemoteIP(), clientIp))
 		loginLimiter.RecordFailedAttempt(clientIp)
-		// 移除验证码，重新生成
-		loginLimiter.RemoveCaptcha(clientIp)
 		if _, needCaptcha = loginLimiter.CheckSecurityStatus(clientIp); needCaptcha {
 			response.Fail(c, 110, response.TranslateMsg(c, "UsernameOrPasswordError"))
 		} else {
@@ -80,7 +78,6 @@ func (ct *Login) Login(c *gin.Context) {
 
 	if !service.AllService.UserService.CheckUserEnable(u) {
 		if needCaptcha {
-			loginLimiter.RemoveCaptcha(clientIp)
 			response.Fail(c, 110, response.TranslateMsg(c, "UserDisabled"))
 			return
 		}
@@ -113,7 +110,7 @@ func (ct *Login) Captcha(c *gin.Context) {
 		response.Fail(c, 101, response.TranslateMsg(c, "NoCaptchaRequired"))
 		return
 	}
-	err, captcha := loginLimiter.RequireCaptcha(clientIp)
+	err, captcha := loginLimiter.RequireCaptcha()
 	if err != nil {
 		response.Fail(c, 101, response.TranslateMsg(c, "CaptchaError")+err.Error())
 		return
@@ -125,6 +122,7 @@ func (ct *Login) Captcha(c *gin.Context) {
 	}
 	response.Success(c, gin.H{
 		"captcha": gin.H{
+			"id":  captcha.Id,
 			"b64": b64,
 		},
 	})

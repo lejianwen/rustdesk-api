@@ -5,15 +5,15 @@ import (
 	"time"
 )
 
-var capdString = base64Captcha.NewDriverString(50, 150, 5, 10, 4, "123456789abcdefghijklmnopqrstuvwxyz", nil, nil, nil)
+var capdString = base64Captcha.NewDriverString(50, 150, 0, 5, 4, "123456789abcdefghijklmnopqrstuvwxyz", nil, nil, nil)
 
-var capdMath = base64Captcha.NewDriverMath(50, 150, 5, 10, nil, nil, nil)
+var capdMath = base64Captcha.NewDriverMath(50, 150, 3, 10, nil, nil, nil)
 
 type B64StringCaptchaProvider struct{}
 
-func (p B64StringCaptchaProvider) Generate(ip string) (string, string, error) {
-	_, content, answer := capdString.GenerateIdQuestionAnswer()
-	return content, answer, nil
+func (p B64StringCaptchaProvider) Generate() (string, string, string, error) {
+	id, content, answer := capdString.GenerateIdQuestionAnswer()
+	return id, content, answer, nil
 }
 
 func (p B64StringCaptchaProvider) Expiration() time.Duration {
@@ -30,9 +30,9 @@ func (p B64StringCaptchaProvider) Draw(content string) (string, error) {
 
 type B64MathCaptchaProvider struct{}
 
-func (p B64MathCaptchaProvider) Generate(ip string) (string, string, error) {
-	_, content, answer := capdMath.GenerateIdQuestionAnswer()
-	return content, answer, nil
+func (p B64MathCaptchaProvider) Generate() (string, string, string, error) {
+	id, content, answer := capdMath.GenerateIdQuestionAnswer()
+	return id, content, answer, nil
 }
 
 func (p B64MathCaptchaProvider) Expiration() time.Duration {
