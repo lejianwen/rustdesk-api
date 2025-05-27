@@ -2,18 +2,18 @@ package utils
 
 import (
 	"fmt"
+	"github.com/google/uuid"
 	"testing"
 	"time"
 )
 
 type MockCaptchaProvider struct{}
 
-func (p *MockCaptchaProvider) Generate(ip string) (string, string, error) {
-	return "CONTENT", "MOCK", nil
-}
-
-func (p *MockCaptchaProvider) Validate(ip, code string) bool {
-	return code == "MOCK"
+func (p *MockCaptchaProvider) Generate() (string, string, string, error) {
+	id := uuid.New().String()
+	content := uuid.New().String()
+	answer := uuid.New().String()
+	return id, content, answer, nil
 }
 
 func (p *MockCaptchaProvider) Expiration() time.Duration {
@@ -74,15 +74,20 @@ func TestCaptchaFlow(t *testing.T) {
 	}
 
 	// 生成验证码
-	err, capc := limiter.RequireCaptcha(ip)
+	err, capc := limiter.RequireCaptcha()
 	if err != nil {
 		t.Fatalf("生成验证码失败: %v", err)
 	}
 	fmt.Printf("验证码内容: %#v\n", capc)
 
 	// 验证成功
-	if !limiter.VerifyCaptcha(ip, capc.Answer) {
+	if !limiter.VerifyCaptcha(capc.Id, capc.Answer) {
 		t.Error("验证码应该验证成功")
+	}
+
+	// 验证已删除
+	if limiter.VerifyCaptcha(capc.Id, capc.Answer) {
+		t.Error("验证码应该已删除")
 	}
 
 	limiter.RemoveAttempts(ip)
@@ -104,14 +109,14 @@ func TestCaptchaMustFlow(t *testing.T) {
 	}
 
 	// 生成验证码
-	err, capc := limiter.RequireCaptcha(ip)
+	err, capc := limiter.RequireCaptcha()
 	if err != nil {
 		t.Fatalf("生成验证码失败: %v", err)
 	}
 	fmt.Printf("验证码内容: %#v\n", capc)
 
 	// 验证成功
-	if !limiter.VerifyCaptcha(ip, capc.Answer) {
+	if !limiter.VerifyCaptcha(capc.Id, capc.Answer) {
 		t.Error("验证码应该验证成功")
 	}
 
@@ -136,7 +141,7 @@ func TestAttemptTimeout(t *testing.T) {
 	}
 
 	// 生成验证码
-	err, _ := limiter.RequireCaptcha(ip)
+	err, _ := limiter.RequireCaptcha()
 	if err != nil {
 		t.Fatalf("生成验证码失败: %v", err)
 	}
@@ -167,7 +172,7 @@ func TestCaptchaTimeout(t *testing.T) {
 	}
 
 	// 生成验证码
-	err, _ := limiter.RequireCaptcha(ip)
+	err, capc := limiter.RequireCaptcha()
 	if err != nil {
 		t.Fatalf("生成验证码失败: %v", err)
 	}
@@ -175,9 +180,8 @@ func TestCaptchaTimeout(t *testing.T) {
 	// 等待超过 CaptchaValidPeriod
 	time.Sleep(3 * time.Second)
 
-	code := "MOCK"
 	// 验证成功
-	if limiter.VerifyCaptcha(ip, code) {
+	if limiter.VerifyCaptcha(capc.Id, capc.Answer) {
 		t.Error("验证码应该已过期")
 	}
 
@@ -261,7 +265,7 @@ func TestB64CaptchaFlow(t *testing.T) {
 	}
 
 	// 生成验证码
-	err, capc := limiter.RequireCaptcha(ip)
+	err, capc := limiter.RequireCaptcha()
 	if err != nil {
 		t.Fatalf("生成验证码失败: %v", err)
 	}
@@ -275,7 +279,7 @@ func TestB64CaptchaFlow(t *testing.T) {
 	fmt.Printf("验证码内容: %#v\n", b64)
 
 	// 验证成功
-	if !limiter.VerifyCaptcha(ip, capc.Answer) {
+	if !limiter.VerifyCaptcha(capc.Id, capc.Answer) {
 		t.Error("验证码应该验证成功")
 	}
 	limiter.RemoveAttempts(ip)

@@ -16,7 +16,7 @@ type SecurityPolicy struct {
 
 // 验证码提供者接口
 type CaptchaProvider interface {
-	Generate(ip string) (string, string, error)
+	Generate() (id string, content string, answer string, err error)
 	//Validate(ip, code string) bool
 	Expiration() time.Duration           // 验证码过期时间, 应该小于 AttemptsWindow
 	Draw(content string) (string, error) // 绘制验证码
@@ -24,6 +24,7 @@ type CaptchaProvider interface {
 
 // 验证码元数据
 type CaptchaMeta struct {
+	Id        string
 	Content   string
 	Answer    string
 	ExpiresAt time.Time
@@ -117,7 +118,7 @@ func (ll *LoginLimiter) RecordFailedAttempt(ip string) {
 }
 
 // 生成验证码
-func (ll *LoginLimiter) RequireCaptcha(ip string) (error, CaptchaMeta) {
+func (ll *LoginLimiter) RequireCaptcha() (error, CaptchaMeta) {
 	ll.mu.Lock()
 	defer ll.mu.Unlock()
 
@@ -125,23 +126,24 @@ func (ll *LoginLimiter) RequireCaptcha(ip string) (error, CaptchaMeta) {
 		return errors.New("no captcha provider available"), CaptchaMeta{}
 	}
 
-	content, answer, err := ll.provider.Generate(ip)
+	id, content, answer, err := ll.provider.Generate()
 	if err != nil {
 		return err, CaptchaMeta{}
 	}
 
 	// 存储验证码
-	ll.captchas[ip] = CaptchaMeta{
+	ll.captchas[id] = CaptchaMeta{
+		Id:        id,
 		Content:   content,
 		Answer:    answer,
 		ExpiresAt: time.Now().Add(ll.provider.Expiration()),
 	}
 
-	return nil, ll.captchas[ip]
+	return nil, ll.captchas[id]
 }
 
 // 验证验证码
-func (ll *LoginLimiter) VerifyCaptcha(ip, answer string) bool {
+func (ll *LoginLimiter) VerifyCaptcha(id, answer string) bool {
 	ll.mu.Lock()
 	defer ll.mu.Unlock()
 
@@ -151,20 +153,20 @@ func (ll *LoginLimiter) VerifyCaptcha(ip, answer string) bool {
 	}
 
 	// 获取并验证验证码
-	captcha, exists := ll.captchas[ip]
+	captcha, exists := ll.captchas[id]
 	if !exists {
 		return false
 	}
 
 	// 清理过期验证码
 	if time.Now().After(captcha.ExpiresAt) {
-		delete(ll.captchas, ip)
+		delete(ll.captchas, id)
 		return false
 	}
 
 	// 验证并清理状态
 	if answer == captcha.Answer {
-		delete(ll.captchas, ip)
+		delete(ll.captchas, id)
 		return true
 	}
 
@@ -174,16 +176,6 @@ func (ll *LoginLimiter) VerifyCaptcha(ip, answer string) bool {
 func (ll *LoginLimiter) DrawCaptcha(content string) (err error, str string) {
 	str, err = ll.provider.Draw(content)
 	return
-}
-
-func (ll *LoginLimiter) RemoveCaptcha(ip string) {
-	ll.mu.Lock()
-	defer ll.mu.Unlock()
-
-	_, exists := ll.captchas[ip]
-	if exists {
-		delete(ll.captchas, ip)
-	}
 }
 
 // 清除记录窗口
@@ -212,7 +204,6 @@ func (ll *LoginLimiter) CheckSecurityStatus(ip string) (banned bool, captchaRequ
 
 	// 清理过期数据
 	ll.pruneAttempts(ip, time.Now().Add(-ll.policy.AttemptsWindow))
-	ll.pruneCaptchas(ip)
 
 	// 检查验证码要求
 	captchaRequired = len(ll.attempts[ip]) >= ll.policy.CaptchaThreshold
@@ -272,10 +263,10 @@ func (ll *LoginLimiter) pruneAttempts(ip string, cutoff time.Time) []time.Time {
 	return valid
 }
 
-func (ll *LoginLimiter) pruneCaptchas(ip string) {
-	if captcha, exists := ll.captchas[ip]; exists {
+func (ll *LoginLimiter) pruneCaptchas(id string) {
+	if captcha, exists := ll.captchas[id]; exists {
 		if time.Now().After(captcha.ExpiresAt) {
-			delete(ll.captchas, ip)
+			delete(ll.captchas, id)
 		}
 	}
 }
@@ -299,7 +290,7 @@ func (ll *LoginLimiter) cleanupExpired() {
 	}
 
 	// 清理验证码
-	for ip := range ll.captchas {
-		ll.pruneCaptchas(ip)
+	for id := range ll.captchas {
+		ll.pruneCaptchas(id)
 	}
 }
