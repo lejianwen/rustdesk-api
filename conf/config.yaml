@@ -14,6 +14,9 @@ admin:
   title: "RustDesk Api Admin"
   hello-file: "./conf/admin/hello.html"  #优先使用file
   hello: ""
+  # ID Server and Relay Server ports https://github.com/lejianwen/rustdesk-api/issues/257
+  id-server-port: 21116  # ID Server port (for server cmd)
+  relay-server-port: 21117 # ID Server port (for server cmd)
 gin:
   api-addr: "0.0.0.0:21114"
   mode: "release" #release,debug,test

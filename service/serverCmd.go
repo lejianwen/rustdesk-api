@@ -40,14 +40,7 @@ func (is *ServerCmdService) Create(u *model.ServerCmd) error {
 }
 
 // SendCmd 发送命令
-func (is *ServerCmdService) SendCmd(target string, cmd string, arg string) (string, error) {
-	port := 0
-	switch target {
-	case model.ServerCmdTargetIdServer:
-		port = Config.Rustdesk.IdServerPort - 1
-	case model.ServerCmdTargetRelayServer:
-		port = Config.Rustdesk.RelayServerPort
-	}
+func (is *ServerCmdService) SendCmd(port int, cmd string, arg string) (string, error) {
 	//组装命令
 	cmd = cmd + " " + arg
 	res, err := is.SendSocketCmd("v6", port, cmd)
