@@ -119,7 +119,16 @@ func (r *Rustdesk) SendCmd(c *gin.Context) {
 		response.Fail(c, 101, response.TranslateMsg(c, "ParamsError"))
 		return
 	}
-	res, err := service.AllService.ServerCmdService.SendCmd(rc.Target, rc.Cmd, rc.Option)
+
+	port := 0
+	switch rc.Target {
+	case model.ServerCmdTargetIdServer:
+		port = global.Config.Admin.IdServerPort - 1
+	case model.ServerCmdTargetRelayServer:
+		port = global.Config.Admin.RelayServerPort
+	}
+
+	res, err := service.AllService.ServerCmdService.SendCmd(port, rc.Cmd, rc.Option)
 	if err != nil {
 		response.Fail(c, 101, err.Error())
 		return
