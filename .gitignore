@@ -5,4 +5,4 @@ runtime/*
 go.sum
 resources/admin
 release
-data
+data/rustdeskapi.db
