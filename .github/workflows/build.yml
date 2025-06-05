@@ -115,12 +115,12 @@ jobs:
             zip -r ${{ matrix.job.goos}}-${{ matrix.job.platform }}.${{matrix.job.file_ext}} ./release
           else
             if [ "${{ matrix.job.platform }}" = "arm64" ]; then
-                wget https://musl.cc/aarch64-linux-musl-cross.tgz
+                wget https://musl.ljw.red/aarch64-linux-musl-cross.tgz
                 tar -xf aarch64-linux-musl-cross.tgz
                 export PATH=$PATH:$PWD/aarch64-linux-musl-cross/bin
                 GOOS=${{ matrix.job.goos }} GOARCH=${{ matrix.job.platform }} CC=aarch64-linux-musl-gcc CGO_LDFLAGS="-static" CGO_ENABLED=1 go build -ldflags "-s -w" -o ./release/apimain ./cmd/apimain.go
             elif [ "${{ matrix.job.platform }}" = "armv7l" ]; then
-                wget https://musl.cc/armv7l-linux-musleabihf-cross.tgz
+                wget https://musl.ljw.red/armv7l-linux-musleabihf-cross.tgz
                 tar -xf armv7l-linux-musleabihf-cross.tgz
                 export PATH=$PATH:$PWD/armv7l-linux-musleabihf-cross/bin
                 GOOS=${{ matrix.job.goos }} GOARCH=arm GOARM=7 CC=armv7l-linux-musleabihf-gcc CGO_LDFLAGS="-static" CGO_ENABLED=1 go build -ldflags "-s -w" -o ./release/apimain ./cmd/apimain.go
