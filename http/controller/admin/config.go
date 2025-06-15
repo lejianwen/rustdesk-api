@@ -78,11 +78,13 @@ func (co *Config) AdminConfig(c *gin.Context) {
 	}
 
 	hello := global.Config.Admin.Hello
-	helloFile := global.Config.Admin.HelloFile
-	if helloFile != "" {
-		b, err := os.ReadFile(helloFile)
-		if err == nil && len(b) > 0 {
-			hello = string(b)
+	if hello == "" {
+		helloFile := global.Config.Admin.HelloFile
+		if helloFile != "" {
+			b, err := os.ReadFile(helloFile)
+			if err == nil && len(b) > 0 {
+				hello = string(b)
+			}
 		}
 	}
 
