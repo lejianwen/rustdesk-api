@@ -154,6 +154,18 @@ func (os *OauthService) GithubProvider() *oidc.Provider {
 	}).NewProvider(context.Background())
 }
 
+func (os *OauthService) LinuxdoProvider() *oidc.Provider {
+	return (&oidc.ProviderConfig{
+		IssuerURL:     "",
+		AuthURL:       "https://connect.linux.do/oauth2/authorize",
+		TokenURL:      "https://connect.linux.do/oauth2/token",
+		DeviceAuthURL: "",
+		UserInfoURL:   model.UserEndpointLinuxdo,
+		JWKSURL:       "",
+		Algorithms:    nil,
+	}).NewProvider(context.Background())
+}
+
 // GetOauthConfig retrieves the OAuth2 configuration based on the provider name
 func (os *OauthService) GetOauthConfig(op string) (err error, oauthInfo *model.Oauth, oauthConfig *oauth2.Config, provider *oidc.Provider) {
 	//err, oauthInfo, oauthConfig = os.getOauthConfigGeneral(op)
@@ -182,6 +194,10 @@ func (os *OauthService) GetOauthConfig(op string) (err error, oauthInfo *model.O
 		oauthConfig.Endpoint = github.Endpoint
 		oauthConfig.Scopes = []string{"read:user", "user:email"}
 		provider = os.GithubProvider()
+	case model.OauthTypeLinuxdo:
+		provider = os.LinuxdoProvider()
+		oauthConfig.Endpoint = provider.Endpoint()
+		oauthConfig.Scopes = []string{"profile"}
 	//case model.OauthTypeGoogle: //google单独出来，可以少一次FetchOidcEndpoint请求
 	//	oauthConfig.Endpoint = google.Endpoint
 	//	oauthConfig.Scopes = os.constructScopes(oauthInfo.Scopes)
@@ -299,6 +315,16 @@ func (os *OauthService) githubCallback(oauthConfig *oauth2.Config, provider *oid
 	return nil, user.ToOauthUser()
 }
 
+// linuxdoCallback linux.do回调
+func (os *OauthService) linuxdoCallback(oauthConfig *oauth2.Config, provider *oidc.Provider, code, verifier, nonce string) (error, *model.OauthUser) {
+	var user = &model.LinuxdoUser{}
+	err, _ := os.callbackBase(oauthConfig, provider, code, verifier, nonce, user)
+	if err != nil {
+		return err, nil
+	}
+	return nil, user.ToOauthUser()
+}
+
 // oidcCallback oidc回调, 通过code获取用户信息
 func (os *OauthService) oidcCallback(oauthConfig *oauth2.Config, provider *oidc.Provider, code, verifier, nonce string) (error, *model.OauthUser) {
 	var user = &model.OidcUser{}
@@ -319,6 +345,8 @@ func (os *OauthService) Callback(code, verifier, op, nonce string) (err error, o
 	switch oauthType {
 	case model.OauthTypeGithub:
 		err, oauthUser = os.githubCallback(oauthConfig, provider, code, verifier, nonce)
+	case model.OauthTypeLinuxdo:
+		err, oauthUser = os.linuxdoCallback(oauthConfig, provider, code, verifier, nonce)
 	case model.OauthTypeOidc, model.OauthTypeGoogle:
 		err, oauthUser = os.oidcCallback(oauthConfig, provider, code, verifier, nonce)
 	default:
