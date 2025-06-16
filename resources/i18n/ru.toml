@@ -33,6 +33,11 @@ description = "No access."
 one = "Нет доступа."
 other = "Нет доступа."
 
+[NeedLogin]
+description = "Need login."
+one = "Пожалуйста, войдите в систему."
+other = "Пожалуйста, войдите в систему."
+
 [UsernameOrPasswordError]
 description = "Username or password error."
 one = "Неправильное имя пользователя или пароль."

@@ -33,6 +33,11 @@ description = "No access."
 one = "접근할 수 없습니다."
 other = "접근할 수 없습니다."
 
+[NeedLogin]
+description = "Need login."
+one = "먼저 로그인해주세요."
+other = "먼저 로그인해주세요."
+
 [UsernameOrPasswordError]
 description = "Username or password error."
 one = "사용자 이름이나 비밀번호가 올바르지 않습니다."

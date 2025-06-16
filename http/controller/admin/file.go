@@ -38,7 +38,7 @@ func (f *File) Notify(c *gin.Context) {
 
 	res := global.Oss.Verify(c.Request)
 	if !res {
-		response.Fail(c, 101, "权限错误")
+		response.Fail(c, 101, response.TranslateMsg(c, "NoAccess"))
 		return
 	}
 	fm := &FileBack{}
