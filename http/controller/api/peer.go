@@ -1,6 +1,7 @@
 package api
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
 	requstform "github.com/lejianwen/rustdesk-api/v2/http/request/api"
@@ -60,5 +61,7 @@ func (p *Peer) SysInfo(c *gin.Context) {
 func (p *Peer) SysInfoVer(c *gin.Context) {
 	//读取resources/version文件
 	v := service.AllService.AppService.GetAppVersion()
+	// 加上启动时间，方便client上传信息
+	v = fmt.Sprintf("%s\n%s", v, service.AllService.AppService.GetStartTime())
 	c.String(http.StatusOK, v)
 }
