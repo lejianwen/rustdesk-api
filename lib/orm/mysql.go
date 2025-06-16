@@ -2,7 +2,6 @@ package orm
 
 import (
 	"fmt"
-	"github.com/lejianwen/rustdesk-api/v2/global"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
@@ -10,14 +9,14 @@ import (
 )
 
 type MysqlConfig struct {
-	Dns          string
+	Dsn          string
 	MaxIdleConns int
 	MaxOpenConns int
 }
 
-func NewMysql(mysqlConf *MysqlConfig) *gorm.DB {
+func NewMysql(mysqlConf *MysqlConfig, logwriter logger.Writer) *gorm.DB {
 	db, err := gorm.Open(mysql.New(mysql.Config{
-		DSN:               mysqlConf.Dns, // DSN data source name
+		DSN:               mysqlConf.Dsn, // DSN data source name
 		DefaultStringSize: 256,           // string 类型字段的默认长度
 		//DisableDatetimePrecision:  true,                    // 禁用 datetime 精度，MySQL 5.6 之前的数据库不支持
 		//DontSupportRenameIndex:    true,                    // 重命名索引时采用删除并新建的方式，MySQL 5.7 之前的数据库和 MariaDB 不支持重命名索引
@@ -26,7 +25,7 @@ func NewMysql(mysqlConf *MysqlConfig) *gorm.DB {
 	}), &gorm.Config{
 		DisableForeignKeyConstraintWhenMigrating: true,
 		Logger: logger.New(
-			global.Logger, // io writer
+			logwriter, // io writer
 			logger.Config{
 				SlowThreshold:             time.Second, // Slow SQL threshold
 				LogLevel:                  logger.Warn, // Log level

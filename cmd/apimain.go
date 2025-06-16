@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"github.com/go-redis/redis/v8"
 	"github.com/lejianwen/rustdesk-api/v2/config"
 	"github.com/lejianwen/rustdesk-api/v2/global"
@@ -140,18 +141,40 @@ func InitGlobal() {
 	}
 	//gorm
 	if global.Config.Gorm.Type == config.TypeMysql {
-		dns := global.Config.Mysql.Username + ":" + global.Config.Mysql.Password + "@(" + global.Config.Mysql.Addr + ")/" + global.Config.Mysql.Dbname + "?charset=utf8mb4&parseTime=True&loc=Local"
+
+		dsn := fmt.Sprintf("%s:%s@(%s)/%s?charset=utf8mb4&parseTime=True&loc=Local",
+			global.Config.Mysql.Username,
+			global.Config.Mysql.Password,
+			global.Config.Mysql.Addr,
+			global.Config.Mysql.Dbname,
+		)
+
 		global.DB = orm.NewMysql(&orm.MysqlConfig{
-			Dns:          dns,
+			Dsn:          dsn,
 			MaxIdleConns: global.Config.Gorm.MaxIdleConns,
 			MaxOpenConns: global.Config.Gorm.MaxOpenConns,
-		})
+		}, global.Logger)
+	} else if global.Config.Gorm.Type == config.TypePostgresql {
+		dsn := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=%s TimeZone=%s",
+			global.Config.Postgresql.Host,
+			global.Config.Postgresql.Port,
+			global.Config.Postgresql.User,
+			global.Config.Postgresql.Password,
+			global.Config.Postgresql.Dbname,
+			global.Config.Postgresql.Sslmode,
+			global.Config.Postgresql.TimeZone,
+		)
+		global.DB = orm.NewPostgresql(&orm.PostgresqlConfig{
+			Dsn:          dsn,
+			MaxIdleConns: global.Config.Gorm.MaxIdleConns,
+			MaxOpenConns: global.Config.Gorm.MaxOpenConns,
+		}, global.Logger)
 	} else {
 		//sqlite
 		global.DB = orm.NewSqlite(&orm.SqliteConfig{
 			MaxIdleConns: global.Config.Gorm.MaxIdleConns,
 			MaxOpenConns: global.Config.Gorm.MaxOpenConns,
-		})
+		}, global.Logger)
 	}
 
 	//validator
@@ -197,11 +220,17 @@ func DatabaseAutoUpdate() {
 		if dbName == "" {
 			dbName = global.Config.Mysql.Dbname
 			// 移除 DSN 中的数据库名称，以便初始连接时不指定数据库
-			dsnWithoutDB := global.Config.Mysql.Username + ":" + global.Config.Mysql.Password + "@(" + global.Config.Mysql.Addr + ")/?charset=utf8mb4&parseTime=True&loc=Local"
+			dsnWithoutDB := fmt.Sprintf("%s:%s@(%s)/%s?charset=utf8mb4&parseTime=True&loc=Local",
+				global.Config.Mysql.Username,
+				global.Config.Mysql.Password,
+				global.Config.Mysql.Addr,
+				"",
+			)
+
 			//新链接
 			dbWithoutDB := orm.NewMysql(&orm.MysqlConfig{
-				Dns: dsnWithoutDB,
-			})
+				Dsn: dsnWithoutDB,
+			}, global.Logger)
 			// 获取底层的 *sql.DB 对象，并确保在程序退出时关闭连接
 			sqlDBWithoutDB, err := dbWithoutDB.DB()
 			if err != nil {

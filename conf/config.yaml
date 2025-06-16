@@ -11,7 +11,7 @@ app:
   disable-pwd-login: false #禁用密码登录
 
 admin:
-  title: "RustDesk Api Admin"
+  title: "RustDesk API Admin"
   hello-file: "./conf/admin/hello.html"  #优先使用file
   hello: ""
   # ID Server and Relay Server ports https://github.com/lejianwen/rustdesk-api/issues/257
@@ -31,6 +31,16 @@ mysql:
   password: ""
   addr: ""
   dbname: ""
+
+postgresql:
+  host: "127.0.0.1"
+  port: "5432"
+  user: ""
+  password: ""
+  dbname: "postgres"
+  sslmode: "disable" # disable, require, verify-ca, verify-full
+  time-zone: "Asia/Shanghai" # Time zone for PostgreSQL connection
+
 rustdesk:
   id-server: "192.168.1.66:21116"
   relay-server: "192.168.1.66:21117"
