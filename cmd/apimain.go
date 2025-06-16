@@ -110,6 +110,7 @@ func main() {
 func InitGlobal() {
 	//配置解析
 	global.Viper = config.Init(&global.Config, global.ConfigPath)
+	utils.SetPasswordAlgorithm(global.Config.App.PasswordAlgorithm)
 
 	//日志
 	global.Logger = logger.New(&logger.Config{

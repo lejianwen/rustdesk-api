@@ -9,6 +9,7 @@ app:
   token-expire: 168h
   web-sso: true #web auth sso
   disable-pwd-login: false #禁用密码登录
+  password-algorithm: bcrypt # bcrypt or md5
 
 admin:
   title: "RustDesk API Admin"

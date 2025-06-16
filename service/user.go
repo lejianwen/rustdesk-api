@@ -4,6 +4,7 @@ import (
 	"errors"
 	"github.com/lejianwen/rustdesk-api/v2/model"
 	"github.com/lejianwen/rustdesk-api/v2/utils"
+	"golang.org/x/crypto/bcrypt"
 	"math/rand"
 	"strconv"
 	"strings"
@@ -55,7 +56,18 @@ func (us *UserService) InfoByUsernamePassword(username, password string) *model.
 		Logger.Warn("Fallback to local database")
 	}
 	u := &model.User{}
-	DB.Where("username = ? and password = ?", username, us.EncryptPassword(password)).First(u)
+	DB.Where("username = ?", username).First(u)
+	if u.Id == 0 {
+		return u
+	}
+	ok, newHash := utils.VerifyPassword(u.Password, password)
+	if !ok {
+		return &model.User{}
+	}
+	if newHash != "" {
+		DB.Model(u).Update("password", newHash)
+		u.Password = newHash
+	}
 	return u
 }
 
@@ -153,6 +165,14 @@ func (us *UserService) ListIdAndNameByGroupId(groupId uint) (res []*model.User) 
 
 // EncryptPassword 加密密码
 func (us *UserService) EncryptPassword(password string) string {
+	if Config.App.PasswordAlgorithm == "bcrypt" {
+		bs, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
+		if err != nil {
+			Logger.Errorf("bcrypt password error: %v", err)
+			return ""
+		}
+		return string(bs)
+	}
 	return utils.Md5(password + "rustdesk-api")
 }
 
