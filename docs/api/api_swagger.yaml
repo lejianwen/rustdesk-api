@@ -973,7 +973,26 @@ paths:
             $ref: '#/definitions/response.ErrorResponse'
       summary: 提交系统信息
       tags:
-      - 地址
+      - System
+  /sysinfo_ver:
+    post:
+      consumes:
+      - application/json
+      description: 获取系统版本信息
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      summary: 获取系统版本信息
+      tags:
+      - System
   /users:
     get:
       consumes:

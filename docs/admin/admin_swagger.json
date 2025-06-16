@@ -5821,6 +5821,9 @@
                 "captcha": {
                     "type": "string"
                 },
+                "captcha_id": {
+                    "type": "string"
+                },
                 "password": {
                     "type": "string"
                 },
