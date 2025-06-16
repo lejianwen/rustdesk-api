@@ -1201,7 +1201,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "地址"
+                    "System"
                 ],
                 "summary": "提交系统信息",
                 "parameters": [
@@ -1218,6 +1218,35 @@
                 "responses": {
                     "200": {
                         "description": "SYSINFO_UPDATED,ID_NOT_FOUND",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/sysinfo_ver": {
+            "post": {
+                "description": "获取系统版本信息",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "System"
+                ],
+                "summary": "获取系统版本信息",
+                "responses": {
+                    "200": {
+                        "description": "OK",
                         "schema": {
                             "type": "string"
                         }
