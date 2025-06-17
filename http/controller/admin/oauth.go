@@ -68,16 +68,16 @@ func (o *Oauth) Confirm(c *gin.Context) {
 	j := &adminReq.OauthConfirmForm{}
 	err := c.ShouldBindJSON(j)
 	if err != nil {
-		response.Fail(c, 101, "参数错误"+err.Error())
+		response.Fail(c, 101, response.TranslateMsg(c, "ParamsError")+err.Error())
 		return
 	}
 	if j.Code == "" {
-		response.Fail(c, 101, "参数错误: code 不存在")
+		response.Fail(c, 101, response.TranslateMsg(c, "ParamsError"))
 		return
 	}
 	v := service.AllService.OauthService.GetOauthCache(j.Code)
 	if v == nil {
-		response.Fail(c, 101, "授权已过期")
+		response.Fail(c, 101, response.TranslateMsg(c, "OauthExpired"))
 		return
 	}
 	u := service.AllService.UserService.CurUser(c)

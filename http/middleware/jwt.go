@@ -12,18 +12,18 @@ func JwtAuth() gin.HandlerFunc {
 		//测试先关闭
 		token := c.GetHeader("api-token")
 		if token == "" {
-			response.Fail(c, 403, "请先登录")
+			response.Fail(c, 403, response.TranslateMsg(c, "NeedLogin"))
 			c.Abort()
 			return
 		}
 		uid, err := global.Jwt.ParseToken(token)
 		if err != nil {
-			response.Fail(c, 403, "请先登录")
+			response.Fail(c, 403, response.TranslateMsg(c, "NeedLogin"))
 			c.Abort()
 			return
 		}
 		if uid == 0 {
-			response.Fail(c, 403, "请先登录")
+			response.Fail(c, 403, response.TranslateMsg(c, "NeedLogin"))
 			c.Abort()
 			return
 		}
@@ -34,12 +34,12 @@ func JwtAuth() gin.HandlerFunc {
 		//	Username: "测试用户",
 		//}
 		if user.Id == 0 {
-			response.Fail(c, 403, "请先登录")
+			response.Fail(c, 403, response.TranslateMsg(c, "NeedLogin"))
 			c.Abort()
 			return
 		}
 		if !service.AllService.UserService.CheckUserEnable(user) {
-			response.Fail(c, 101, "你已被禁用")
+			response.Fail(c, 101, response.TranslateMsg(c, "Banned"))
 			c.Abort()
 			return
 		}

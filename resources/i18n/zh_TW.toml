@@ -33,6 +33,11 @@ description = "No access."
 one = "無許可權。"
 other = "無許可權。"
 
+[NeedLogin]
+description = "Need login."
+one = "請先登入。"
+other = "請先登入。"
+
 [UsernameOrPasswordError]
 description = "Username or password error."
 one = "使用者名稱或密碼錯誤。"

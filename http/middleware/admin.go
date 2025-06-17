@@ -13,13 +13,13 @@ func BackendUserAuth() gin.HandlerFunc {
 		//测试先关闭
 		token := c.GetHeader("api-token")
 		if token == "" {
-			response.Fail(c, 403, "请先登录")
+			response.Fail(c, 403, response.TranslateMsg(c, "NeedLogin"))
 			c.Abort()
 			return
 		}
 		user, ut := service.AllService.UserService.InfoByAccessToken(token)
 		if user.Id == 0 {
-			response.Fail(c, 403, "请先登录")
+			response.Fail(c, 403, response.TranslateMsg(c, "NeedLogin"))
 			c.Abort()
 			return
 		}
