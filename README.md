@@ -141,6 +141,11 @@
 ./apimain reset-admin-pwd <pwd>
 ```
 
+#### 密码算法
+默认使用 `bcrypt` 保存密码，可通过 `app.password-algorithm` 或环境变量
+`RUSTDESK_API_APP_PASSWORD_ALGORITHM` 配置。从 `md5` 切换到 `bcrypt` 时，旧
+的 md5 密码在用户登录后会自动更新为 bcrypt，反向切换不会自动更新。
+
 ## 安装与运行
 
 ### 相关配置
@@ -166,6 +171,7 @@
 | RUSTDESK_API_APP_REGISTER_STATUS                       | 注册用户默认状态; 1 启用，2 禁用, 默认 1                                                      | `1`                          |
 | RUSTDESK_API_APP_CAPTCHA_THRESHOLD                     | 验证码触发次数; -1 不启用， 0 一直启用， >0 登录错误次数后启用 ;默认 `3`                                  | `3`                          |
 | RUSTDESK_API_APP_BAN_THRESHOLD                         | 封禁IP触发次数; 0 不启用, >0 登录错误次数后封禁IP; 默认 `0`                                        | `0`                          |
+| RUSTDESK_API_APP_PASSWORD_ALGORITHM                    | 密码算法(`bcrypt` 或 `md5`); 默认 `bcrypt`                                   | `bcrypt`                     |
 | -----ADMIN配置-----                                      | ----------                                                                     | ----------                   |
 | RUSTDESK_API_ADMIN_TITLE                               | 后台标题                                                                           | `RustDesk Api Admin`         |
 | RUSTDESK_API_ADMIN_HELLO                               | 后台欢迎语，可以使用`html`                                                               |                              |
