@@ -33,6 +33,11 @@ description = "No access."
 one = "Sin acceso."
 other = "Sin acceso."
 
+[NeedLogin]
+description = "Need login."
+one = "Por favor inicie sesión primero."
+other = "Por favor inicie sesión primero."
+
 [UsernameOrPasswordError]
 description = "Username or password error."
 one = "Error de usuario o contraseña."
