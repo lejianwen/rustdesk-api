@@ -4,7 +4,6 @@ import (
 	"errors"
 	"github.com/lejianwen/rustdesk-api/v2/model"
 	"github.com/lejianwen/rustdesk-api/v2/utils"
-	"golang.org/x/crypto/bcrypt"
 	"math/rand"
 	"strconv"
 	"strings"
@@ -163,19 +162,6 @@ func (us *UserService) ListIdAndNameByGroupId(groupId uint) (res []*model.User) 
 	return res
 }
 
-// EncryptPassword 加密密码
-func (us *UserService) EncryptPassword(password string) string {
-	if Config.App.PasswordAlgorithm == "bcrypt" {
-		bs, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
-		if err != nil {
-			Logger.Errorf("bcrypt password error: %v", err)
-			return ""
-		}
-		return string(bs)
-	}
-	return utils.Md5(password + "rustdesk-api")
-}
-
 // CheckUserEnable 判断用户是否禁用
 func (us *UserService) CheckUserEnable(u *model.User) bool {
 	return u.Status == model.COMMON_STATUS_ENABLE
@@ -188,7 +174,7 @@ func (us *UserService) Create(u *model.User) error {
 		return errors.New("UsernameExists")
 	}
 	u.Username = us.formatUsername(u.Username)
-	u.Password = us.EncryptPassword(u.Password)
+	u.Password = utils.EncryptPassword(u.Password)
 	res := DB.Create(u).Error
 	return res
 }
@@ -288,7 +274,7 @@ func (us *UserService) FlushTokenByUuids(uuids []string) error {
 
 // UpdatePassword 更新密码
 func (us *UserService) UpdatePassword(u *model.User, password string) error {
-	u.Password = us.EncryptPassword(password)
+	u.Password = utils.EncryptPassword(password)
 	err := DB.Model(u).Update("password", u.Password).Error
 	if err != nil {
 		return err

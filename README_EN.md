@@ -143,8 +143,8 @@ displaying data.Frontend code is available at [rustdesk-api-web](https://github.
 By default the API stores passwords using `bcrypt`. You can configure this via
 `app.password-algorithm` (or the environment variable
 `RUSTDESK_API_APP_PASSWORD_ALGORITHM`). When switching from `md5` to `bcrypt`,
-existing MD5 hashes are automatically rehashed after a successful login. There
-is no automatic migration in the opposite direction.
+legacy MD5 hashes are automatically rehashed after a successful login. There is
+no automatic migration in the opposite direction.
 
 ## Installation and Setup
 

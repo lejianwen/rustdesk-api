@@ -343,7 +343,7 @@ func Migrate(version uint) {
 		// 生成随机密码
 		pwd := utils.RandomString(8)
 		global.Logger.Info("Admin Password Is: ", pwd)
-		admin.Password = service.AllService.UserService.EncryptPassword(pwd)
+		admin.Password = utils.EncryptPassword(pwd)
 		global.DB.Create(admin)
 	}
 
