@@ -246,8 +246,8 @@ func (ct *User) ChangeCurPwd(c *gin.Context) {
 	u := service.AllService.UserService.CurUser(c)
 	// Verify the old password only when the account already has one set
 	if !service.AllService.UserService.IsPasswordEmptyByUser(u) {
-		ok, _ := utils.VerifyPassword(u.Password, f.OldPassword)
-		if !ok {
+		ok, _, err := utils.VerifyPassword(u.Password, f.OldPassword)
+		if err != nil || !ok {
 			response.Fail(c, 101, response.TranslateMsg(c, "OldPasswordError"))
 			return
 		}

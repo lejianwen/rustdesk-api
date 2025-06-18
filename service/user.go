@@ -59,8 +59,8 @@ func (us *UserService) InfoByUsernamePassword(username, password string) *model.
 	if u.Id == 0 {
 		return u
 	}
-	ok, newHash := utils.VerifyPassword(u.Password, password)
-	if !ok {
+	ok, newHash, err := utils.VerifyPassword(u.Password, password)
+	if err != nil || !ok {
 		return &model.User{}
 	}
 	if newHash != "" {
@@ -174,7 +174,11 @@ func (us *UserService) Create(u *model.User) error {
 		return errors.New("UsernameExists")
 	}
 	u.Username = us.formatUsername(u.Username)
-	u.Password = utils.EncryptPassword(u.Password)
+	var err error
+	u.Password, err = utils.EncryptPassword(u.Password)
+	if err != nil {
+		return err
+	}
 	res := DB.Create(u).Error
 	return res
 }
@@ -274,8 +278,12 @@ func (us *UserService) FlushTokenByUuids(uuids []string) error {
 
 // UpdatePassword 更新密码
 func (us *UserService) UpdatePassword(u *model.User, password string) error {
-	u.Password = utils.EncryptPassword(password)
-	err := DB.Model(u).Update("password", u.Password).Error
+	var err error
+	u.Password, err = utils.EncryptPassword(password)
+	if err != nil {
+		return err
+	}
+	err = DB.Model(u).Update("password", u.Password).Error
 	if err != nil {
 		return err
 	}
