@@ -2,9 +2,9 @@ package utils
 
 import (
 	"crypto/md5"
+	crand "crypto/rand"
 	"encoding/json"
 	"fmt"
-	"math/rand"
 	"reflect"
 	"runtime/debug"
 	"strings"
@@ -69,8 +69,12 @@ func RandomString(n int) string {
 	const letterBytes = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
 	length := len(letterBytes)
 	b := make([]byte, n)
-	for i := range b {
-		b[i] = letterBytes[rand.Intn(length)]
+	randomBytes := make([]byte, n)
+	if _, err := crand.Read(randomBytes); err != nil {
+		return ""
+	}
+	for i, rb := range randomBytes {
+		b[i] = letterBytes[int(rb)%length]
 	}
 	return string(b)
 }
