@@ -139,13 +139,6 @@ displaying data.Frontend code is available at [rustdesk-api-web](https://github.
 ./apimain reset-admin-pwd <pwd>
 ```
 
-#### Password algorithm
-By default the API stores passwords using `bcrypt`. You can configure this via
-`app.password-algorithm` (or the environment variable
-`RUSTDESK_API_APP_PASSWORD_ALGORITHM`). When switching from `md5` to `bcrypt`,
-legacy MD5 hashes are automatically rehashed after a successful login. There is
-no automatic migration in the opposite direction.
-
 ## Installation and Setup
 
 ### Configuration
@@ -173,8 +166,6 @@ The table below does not list all configurations. Please refer to the configurat
 | RUSTDESK_API_APP_CAPTCHA_THRESHOLD                     | captcha threshold; -1 disabled, 0 always enable, >0 threshold  ;default `3`                                                                         | `3`                           |
 | RUSTDESK_API_APP_BAN_THRESHOLD                         | ban ip threshold; 0 disabled, >0 threshold ; default `0`
                                                | `0`                           |
-| RUSTDESK_API_APP_PASSWORD_ALGORITHM                    | password algorithm (`bcrypt` or `md5`); default `bcrypt`
-                                               | `bcrypt`                      |
 | ----- ADMIN Configuration-----                         | ----------                                                                                                                                          | ----------                    |
 | RUSTDESK_API_ADMIN_TITLE                               | Admin Title                                                                                                                                         | `RustDesk Api Admin`          |
 | RUSTDESK_API_ADMIN_HELLO                               | Admin welcome message, you can use `html`                                                                                                           |                               |
