@@ -8,6 +8,7 @@ import (
 	adResp "github.com/lejianwen/rustdesk-api/v2/http/response/admin"
 	"github.com/lejianwen/rustdesk-api/v2/model"
 	"github.com/lejianwen/rustdesk-api/v2/service"
+	"github.com/lejianwen/rustdesk-api/v2/utils"
 	"gorm.io/gorm"
 	"strconv"
 )
@@ -243,11 +244,10 @@ func (ct *User) ChangeCurPwd(c *gin.Context) {
 		return
 	}
 	u := service.AllService.UserService.CurUser(c)
-	// If the password is not empty, the old password is verified
-	// otherwise, the old password is not verified
+	// Verify the old password only when the account already has one set
 	if !service.AllService.UserService.IsPasswordEmptyByUser(u) {
-		oldPwd := service.AllService.UserService.EncryptPassword(f.OldPassword)
-		if u.Password != oldPwd {
+		ok, _, err := utils.VerifyPassword(u.Password, f.OldPassword)
+		if err != nil || !ok {
 			response.Fail(c, 101, response.TranslateMsg(c, "OldPasswordError"))
 			return
 		}
