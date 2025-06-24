@@ -55,7 +55,18 @@ func (us *UserService) InfoByUsernamePassword(username, password string) *model.
 		Logger.Warn("Fallback to local database")
 	}
 	u := &model.User{}
-	DB.Where("username = ? and password = ?", username, us.EncryptPassword(password)).First(u)
+	DB.Where("username = ?", username).First(u)
+	if u.Id == 0 {
+		return u
+	}
+	ok, newHash, err := utils.VerifyPassword(u.Password, password)
+	if err != nil || !ok {
+		return &model.User{}
+	}
+	if newHash != "" {
+		DB.Model(u).Update("password", newHash)
+		u.Password = newHash
+	}
 	return u
 }
 
@@ -151,11 +162,6 @@ func (us *UserService) ListIdAndNameByGroupId(groupId uint) (res []*model.User) 
 	return res
 }
 
-// EncryptPassword 加密密码
-func (us *UserService) EncryptPassword(password string) string {
-	return utils.Md5(password + "rustdesk-api")
-}
-
 // CheckUserEnable 判断用户是否禁用
 func (us *UserService) CheckUserEnable(u *model.User) bool {
 	return u.Status == model.COMMON_STATUS_ENABLE
@@ -168,7 +174,11 @@ func (us *UserService) Create(u *model.User) error {
 		return errors.New("UsernameExists")
 	}
 	u.Username = us.formatUsername(u.Username)
-	u.Password = us.EncryptPassword(u.Password)
+	var err error
+	u.Password, err = utils.EncryptPassword(u.Password)
+	if err != nil {
+		return err
+	}
 	res := DB.Create(u).Error
 	return res
 }
@@ -268,8 +278,12 @@ func (us *UserService) FlushTokenByUuids(uuids []string) error {
 
 // UpdatePassword 更新密码
 func (us *UserService) UpdatePassword(u *model.User, password string) error {
-	u.Password = us.EncryptPassword(password)
-	err := DB.Model(u).Update("password", u.Password).Error
+	var err error
+	u.Password, err = utils.EncryptPassword(password)
+	if err != nil {
+		return err
+	}
+	err = DB.Model(u).Update("password", u.Password).Error
 	if err != nil {
 		return err
 	}
