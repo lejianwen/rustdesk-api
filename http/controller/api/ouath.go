@@ -225,8 +225,7 @@ func (o *Oauth) OauthCallback(c *gin.Context) {
 			if !*oauthConfig.AutoRegister {
 				//c.String(http.StatusInternalServerError, "还未绑定用户，请先绑定")
 				oauthCache.UpdateFromOauthUser(oauthUser)
-				url := global.Config.Rustdesk.ApiServer + "/_admin/#/oauth/bind/" + cacheKey
-				c.Redirect(http.StatusFound, url)
+				c.Redirect(http.StatusFound, "/_admin/#/oauth/bind/" + cacheKey)
 				return
 			}
 
@@ -251,8 +250,7 @@ func (o *Oauth) OauthCallback(c *gin.Context) {
 				Type:     model.LoginLogTypeOauth,
 				Platform: oauthService.DeviceOs,
 			})*/
-			url := global.Config.Rustdesk.ApiServer + "/_admin/#/"
-			c.Redirect(http.StatusFound, url)
+			c.Redirect(http.StatusFound, "/_admin/#/")
 			return
 		}
 		c.HTML(http.StatusOK, "oauth_success.html", gin.H{
