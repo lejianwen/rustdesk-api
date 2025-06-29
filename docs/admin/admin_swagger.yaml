@@ -143,15 +143,12 @@ definitions:
         type: boolean
       pkce_method:
         type: string
-      redirect_url:
-        type: string
       scopes:
         type: string
     required:
     - client_id
     - client_secret
     - oauth_type
-    - redirect_url
     type: object
   admin.PeerBatchDeleteForm:
     properties:
@@ -610,8 +607,6 @@ definitions:
       pkce_enable:
         type: boolean
       pkce_method:
-        type: string
-      redirect_url:
         type: string
       scopes:
         type: string

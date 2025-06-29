@@ -5569,8 +5569,7 @@ const docTemplateadmin = `{
             "required": [
                 "client_id",
                 "client_secret",
-                "oauth_type",
-                "redirect_url"
+                "oauth_type"
             ],
             "properties": {
                 "auto_register": {
@@ -5598,9 +5597,6 @@ const docTemplateadmin = `{
                     "type": "boolean"
                 },
                 "pkce_method": {
-                    "type": "string"
-                },
-                "redirect_url": {
                     "type": "string"
                 },
                 "scopes": {
@@ -6294,9 +6290,6 @@ const docTemplateadmin = `{
                     "type": "boolean"
                 },
                 "pkce_method": {
-                    "type": "string"
-                },
-                "redirect_url": {
                     "type": "string"
                 },
                 "scopes": {
