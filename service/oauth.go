@@ -4,11 +4,13 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+
 	"github.com/coreos/go-oidc/v3/oidc"
 	"github.com/lejianwen/rustdesk-api/v2/model"
 	"github.com/lejianwen/rustdesk-api/v2/utils"
 	"golang.org/x/oauth2"
 	"golang.org/x/oauth2/github"
+
 	// "golang.org/x/oauth2/google"
 	"gorm.io/gorm"
 	// "io"
@@ -173,14 +175,10 @@ func (os *OauthService) GetOauthConfig(op string) (err error, oauthInfo *model.O
 	if oauthInfo.Id == 0 || oauthInfo.ClientId == "" || oauthInfo.ClientSecret == "" {
 		return errors.New("ConfigNotFound"), nil, nil, nil
 	}
-	// If the redirect URL is empty, use the default redirect URL
-	if oauthInfo.RedirectUrl == "" {
-		oauthInfo.RedirectUrl = Config.Rustdesk.ApiServer + "/api/oidc/callback"
-	}
 	oauthConfig = &oauth2.Config{
 		ClientID:     oauthInfo.ClientId,
 		ClientSecret: oauthInfo.ClientSecret,
-		RedirectURL:  oauthInfo.RedirectUrl,
+		RedirectURL:  Config.Rustdesk.ApiServer + "/api/oidc/callback",
 	}
 
 	// Maybe should validate the oauthConfig here
