@@ -1,6 +1,8 @@
 package api
 
 import (
+	"net/http"
+
 	"github.com/gin-gonic/gin"
 	"github.com/lejianwen/rustdesk-api/v2/global"
 	"github.com/lejianwen/rustdesk-api/v2/http/request/api"
@@ -10,7 +12,6 @@ import (
 	"github.com/lejianwen/rustdesk-api/v2/service"
 	"github.com/lejianwen/rustdesk-api/v2/utils"
 	"github.com/nicksnyder/go-i18n/v2/i18n"
-	"net/http"
 )
 
 type Oauth struct {
@@ -35,7 +36,7 @@ func (o *Oauth) OidcAuth(c *gin.Context) {
 
 	oauthService := service.AllService.OauthService
 
-	err, state, verifier, nonce, url := oauthService.BeginAuth(f.Op)
+	err, state, verifier, nonce, url := oauthService.BeginAuth(c, f.Op)
 	if err != nil {
 		response.Error(c, response.TranslateMsg(c, err.Error()))
 		return
@@ -169,7 +170,7 @@ func (o *Oauth) OauthCallback(c *gin.Context) {
 	var user *model.User
 	// 获取用户信息
 	code := c.Query("code")
-	err, oauthUser := oauthService.Callback(code, verifier, op, nonce)
+	err, oauthUser := oauthService.Callback(c, code, verifier, op, nonce)
 	if err != nil {
 		c.HTML(http.StatusOK, "oauth_fail.html", gin.H{
 			"message":     "OauthFailed",
@@ -225,7 +226,7 @@ func (o *Oauth) OauthCallback(c *gin.Context) {
 			if !*oauthConfig.AutoRegister {
 				//c.String(http.StatusInternalServerError, "还未绑定用户，请先绑定")
 				oauthCache.UpdateFromOauthUser(oauthUser)
-				c.Redirect(http.StatusFound, "/_admin/#/oauth/bind/" + cacheKey)
+				c.Redirect(http.StatusFound, "/_admin/#/oauth/bind/"+cacheKey)
 				return
 			}
 

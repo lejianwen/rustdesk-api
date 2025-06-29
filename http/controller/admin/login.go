@@ -2,6 +2,7 @@ package admin
 
 import (
 	"fmt"
+
 	"github.com/gin-gonic/gin"
 	"github.com/lejianwen/rustdesk-api/v2/global"
 	"github.com/lejianwen/rustdesk-api/v2/http/controller/api"
@@ -188,7 +189,7 @@ func (ct *Login) OidcAuth(c *gin.Context) {
 		return
 	}
 
-	err, state, verifier, nonce, url := service.AllService.OauthService.BeginAuth(f.Op)
+	err, state, verifier, nonce, url := service.AllService.OauthService.BeginAuth(c, f.Op)
 	if err != nil {
 		response.Error(c, response.TranslateMsg(c, err.Error()))
 		return
