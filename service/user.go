@@ -2,14 +2,14 @@ package service
 
 import (
 	"errors"
-	"github.com/lejianwen/rustdesk-api/v2/model"
-	"github.com/lejianwen/rustdesk-api/v2/utils"
 	"math/rand"
 	"strconv"
 	"strings"
 	"time"
 
 	"github.com/gin-gonic/gin"
+	"github.com/lejianwen/rustdesk-api/v2/model"
+	"github.com/lejianwen/rustdesk-api/v2/utils"
 	"gorm.io/gorm"
 )
 
@@ -500,8 +500,9 @@ func (us *UserService) RefreshAccessToken(ut *model.UserToken) {
 	ut.ExpiredAt = us.UserTokenExpireTimestamp()
 	DB.Model(ut).Update("expired_at", ut.ExpiredAt)
 }
+
 func (us *UserService) AutoRefreshAccessToken(ut *model.UserToken) {
-	if ut.ExpiredAt-time.Now().Unix() < 86400 {
+	if ut.ExpiredAt-time.Now().Unix() < Config.App.TokenExpire.Milliseconds()/3000 {
 		us.RefreshAccessToken(ut)
 	}
 }
