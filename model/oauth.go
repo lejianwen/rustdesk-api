@@ -30,9 +30,9 @@ func ValidateOauthType(oauthType string) error {
 }
 
 const (
-	UserEndpointGithub string = "https://api.github.com/user"
+	UserEndpointGithub  string = "https://api.github.com/user"
 	UserEndpointLinuxdo string = "https://connect.linux.do/api/user"
-	IssuerGoogle       string = "https://accounts.google.com"
+	IssuerGoogle        string = "https://accounts.google.com"
 )
 
 type Oauth struct {
@@ -41,12 +41,11 @@ type Oauth struct {
 	OauthType    string `json:"oauth_type"`
 	ClientId     string `json:"client_id"`
 	ClientSecret string `json:"client_secret"`
-	RedirectUrl  string `json:"redirect_url"`
 	AutoRegister *bool  `json:"auto_register"`
 	Scopes       string `json:"scopes"`
 	Issuer       string `json:"issuer"`
-	PkceEnable	 *bool  `json:"pkce_enable"`
-	PkceMethod	 string `json:"pkce_method"`
+	PkceEnable   *bool  `json:"pkce_enable"`
+	PkceMethod   string `json:"pkce_method"`
 	TimeModel
 }
 

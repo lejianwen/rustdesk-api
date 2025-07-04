@@ -2,6 +2,10 @@ package main
 
 import (
 	"fmt"
+	"os"
+	"strconv"
+	"time"
+
 	"github.com/go-redis/redis/v8"
 	"github.com/lejianwen/rustdesk-api/v2/config"
 	"github.com/lejianwen/rustdesk-api/v2/global"
@@ -17,9 +21,6 @@ import (
 	"github.com/lejianwen/rustdesk-api/v2/utils"
 	"github.com/nicksnyder/go-i18n/v2/i18n"
 	"github.com/spf13/cobra"
-	"os"
-	"strconv"
-	"time"
 )
 
 // @title 管理系统API
@@ -210,7 +211,7 @@ func InitGlobal() {
 }
 
 func DatabaseAutoUpdate() {
-	version := 262
+	version := 263
 
 	db := global.DB
 
