@@ -14,6 +14,7 @@ type UserForm struct {
 	GroupId  uint             `json:"group_id" validate:"required"`
 	IsAdmin  *bool            `json:"is_admin" `
 	Status   model.StatusCode `json:"status" validate:"required,gte=0"`
+	Remark   string           `json:"remark"`
 }
 
 func (uf *UserForm) FromUser(user *model.User) *UserForm {
@@ -25,6 +26,7 @@ func (uf *UserForm) FromUser(user *model.User) *UserForm {
 	uf.GroupId = user.GroupId
 	uf.IsAdmin = user.IsAdmin
 	uf.Status = user.Status
+	uf.Remark = user.Remark
 	return uf
 }
 func (uf *UserForm) ToUser() *model.User {
@@ -37,6 +39,7 @@ func (uf *UserForm) ToUser() *model.User {
 	user.GroupId = uf.GroupId
 	user.IsAdmin = uf.IsAdmin
 	user.Status = uf.Status
+	user.Remark = uf.Remark
 	return user
 }
 
