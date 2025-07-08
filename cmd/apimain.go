@@ -23,6 +23,8 @@ import (
 	"github.com/spf13/cobra"
 )
 
+const DatabaseVersion = 264
+
 // @title 管理系统API
 // @version 1.0
 // @description 接口
@@ -211,7 +213,7 @@ func InitGlobal() {
 }
 
 func DatabaseAutoUpdate() {
-	version := 263
+	version := DatabaseVersion
 
 	db := global.DB
 
