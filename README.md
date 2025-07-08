@@ -255,6 +255,12 @@
     #或者使用generate_api.go生成api并运行
     go generate generate_api.go
     ```
+   > 注意：使用 `go run` 或编译后的二进制时，当前目录下必须存在 `conf` 和 `resources`
+   > 目录。如果在其他目录运行，可通过 `-c` 和环境变量
+   > `RUSTDESK_API_GIN_RESOURCES_PATH` 指定绝对路径，例如：
+   > ```bash
+   > RUSTDESK_API_GIN_RESOURCES_PATH=/opt/rustdesk-api/resources ./apimain -c /opt/rustdesk-api/conf/config.yaml
+   > ```
 5. 编译，如果想自己编译,先cd到项目根目录，然后windows下直接运行`build.bat`,linux下运行`build.sh`,编译后会在`release`
    目录下生成对应的可执行文件。直接运行编译后的可执行文件即可。
 
