@@ -143,7 +143,7 @@ func (o *Oauth) OidcAuthQuery(c *gin.Context) {
 // @Produce  json
 // @Success 200 {object} apiResp.LoginRes
 // @Failure 500 {object} response.ErrorResponse
-// @Router /oauth/callback [get]
+// @Router /oidc/callback [get]
 func (o *Oauth) OauthCallback(c *gin.Context) {
 	state := c.Query("state")
 	if state == "" {

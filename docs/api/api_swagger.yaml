@@ -792,25 +792,6 @@ paths:
       summary: 登出
       tags:
       - 登录
-  /oauth/callback:
-    get:
-      consumes:
-      - application/json
-      description: OauthCallback
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/api.LoginRes'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/response.ErrorResponse'
-      summary: OauthCallback
-      tags:
-      - Oauth
   /oidc/auth:
     post:
       consumes:
@@ -847,6 +828,25 @@ paths:
           schema:
             $ref: '#/definitions/response.ErrorResponse'
       summary: OidcAuthQuery
+      tags:
+      - Oauth
+  /oidc/callback:
+    get:
+      consumes:
+      - application/json
+      description: OauthCallback
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/api.LoginRes'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      summary: OauthCallback
       tags:
       - Oauth
   /peers:

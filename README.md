@@ -94,8 +94,8 @@
     - 对于`OIDC`, `Issuer`是必须的。`Scopes`是可选的，默认为 `openid,profile,email`. 确保可以获取 `sub`,`email` 和`preferred_username`
     - `github oauth app`在`Settings`->`Developer settings`->`OAuth Apps`->`New OAuth App`
       中创建,地址 [https://github.com/settings/developers](https://github.com/settings/developers)
-    - `Authorization callback URL`填写`http://<your server[:port]>/api/oauth/callback`
-      ，比如`http://127.0.0.1:21114/api/oauth/callback`
+    - `Authorization callback URL`填写`http://<your server[:port]>/api/oidc/callback`
+      ，比如`http://127.0.0.1:21114/api/oidc/callback`
 7. 登录日志
 8. 链接日志
 9. 文件传输日志
