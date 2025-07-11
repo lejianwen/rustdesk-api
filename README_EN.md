@@ -94,8 +94,8 @@ displaying data.Frontend code is available at [rustdesk-api-web](https://github.
     - For `OIDC`, you must set the `Issuer`. And `Scopes` is optional which default is `openid,email,profile`, please make sure this `Oauth App` can access `sub`, `email` and `preferred_username`
     - Create a `GitHub OAuth App`
       at `Settings` -> `Developer settings` -> `OAuth Apps` -> `New OAuth App` [here](https://github.com/settings/developers).
-    - Set the `Authorization callback URL` to `http://<your server[:port]>/api/oauth/callback`,
-      e.g., `http://127.0.0.1:21114/api/oauth/callback`.
+    - Set the `Authorization callback URL` to `http://<your server[:port]>/api/oidc/callback`,
+      e.g., `http://127.0.0.1:21114/api/oidc/callback`.
    
 7. Login logs
 8. Connection logs

@@ -954,35 +954,6 @@ const docTemplateapi = `{
                 }
             }
         },
-        "/oauth/callback": {
-            "get": {
-                "description": "OauthCallback",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Oauth"
-                ],
-                "summary": "OauthCallback",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/api.LoginRes"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/response.ErrorResponse"
-                        }
-                    }
-                }
-            }
-        },
         "/oidc/auth": {
             "post": {
                 "description": "OidcAuth",
@@ -1025,6 +996,35 @@ const docTemplateapi = `{
                     "Oauth"
                 ],
                 "summary": "OidcAuthQuery",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/api.LoginRes"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/oidc/callback": {
+            "get": {
+                "description": "OauthCallback",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Oauth"
+                ],
+                "summary": "OauthCallback",
                 "responses": {
                     "200": {
                         "description": "OK",
