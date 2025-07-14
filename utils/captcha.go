@@ -5,7 +5,8 @@ import (
 	"time"
 )
 
-var capdString = base64Captcha.NewDriverString(50, 150, 0, 5, 4, "123456789abcdefghijklmnopqrstuvwxyz", nil, nil, nil)
+var capdString = base64Captcha.NewDriverString(50, 150, 0, 5, 4, "123456789abcdefghijklmnopqrstuvwxyz", nil, nil,
+	[]string{"3Dumb.ttf", "ApothecaryFont.ttf", "Comismsh.ttf", "Flim-Flam.ttf", "RitaSmith.ttf", "wqy-microhei.ttc"})
 
 var capdMath = base64Captcha.NewDriverMath(50, 150, 3, 10, nil, nil, nil)
 
