@@ -5,8 +5,8 @@ other = "測試2 {{.P0}}"
 
 [ParamsError]
 description = "Params validation failed."
-one = "引數錯誤。"
-other = "引數錯誤。"
+one = "參數驗證失敗。"
+other = "參數驗證失敗。"
 
 [OperationFailed]
 description = "OperationFailed."
@@ -20,18 +20,18 @@ other = "操作成功。"
 
 [ItemExists]
 description = "Item already exists."
-one = "資料已存在。"
-other = "資料已存在。"
+one = "項目已存在。"
+other = "項目已存在。"
 
 [ItemNotFound]
 description = "Item not found."
-one = "資料不存在。"
-other = "資料不存在。"
+one = "找不到項目。"
+other = "找不到項目。"
 
 [NoAccess]
 description = "No access."
-one = "無許可權。"
-other = "無許可權。"
+one = "無權限存取。"
+other = "無權限存取。"
 
 [NeedLogin]
 description = "Need login."
@@ -50,24 +50,23 @@ other = "系統錯誤。"
 
 [ConfigNotFound]
 description = "Config not found."
-one = "配置不存在。"
-other = "配置不存在。"
+one = "找不到設定。"
+other = "找不到設定。"
 
-#授權過期
 [OauthExpired]
 description = "Oauth expired."
-one = "授權過期，請重新授權。"
-other = "授權過期，請重新授權。"
+one = "OAuth 已過期，請重試。"
+other = "OAuth 已過期，請重試。"
 
 [OauthFailed]
 description = "Oauth failed."
-one = "授權失敗。"
-other = "授權失敗。"
+one = "OAuth 失敗。"
+other = "OAuth 失敗。"
 
 [OauthHasBindOtherUser]
 description = "Oauth has bind other user."
-one = "授權已繫結其他使用者。"
-other = "授權已繫結其他使用者。"
+one = "OAuth 已綁定其他使用者。"
+other = "OAuth 已綁定其他使用者。"
 
 [ParamIsEmpty]
 description = "Param is empty."
@@ -76,56 +75,64 @@ other = "{{.P0}} 為空。"
 
 [BindFail]
 description = "Bind fail."
-one = "繫結失敗。"
-other = "繫結失敗。"
+one = "綁定失敗。"
+other = "綁定失敗。"
+
 [BindSuccess]
 description = "Bind success."
-one = "繫結成功。"
-other = "繫結成功。"
+one = "綁定成功。"
+other = "綁定成功。"
+
 [OauthHasBeenSuccess]
 description = "Oauth has been success."
-one = "授權已成功。"
-other = "授權已成功。"
+one = "OAuth 已成功。"
+other = "OAuth 已成功。"
+
 [OauthSuccess]
 description = "Oauth success."
-one = "授權成功。"
-other = "授權成功。"
+one = "OAuth 成功。"
+other = "OAuth 成功。"
+
 [OauthRegisterSuccess]
 description = "Oauth register success."
-one = "授權註冊成功。"
-other = "授權註冊成功。"
+one = "OAuth 註冊成功。"
+other = "OAuth 註冊成功。"
+
 [OauthRegisterFailed]
 description = "Oauth register failed."
-one = "授權註冊失敗。"
-other = "授權註冊失敗。"
+one = "OAuth 註冊失敗。"
+other = "OAuth 註冊失敗。"
+
 [GetOauthTokenError]
 description = "Get oauth token error."
-one = "獲取授權token失敗。"
-other = "獲取授權token失敗。"
+one = "取得 OAuth 權杖錯誤。"
+other = "取得 OAuth 權杖錯誤。"
+
 [GetOauthUserInfoError]
 description = "Get oauth user info error."
-one = "獲取授權使用者資訊失敗。"
-other = "獲取授權使用者資訊失敗。"
+one = "取得 OAuth 使用者資訊錯誤。"
+other = "取得 OAuth 使用者資訊錯誤。"
+
 [DecodeOauthUserInfoError]
 description = "Decode oauth user info error."
-one = "解析授權使用者資訊失敗。"
-other = "解析授權使用者資訊失敗。"
+one = "解析 OAuth 使用者資訊錯誤。"
+other = "解析 OAuth 使用者資訊錯誤。"
 
 [OldPasswordError]
 description = "Old password error."
 one = "舊密碼錯誤。"
 other = "舊密碼錯誤。"
 
-
 [DefaultGroup]
 description = "Default group."
-one = "預設組"
-other = "預設組"
+one = "預設群組"
+other = "預設群組"
 
 [ShareGroup]
 description = "Share group."
-one = "共享組"
-other = "共享組"
+one = "共享群組"
+other = "共享群組"
+
 [RegisterClosed]
 description = "Register closed."
 one = "註冊已關閉。"
@@ -143,20 +150,20 @@ other = "驗證碼錯誤。"
 
 [PwdLoginDisabled]
 description = "Password login disabled."
-one = "密碼登錄已禁用。"
-other = "密碼登錄已禁用。"
+one = "密碼登入已停用。"
+other = "密碼登入已停用。"
 
 [CannotShareToSelf]
 description = "Cannot share to self."
-one = "無法共享給自己。"
-other = "無法共享給自己。"
+one = "無法分享給自己。"
+other = "無法分享給自己。"
 
 [Banned]
 description = "Banned."
-one = "禁止使用。"
-other = "禁止使用。"
+one = "已被禁用。"
+other = "已被禁用。"
 
 [RegisterSuccessWaitAdminConfirm]
-description = "Register success wait admin confirm."
-one = "註冊成功，請等待管理員確認。"
-other = "註冊成功，請等待管理員確認。"
+description = "Register success, wait admin confirm."
+one = "註冊成功，等待管理員確認。"
+other = "註冊成功，等待管理員確認。"
