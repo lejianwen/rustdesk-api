@@ -180,14 +180,12 @@ func (os *OauthService) GetOauthConfig(c *gin.Context, op string) (err error, oa
 	if oauthInfo.Id == 0 || oauthInfo.ClientId == "" || oauthInfo.ClientSecret == "" {
 		return errors.New("ConfigNotFound"), nil, nil, nil
 	}
-	host := c.GetHeader("Origin")
-	if host == "" {
-		host = Config.Rustdesk.ApiServer
-	}
+	redirectUrl := os.buildRedirectURL(c)
+	Logger.Debug("Redirect URL: ", redirectUrl)
 	oauthConfig = &oauth2.Config{
 		ClientID:     oauthInfo.ClientId,
 		ClientSecret: oauthInfo.ClientSecret,
-		RedirectURL:  host + "/api/oidc/callback",
+		RedirectURL:  redirectUrl,
 	}
 
 	// Maybe should validate the oauthConfig here
@@ -528,4 +526,23 @@ func (os *OauthService) getGithubPrimaryEmail(client *http.Client, githubUser *m
 	}
 
 	return fmt.Errorf("no primary verified email found")
+}
+
+func (os *OauthService) buildRedirectURL(c *gin.Context) string {
+	baseUrl := Config.Rustdesk.ApiServer
+	host := c.Request.Host
+
+	if host != "" {
+		scheme := c.GetHeader("X-Forwarded-Proto")
+		if scheme == "" {
+			if c.Request.TLS != nil {
+				scheme = "https"
+			} else {
+				scheme = "http"
+			}
+		}
+		baseUrl = fmt.Sprintf("%s://%s", scheme, host)
+	}
+
+	return fmt.Sprintf("%s/api/oidc/callback", baseUrl)
 }
