@@ -169,6 +169,8 @@ func (ct *Login) LoginOptions(c *gin.Context) {
 		"ops":          ops,
 		"register":     global.Config.App.Register,
 		"need_captcha": needCaptcha,
+		"disable_pwd": 	global.Config.App.DisablePwdLogin,
+		"auto_oidc":  	global.Config.App.DisablePwdLogin && len(ops) == 1,
 	})
 }
 
