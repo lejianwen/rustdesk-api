@@ -36,7 +36,7 @@ func (o *Oauth) OidcAuth(c *gin.Context) {
 
 	oauthService := service.AllService.OauthService
 
-	err, state, verifier, nonce, url := oauthService.BeginAuth(c, f.Op)
+	err, state, verifier, nonce, url := oauthService.BeginAuth(f.Op)
 	if err != nil {
 		response.Error(c, response.TranslateMsg(c, err.Error()))
 		return
@@ -170,7 +170,7 @@ func (o *Oauth) OauthCallback(c *gin.Context) {
 	var user *model.User
 	// 获取用户信息
 	code := c.Query("code")
-	err, oauthUser := oauthService.Callback(c, code, verifier, op, nonce)
+	err, oauthUser := oauthService.Callback(code, verifier, op, nonce)
 	if err != nil {
 		c.HTML(http.StatusOK, "oauth_fail.html", gin.H{
 			"message":     "OauthFailed",

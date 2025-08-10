@@ -44,7 +44,7 @@ func (o *Oauth) ToBind(c *gin.Context) {
 		return
 	}
 
-	err, state, verifier, nonce, url := service.AllService.OauthService.BeginAuth(c, f.Op)
+	err, state, verifier, nonce, url := service.AllService.OauthService.BeginAuth(f.Op)
 	if err != nil {
 		response.Error(c, response.TranslateMsg(c, err.Error()))
 		return
