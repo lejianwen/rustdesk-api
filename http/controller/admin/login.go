@@ -169,8 +169,8 @@ func (ct *Login) LoginOptions(c *gin.Context) {
 		"ops":          ops,
 		"register":     global.Config.App.Register,
 		"need_captcha": needCaptcha,
-		"disable_pwd": 	global.Config.App.DisablePwdLogin,
-		"auto_oidc":  	global.Config.App.DisablePwdLogin && len(ops) == 1,
+		"disable_pwd":  global.Config.App.DisablePwdLogin,
+		"auto_oidc":    global.Config.App.DisablePwdLogin && len(ops) == 1,
 	})
 }
 
@@ -191,7 +191,7 @@ func (ct *Login) OidcAuth(c *gin.Context) {
 		return
 	}
 
-	err, state, verifier, nonce, url := service.AllService.OauthService.BeginAuth(c, f.Op)
+	err, state, verifier, nonce, url := service.AllService.OauthService.BeginAuth(f.Op)
 	if err != nil {
 		response.Error(c, response.TranslateMsg(c, err.Error()))
 		return
