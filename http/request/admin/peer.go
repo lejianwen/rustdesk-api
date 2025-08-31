@@ -13,6 +13,7 @@ type PeerForm struct {
 	Uuid     string `json:"uuid"`
 	Version  string `json:"version"`
 	GroupId  uint   `json:"group_id"`
+	Alias    string `json:"alias"`
 }
 
 type PeerBatchDeleteForm struct {
@@ -32,6 +33,7 @@ func (f *PeerForm) ToPeer() *model.Peer {
 		Uuid:     f.Uuid,
 		Version:  f.Version,
 		GroupId:  f.GroupId,
+		Alias:    f.Alias,
 	}
 }
 
@@ -43,6 +45,7 @@ type PeerQuery struct {
 	Uuids    string `json:"uuids" form:"uuids"`
 	Ip       string `json:"ip" form:"ip"`
 	Username string `json:"username" form:"username"`
+	Alias    string `json:"alias" form:"alias"`
 }
 
 type SimpleDataQuery struct {
