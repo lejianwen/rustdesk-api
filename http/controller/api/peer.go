@@ -31,10 +31,10 @@ func (p *Peer) SysInfo(c *gin.Context) {
 		return
 	}
 	fpe := f.ToPeer()
-	pe := service.AllService.PeerService.FindByUuid(f.Uuid)
+	pe := service.AllService.PeerService.FindById(f.Id)
 	if pe.RowId == 0 {
 		pe = f.ToPeer()
-		pe.UserId = service.AllService.UserService.FindLatestUserIdFromLoginLogByUuid(pe.Uuid)
+		pe.UserId = service.AllService.UserService.FindLatestUserIdFromLoginLogByUuid(pe.Uuid, pe.Id)
 		err = service.AllService.PeerService.Create(pe)
 		if err != nil {
 			response.Error(c, response.TranslateMsg(c, "OperationFailed")+err.Error())
@@ -42,7 +42,7 @@ func (p *Peer) SysInfo(c *gin.Context) {
 		}
 	} else {
 		if pe.UserId == 0 {
-			pe.UserId = service.AllService.UserService.FindLatestUserIdFromLoginLogByUuid(pe.Uuid)
+			pe.UserId = service.AllService.UserService.FindLatestUserIdFromLoginLogByUuid(pe.Uuid, pe.Id)
 		}
 		fpe.RowId = pe.RowId
 		fpe.UserId = pe.UserId
