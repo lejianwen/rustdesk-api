@@ -114,6 +114,9 @@ func (ct *Peer) List(c *gin.Context) {
 		if query.Ip != "" {
 			tx.Where("last_online_ip like ?", "%"+query.Ip+"%")
 		}
+		if query.Alias != "" {
+			tx.Where("alias like ?", "%"+query.Alias+"%")
+		}
 	})
 	response.Success(c, res)
 }
