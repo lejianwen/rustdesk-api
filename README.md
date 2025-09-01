@@ -2,7 +2,8 @@
 
 [English Doc](README_EN.md)
 
-本项目使用 Go 实现了 RustDesk 的 API，并包含了 Web Admin 和 Web 客户端。RustDesk 是一个远程桌面软件，提供了自托管的解决方案。
+本项目使用 Go 实现了 RustDesk 的 API，并包含了 Web Admin 和 Web 客户端。
+
 
 <div align=center>
 <img src="https://img.shields.io/badge/golang-1.22-blue"/>
@@ -12,6 +13,14 @@
 <img src="https://goreportcard.com/badge/github.com/lejianwen/rustdesk-api/v2"/>
 <img src="https://github.com/lejianwen/rustdesk-api/actions/workflows/build.yml/badge.svg"/>
 </div>
+
+## 搭配[lejianwen/rustdesk-server]使用更佳。
+> [lejianwen/rustdesk-server]fork自RustDesk Server官方仓库
+> 1. 解决了使用API链接超时问题
+> 2. 可以强制登录后才能发起链接
+> 3. 支持客户端websocket
+
+
 
 # 特性
 
@@ -325,3 +334,5 @@
 </a>
 
 ## 感谢你的支持！如果这个项目对你有帮助，请点个⭐️鼓励一下，谢谢！
+
+[lejianwen/rustdesk-server]: https://github.com/lejianwen/rustdesk-server
