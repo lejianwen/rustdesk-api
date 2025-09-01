@@ -12,6 +12,13 @@ desktop software that provides self-hosted solutions.
 <img src="https://github.com/lejianwen/rustdesk-api/actions/workflows/build.yml/badge.svg"/>
 </div>
 
+## Better used with [lejianwen/rustdesk-server].
+> [lejianwen/rustdesk-server] is a fork of the official RustDesk Server repository.
+> 1. Solves the API connection timeout issue.
+> 2. Can enforce login before initiating a connection.
+> 3. Supports client websocket.
+
+
 # Features
 
 - PC API
@@ -325,3 +332,6 @@ Thanks to everyone who contributed!
 </a>
 
 ## Thanks for your support! If you find this project useful, please give it a ⭐️. Thank you!
+
+
+[lejianwen/rustdesk-server]: https://github.com/lejianwen/rustdesk-server
