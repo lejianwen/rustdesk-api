@@ -191,6 +191,7 @@
 | RUSTDESK_API_MYSQL_PASSWORD                            | mysql密码                                                                        | 111111                       |
 | RUSTDESK_API_MYSQL_ADDR                                | mysql地址                                                                        | 192.168.1.66:3306            |
 | RUSTDESK_API_MYSQL_DBNAME                              | mysql数据库名                                                                      | rustdesk                     |
+| RUSTDESK_API_MYSQL_TLS                             | 是否启用TLS, 可选值: `true`, `false`, `skip-verify`, `custom` | `false`                      |
 | -----RUSTDESK配置-----                                   | ----------                                                                     | ----------                   |
 | RUSTDESK_API_RUSTDESK_ID_SERVER                        | Rustdesk的id服务器地址                                                               | 192.168.1.66:21116           |
 | RUSTDESK_API_RUSTDESK_RELAY_SERVER                     | Rustdesk的relay服务器地址                                                            | 192.168.1.66:21117           |
