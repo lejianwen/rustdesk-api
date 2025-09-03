@@ -17,6 +17,7 @@ type Mysql struct {
 	Username string `mapstructure:"username"`
 	Password string `mapstructure:"password"`
 	Dbname   string `mapstructure:"dbname"`
+	Tls      string `mapstructure:"tls"` // true / false / skip-verify / custom
 }
 
 type Postgresql struct {

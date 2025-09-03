@@ -31,6 +31,7 @@ mysql:
   password: ""
   addr: ""
   dbname: ""
+  tls: "false" # true / false / skip-verify / custom
 
 postgresql:
   host: "127.0.0.1"
