@@ -137,6 +137,17 @@ func (ls *LdapService) Authenticate(username, password string) (*model.User, err
 		return nil, ErrLdapUserDisabled
 	}
 	cfg := &Config.Ldap
+
+	// Skip allow-group check for admins
+    isAdmin := ls.isUserAdmin(cfg, ldapUser)
+    
+    // non-admins only check if allow-group is configured
+    if !isAdmin && cfg.User.AllowGroup != "" {
+        if !ls.isUserInGroup(cfg, ldapUser, cfg.User.AllowGroup) {
+            return nil, errors.New("user not in allowed group")
+        }
+    }
+
 	err = ls.verifyCredentials(cfg, ldapUser.Dn, password)
 	if err != nil {
 		return nil, err
@@ -146,6 +157,46 @@ func (ls *LdapService) Authenticate(username, password string) (*model.User, err
 		return nil, errors.Join(ErrLdapToLocalUserFailed, err)
 	}
 	return user, nil
+}
+
+// isUserInGroup checks if the user is a member of the specified group. by_sw
+func (ls *LdapService) isUserInGroup(cfg *config.Ldap, ldapUser *LdapUser, groupDN string) bool {
+    // Check "memberOf" directly
+    if len(ldapUser.MemberOf) > 0 {
+        for _, group := range ldapUser.MemberOf {
+            if strings.EqualFold(group, groupDN) {
+                return true
+            }
+        }
+    }
+
+    // For "member" attribute, perform a reverse search on the group
+    member := "member"
+    userDN := ldap.EscapeFilter(ldapUser.Dn)
+    groupDN = ldap.EscapeFilter(groupDN)
+    groupFilter := fmt.Sprintf("(%s=%s)", member, userDN)
+
+    // Create the LDAP search request
+    groupSearchRequest := ldap.NewSearchRequest(
+        groupDN,
+        ldap.ScopeWholeSubtree,
+        ldap.NeverDerefAliases,
+        0,     // Unlimited search results
+        0,     // No time limit
+        false, // Return both attributes and DN
+        groupFilter,
+        []string{"dn"},
+        nil,
+    )
+
+    // Perform the group search
+    groupResult, err := ls.searchResult(cfg, groupSearchRequest)
+    if err != nil {
+        return false
+    }
+
+    // If any results are returned, the user is part of the group
+    return len(groupResult.Entries) > 0
 }
 
 // mapToLocalUser checks whether the user exists locally; if not, creates one.
