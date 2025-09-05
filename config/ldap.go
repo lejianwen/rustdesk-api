@@ -11,6 +11,7 @@ type LdapUser struct {
 	LastName        string `mapstructure:"last-name"`
 	Sync            bool   `mapstructure:"sync"`        // Will sync the user's information to the internal database
 	AdminGroup      string `mapstructure:"admin-group"` // Which group is the admin group
+	AllowGroup      string `mapstructure:"allow-group"` // Which group is allowed to login
 }
 
 // type LdapGroup struct {
