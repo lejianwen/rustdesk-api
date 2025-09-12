@@ -80,7 +80,8 @@ func (o *Oauth) OidcAuthQueryPre(c *gin.Context) (*model.User, *model.UserToken)
 
 	// 如果 UserId 为 0，说明还在授权中
 	if v.UserId == 0 {
-		c.JSON(http.StatusOK, gin.H{"message": "Authorization in progress, please login and bind"})
+		//fix: 1.4.2 webclient oidc
+		c.JSON(http.StatusOK, gin.H{"message": "Authorization in progress, please login and bind", "error": "No authed oidc is found"})
 		return nil, nil
 	}
 
