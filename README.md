@@ -127,9 +127,9 @@
 2. 如果没登录后台，点击右上角登录即可，api server已经自动配置好了
 3. 登录后，会自动同步ID服务器和KEY
 4. 登录后，会将地址簿自动保存到web client中，方便使用
-5. 现已支持`v2 Preview`，访问路径是`/webclient2`
-   ![webclientv2](./docs/webclientv2.png)
-6. `v2 preview` 部署，参考[WIKI](https://github.com/lejianwen/rustdesk-api/wiki)
+5. ~~现已支持`v2 Preview`，访问路径是`/webclient2`~~
+6. ~~`v2 preview` 部署，参考[WIKI](https://github.com/lejianwen/rustdesk-api/wiki)~~
+
 
 
 ### 自动化文档: 使用 Swag 生成 API 文档，方便开发者理解和使用 API。
