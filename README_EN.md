@@ -125,8 +125,6 @@ displaying data.Frontend code is available at [rustdesk-api-web](https://github.
    pre-configured.
 3. After logging in, the ID server and key will be automatically synced.
 4. The address book will also be automatically saved to the web client for convenient use.
-5. ~~Now supports `v2 Preview`, accessible at `/webclient2`~~
-6. ~~`v2 preview` deployment, [WIKI](https://github.com/lejianwen/rustdesk-api/wiki)~~
 
 ### Automated Documentation : API documentation is generated using Swag, making it easier for developers to understand and use the API.
 
