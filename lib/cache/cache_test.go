@@ -3,6 +3,7 @@ package cache
 import (
 	"fmt"
 	"github.com/go-redis/redis/v8"
+	"os"
 	"reflect"
 	"testing"
 )
@@ -60,9 +61,16 @@ func TestFileCacheGet(t *testing.T) {
 	fmt.Println("res", res)
 }
 
+func testRedisAddr() string {
+	if addr := os.Getenv("TEST_REDIS_ADDR"); addr != "" {
+		return addr
+	}
+	return "127.0.0.1:6379"
+}
+
 func TestRedisCacheSet(t *testing.T) {
 	rc := NewRedis(&redis.Options{
-		Addr:     "192.168.1.168:6379",
+		Addr:     testRedisAddr(),
 		Password: "", // no password set
 		DB:       0,  // use default DB
 	})
@@ -75,7 +83,7 @@ func TestRedisCacheSet(t *testing.T) {
 
 func TestRedisCacheGet(t *testing.T) {
 	rc := NewRedis(&redis.Options{
-		Addr:     "192.168.1.168:6379",
+		Addr:     testRedisAddr(),
 		Password: "", // no password set
 		DB:       0,  // use default DB
 	})
