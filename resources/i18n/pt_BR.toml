@@ -1,0 +1,169 @@
+[Test]
+description = "test"
+one = "teste1"
+other = "Teste2 {{.P0}}"
+
+[ParamsError]
+description = "Params validation failed."
+one = "A validação dos parâmetros falhou."
+other = "A validação dos parâmetros falhou."
+
+[OperationFailed]
+description = "OperationFailed."
+one = "A operação falhou."
+other = "A operação falhou."
+
+[OperationSuccess]
+description = "OperationSuccess."
+one = "Operação realizada com sucesso."
+other = "Operação realizada com sucesso."
+
+[ItemExists]
+description = "Item already exists."
+one = "O item já existe."
+other = "O item já existe."
+
+[ItemNotFound]
+description = "Item not found."
+one = "Item não encontrado."
+other = "Item não encontrado."
+
+[NoAccess]
+description = "No access."
+one = "Acesso negado."
+other = "Acesso negado."
+
+[NeedLogin]
+description = "Need login."
+one = "Por favor, faça login primeiro."
+other = "Por favor, faça login primeiro."
+
+[UsernameOrPasswordError]
+description = "Username or password error."
+one = "Usuário ou senha incorretos."
+other = "Usuário ou senha incorretos."
+
+[SystemError]
+description = "System error."
+one = "Erro interno do sistema."
+other = "Erro interno do sistema."
+
+[ConfigNotFound]
+description = "Config not found."
+one = "Configuração não encontrada."
+other = "Configuração não encontrada."
+
+[OauthExpired]
+description = "Oauth expired."
+one = "Sessão OAuth expirada, por favor tente novamente."
+other = "Sessão OAuth expirada, por favor tente novamente."
+
+[OauthFailed]
+description = "Oauth failed."
+one = "Falha na autenticação OAuth."
+other = "Falha na autenticação OAuth."
+
+[OauthHasBindOtherUser]
+description = "Oauth has bind other user."
+one = "Esta conta OAuth já está vinculada a outro usuário."
+other = "Esta conta OAuth já está vinculada a outro usuário."
+
+[ParamIsEmpty]
+description = "Param is empty."
+one = "O campo {{.P0}} está vazio."
+other = "O campo {{.P0}} está vazio."
+
+[BindFail]
+description = "Bind fail."
+one = "Falha ao vincular."
+other = "Falha ao vincular."
+
+[BindSuccess]
+description = "Bind success."
+one = "Vinculação realizada com sucesso."
+other = "Vinculação realizada com sucesso."
+
+[OauthHasBeenSuccess]
+description = "Oauth has been success."
+one = "Autenticação OAuth realizada com sucesso."
+other = "Autenticação OAuth realizada com sucesso."
+
+[OauthSuccess]
+description = "Oauth success."
+one = "OAuth concluído com sucesso."
+other = "OAuth concluído com sucesso."
+
+[OauthRegisterSuccess]
+description = "Oauth register success."
+one = "Cadastro via OAuth realizado com sucesso."
+other = "Cadastro via OAuth realizado com sucesso."
+
+[OauthRegisterFailed]
+description = "Oauth register failed."
+one = "Falha no cadastro via OAuth."
+other = "Falha no cadastro via OAuth."
+
+[GetOauthTokenError]
+description = "Get oauth token error."
+one = "Erro ao obter o token OAuth."
+other = "Erro ao obter o token OAuth."
+
+[GetOauthUserInfoError]
+description = "Get oauth user info error."
+one = "Erro ao obter informações do usuário no OAuth."
+other = "Erro ao obter informações do usuário no OAuth."
+
+[DecodeOauthUserInfoError]
+description = "Decode oauth user info error."
+one = "Erro ao decodificar informações do usuário do OAuth."
+other = "Erro ao decodificar informações do usuário do OAuth."
+
+[OldPasswordError]
+description = "Old password error."
+one = "A senha anterior está incorreta."
+other = "A senha anterior está incorreta."
+
+[DefaultGroup]
+description = "Default group"
+one = "Grupo Padrão"
+other = "Grupo Padrão"
+
+[ShareGroup]
+description = "Share group"
+one = "Grupo Compartilhado"
+other = "Grupo Compartilhado"
+
+[RegisterClosed]
+description = "Register closed."
+one = "O auto-cadastro de novos usuários está desabilitado."
+other = "O auto-cadastro de novos usuários está desabilitado."
+
+[CaptchaRequired]
+description = "Captcha required."
+one = "Preenchimento de CAPTCHA obrigatório."
+other = "Preenchimento de CAPTCHA obrigatório."
+
+[CaptchaError]
+description = "Captcha error."
+one = "Código CAPTCHA inválido."
+other = "Código CAPTCHA inválido."
+
+[PwdLoginDisabled]
+description = "Password login disabled."
+one = "Login por senha desativado."
+other = "Login por senha desativado."
+
+[CannotShareToSelf]
+description = "Cannot share to self."
+one = "Não é possível compartilhar consigo mesmo."
+other = "Não é possível compartilhar consigo mesmo."
+
+[Banned]
+description = "Banned."
+one = "Acesso temporariamente bloqueado."
+other = "Acesso temporariamente bloqueado."
+
+[RegisterSuccessWaitAdminConfirm]
+description = "Register success, wait admin confirm."
+one = "Cadastro efetuado com sucesso. Aguarde a aprovação do administrador."
+other = "Cadastro efetuado com sucesso. Aguarde a aprovação do administrador."
