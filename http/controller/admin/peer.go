@@ -148,7 +148,7 @@ func (ct *Peer) Update(c *gin.Context) {
 		return
 	}
 	u := f.ToPeer()
-	err := service.AllService.PeerService.Update(u)
+	err := service.AllService.PeerService.UpdateByAdmin(u)
 	if err != nil {
 		response.Fail(c, 101, response.TranslateMsg(c, "OperationFailed")+err.Error())
 		return
