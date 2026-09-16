@@ -151,3 +151,14 @@ func (ps *PeerService) BatchDelete(ids []uint) error {
 func (ps *PeerService) Update(u *model.Peer) error {
 	return DB.Model(u).Updates(u).Error
 }
+
+// UpdateByAdmin 后台编辑设备：只更新表单里的字段，并且允许写入零值。
+// Updates(struct) 会跳过零值，导致 group_id=0（移出分组）和清空 alias 无法保存。
+// UpdateByAdmin updates only the admin-editable fields and writes zero values too:
+// Updates(struct) skips zero values, so moving a peer out of its group (group_id=0)
+// or clearing the alias never reached the database.
+func (ps *PeerService) UpdateByAdmin(u *model.Peer) error {
+	return DB.Model(u).
+		Select("id", "cpu", "hostname", "memory", "os", "username", "uuid", "version", "group_id", "alias").
+		Updates(u).Error
+}
