@@ -115,7 +115,7 @@ func (ct *Group) Update(c *gin.Context) {
 		return
 	}
 	u := f.ToGroup()
-	err := service.AllService.GroupService.Update(u)
+	err := service.UpdateFields(u, "name", "type")
 	if err != nil {
 		response.Fail(c, 101, response.TranslateMsg(c, "OperationFailed")+err.Error())
 		return

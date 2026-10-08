@@ -251,7 +251,17 @@ func (o *Oauth) Update(c *gin.Context) {
 		return
 	}
 	u := f.ToOauth()
-	err := service.AllService.OauthService.Update(u)
+	fields := []string{"op", "oauth_type", "issuer", "scopes", "client_id", "pkce_method"}
+	if u.AutoRegister != nil {
+		fields = append(fields, "auto_register")
+	}
+	if u.PkceEnable != nil {
+		fields = append(fields, "pkce_enable")
+	}
+	if u.ClientSecret != "" {
+		fields = append(fields, "client_secret")
+	}
+	err := service.UpdateFields(u, fields...)
 	if err != nil {
 		response.Fail(c, 101, response.TranslateMsg(c, "OperationFailed")+err.Error())
 		return

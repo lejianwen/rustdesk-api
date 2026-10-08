@@ -4,7 +4,7 @@ import "github.com/lejianwen/rustdesk-api/v2/model"
 
 type PeerForm struct {
 	RowId    uint   `json:"row_id" `
-	Id       string `json:"id"`
+	Id       string `json:"id" validate:"required"`
 	Cpu      string `json:"cpu"`
 	Hostname string `json:"hostname"`
 	Memory   string `json:"memory"`

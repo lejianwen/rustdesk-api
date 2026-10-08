@@ -115,7 +115,7 @@ func (ct *DeviceGroup) Update(c *gin.Context) {
 		return
 	}
 	u := f.ToDeviceGroup()
-	err := service.AllService.GroupService.DeviceGroupUpdate(u)
+	err := service.UpdateFields(u, "name")
 	if err != nil {
 		response.Fail(c, 101, response.TranslateMsg(c, "OperationFailed")+err.Error())
 		return

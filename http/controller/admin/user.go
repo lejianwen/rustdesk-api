@@ -124,7 +124,11 @@ func (ct *User) Update(c *gin.Context) {
 		return
 	}
 	u := f.ToUser()
-	err := service.AllService.UserService.Update(u)
+	fields := []string{"username", "email", "nickname", "group_id", "status", "remark"}
+	if u.IsAdmin != nil {
+		fields = append(fields, "is_admin")
+	}
+	err := service.UpdateFields(u, fields...)
 	if err != nil {
 		response.Fail(c, 101, response.TranslateMsg(c, "OperationFailed")+err.Error())
 		return

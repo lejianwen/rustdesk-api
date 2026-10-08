@@ -70,3 +70,10 @@ func CommonEnable() func(db *gorm.DB) *gorm.DB {
 		return db.Where("status = ?", model.COMMON_STATUS_ENABLE)
 	}
 }
+
+// UpdateFields updates only the given columns, including zero values.
+// Updates(struct) skips zero values, so admins could not clear a field (e.g. a device alias).
+// Used only by the admin controllers; the client API and LDAP sync keep the partial-update behavior.
+func UpdateFields(m interface{}, fields ...string) error {
+	return DB.Model(m).Select(fields).Updates(m).Error
+}
