@@ -2,11 +2,27 @@
 set -e
 
 SERVICE=rustdesk-api.service
+CONF=/var/lib/rustdesk-api/conf
 
 systemctl --system daemon-reload >/dev/null || true
 
+if [ "$1" = "abort-upgrade" ]; then
+	for f in config.yaml admin/hello.html; do
+		cfg="$CONF/$f"
+		if [ -e "$cfg" ] || [ -L "$cfg" ]; then
+			rm -f "$cfg.dpkg-keep" || true
+		fi
+	done
+fi
+
 if [ "$1" = "purge" ]; then
 	rm -rf /var/log/rustdesk-api/rustdesk-api.*
+	# Only the package's own files: conf/ can hold other files or be a mount.
+	for f in config.yaml admin/hello.html; do
+		cfg="$CONF/$f"
+		rm -f "$cfg" "$cfg.dpkg-dist" "$cfg.dpkg-keep" "$cfg.dpkg-new" "$cfg.dpkg-dist.dpkg-new" "${cfg%/*}/.${cfg##*/}.dist-md5" || true
+	done
+	rmdir "$CONF/admin" "$CONF" 2>/dev/null || true
 	deb-systemd-helper purge "${SERVICE}" >/dev/null || true
 	deb-systemd-helper unmask "${SERVICE}" >/dev/null || true
 fi

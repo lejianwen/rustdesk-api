@@ -3,6 +3,25 @@ set -e
 
 SERVICE=rustdesk-api.service
 
+md5of() {
+    if [ -f "$1" ]; then md5sum < "$1" | cut -d' ' -f1; fi
+}
+
+exists() {
+    [ -e "$1" ] || [ -L "$1" ]
+}
+
+# Replaces $2 itself, keeping its owner and mode. conf/ can be writable by a
+# service account, so the file is built in a root-only directory: a rename
+# never follows a symlink at the name. The second mv keeps the swap atomic when
+# conf/ is its own filesystem, so a full disk leaves no partial file at $2.
+put() {
+    [ ! -f "$2" ] || [ -L "$2" ] || cp -p "$2" "$TMP/new"
+    cp "$1" "$TMP/new"
+    mv -fT "$TMP/new" "$2.dpkg-new"
+    mv -fT "$2.dpkg-new" "$2"
+}
+
 if [ "$1" = "configure" ]; then
     mkdir -p /var/log/rustdesk-api
 fi
@@ -10,6 +29,42 @@ fi
 case "$1" in
     configure|abort-upgrade|abort-deconfigure|abort-remove)
       mkdir -p /var/lib/rustdesk-api/
+      TMP=$(mktemp -d /var/lib/rustdesk-api.XXXXXX)
+      trap 'rm -rf "$TMP"' EXIT
+      trap 'exit 1' HUP INT TERM
+      # conf/ is the admin's. .<file>.dist-md5 holds the md5 of the default
+      # last installed or offered, so an untouched file follows new defaults
+      # and an edited one is kept, with each new default offered once. A
+      # symlink or directory counts as edited.
+      for f in config.yaml admin/hello.html; do
+        cfg="/var/lib/rustdesk-api/conf/$f"
+        def="/usr/share/rustdesk-api/conf/$f"
+        rec="${cfg%/*}/.${cfg##*/}.dist-md5"
+        if exists "$cfg.dpkg-keep"; then
+          if exists "$cfg"; then
+            rm -f "$cfg.dpkg-keep"
+          else
+            mv -T "$cfg.dpkg-keep" "$cfg"
+          fi
+        fi
+        new=$(md5of "$def")
+        cur=$(md5of "$cfg")
+        old=""
+        [ ! -f "$rec" ] || old=$(cat "$rec" 2>/dev/null || true)
+        if [ "$cur" != "$new" ]; then
+          mkdir -p "${cfg%/*}"
+          if ! exists "$cfg"; then
+            put "$def" "$cfg"
+          elif [ -f "$cfg" ] && [ ! -L "$cfg" ] && [ "$cur" = "$old" ]; then
+            put "$def" "$cfg"
+          elif [ "$old" != "$new" ]; then
+            put "$def" "$cfg.dpkg-dist"
+            echo "rustdesk-api: kept your changes in $cfg, new default is in $cfg.dpkg-dist" >&2
+          fi
+        fi
+        echo "$new" > "$TMP/rec"
+        mv -fT "$TMP/rec" "$rec"
+      done
 	  deb-systemd-helper unmask "${SERVICE}" >/dev/null || true
 	  if deb-systemd-helper --quiet was-enabled "${SERVICE}"; then
 		deb-systemd-invoke enable "${SERVICE}" >/dev/null || true
