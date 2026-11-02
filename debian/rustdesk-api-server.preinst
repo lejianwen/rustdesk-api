@@ -1,0 +1,35 @@
+#!/bin/sh
+set -e
+
+PKG=rustdesk-api-server
+
+# Versions before this one shipped conf/ as package files, so dpkg deletes them
+# during this upgrade. Park the ones the admin changed for postinst to restore,
+# and record the old default so postinst can tell whether the default changed.
+if [ "$1" = "upgrade" ]; then
+    # conf/ can be writable by a service account, so build files in a root-only
+    # directory and rename them in: a rename never follows a symlink at the name.
+    TMP=$(mktemp -d /var/lib/rustdesk-api.XXXXXX)
+    trap 'rm -rf "$TMP"' EXIT
+    trap 'exit 1' HUP INT TERM
+    for f in config.yaml admin/hello.html; do
+        cfg="/var/lib/rustdesk-api/conf/$f"
+        rec="${cfg%/*}/.${cfg##*/}.dist-md5"
+        # Missing means an interrupted attempt already parked it.
+        [ -e "$cfg" ] || [ -L "$cfg" ] || continue
+        rm -f "$cfg.dpkg-keep"
+        [ -f "$cfg" ] || continue
+        dpkg-query -L "$PKG" 2>/dev/null | grep -qxF "$cfg" || continue
+        old=$(dpkg-query --control-show "$PKG" md5sums 2>/dev/null | grep "  var/lib/rustdesk-api/conf/$f\$" | cut -d' ' -f1)
+        if [ -n "$old" ]; then
+            echo "$old" > "$TMP/rec"
+            mv -fT "$TMP/rec" "$rec"
+        fi
+        if [ "$(md5sum < "$cfg" | cut -d' ' -f1)" != "$old" ]; then
+            cp -a "$cfg" "$TMP/keep"
+            mv -fT "$TMP/keep" "$cfg.dpkg-keep"
+        fi
+    done
+fi
+
+exit 0
