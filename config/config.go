@@ -67,6 +67,10 @@ func Init(rowVal *Config, path string) *viper.Viper {
 	v.AutomaticEnv()
 	v.SetEnvKeyReplacer(strings.NewReplacer(".", "_", "-", "_"))
 	v.SetEnvPrefix("RUSTDESK_API")
+	// An older config.yaml lacks these, and their zero values break logins.
+	// Don't default from conf/config.yaml: much of it is placeholders.
+	v.SetDefault("app.captcha-threshold", 3)
+	v.SetDefault("app.token-expire", "168h")
 	v.SetConfigFile(path)
 	v.SetConfigType("yaml")
 	err := v.ReadInConfig()
