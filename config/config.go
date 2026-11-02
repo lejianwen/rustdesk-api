@@ -88,6 +88,13 @@ func Init(rowVal *Config, path string) *viper.Viper {
 				rowVal.Rustdesk.ParsePort()
 			})
 	*/
+	// Older releases shipped these as a bare number of seconds, which decodes
+	// as nanoseconds. A second or more of nanoseconds already works, so it stays.
+	for _, k := range []string{"app.token-expire", "jwt.expire-duration"} {
+		if n, ok := v.Get(k).(int); ok && n > 0 && time.Duration(n) < time.Second {
+			v.Set(k, time.Duration(n)*time.Second)
+		}
+	}
 	if err := v.Unmarshal(rowVal); err != nil {
 		panic(fmt.Errorf("Fatal error config: %s \n", err))
 	}

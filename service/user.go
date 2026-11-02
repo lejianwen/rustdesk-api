@@ -491,7 +491,7 @@ func (us *UserService) UserTokenExpireTimestamp() int64 {
 	exp := Config.App.TokenExpire
 	if exp == 0 {
 		//默认七天
-		exp = 604800
+		exp = 604800 * time.Second
 	}
 	return time.Now().Add(exp).Unix()
 }
