@@ -7,10 +7,16 @@ CONF=/var/lib/rustdesk-api/conf
 systemctl --system daemon-reload >/dev/null || true
 
 if [ "$1" = "abort-upgrade" ]; then
+	# Put back a copy preinst parked if the file did not survive the rollback.
 	for f in config.yaml admin/hello.html; do
 		cfg="$CONF/$f"
-		if [ -e "$cfg" ] || [ -L "$cfg" ]; then
-			rm -f "$cfg.dpkg-keep" || true
+		rm -rf "$cfg.dpkg-keep.dpkg-new" || true
+		if [ -e "$cfg.dpkg-keep" ] || [ -L "$cfg.dpkg-keep" ]; then
+			if [ -e "$cfg" ] || [ -L "$cfg" ]; then
+				rm -rf "$cfg.dpkg-keep" || true
+			else
+				mv -T "$cfg.dpkg-keep" "$cfg" || true
+			fi
 		fi
 	done
 fi
@@ -20,7 +26,9 @@ if [ "$1" = "purge" ]; then
 	# Only the package's own files: conf/ can hold other files or be a mount.
 	for f in config.yaml admin/hello.html; do
 		cfg="$CONF/$f"
-		rm -f "$cfg" "$cfg.dpkg-dist" "$cfg.dpkg-keep" "$cfg.dpkg-new" "$cfg.dpkg-dist.dpkg-new" "${cfg%/*}/.${cfg##*/}.dist-md5" || true
+		rec="${cfg%/*}/.${cfg##*/}.dist-md5"
+		rm -f "$cfg" "$cfg.dpkg-new" "$cfg.dpkg-dist" "$cfg.dpkg-dist.dpkg-new" "$rec" "$rec.dpkg-new" || true
+		rm -rf "$cfg.dpkg-keep" "$cfg.dpkg-keep.dpkg-new" || true
 	done
 	rmdir "$CONF/admin" "$CONF" 2>/dev/null || true
 	deb-systemd-helper purge "${SERVICE}" >/dev/null || true
