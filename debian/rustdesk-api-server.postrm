@@ -2,11 +2,35 @@
 set -e
 
 SERVICE=rustdesk-api.service
+CONF=/var/lib/rustdesk-api/conf
 
 systemctl --system daemon-reload >/dev/null || true
 
+if [ "$1" = "abort-upgrade" ]; then
+	# Put back a copy preinst parked if the file did not survive the rollback.
+	for f in config.yaml admin/hello.html; do
+		cfg="$CONF/$f"
+		rm -rf "$cfg.dpkg-keep.dpkg-new" || true
+		if [ -e "$cfg.dpkg-keep" ] || [ -L "$cfg.dpkg-keep" ]; then
+			if [ -e "$cfg" ] || [ -L "$cfg" ]; then
+				rm -rf "$cfg.dpkg-keep" || true
+			else
+				mv -T "$cfg.dpkg-keep" "$cfg" || true
+			fi
+		fi
+	done
+fi
+
 if [ "$1" = "purge" ]; then
 	rm -rf /var/log/rustdesk-api/rustdesk-api.*
+	# Only the package's own files: conf/ can hold other files or be a mount.
+	for f in config.yaml admin/hello.html; do
+		cfg="$CONF/$f"
+		rec="${cfg%/*}/.${cfg##*/}.dist-md5"
+		rm -f "$cfg" "$cfg.dpkg-new" "$cfg.dpkg-dist" "$cfg.dpkg-dist.dpkg-new" "$rec" "$rec.dpkg-new" || true
+		rm -rf "$cfg.dpkg-keep" "$cfg.dpkg-keep.dpkg-new" || true
+	done
+	rmdir "$CONF/admin" "$CONF" 2>/dev/null || true
 	deb-systemd-helper purge "${SERVICE}" >/dev/null || true
 	deb-systemd-helper unmask "${SERVICE}" >/dev/null || true
 fi

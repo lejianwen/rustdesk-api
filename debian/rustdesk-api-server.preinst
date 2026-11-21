@@ -1,0 +1,34 @@
+#!/bin/sh
+set -e
+
+PKG=rustdesk-api-server
+
+# Adds md5 $2 to the record $1 of defaults installed or offered, unless it is there already.
+remember() {
+    if [ -f "$1" ] && grep -qxF "$2" "$1"; then return 0; fi
+    { if [ -f "$1" ]; then cat "$1"; fi; echo "$2"; } > "$1.dpkg-new" && mv -fT "$1.dpkg-new" "$1" ||
+        echo "rustdesk-api: could not update $1" >&2
+}
+
+# Versions before this one shipped conf/ as package files, so dpkg deletes them
+# during this upgrade. Park the ones the admin changed for postinst to restore,
+# and record the old default so postinst can tell an untouched file.
+if [ "$1" = "upgrade" ]; then
+    for f in config.yaml admin/hello.html; do
+        cfg="/var/lib/rustdesk-api/conf/$f"
+        rec="${cfg%/*}/.${cfg##*/}.dist-md5"
+        # Missing means an interrupted attempt already parked it.
+        [ -e "$cfg" ] || [ -L "$cfg" ] || continue
+        rm -rf "$cfg.dpkg-keep" "$cfg.dpkg-keep.dpkg-new"
+        dpkg-query -L "$PKG" 2>/dev/null | grep -qxF "$cfg" || continue
+        old=$(dpkg-query --control-show "$PKG" md5sums 2>/dev/null | grep "  var/lib/rustdesk-api/conf/$f\$" | cut -d' ' -f1)
+        [ -z "$old" ] || remember "$rec" "$old"
+        # A symlink, a directory or changed content is the admin's.
+        if [ -L "$cfg" ] || [ ! -f "$cfg" ] || [ "$(md5sum < "$cfg" | cut -d' ' -f1)" != "$old" ]; then
+            cp -a "$cfg" "$cfg.dpkg-keep.dpkg-new"
+            mv -fT "$cfg.dpkg-keep.dpkg-new" "$cfg.dpkg-keep"
+        fi
+    done
+fi
+
+exit 0
