@@ -345,7 +345,8 @@ func Migrate(version uint) {
 
 		// 生成随机密码
 		pwd := utils.RandomString(8)
-		global.Logger.Info("Admin Password Is: ", pwd)
+		// Print to stdout only, so the password does not end up in the log file
+		fmt.Println("Admin Password Is:", pwd)
 		var err error
 		admin.Password, err = utils.EncryptPassword(pwd)
 		if err != nil {
