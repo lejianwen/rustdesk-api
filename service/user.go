@@ -1,6 +1,8 @@
 package service
 
 import (
+	crand "crypto/rand"
+	"encoding/hex"
 	"errors"
 	"math/rand"
 	"strconv"
@@ -90,7 +92,11 @@ func (us *UserService) GenerateToken(u *model.User) string {
 	if len(Jwt.Key) > 0 {
 		return Jwt.GenerateToken(u.Id)
 	}
-	return utils.Md5(u.Username + time.Now().String())
+	b := make([]byte, 32)
+	if _, err := crand.Read(b); err != nil {
+		panic(err)
+	}
+	return hex.EncodeToString(b)
 }
 
 // Login 登录
