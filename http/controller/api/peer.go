@@ -46,6 +46,10 @@ func (p *Peer) SysInfo(c *gin.Context) {
 		}
 		fpe.RowId = pe.RowId
 		fpe.UserId = pe.UserId
+		// sysinfo is unauthenticated, never let it rebind an existing peer to another uuid
+		if pe.Uuid != "" {
+			fpe.Uuid = pe.Uuid
+		}
 		err = service.AllService.PeerService.Update(fpe)
 		if err != nil {
 			response.Error(c, response.TranslateMsg(c, "OperationFailed")+err.Error())
