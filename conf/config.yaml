@@ -7,7 +7,7 @@ app:
   ban-threshold: 0 # 0:disabled, >0:enabled
   show-swagger: 0 # 1:启用 0:禁用
   token-expire: 168h
-  web-sso: true #web auth sso
+  web-sso: false #web auth sso
   disable-pwd-login: false #禁用密码登录
 
 admin:

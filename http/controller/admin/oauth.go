@@ -8,6 +8,7 @@ import (
 	"github.com/lejianwen/rustdesk-api/v2/http/request/admin"
 	adminReq "github.com/lejianwen/rustdesk-api/v2/http/request/admin"
 	"github.com/lejianwen/rustdesk-api/v2/http/response"
+	"github.com/lejianwen/rustdesk-api/v2/model"
 	"github.com/lejianwen/rustdesk-api/v2/service"
 )
 
@@ -78,6 +79,12 @@ func (o *Oauth) Confirm(c *gin.Context) {
 	}
 	v := service.AllService.OauthService.GetOauthCache(j.Code)
 	if v == nil {
+		response.Fail(c, 101, response.TranslateMsg(c, "OauthExpired"))
+		return
+	}
+	// Only a pending web-auth login can be approved here. Logins through a real
+	// provider must finish at the provider callback, and an entry can be approved once.
+	if !global.Config.App.WebSso || v.Op != model.OauthTypeWebauth || v.Action != service.OauthActionTypeLogin || v.UserId != 0 {
 		response.Fail(c, 101, response.TranslateMsg(c, "OauthExpired"))
 		return
 	}
