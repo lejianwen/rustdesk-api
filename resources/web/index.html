@@ -163,26 +163,42 @@
         loadMainDartJs();
     }
 </script>
-<script src="libs/firebase-app.js?8.10.1"></script>
-<script src="libs/firebase-analytics.js?8.10.1"></script>
-
 <script>
-    // Your web app's Firebase configuration
-    // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-    const firebaseConfig = {
-        apiKey: "AIzaSyCgehIZk1aFP0E7wZtYRRqrfvNiNAF39-A",
-        authDomain: "rustdesk.firebaseapp.com",
-        databaseURL: "https://rustdesk.firebaseio.com",
-        projectId: "rustdesk",
-        storageBucket: "rustdesk.appspot.com",
-        messagingSenderId: "768133699366",
-        appId: "1:768133699366:web:d50faf0792cb208d7993e7",
-        measurementId: "G-9PEH85N6ZQ"
-    };
-
-    // Initialize Firebase
-    firebase.initializeApp(firebaseConfig);
-    firebase.analytics();
+    // No-op stand-in for the Firebase JS SDK so the web client does not send
+    // analytics to Google. main.dart.js initialises Firebase Analytics itself
+    // and loads the SDK from www.gstatic.com when window.firebase is missing,
+    // so the global has to exist.
+    (function () {
+        var apps = {};
+        var analytics = {
+            setCurrentScreen: function () {},
+            logEvent: function () {},
+            setUserId: function () {},
+            setUserProperties: function () {},
+            setAnalyticsCollectionEnabled: function () {}
+        };
+        window.firebase = {
+            SDK_VERSION: '8.10.1',
+            initializeApp: function (options, name) {
+                name = name || '[DEFAULT]';
+                apps[name] = {name: name, options: options || {}};
+                return apps[name];
+            },
+            app: function (name) {
+                name = name || '[DEFAULT]';
+                if (!apps[name]) {
+                    var err = new Error('No Firebase App \'' + name + '\' has been created');
+                    err.name = 'FirebaseError';
+                    err.code = 'app/no-app';
+                    throw err;
+                }
+                return apps[name];
+            },
+            analytics: function () {
+                return analytics;
+            }
+        };
+    })();
 </script>
 </body>
 
