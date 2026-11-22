@@ -396,8 +396,9 @@ func (ls *LdapService) userResultToLdapUser(cfg *config.Ldap, entry *ldap.Entry)
 }
 
 // filterField helps build simple attribute filters, e.g. (uid=username).
+// The value is escaped because it comes from user input (login form, OAuth claims).
 func (ls *LdapService) filterField(field, value string) string {
-	return fmt.Sprintf("(%s=%s)", field, value)
+	return fmt.Sprintf("(%s=%s)", field, ldap.EscapeFilter(value))
 }
 
 // fieldUsername returns the configured username attribute or "uid" if not set.
