@@ -298,9 +298,34 @@ func (ct *User) MyOauth(c *gin.Context) {
 func (ct *User) GroupUsers(c *gin.Context) {
 	aG := service.AllService.GroupService.List(1, 999, nil)
 	aU := service.AllService.UserService.List(1, 9999, nil)
+	u := service.AllService.UserService.CurUser(c)
+	if service.AllService.UserService.IsAdmin(u) {
+		response.Success(c, gin.H{
+			"groups": aG.Groups,
+			"users":  aU.Users,
+		})
+		return
+	}
+	// non-admins only need enough to pick a share target
+	users := make([]gin.H, 0, len(aU.Users))
+	for _, gu := range aU.Users {
+		users = append(users, gin.H{
+			"id":       gu.Id,
+			"username": gu.Username,
+			"nickname": gu.Nickname,
+			"group_id": gu.GroupId,
+		})
+	}
+	groups := make([]gin.H, 0, len(aG.Groups))
+	for _, g := range aG.Groups {
+		groups = append(groups, gin.H{
+			"id":   g.Id,
+			"name": g.Name,
+		})
+	}
 	response.Success(c, gin.H{
-		"groups": aG.Groups,
-		"users":  aU.Users,
+		"groups": groups,
+		"users":  users,
 	})
 }
 
