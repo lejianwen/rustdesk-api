@@ -76,8 +76,8 @@ jobs:
           mkdir -p ../resources/admin/
           cp -ar dist/* ../resources/admin/
 
-      - name: tidy
-        run: go mod tidy
+      - name: Download Go modules
+        run: go mod download
 
       - name: swag
         run: |
