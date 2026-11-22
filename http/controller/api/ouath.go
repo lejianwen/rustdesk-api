@@ -2,6 +2,7 @@ package api
 
 import (
 	"net/http"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 	"github.com/lejianwen/rustdesk-api/v2/global"
@@ -227,6 +228,10 @@ func (o *Oauth) OauthCallback(c *gin.Context) {
 			if !*oauthConfig.AutoRegister {
 				//c.String(http.StatusInternalServerError, "还未绑定用户，请先绑定")
 				oauthCache.UpdateFromOauthUser(oauthUser)
+				// Tie the bind step to this browser, so the bind link can't be handed to someone else
+				oauthCache.BindToken = utils.RandomString(32)
+				c.SetSameSite(http.SameSiteLaxMode)
+				c.SetCookie(service.OauthBindCookieName, oauthCache.BindToken, 5*60, service.OauthBindCookiePath, "", strings.HasPrefix(global.Config.Rustdesk.ApiServer, "https://"), true)
 				c.Redirect(http.StatusFound, "/_admin/#/oauth/bind/"+cacheKey)
 				return
 			}
