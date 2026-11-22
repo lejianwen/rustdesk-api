@@ -98,6 +98,10 @@ other = "授权注册成功。"
 description = "Oauth register failed."
 one = "授权注册失败。"
 other = "授权注册失败。"
+[OauthEmailNotVerified]
+description = "Oauth email not verified."
+one = "第三方账号的邮箱未经验证，无法关联已有用户。请使用其他方式登录后在个人资料中绑定。"
+other = "第三方账号的邮箱未经验证，无法关联已有用户。请使用其他方式登录后在个人资料中绑定。"
 [GetOauthTokenError]
 description = "Get oauth token error."
 one = "获取授权token失败。"

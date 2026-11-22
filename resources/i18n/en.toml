@@ -97,6 +97,10 @@ other = "Oauth register success."
 description = "Oauth register failed."
 one = "Oauth register failed."
 other = "Oauth register failed."
+[OauthEmailNotVerified]
+description = "Oauth email not verified."
+one = "The provider has not verified the email of this account, so it cannot be linked to an existing user. Log in another way and bind it from your profile."
+other = "The provider has not verified the email of this account, so it cannot be linked to an existing user. Log in another way and bind it from your profile."
 [GetOauthTokenError]
 description = "Get oauth token error."
 one = "Get oauth token error."

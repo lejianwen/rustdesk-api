@@ -98,6 +98,10 @@ other = "인증 등록이 완료되었습니다."
 description = "Oauth register failed."
 one = "인증 등록에 실패했습니다."
 other = "인증 등록에 실패했습니다."
+[OauthEmailNotVerified]
+description = "Oauth email not verified."
+one = "제공자가 이 계정의 이메일을 확인하지 않아 기존 사용자와 연결할 수 없습니다. 다른 방법으로 로그인한 후 프로필에서 연결하세요."
+other = "제공자가 이 계정의 이메일을 확인하지 않아 기존 사용자와 연결할 수 없습니다. 다른 방법으로 로그인한 후 프로필에서 연결하세요."
 [GetOauthTokenError]
 description = "Get oauth token error."
 one = "인증 토큰을 획득하지 못했습니다."
