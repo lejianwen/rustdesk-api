@@ -47,8 +47,8 @@ type OauthCacheItem struct {
 	Username   string `json:"username"`
 	Name       string `json:"name"`
 	Email      string `json:"email"`
-	Verifier   string `json:"verifier"` // used for oauth pkce
-	Nonce      string `json:"nonce"`
+	Verifier   string `json:"-"` // used for oauth pkce, never sent to clients
+	Nonce      string `json:"-"`
 }
 
 func (oci *OauthCacheItem) ToOauthUser() *model.OauthUser {
