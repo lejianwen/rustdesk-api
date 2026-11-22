@@ -16,12 +16,15 @@ func ApiInit() {
 
 	//[WARNING] You trusted all proxies, this is NOT safe. We recommend you to set a value.
 	//Please check https://pkg.go.dev/github.com/gin-gonic/gin#readme-don-t-trust-all-proxies for details.
+	// Without an explicit list, trust no proxy so ClientIP() falls back to the
+	// connection's remote address instead of a client-supplied X-Forwarded-For.
+	var pro []string
 	if global.Config.Gin.TrustProxy != "" {
-		pro := strings.Split(global.Config.Gin.TrustProxy, ",")
-		err := g.SetTrustedProxies(pro)
-		if err != nil {
-			panic(err)
-		}
+		pro = strings.Split(global.Config.Gin.TrustProxy, ",")
+	}
+	err := g.SetTrustedProxies(pro)
+	if err != nil {
+		panic(err)
 	}
 
 	if global.Config.Gin.Mode == gin.ReleaseMode {
