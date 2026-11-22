@@ -347,6 +347,10 @@ func (us *UserService) RegisterByOauth(oauthUser *model.OauthUser, op string) (e
 			user = us.InfoByEmail(email)
 		}
 		if user.Id != 0 {
+			// only link to an existing account when the provider says it verified the email
+			if !oauthUser.VerifiedEmail {
+				return errors.New("OauthEmailNotVerified"), nil
+			}
 			ut.FromOauthUser(user.Id, oauthUser, oauthType, op)
 			DB.Create(ut)
 			return nil, user

@@ -102,6 +102,10 @@ other = "OAuth 註冊成功。"
 description = "Oauth register failed."
 one = "OAuth 註冊失敗。"
 other = "OAuth 註冊失敗。"
+[OauthEmailNotVerified]
+description = "Oauth email not verified."
+one = "第三方帳號的電子郵件未經驗證，無法關聯現有使用者。請使用其他方式登入後在個人資料中綁定。"
+other = "第三方帳號的電子郵件未經驗證，無法關聯現有使用者。請使用其他方式登入後在個人資料中綁定。"
 
 [GetOauthTokenError]
 description = "Get oauth token error."

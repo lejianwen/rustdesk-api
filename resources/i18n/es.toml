@@ -102,6 +102,10 @@ other = "Registro de Oauth exitoso."
 description = "Oauth register failed."
 one = "Registro de Oauth falló."
 other = "Registro de Oauth falló."
+[OauthEmailNotVerified]
+description = "Oauth email not verified."
+one = "El proveedor no ha verificado el correo de esta cuenta, no se puede vincular a un usuario existente. Inicie sesión de otra forma y vincúlela desde su perfil."
+other = "El proveedor no ha verificado el correo de esta cuenta, no se puede vincular a un usuario existente. Inicie sesión de otra forma y vincúlela desde su perfil."
 
 [GetOauthTokenError]
 description = "Get oauth token error."
