@@ -116,11 +116,13 @@ jobs:
           else
             if [ "${{ matrix.job.platform }}" = "arm64" ]; then
                 wget https://musl.ljw.red/aarch64-linux-musl-cross.tgz
+                echo "c909817856d6ceda86aa510894fa3527eac7989f0ef6e87b5721c58737a06c38  aarch64-linux-musl-cross.tgz" | sha256sum -c -
                 tar -xf aarch64-linux-musl-cross.tgz
                 export PATH=$PATH:$PWD/aarch64-linux-musl-cross/bin
                 GOOS=${{ matrix.job.goos }} GOARCH=${{ matrix.job.platform }} CC=aarch64-linux-musl-gcc CGO_LDFLAGS="-static" CGO_ENABLED=1 go build -ldflags "-s -w" -o ./release/apimain ./cmd/apimain.go
             elif [ "${{ matrix.job.platform }}" = "armv7l" ]; then
                 wget https://musl.ljw.red/armv7l-linux-musleabihf-cross.tgz
+                echo "f49f1a15ec62364ef5e4edb4e3990c0e1d2d1a54c90153b8f3869dad63328a10  armv7l-linux-musleabihf-cross.tgz" | sha256sum -c -
                 tar -xf armv7l-linux-musleabihf-cross.tgz
                 export PATH=$PATH:$PWD/armv7l-linux-musleabihf-cross/bin
                 GOOS=${{ matrix.job.goos }} GOARCH=arm GOARM=7 CC=armv7l-linux-musleabihf-gcc CGO_LDFLAGS="-static" CGO_ENABLED=1 go build -ldflags "-s -w" -o ./release/apimain ./cmd/apimain.go
