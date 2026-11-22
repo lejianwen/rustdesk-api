@@ -139,10 +139,14 @@ func (ct *Login) Captcha(c *gin.Context) {
 // @Failure 500 {object} response.Response
 // @Router /admin/logout [post]
 func (ct *Login) Logout(c *gin.Context) {
-	u := service.AllService.UserService.CurUser(c)
-	token, ok := c.Get("token")
-	if ok {
-		service.AllService.UserService.Logout(u, token.(string))
+	// This route is registered before BackendUserAuth, so curUser and token are
+	// never set in the context. Read the token from the header directly.
+	token := c.GetHeader("api-token")
+	if token != "" {
+		u, _ := service.AllService.UserService.InfoByAccessToken(token)
+		if u.Id != 0 {
+			service.AllService.UserService.Logout(u, token)
+		}
 	}
 	response.Success(c, nil)
 }
