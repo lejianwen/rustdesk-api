@@ -52,6 +52,12 @@ func (us *UserService) InfoByUsernamePassword(username, password string) *model.
 			return u
 		}
 		Logger.Errorf("LDAP authentication failed, %v", err)
+		// Only fall back to the local password when the user does not exist in LDAP
+		// or the lookup itself failed. A user that LDAP rejected (wrong password,
+		// disabled, not in allow-group) must not be able to log in with a local password.
+		if !errors.Is(err, ErrLdapUserNotFound) && !errors.Is(err, ErrLdapSearchFailed) {
+			return &model.User{}
+		}
 		Logger.Warn("Fallback to local database")
 	}
 	u := &model.User{}
