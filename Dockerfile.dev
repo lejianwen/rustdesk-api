@@ -15,7 +15,7 @@ COPY . .
 # use --mount=type=cache,target=/go/pkg/mod to cache the go mod
 # Step 2: Download dependencies
 RUN --mount=type=cache,target=/go/pkg/mod \
-    go mod tidy && go mod download && go install github.com/swaggo/swag/cmd/swag@latest
+    go mod download && go install github.com/swaggo/swag/cmd/swag@latest
 
 # Step 3: Run swag build script
 RUN --mount=type=cache,target=/go/pkg/mod \
