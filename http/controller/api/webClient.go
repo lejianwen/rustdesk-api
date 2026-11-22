@@ -54,7 +54,7 @@ func (i *WebClient) ServerConfig(c *gin.Context) {
 func (i *WebClient) SharedPeer(c *gin.Context) {
 	j := &gin.H{}
 	c.ShouldBindJSON(j)
-	t := (*j)["share_token"].(string)
+	t, _ := (*j)["share_token"].(string)
 	if t == "" {
 		response.Fail(c, 101, "share_token is required")
 		return
