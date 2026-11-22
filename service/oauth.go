@@ -36,6 +36,7 @@ type OidcEndpoint struct {
 
 type OauthCacheItem struct {
 	UserId     uint   `json:"user_id"`
+	BindToken  string `json:"-"`
 	Id         string `json:"id"` //rustdesk的设备ID
 	Op         string `json:"op"`
 	Action     string `json:"action"`
@@ -65,6 +66,11 @@ var OauthCache = &sync.Map{}
 const (
 	OauthActionTypeLogin = "login"
 	OauthActionTypeBind  = "bind"
+)
+
+const (
+	OauthBindCookieName = "rustdesk_oauth_bind"
+	OauthBindCookiePath = "/api/admin/oauth"
 )
 
 func (oci *OauthCacheItem) UpdateFromOauthUser(oauthUser *model.OauthUser) {

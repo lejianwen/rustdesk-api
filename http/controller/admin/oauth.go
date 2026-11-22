@@ -1,6 +1,7 @@
 package admin
 
 import (
+	"crypto/subtle"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
@@ -104,6 +105,14 @@ func (o *Oauth) BindConfirm(c *gin.Context) {
 		response.Fail(c, 101, response.TranslateMsg(c, "OauthExpired"))
 		return
 	}
+	// Only a login that came back from the provider unbound can be bound, once,
+	// and only from the browser that went through the provider callback.
+	bindToken, _ := c.Cookie(service.OauthBindCookieName)
+	if oauthCache.Action != service.OauthActionTypeLogin || oauthCache.OpenId == "" || oauthCache.UserId != 0 ||
+		oauthCache.BindToken == "" || subtle.ConstantTimeCompare([]byte(bindToken), []byte(oauthCache.BindToken)) != 1 {
+		response.Fail(c, 101, response.TranslateMsg(c, "OauthExpired"))
+		return
+	}
 	oauthUser := oauthCache.ToOauthUser()
 	user := service.AllService.UserService.CurUser(c)
 	err = oauthService.BindOauthUser(user.Id, oauthUser, oauthCache.Op)
@@ -113,7 +122,9 @@ func (o *Oauth) BindConfirm(c *gin.Context) {
 	}
 
 	oauthCache.UserId = user.Id
+	oauthCache.BindToken = ""
 	oauthService.SetOauthCache(j.Code, oauthCache, 0)
+	c.SetCookie(service.OauthBindCookieName, "", -1, service.OauthBindCookiePath, "", false, true)
 	response.Success(c, oauthCache)
 }
 
